@@ -204,13 +204,21 @@ function initChat() {
   send?.addEventListener('click', handleSend);
 
   function greet() {
-    addMsg('Oi! Sou o Claudinei, assistente do Workshop IA de Vendas. Tira qualquer dúvida sobre o evento, o conteúdo ou como comprar.', 'bot');
+    addMsg('Fala! Aposto que você tá perdendo pelo menos 3 leads por semana porque demora pra responder no WhatsApp. Acertei?', 'bot');
   }
 
   function addMsg(text, type) {
     const el = document.createElement('div');
     el.className = `msg msg-${type}`;
-    el.textContent = text;
+    const normalized = text.replace(/\\n/g, '\n');
+    const escaped = normalized
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    const html = escaped
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    el.innerHTML = html;
     msgs.appendChild(el);
     scrollDown();
   }

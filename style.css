@@ -1418,7 +1418,7 @@ footer {
   position: absolute;
   bottom: 70px;
   right: 0;
-  width: 340px;
+  width: 380px;
   background: #1C1C1C;
   border: 1px solid #2A2A2A;
   border-radius: 16px;
@@ -1489,7 +1489,7 @@ footer {
 }
 
 .chat-msgs {
-  height: 260px;
+  height: 380px;
   overflow-y: auto;
   padding: 16px;
   display: flex;
