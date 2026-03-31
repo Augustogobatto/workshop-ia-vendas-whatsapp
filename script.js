@@ -8,7 +8,7 @@ const CONFIG = {
     3: 'https://buy.stripe.com/14AeVe1yYcND8TCbRO9fW0a', // Lote 3 — R$300 (10 vagas)
   },
   webhookUrl:        'https://n8n-n8n.0pqeuc.easypanel.host/webhook/3409a797-a9b1-4ca8-8699-5c63c405572b',
-  proofWebhookUrl:   '',           // Substitua pela URL do webhook que dispara o WhatsApp pro lead
+  proofWebhookUrl:   'https://n8n-n8n.0pqeuc.easypanel.host/webhook/cadffaec-6bf0-44bd-8f68-c927246ffeaf',
   whatsappBotNumber: '',           // Fallback: número do bot (ex: "5551999990000") — usado se proofWebhookUrl vazio
   vagasRestantes:    10,           // Atualizar manualmente
   vagasTotal:        10,           // Lote 1: 10 | Lote 2: 10 | Lote 3: 10
