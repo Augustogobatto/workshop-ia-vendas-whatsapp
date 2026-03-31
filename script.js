@@ -204,7 +204,7 @@ function initChat() {
   send?.addEventListener('click', handleSend);
 
   function greet() {
-    addMsg('Oi! Sou a assistente do Workshop IA de Vendas. Tira qualquer dúvida sobre o evento, o conteúdo ou como comprar.', 'bot');
+    addMsg('Oi! Sou o Claudinei, assistente do Workshop IA de Vendas. Tira qualquer dúvida sobre o evento, o conteúdo ou como comprar.', 'bot');
   }
 
   function addMsg(text, type) {

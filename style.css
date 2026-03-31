@@ -1507,6 +1507,7 @@ footer {
   border-radius: 12px;
   font-size: 13.5px;
   line-height: 1.55;
+  white-space: pre-wrap;
 }
 
 .msg-bot {
