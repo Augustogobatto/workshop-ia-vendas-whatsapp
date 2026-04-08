@@ -14,7 +14,7 @@ const CONFIG = {
   vagasTotal:        10,           // Lote 1: 10 | Lote 2: 10 | Lote 3: 10
   loteAtual:         1,            // Trocar aqui quando mudar de lote (1, 2 ou 3)
   preco:             'R$150',      // Lote 1: R$150 | Lote 2: R$200 | Lote 3: R$300
-  workshopDate:      new Date('2026-04-18T08:00:00-03:00'),
+  workshopDate:      new Date('2026-04-21T07:30:00-03:00'),
 };
 
 /* =============================================
@@ -303,7 +303,10 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
   if (!input) return;
 
   input.addEventListener('input', function () {
-    let v = this.value.replace(/\D/g, '').slice(0, 11);
+    let v = this.value.replace(/\D/g, '');
+    // Remove prefixo 55 do autocomplete (+5548999... → 48999...)
+    if (v.length >= 12 && v.startsWith('55')) v = v.slice(2);
+    v = v.slice(0, 11);
     if (v.length > 10) {
       v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
     } else if (v.length > 6) {
@@ -326,7 +329,8 @@ async function handleProofSubmit(e) {
   const input   = document.getElementById('proof-phone');
   const success = document.getElementById('proof-success');
   const btn     = e.target.querySelector('button[type="submit"]');
-  const raw     = (input?.value || '').replace(/\D/g, '');
+  let raw = (input?.value || '').replace(/\D/g, '');
+  if (raw.length >= 12 && raw.startsWith('55')) raw = raw.slice(2);
 
   if (raw.length < 10) {
     input?.focus();
