@@ -10,7 +10,7 @@ const CONFIG = {
   webhookUrl:        'https://n8n-n8n.0pqeuc.easypanel.host/webhook/3409a797-a9b1-4ca8-8699-5c63c405572b',
   proofWebhookUrl:   'https://n8n-n8n.0pqeuc.easypanel.host/webhook/cadffaec-6bf0-44bd-8f68-c927246ffeaf',
   whatsappBotNumber: '',           // Fallback: número do bot (ex: "5551999990000") — usado se proofWebhookUrl vazio
-  vagasRestantes:    4,            // Atualizar manualmente
+  vagasRestantes:    3,            // Atualizar manualmente
   vagasTotal:        10,           // Lote 1: 10 | Lote 2: 10 | Lote 3: 10
   loteAtual:         1,            // Trocar aqui quando mudar de lote (1, 2 ou 3)
   preco:             'R$150',      // Lote 1: R$150 | Lote 2: R$200 | Lote 3: R$300
