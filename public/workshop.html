@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workshop: IA de Vendas no WhatsApp — Augusto Gobatto</title>
+  <meta name="description" content="R$140.000,00 vendidos por uma IA no WhatsApp. Workshop mão na massa. Terça-feira, 21 de abril. Das 8h. Você sai com o bot rodando." />
+  <meta property="og:title" content="Workshop IA de Vendas no WhatsApp" />
+  <meta property="og:description" content="R$140.000,00 vendidos por uma IA no WhatsApp. Workshop mão na massa. Terça-feira, 21 de abril." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0A0A0A" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="page-wrapper">
+
+<!-- =============================================
+     STICKY MOBILE HEADER
+     ============================================= -->
+<div id="sticky-header">
+  <div class="sticky-info">
+    <div class="sticky-price">R$200</div>
+    <div class="sticky-sub">Restam <span data-vagas>10</span> vagas · Lote 2</div>
+  </div>
+  <a href="#" data-cta class="btn-sticky">GARANTIR VAGA</a>
+</div>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+
+  <div class="container">
+    <div style="max-width:860px">
+
+      <div class="reveal" style="margin-bottom:20px">
+        <span class="label">Workshop · 21 de Abril · 8h–12h · Google Meet</span>
+      </div>
+
+      <h1 class="display reveal reveal-delay-1" style="margin-bottom:32px">
+        R$140.000,00 vendidos<br>
+        por uma IA no WhatsApp.<br>
+        <span style="color:var(--green)">Agora tu vai montar a tua.</span>
+      </h1>
+
+      <p class="reveal reveal-delay-2" style="font-size:clamp(17px,2.2vw,22px);color:var(--muted);max-width:560px;line-height:1.65;margin-bottom:10px">
+        Workshop mão na massa. Terça-feira, 21 de abril. Das 8h às 12h (até acabarmos).<br>Você sai com a IA rodando.
+      </p>
+
+      <p class="reveal reveal-delay-2" style="font-size:13px;color:var(--dim);margin-bottom:44px">
+        Tá vendo esse chat no canto da tela? É a mesma tecnologia. Experimenta.
+      </p>
+
+      <div class="reveal reveal-delay-3" style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:56px">
+        <a href="#" data-cta class="btn btn-primary lg">
+          QUERO MINHA VAGA — LOTE 2: R$200
+        </a>
+
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)">
+          <span style="width:8px;height:8px;background:var(--green);border-radius:50%;flex-shrink:0;box-shadow:0 0 10px rgba(0,255,136,.5)"></span>
+          Restam <strong style="color:var(--white);margin:0 3px"><span data-vagas>5</span> de 10</strong> vagas no Lote 2
+          &nbsp;·&nbsp; Terça-feira, 21/04 · 8h–12h · Google Meet
+        </div>
+
+        <!-- Vagas progress -->
+        <div style="width:100%;max-width:360px">
+          <div class="vagas-bar">
+            <div class="vagas-fill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Countdown -->
+      <div class="reveal reveal-delay-4">
+        <p class="label-muted" style="margin-bottom:18px">Faltam</p>
+        <div id="countdown" class="countdown">
+          <div class="cd-unit">
+            <span class="cd-value" id="cd-days">14</span>
+            <span class="cd-label">dias</span>
+          </div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit">
+            <span class="cd-value" id="cd-hours">00</span>
+            <span class="cd-label">horas</span>
+          </div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit">
+            <span class="cd-value" id="cd-minutes">00</span>
+            <span class="cd-label">min</span>
+          </div>
+          <span class="cd-sep">:</span>
+          <div class="cd-unit">
+            <span class="cd-value" id="cd-seconds">00</span>
+            <span class="cd-label">seg</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     NUMBERS BAR
+     ============================================= -->
+<section id="numbers">
+  <div class="numbers-grid">
+    <div class="num-item reveal">
+      <div class="num-value" data-count="140" data-prefix="R$" data-suffix="K">R$140K</div>
+      <div class="num-label">em vendas extras</div>
+    </div>
+    <div class="num-item reveal reveal-delay-1">
+      <div class="num-value" data-count="50" data-prefix="R$" data-suffix="K">R$50K</div>
+      <div class="num-label">em ingressos vendidos</div>
+    </div>
+    <div class="num-item reveal reveal-delay-2">
+      <div class="num-value">24/7</div>
+      <div class="num-label">sem folga, sem atraso</div>
+    </div>
+    <div class="num-item reveal reveal-delay-3">
+      <div class="num-value" data-count="4" data-suffix="h">4h</div>
+      <div class="num-label">pra montar do zero</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PROBLEMA
+     ============================================= -->
+<section id="problem">
+  <div class="container">
+
+    <div class="reveal" style="max-width:720px">
+      <span class="label" style="display:block;margin-bottom:24px">O problema</span>
+      <h2 class="h2" style="margin-bottom:32px">
+        Responde WhatsApp na mão.<br>Copia e cola. Equipe sem padrão.<br>
+        <span style="color:var(--muted);font-weight:400">Você depende da boa vontade da sua equipe — e do humor da secretária — pra sair venda.</span>
+      </h2>
+    </div>
+
+    <div class="pain-list reveal reveal-delay-1" style="max-width:640px">
+      <div class="pain-item">
+        <svg class="pain-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+        </svg>
+        <span>Copia e cola "Oi, tudo bem? Como posso te ajudar?" pela milésima vez</span>
+      </div>
+      <div class="pain-item">
+        <svg class="pain-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+        </svg>
+        <span>Esquece follow-up com lead quente — que foi comprar do concorrente</span>
+      </div>
+      <div class="pain-item">
+        <svg class="pain-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+        </svg>
+        <span>Demora 2h pra responder — lead esfriou, venda foi embora</span>
+      </div>
+      <div class="pain-item">
+        <svg class="pain-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+        </svg>
+        <span>Dorme, academia, janta — sem atendimento, sem venda</span>
+      </div>
+    </div>
+
+    <!-- O que o concorrente tá fazendo -->
+    <div class="rival-block reveal reveal-delay-2" style="max-width:640px;margin-top:40px">
+      <p class="rival-heading">Enquanto isso, seu concorrente respondeu em 3 segundos. Com uma IA. Que está:</p>
+      <div class="rival-item">
+        <svg class="rival-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+        </svg>
+        <span>Qualificando leads automaticamente</span>
+      </div>
+      <div class="rival-item">
+        <svg class="rival-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+        </svg>
+        <span>Quebrando objeções</span>
+      </div>
+      <div class="rival-item">
+        <svg class="rival-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+        </svg>
+        <span>Fechando vendas enquanto ele dorme</span>
+      </div>
+      <div class="rival-item">
+        <svg class="rival-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+        </svg>
+        <span>Fazendo follow-up automático no timing certo</span>
+      </div>
+    </div>
+
+    <p class="reveal reveal-delay-3" style="margin-top:40px;font-size:clamp(20px,3vw,28px);font-family:var(--font-display);font-weight:700;max-width:600px;line-height:1.3">
+      E tu? Ainda copiando e colando "Como posso te ajudar?" pela milésima vez.
+    </p>
+
+  </div>
+</section>
+
+<!-- =============================================
+     SOLUÇÃO
+     ============================================= -->
+<section id="solution" style="padding-top:0;border-top:1px solid var(--border)">
+  <div class="container" style="padding-top:108px">
+
+    <div class="reveal" style="max-width:720px;margin-bottom:52px">
+      <span class="label" style="display:block;margin-bottom:24px">A solução</span>
+      <h2 class="h2">
+        Eu coloquei uma IA pra vender<br>no WhatsApp dos meus clientes.
+      </h2>
+    </div>
+
+    <!-- Results -->
+    <div class="result-grid reveal reveal-delay-1">
+      <div class="result-item">
+        <div class="result-value">R$140K</div>
+        <div class="result-label">em vendas extras num único lançamento</div>
+      </div>
+      <div class="result-item">
+        <div class="result-value">R$50K</div>
+        <div class="result-label">em ingressos vendidos pra um evento</div>
+      </div>
+      <div class="result-item">
+        <div class="result-value">24/7</div>
+        <div class="result-label">atendimento sem contratar ninguém</div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2" style="max-width:640px">
+      <p style="font-size:17px;color:var(--muted);margin-bottom:28px;line-height:1.7">
+        Não é chatbot de "digite 1 pra falar com atendimento". É uma IA que entende contexto, qualifica, quebra objeção e fecha venda.
+      </p>
+      <p style="font-size:20px;font-family:var(--font-display);font-weight:700">
+        E agora você vai montar a sua. Em uma manhã.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+     CONVERSAS EXEMPLO
+     ============================================= -->
+<section id="conversations" style="border-top:1px solid var(--border);background:var(--bg-2)">
+  <div class="container">
+
+    <div class="reveal" style="max-width:720px">
+      <span class="label" style="display:block;margin-bottom:24px">Na prática</span>
+      <h2 class="h2">Isso é uma IA vendendo.<br>Não um humano.</h2>
+      <p style="font-size:16px;color:var(--muted);margin-top:16px;max-width:580px;line-height:1.7">
+        Conversas reais. Dois produtos diferentes, o mesmo agente, o mesmo método. Nomes reais, resultados reais.
+      </p>
+    </div>
+
+    <div class="conv-group-label reveal">ARDS Experience 2026 · R$50K em ingressos</div>
+    <div class="conversations-grid">
+
+      <!-- HUGO — Funil completo, fechou em 30min -->
+      <div class="reveal reveal-delay-1">
+        <p class="conv-label">Hugo · R$897 · fechou em 30min</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wapp-name">Hugo</div>
+              <div class="wapp-status">Norte do Paraná</div>
+            </div>
+          </div>
+
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Qualificou progressivamente — <span class="hl">safra, gargalos, interesse</span> — antes de apresentar o produto</li>
+              <li>Respondeu <span class="hl">"não tem data fixa"</span> à pergunta sobre o preço sem inventar urgência</li>
+              <li>Quando o lead voltou, perguntou <span class="hl">"Normal ou VIP?"</span> em vez de já mandar o link do Normal</li>
+            </ul>
+          </div>
+
+          <!-- SUMMARY (visível por padrão) -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Fala Hugo, bão? Por aí no Norte do Paraná tão na colheita?
+                <div class="bubble-time">14:05</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Boa tarde, sim estamos!
+                <div class="bubble-time">14:06</div>
+              </div>
+              <div class="conv-annotation">A IA qualificou a safra (73 sc/ha) e mapeou os gargalos — calcário, compactação, manejo fisiológico.</div>
+              <div class="bubble bubble-ai">
+                Esses são exatamente os pontos que separam quem fica nos 70 de quem vai pros 100 sc/ha. Você já foi em alguma edição do ARDS Experience?
+                <div class="bubble-time">14:12</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ainda não
+                <div class="bubble-time">14:13</div>
+              </div>
+              <div class="bubble bubble-ai">
+                São 3 dias em Brasília com quem colhe 100+ sc/ha — Leandro Barcelos, Charles Breda (135 sc/ha, campeão CESB), João Vítor com dados inéditos. Tudo que você falou é exatamente o foco. Faz sentido?
+                <div class="bubble-time">14:13</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Sim, faz sentido
+                <div class="bubble-time">14:14</div>
+              </div>
+              <div class="conv-annotation">A IA apresentou os preços (Normal R$897 / VIP R$1.897). Hugo perguntou "até quando fica o preço?" e depois foi ver passagem aérea.</div>
+              <div class="wapp-separator"><span>~30 minutos depois</span></div>
+              <div class="bubble bubble-lead">
+                Só fazer o pix
+                <div class="bubble-time">14:47</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Isso aí, Hugo! Normal ou VIP?
+                <div class="bubble-time">14:47</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Normal
+                <div class="bubble-time">14:47</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Segue o link direto pro checkout do Normal.
+                <div class="bubble-time">14:48</div>
+              </div>
+              <div class="bubble-receipt">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+                Comprovante Pix · R$897,00 · Banco do Brasil
+              </div>
+            </div>
+          </div>
+
+          <!-- FULL (expandido) -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Fala Hugo, bão? Por aí no Norte do Paraná tão na colheita?
+                <div class="bubble-time">14:05</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Boa tarde, sim estamos!
+                <div class="bubble-time">14:06</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que bom! E como tá vindo a produtividade? Tá satisfeito com o resultado dessa safra?
+                <div class="bubble-time">14:07</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Sim, estou satisfeito
+                <div class="bubble-time">14:07</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Massa! E pra próxima safra, o que você tá buscando melhorar na operação com soja?
+                <div class="bubble-time">14:08</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Iniciou com 73 sc/ha
+                <div class="bubble-time">14:09</div>
+              </div>
+              <div class="bubble bubble-ai">
+                73 sc/ha é uma boa marca! Mas você acha que dá pra passar dos 80, 90? O que trava a produtividade aí?
+                <div class="bubble-time">14:09</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Tem potencial, precisa calcário, descompactar, manejar o crescimento da soja
+                <div class="bubble-time">14:11</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Esses são exatamente os pontos que separam quem fica nos 70 de quem vai pros 100 sc/ha. Você já foi em alguma edição do ARDS Experience?
+                <div class="bubble-time">14:12</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ainda não
+                <div class="bubble-time">14:13</div>
+              </div>
+              <div class="bubble bubble-ai">
+                São 3 dias em Brasília com quem colhe 100+ sc/ha — Leandro Barcelos em fertilidade, Charles Breda (135 sc/ha, campeão CESB), João Vítor com dados inéditos do Centro de Pesquisa. Tudo que você falou — calcário, compactação, manejo fisiológico — é exatamente o foco. Faz sentido pra você?
+                <div class="bubble-time">14:13</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Sim, faz sentido
+                <div class="bubble-time">14:14</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Estamos no lote zero agora — menor preço que vai existir. Normal: R$897 à vista. VIP: R$1.897. Quando virar, não volta mais. Qual faz mais sentido pra você?
+                <div class="bubble-time">14:14</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Até quando fica o preço mais barato?
+                <div class="bubble-time">14:15</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Não tem data fixa — pode virar essa semana ainda. Quem garante agora paga o menor valor que vai existir.
+                <div class="bubble-time">14:15</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Vou ver preço de passagem aérea primeiro depois volto a conversar com você
+                <div class="bubble-time">14:16</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Tranquilo! Só fica ligado que o lote zero pode virar antes de você fechar a passagem. O ideal é garantir o ingresso agora e organizar a viagem com calma até junho.
+                <div class="bubble-time">14:16</div>
+              </div>
+              <div class="wapp-separator"><span>~30 minutos depois</span></div>
+              <div class="bubble bubble-lead">
+                Só fazer o pix
+                <div class="bubble-time">14:47</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Isso aí, Hugo! Normal ou VIP?
+                <div class="bubble-time">14:47</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Normal
+                <div class="bubble-time">14:47</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Segue o link direto pro checkout do Normal.
+                <div class="bubble-time">14:48</div>
+              </div>
+              <div class="bubble-receipt">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+                Comprovante Pix · R$897,00 · Banco do Brasil
+              </div>
+            </div>
+          </div>
+
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- BORTOLONEI — Follow-up, voltou comprando VIP 2 dias depois -->
+      <div class="reveal reveal-delay-2">
+        <p class="conv-label">Bortolonei · VIP R$1.979 · voltou 2 dias depois</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wapp-name">Bortolonei</div>
+              <div class="wapp-status">ex-aluno Turma 4 e 5</div>
+            </div>
+          </div>
+
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Reconheceu o <span class="hl">histórico emocional do lead</span> (turma 4/5, prejuízos, virada de safra) antes de qualquer pitch</li>
+              <li>Não pressionou quando ele disse "vou dar uma olhada" — o lead <span class="hl">voltou sozinho 2 dias depois pedindo o VIP</span></li>
+            </ul>
+          </div>
+
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Opa Bortolonei! Você ainda tá trabalhando com soja?
+                <div class="bubble-time">19:03</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Boa noite. Já participei da Turma 4 e 5, fui a Brasília... essa safra 25/26 está sendo ótima. Agradeço ao Leandro. Assim que puder vou participar novamente.
+                <div class="bubble-time">19:18</div>
+              </div>
+              <div class="conv-annotation">A IA reconheceu a jornada, celebrou os resultados e apresentou o ARDS Experience 2026 com o lineup completo.</div>
+              <div class="bubble bubble-lead">
+                Com certeza vou dar uma olhada no link com muito carinho
+                <div class="bubble-time">19:21</div>
+              </div>
+              <div class="wapp-separator"><span>2 dias depois</span></div>
+              <div class="bubble bubble-lead">
+                Boa noite. Vou participar sim. Quero o ingresso VIP. Como vou adquirir
+                <div class="bubble-time">21:44</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Boa noite, Bortolonei! Que notícia boa! Você vai aproveitar demais o VIP. Segue o link direto pro checkout VIP.
+                <div class="bubble-time">21:44</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Opa Bortolonei! Você ainda tá trabalhando com soja?
+                <div class="bubble-time">19:03</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Boa noite. Já participei da Turma 4 e 5, fui a Brasília e entrei na mentoria R100 mas não consegui pagar. Tive grandes prejuízos na safra por dois anos seguidos, foi muito frustrante. Mas com o aprendizado e os métodos que aprendi com a Raiz da Solução essa safra 25/26 está sendo ótima. Agradeço ao Leandro e sua equipe. Como ele diz: desaprendi e aprendi de novo. Assim que puder vou participar novamente. Por enquanto só estou no grupo.
+                <div class="bubble-time">19:18</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que mensagem incrível! Fico muito feliz que a safra 25/26 tá indo muito bem — isso mostra a força do método e da sua dedicação. Olha, sobre o ARDS Experience 2026 — você que já viveu a experiência em Brasília sabe o quanto vale. Vai ter o Charles Breda (135 sc/ha, campeão nacional CESB), João Vítor com dados inéditos do Centro de Pesquisa, Gizelly Santos, Evandro Fagan e vários outros. Normal tá R$897 à vista. Quando virar vai pra R$1.397 — e não tem volta. Faz sentido pra você esse ano?
+                <div class="bubble-time">19:19</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Com certeza vou dar uma olhada no link com muito carinho
+                <div class="bubble-time">19:21</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Dá uma olhada com calma e qualquer dúvida é só chamar aqui. Só fica ligado que o lote zero pode virar a qualquer momento — e quando virar, o preço sobe pra R$1.397. Você que já conhece o evento sabe o valor que tem.
+                <div class="bubble-time">19:22</div>
+              </div>
+              <div class="wapp-separator"><span>2 dias depois</span></div>
+              <div class="bubble bubble-lead">
+                Boa noite. Vou participar sim. Quero o ingresso VIP. Como vou adquirir
+                <div class="bubble-time">21:44</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Boa noite, Bortolonei! Que notícia boa! Você vai aproveitar demais o VIP. Segue o link direto pro checkout VIP.
+                <div class="bubble-time">21:44</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- OSCAR — Objeção de distância/custo destruída, Paraguai, VIP -->
+      <div class="reveal reveal-delay-3">
+        <p class="conv-label">Oscar · VIP · Paraguai → objeção destruída</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wapp-name">Oscar</div>
+              <div class="wapp-status">Paraguai</div>
+            </div>
+          </div>
+
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Identificou que o lead respondia em espanhol e <span class="hl">começou a responder em espanhol automaticamente</span></li>
+              <li>Lidou com a <span class="hl">objeção dupla: distância + custo de viagem</span> vindo do Paraguai</li>
+              <li>Fez <span class="hl">upsell natural para VIP</span> no fechamento sem pressão</li>
+            </ul>
+          </div>
+
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Opa Oscar! Você ainda tá trabalhando com soja?
+                <div class="bubble-time">10:02</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Sim, já colhi tudo dessa safra — média de 4.700 kg/ha
+                <div class="bubble-time">10:04</div>
+              </div>
+              <div class="conv-annotation">A IA qualificou os resultados e a meta (6.000 kg/ha). Oscar identificou pH do solo como gargalo e nunca tinha ido ao ARDS.</div>
+              <div class="bubble bubble-lead">
+                Um pouco longe
+                <div class="bubble-time">10:09</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendo o deslocamento. Mas são 3 dias com gente que colhe 100 sc/ha — esse conteúdo não existe online. O ingresso Normal sai por R$897. Você garante agora e organiza a viagem com calma até junho.
+                <div class="bubble-time">10:10</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Muito bom na verdade. Gostaria de ir
+                <div class="bubble-time">10:13</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ok, quero me inscrever. Tem que valer a pena
+                <div class="bubble-time">10:21</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Com certeza vai valer! Última pergunta — Normal ou VIP?
+                <div class="bubble-time">10:21</div>
+              </div>
+              <div class="bubble bubble-lead">
+                VIP
+                <div class="bubble-time">10:22</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Opa Oscar! Você ainda tá trabalhando com soja?
+                <div class="bubble-time">10:02</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Sim, mas já colhi tudo dessa safra
+                <div class="bubble-time">10:03</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que bom, Oscar! E como foi a safra? Conseguiu bater a produtividade que esperava?
+                <div class="bubble-time">10:03</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Sim, bastante bom — média de 4.700 kg/ha
+                <div class="bubble-time">10:04</div>
+              </div>
+              <div class="bubble bubble-ai">
+                4.700 kg/ha é um resultado muito bom! Me conta — o que você tá buscando melhorar pra próxima safra? Tem algum gargalo que você quer destravar?
+                <div class="bubble-time">10:04</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ainda preciso melhorar o pH do solo
+                <div class="bubble-time">10:06</div>
+              </div>
+              <div class="bubble bubble-ai">
+                pH é fundamento mesmo, impacta tudo — disponibilidade de nutriente, eficiência do manejo. Me conta: você foi em alguma edição anterior do ARDS Experience?
+                <div class="bubble-time">10:07</div>
+              </div>
+              <div class="bubble bubble-lead">
+                A meta sempre vai ser 6.000 kg/ha — mas em 3 a 5 anos ainda preciso melhorar a química do solo. Ainda não fui
+                <div class="bubble-time">10:08</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Faz todo sentido trabalhar a química do solo pra construir essa média. 6.000 kg/ha é meta de quem pensa grande. São 3 dias de imersão em Brasília (18, 19 e 20 de junho) com os maiores especialistas de soja da América Latina — Leandro Barcelos em fertilidade, Charles Breda (135 sc/ha, campeão CESB), João Vítor com dados inéditos. 100% independente, sem ninguém vendendo produto. Faz sentido pra você?
+                <div class="bubble-time">10:08</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Um pouco longe
+                <div class="bubble-time">10:09</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendo o deslocamento. Mas são 3 dias com gente que colhe 100 sc/ha — esse conteúdo não existe online. O ingresso Normal sai por R$897. Você garante agora e organiza a viagem com calma até junho.
+                <div class="bubble-time">10:10</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Muito bom na verdade. Gostaria de ir
+                <div class="bubble-time">10:13</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que massa, Oscar! Agora me fala — você quer o ingresso Normal ou o VIP?
+                <div class="bubble-time">10:14</div>
+              </div>
+              <div class="bubble bubble-lead">
+                O preço está muito alto. Eu que moro no Paraguai teria que viajar de avião e hotel — aí somam os gastos
+                <div class="bubble-time">10:20</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendo, Oscar. Vindo do Paraguai tem o custo de avião e hotel por fora. Mas o ingresso no lote zero é o menor preço que vai existir — Normal R$897, VIP R$1.897. Você garante agora e organiza a viagem com calma até junho. Quanto vale um manejo que te ajuda a chegar nos 6.000 kg/ha?
+                <div class="bubble-time">10:21</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ok, quero me inscrever. Tem que valer a pena
+                <div class="bubble-time">10:21</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Com certeza vai valer! Última pergunta — Normal ou VIP?
+                <div class="bubble-time">10:21</div>
+              </div>
+              <div class="bubble bubble-lead">
+                VIP
+                <div class="bubble-time">10:22</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- LEONAR — Upsell orgânico: lead pediu o VIP por conta própria -->
+      <div class="reveal reveal-delay-1">
+        <p class="conv-label">Leonar · VIP R$2.271 · upsell iniciado pelo próprio lead</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wapp-name">Leonar</div>
+              <div class="wapp-status">Norte do Paraná · 343 ha</div>
+            </div>
+          </div>
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Reagiu com <span class="hl">empatia real</span> ao problema do enchimento de grãos — criou conexão antes de qualquer pitch</li>
+              <li>Calculou o ROI direto: <span class="hl">5 sc/ha a mais em 343ha = 1.715 sacas</span> — o ingresso se paga em minutos</li>
+              <li>O lead <span class="hl">pediu o VIP espontaneamente</span> durante o pagamento — a IA só mandou o link</li>
+            </ul>
+          </div>
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Fala Leonar, bão? Por aí no Norte do Paraná tão na colheita?
+                <div class="bubble-time">09:14</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Na primeira parte tive surpresa negativa. Um janeiro quente e sem chuva prejudicou o enchimento de grãos. As plantas bem desenvolvidas, com bastante vagens, mas não pesou os grãos.
+                <div class="bubble-time">09:17</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Poxa, janeiro complicado pega pesado mesmo nessa fase crítica. Foda quando a planta tá linda mas o grão não enche.
+                <div class="bubble-time">09:18</div>
+              </div>
+              <div class="conv-annotation">A IA conectou o problema diretamente ao evento. Leonar enviou fotos do campo. A IA calculou: 5 sc/ha a mais em 343ha = 1.715 sacas.</div>
+              <div class="bubble bubble-lead">
+                Faz sentido
+                <div class="bubble-time">10:02</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ainda tem do VIP?
+                <div class="bubble-time">10:11</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Tem sim! Almoço nos 3 dias, ambiente exclusivo de networking e entrada antecipada. R$1.897 à vista ou 12x de R$189,33.
+                <div class="bubble-time">10:11</div>
+              </div>
+              <div class="bubble bubble-lead">
+                É melhor. Aproveita mais e não precisa sair pra almoçar fora. Aproveita melhor o networking.
+                <div class="bubble-time">10:13</div>
+              </div>
+            </div>
+          </div>
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Fala Leonar, bão? Por aí no Norte do Paraná tão na colheita?
+                <div class="bubble-time">09:14</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Opa. Estamos colhendo ainda.
+                <div class="bubble-time">09:15</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Como tá vindo a produtividade? A safra tá entregando o que esperava ou teve surpresa?
+                <div class="bubble-time">09:16</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Na primeira parte tive surpresa negativa. Um janeiro quente e sem chuva prejudicou o enchimento de grãos. As plantas bem desenvolvidas, com bastante vagens, porém não teve enchimento completo. Não pesou os grãos. Mas a segunda parte que estamos colhendo agora está com produtividade boa.
+                <div class="bubble-time">09:17</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Poxa, janeiro complicado pega pesado mesmo nessa fase crítica. Foda quando a planta tá linda mas o grão não enche. Pelo menos a segunda parte compensou. O que você acha que mais pesou nessa diferença? E pensando na próxima safra, o que você tá querendo ajustar pra não depender tanto do clima?
+                <div class="bubble-time">09:18</div>
+              </div>
+              <div class="bubble bubble-lead">
+                [enviou fotos do campo — vagem aberta, grãos na mão]
+                <div class="bubble-time">09:21</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Dá pra ver a diferença nos grãos aí. Essa parte do enchimento é cruel quando falha. Você já teve oportunidade de ir ao ARDS Experience? Pergunto porque esse tipo de situação — planta bonita mas grão não enchendo — é exatamente o que vai ser destrinchado lá. Tem gente que minimiza muito o efeito do estresse hídrico com manejo específico.
+                <div class="bubble-time">09:22</div>
+              </div>
+              <div class="bubble bubble-lead">
+                O clima foi o principal. Venho melhorando a parte química e física do solo. Mas não estou investindo em cobertura — faço soja no verão e milho de segunda safra no inverno. Tive oportunidade de ir. É um baita evento, vejo pelas postagens no Instagram.
+                <div class="bubble-time">09:29</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Cara, é gigante mesmo. Esse ano em Brasília, dias 18, 19 e 20 de junho. Mais de 18 palestrantes, 100% independente — ninguém vende produto lá. João Vítor do Centro de Pesquisa da Raiz com dados inéditos, Leandro Barcelos, Evandro Fagan, Gizelly Santos. 3 dias de imersão com quem realmente colhe alto. Você trabalha com quantos hectares aí?
+                <div class="bubble-time">09:30</div>
+              </div>
+              <div class="bubble bubble-lead">
+                343 ha
+                <div class="bubble-time">09:31</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Em 343ha, qualquer ajuste fino tem impacto direto. O ingresso Normal sai por R$897 à vista — menos de R$300 por dia. Pensa: se você aplicar um manejo que te dê 5 sc/ha a mais, em 343ha são 1.715 sacas. O ingresso se paga em minutos. Faz sentido garantir agora no lote zero?
+                <div class="bubble-time">09:32</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Faz sentido
+                <div class="bubble-time">10:02</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Massa demais! Segue o link direto pro checkout. Aceita cartão em até 12x, Pix ou boleto. Qualquer trava no pagamento, me chama.
+                <div class="bubble-time">10:03</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ok. Falei com o Leandro esses dias por mensagem. Daqui a pouco faço o pagamento.
+                <div class="bubble-time">10:08</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que show! Faz com calma aí. Garante logo enquanto tá no lote zero — quando virar não volta mais.
+                <div class="bubble-time">10:09</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ainda tem do VIP?
+                <div class="bubble-time">10:11</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Tem sim! Além de todo o conteúdo: almoço nos 3 dias, ambiente exclusivo de networking, entrada antecipada e kit VIP. R$1.897 à vista ou 12x de R$189,33. Vale muito pra quem quer aproveitar ao máximo o networking com produtores de elite.
+                <div class="bubble-time">10:11</div>
+              </div>
+              <div class="bubble bubble-lead">
+                É melhor. Aproveita mais e não precisa sair pra almoçar fora. Aproveita melhor o networking.
+                <div class="bubble-time">10:13</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Exato! Você já economiza tempo e dinheiro com o almoço, e o ambiente exclusivo te coloca mais perto de quem colhe 100+ sc/ha. Segue o link do VIP — é só finalizar e tá garantido!
+                <div class="bubble-time">10:14</div>
+              </div>
+            </div>
+          </div>
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- TOMÁS — Cupom neutralizado, 800ha, ROI objetivo -->
+      <div class="reveal reveal-delay-2">
+        <p class="conv-label">Tomás · Normal · cupom neutralizado · 800 ha</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wapp-name">Tomás</div>
+              <div class="wapp-status">800 ha · ex-aluno 2 edições</div>
+            </div>
+          </div>
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Identificou que o lead já foi nas 2 edições anteriores e <span class="hl">pulou o pitch básico</span> — foi direto ao técnico</li>
+              <li>Neutralizou a objeção do cupom: <span class="hl">"lote zero já é o menor preço que vai existir"</span></li>
+              <li>ROI objetivo: <span class="hl">5 sc/ha × 800ha = 4.000 sacas</span> — o ingresso se paga em minutos</li>
+            </ul>
+          </div>
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Me conta — você foi em alguma edição anterior do ARDS Experience?
+                <div class="bubble-time">19:42</div>
+              </div>
+              <div class="bubble bubble-lead">
+                As duas últimas estive presente
+                <div class="bubble-time">19:43</div>
+              </div>
+              <div class="conv-annotation">A IA adaptou o pitch — sem repetir o básico. Focou nos gargalos técnicos: fósforo e magnésio em perfil para 800ha.</div>
+              <div class="bubble bubble-lead">
+                Vi que tem um campo de cupom de desconto
+                <div class="bubble-time">20:17</div>
+              </div>
+              <div class="bubble bubble-ai">
+                O campo existe, mas não há cupom ativo. O lote zero já é o menor preço que vai existir. Quando virar, o Normal vai de R$897 pra R$1.397 — nenhum cupom compensa essa diferença.
+                <div class="bubble-time">20:18</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Paguei a minha. Se conseguir alguém a gente compra depois.
+                <div class="bubble-time">20:24</div>
+              </div>
+            </div>
+          </div>
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Opa Tomás! Você ainda tá trabalhando com soja?
+                <div class="bubble-time">19:41</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Boa noite. Positivo.
+                <div class="bubble-time">19:42</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Me conta — você foi em alguma edição anterior do ARDS Experience?
+                <div class="bubble-time">19:42</div>
+              </div>
+              <div class="bubble bubble-lead">
+                As duas últimas estive presente
+                <div class="bubble-time">19:43</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Massa demais! Então você já conhece a qualidade do evento. Me conta — o que você tá buscando melhorar na sua operação?
+                <div class="bubble-time">19:44</div>
+              </div>
+              <div class="bubble bubble-lead">
+                A princípio melhorar produtividades. Mas não tenho conseguido acompanhar de perto o curso há bom tempo.
+                <div class="bubble-time">19:48</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Falta de tempo pra acompanhar o online — justamente por isso o presencial faz diferença. 3 dias 100% focado. Esse ano: Charles Breda (135 sc/ha, campeão CESB), Leandro Barcelos em fertilidade, João Vítor com dados inéditos. Mais de 18 palestrantes. Lote Zero: Normal R$897, VIP R$1.897. Qual o principal gargalo hoje?
+                <div class="bubble-time">19:49</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Em partes a questão de correções em perfil. Basicamente fósforo e magnésio.
+                <div class="bubble-time">19:52</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Fósforo e magnésio em profundidade são desafios grandes pra buscar alta produtividade. O Leandro Barcelos domina isso como poucos — vai trazer estratégias práticas pra correção em perfil. Menos de R$300 por dia com esse nível de informação, sem ninguém te vendendo produto. Você trabalha com quantos hectares?
+                <div class="bubble-time">19:53</div>
+              </div>
+              <div class="bubble bubble-lead">
+                800
+                <div class="bubble-time">19:55</div>
+              </div>
+              <div class="bubble bubble-ai">
+                800 hectares — qualquer ajuste fino faz diferença gigante. Se você aplicar um manejo que renda 5 sc/ha a mais, já são 4.000 sacas na sua operação. O ingresso de R$897 se paga em minutos. Você já sabe como funciona — networking presencial, conversas de corredor, trocar ideia com quem colhe 100 sc/ha. Bora garantir no lote zero?
+                <div class="bubble-time">19:56</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Vai ser gratuito para mentorados novamente?
+                <div class="bubble-time">20:01</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Tomás, mentorados do R100 têm condição especial — fala direto com o time que eles te alinham.
+                <div class="bubble-time">20:02</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Parece que não. Rs
+                <div class="bubble-time">20:05</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendi, rs. Mas você já foi nas duas últimas edições e sabe o quanto vale. Esse ano vem com lineup ainda mais forte justamente nos temas que você precisa: fertilidade de perfil, fósforo, magnésio. Vou ver se arrumo alguém pra ir junto?
+                <div class="bubble-time">20:06</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Vou ver se arrumo alguém que vá junto. Amanhã voltamos a falar. Pode ser à tarde — estarei em deslocamento até as 14h.
+                <div class="bubble-time">20:10</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Anotado! Te chamo amanhã depois das 15h. Só fica ligado que o lote zero pode virar a qualquer momento.
+                <div class="bubble-time">20:11</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Vi que tem um campo de cupom de desconto
+                <div class="bubble-time">20:17</div>
+              </div>
+              <div class="bubble bubble-ai">
+                O campo existe, mas não há cupom ativo rodando. O lote zero já é o menor preço que vai existir. Quando virar, o Normal vai de R$897 pra R$1.397 — nenhum cupom compensa essa diferença.
+                <div class="bubble-time">20:18</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Aí fiquei na dúvida. Entendi.
+                <div class="bubble-time">20:20</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Se você tá pensando em ir — e faz todo sentido pelos seus desafios de fertilidade — o momento é agora.
+                <div class="bubble-time">20:21</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Paguei a minha. Se conseguir alguém a gente compra depois.
+                <div class="bubble-time">20:24</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que massa, Tomás! Parabéns — você já sabe que vai valer cada centavo. Nos vemos em Brasília em junho!
+                <div class="bubble-time">20:24</div>
+              </div>
+            </div>
+          </div>
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- DURVAL — Checkout travado, venda salva -->
+      <div class="reveal reveal-delay-3">
+        <p class="conv-label">Durval · VIP R$1.897 · checkout travado → venda salva</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wapp-name">Durval</div>
+              <div class="wapp-status">Queria comprar — checkout travou</div>
+            </div>
+          </div>
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Lead estava tentando comprar há 10 min — a IA <span class="hl">impediu o abandono sem pressionar</span></li>
+              <li>Eliminou o medo de perder o preço: <span class="hl">"enquanto você tá no checkout, o valor tá garantido"</span></li>
+              <li>Quando o Pix travou e o suporte demorou, sugeriu cartão — <span class="hl">venda salva</span></li>
+            </ul>
+          </div>
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Estou tentando comprar mas tô numa espera. Vou ter que desistir pois tenho que sair agora.
+                <div class="bubble-time">14:22</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Não desiste não. O processo é rápido. Me fala quando você volta — te mando o link na hora.
+                <div class="bubble-time">14:23</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Quero fazer o VIP agora, mas se for demorar mais e tiver que pagar preço cheio vou desistir
+                <div class="bubble-time">14:32</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Durval, relaxa! Você tá garantindo o VIP no lote zero AGORA — R$1.897. O preço só muda depois que o lote virar oficialmente. Enquanto você tá no checkout, o valor tá garantido.
+                <div class="bubble-time">14:32</div>
+              </div>
+              <div class="conv-annotation">Pix travou por 20min. Suporte demorou. A IA manteve o lead no processo e sugeriu cartão.</div>
+              <div class="bubble bubble-lead">
+                Consegui pelo cartão
+                <div class="bubble-time">14:51</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Garantiu o VIP no lote zero — melhor decisão! Nos vemos em Brasília nos dias 18, 19 e 20.
+                <div class="bubble-time">14:51</div>
+              </div>
+            </div>
+          </div>
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Sim. Estou tentando comprar mas tô numa espera. Vou ter que desistir pois tenho que sair agora.
+                <div class="bubble-time">14:22</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Não desiste não. O processo é rápido, leva uns 2 minutinhos. Se não conseguir agora, me fala quando você volta — te mando o link e a gente finaliza. Que horas você consegue olhar isso com calma?
+                <div class="bubble-time">14:23</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Tô aguardando já tem quase 10 minutos
+                <div class="bubble-time">14:31</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendi, que chato! Às vezes a página demora dependendo da conexão. Tenta dar um refresh ou abrir num navegador diferente. Se travar de vez, fala com o suporte direto — eles resolvem na hora.
+                <div class="bubble-time">14:32</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Quero fazer o VIP agora, mas se for demorar mais e tiver que pagar preço cheio vou desistir
+                <div class="bubble-time">14:32</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Durval, relaxa! Você tá garantindo o VIP no lote zero AGORA — R$1.897. O preço só muda depois que o lote virar oficialmente. Enquanto você tá no checkout, o valor tá garantido.
+                <div class="bubble-time">14:32</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Tá gerando o código Pix e nada
+                <div class="bubble-time">14:38</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Se tá travando no Pix, chama o suporte agora — eles resolvem e garantem seu preço do lote zero. Seu valor tá protegido enquanto você finaliza com eles.
+                <div class="bubble-time">14:39</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Chamei mas também tá demorando pra responder
+                <div class="bubble-time">14:44</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendo a frustração. O time deve estar com volume alto agora. Enquanto isso, tenta uma coisa: volta no checkout e testa finalizar no cartão de crédito em vez do Pix. Às vezes destrava. Seu preço tá garantido enquanto você tá no processo.
+                <div class="bubble-time">14:45</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Consegui pelo cartão
+                <div class="bubble-time">14:51</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Garantiu o VIP no lote zero — melhor decisão! Agora é só organizar a viagem com calma até junho. Nos vemos em Brasília nos dias 18, 19 e 20!
+                <div class="bubble-time">14:51</div>
+              </div>
+            </div>
+          </div>
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="reveal" style="margin-top:20px;font-size:12px;color:var(--dim)">
+      Evento ARDS Experience 2026 · R$50K em ingressos vendidos pela IA
+    </p>
+
+    <div class="conv-group-label reveal" style="margin-top:56px">Mentoria QPH · Gizelly Santos · R$3.997 por aluno</div>
+    <div class="conversations-grid">
+
+      <!-- VITOR — 4 objeções contornadas em sequência -->
+      <div class="reveal reveal-delay-1">
+        <p class="conv-label">Vitor · R$3.997 · 4 objeções contornadas</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="wapp-name">Vitor</div>
+              <div class="wapp-status">75 ha</div>
+            </div>
+          </div>
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Contornou <span class="hl">4 objeções seguidas</span> sem perder o ritmo: preço, área pequena, processadora, app após 20h</li>
+              <li>ROI simples: <span class="hl">menos de 3,3 sacos de soja por mês</span></li>
+              <li>Na quarta objeção disse só <span class="hl">"tranquilo, amanhã"</span> sem pressão — lead comprou de manhã</li>
+            </ul>
+          </div>
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Não consegue um preço melhor, mais barato?
+                <div class="bubble-time">19:12</div>
+              </div>
+              <div class="bubble bubble-ai">
+                O valor é único pra todo mundo: R$3.997 ou 12x de R$398,91 — menos de 3,3 sacos de soja por mês. Tem garantia de 15 dias e garantia de resultado de 6 meses: se aplicar tudo e não recuperar o investimento, devolve + R$500. A Gizelly tá bancando o risco, não você.
+                <div class="bubble-time">19:13</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Estou com muita pouca área, só 75 hectares — consegue condições mais em conta?
+                <div class="bubble-time">19:15</div>
+              </div>
+              <div class="bubble bubble-ai">
+                75 hectares é perfeito! Tem produtor de 15ha até 20.000ha aplicando o método. Se você economizar só 20% do que gasta com herbicida (o pessoal tá economizando até 50%), já paga a mentoria no primeiro ano.
+                <div class="bubble-time">19:16</div>
+              </div>
+              <div class="conv-annotation">Lead perguntou se o pagamento sai pra "Ayden" — IA explicou que é a processadora da Hotmart, segura. Depois: app não permite pagamento após 20h.</div>
+              <div class="bubble bubble-ai">
+                Tranquilo! Amanhã você consegue finalizar. Salva o link direto pro checkout.
+                <div class="bubble-time">19:41</div>
+              </div>
+              <div class="wapp-separator"><span>Dia seguinte</span></div>
+              <div class="bubble bubble-lead">
+                Acesso garantido
+                <div class="bubble-time">08:47</div>
+              </div>
+            </div>
+          </div>
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Boa noite, ainda consigo os bônus?
+                <div class="bubble-time">19:08</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Boa noite! Os bônus eram pros primeiros inscritos — entra no link e vê o que aparece pra você lá. Se aparecer algum bônus, ainda dá tempo de garantir! Você tá com problema de daninha resistente na lavoura?
+                <div class="bubble-time">19:09</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Iniciando os problemas
+                <div class="bubble-time">19:11</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Então você tá no momento perfeito pra entrar na mentoria! Entre safras é a melhor época pra estudar e se preparar. Assim você já entra na próxima aplicação sabendo exatamente o que fazer pra economizar e ter resultado. Quer garantir sua vaga?
+                <div class="bubble-time">19:11</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Não consegue um preço melhor, mais barato?
+                <div class="bubble-time">19:12</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendo que o investimento é importante, mas o valor é único pra todo mundo: R$3.997 à vista ou 12x de R$398,91 — menos de 3,3 sacos de soja por mês. Tem garantia de 15 dias: entrou, não gostou, pede o dinheiro de volta. E garantia de 6 meses: se aplicar tudo e não recuperar o investimento, devolve + R$500. A Gizelly tá bancando o risco, não você.
+                <div class="bubble-time">19:13</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Estou com muita pouca área, só 75 hectares — consegue condições mais em conta?
+                <div class="bubble-time">19:15</div>
+              </div>
+              <div class="bubble bubble-ai">
+                75 hectares é perfeito pra mentoria! Tem produtor de 15ha até 20.000ha aplicando o método. Em 75ha, se você economizar só 20% do que gasta com herbicida (o pessoal tá economizando até 50%), já paga a mentoria no primeiro ano. O valor é o mesmo pra todo mundo, mas dá pra parcelar em 12x. E com a garantia de 15 dias, você entra, vê o conteúdo, e se não fizer sentido pede reembolso.
+                <div class="bubble-time">19:16</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Ok. O pagamento sai pra Ayden?
+                <div class="bubble-time">19:32</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Isso mesmo! A Ayden é a processadora de pagamento da Hotmart — a plataforma onde a mentoria está hospedada. É totalmente seguro, eles processam milhões de transações. No seu cartão vai aparecer "Ayden" ou "Hotmart".
+                <div class="bubble-time">19:33</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Consigo pagar somente amanhã — aplicativo não permite após as 20h
+                <div class="bubble-time">19:38</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Tranquilo! Amanhã você consegue finalizar. Só não deixa passar muito tempo porque as vendas fecham segunda. Salva o link direto pro checkout.
+                <div class="bubble-time">19:41</div>
+              </div>
+              <div class="wapp-separator"><span>Dia seguinte</span></div>
+              <div class="bubble bubble-lead">
+                Bom dia. Fazendo inscrição — vou precisar de assistência a partir do dia 5 de fevereiro, pois vou entrar na colheita da soja. Consigo tirar dúvidas com alguém?
+                <div class="bubble-time">08:43</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Bom dia! Perfeito — você vai ter todo o suporte. Assim que entrar na mentoria você já tem acesso ao grupo no WhatsApp com +2.700 alunos, todas as aulas gravadas e a primeira mentoria ao vivo com a Gizelly. Durante a colheita você pode ir assistindo e acumulando as dúvidas pro plantão.
+                <div class="bubble-time">08:44</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Acesso garantido
+                <div class="bubble-time">08:47</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Parabéns! Seja muito bem-vindo ao time QPH! Aproveita pra já começar a assistir as aulas e se preparar pro planejamento da colheita.
+                <div class="bubble-time">08:47</div>
+              </div>
+            </div>
+          </div>
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ARI — Sem dinheiro → 20 dias → comprou após colher -->
+      <div class="reveal reveal-delay-2">
+        <p class="conv-label">Ari · R$3.997 · "sem dinheiro" → comprou 20 dias depois</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="wapp-name">Ari</div>
+              <div class="wapp-status">Produtor inovador</div>
+            </div>
+          </div>
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Não desistiu quando o lead disse "não tenho dinheiro" — <span class="hl">manteve o canal aberto por 20 dias</span></li>
+              <li>Integrou com a vendedora humana (Vanessa) e <span class="hl">validou a credibilidade dela</span> quando o lead questionou</li>
+              <li>Acompanhou durante chuva e colheita — <span class="hl">comprou assim que recebeu da safra</span></li>
+            </ul>
+          </div>
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Eu não tenho dinheiro agora
+                <div class="bubble-time">14:22</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendo! O investimento sai por menos de 3,3 sacos de soja por mês. Dá pra parcelar em 12x ou usar Pix parcelado. E tem 15 dias de garantia — entra, assiste as aulas, se não gostar pede o dinheiro de volta.
+                <div class="bubble-time">14:23</div>
+              </div>
+              <div class="conv-annotation">Ao longo de 20 dias, Ari enviou áudios longos tirando dúvidas técnicas. Vanessa do time de vendas garantiu a vaga até dia 28. O lead questionou se ela era da equipe.</div>
+              <div class="bubble bubble-lead">
+                Só vê pra mim se esse contato da Vanessa é da equipe mesmo de vocês
+                <div class="bubble-time">+3 dias</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Sim, a Vanessa é da nossa equipe. Pode ficar tranquilo. Ótimo que já resolveu tudo certinho com ela!
+                <div class="bubble-time">+3 dias</div>
+              </div>
+              <div class="conv-annotation">8 dias de chuva travaram a colheita. Ari avisou que pagaria assim que conseguisse vender a soja.</div>
+              <div class="bubble bubble-lead">
+                Assim que a gente faz o pagamento, aí eu espero que vocês façam o material para nós e segue o baile. Tranquilo?
+                <div class="bubble-time">+20 dias</div>
+              </div>
+            </div>
+          </div>
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-ai">
+                Vi que você se interessou pela Mentoria QPH da Gizelly. Tá com problema de planta daninha na lavoura?
+                <div class="bubble-time">14:21</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Eu não tenho dinheiro agora
+                <div class="bubble-time">14:22</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendo! O investimento sai por menos de 3,3 sacos de soja por mês — e tem parcelamento em 12x no cartão ou Pix parcelado. Sem contar que você tem 15 dias de garantia: entra, assiste as aulas, se não gostar pede o dinheiro de volta. Quanto você perdeu na última safra com aplicação que não funcionou?
+                <div class="bubble-time">14:23</div>
+              </div>
+              <div class="wapp-separator"><span>Dia seguinte</span></div>
+              <div class="bubble bubble-lead">
+                [áudio] Bom dia, equipe. Esse ano eu não perdi produção, não perdi controle... tem umas coriola e trapoeiraba mas nada desesperador. Interessa sim fazer o curso, mas no momento não tô tendo dinheiro, vou ter que esperar até o final do mês. Sou bem inovador — já fiz veneno, glifosato com sabão caseiro. A gente tá toda hora inventando, queremos aprender.
+                <div class="bubble-time">08:14</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Bom dia! Que bom que o manejo tá controlado. Pelo que você falou, já tá aplicando várias técnicas avançadas — imagina então com o conhecimento completo da Gizelly. Sobre o pagamento: tem Pix parcelado e boleto parcelado. Mas as vendas fecham na segunda (09/02). Que tal entrar agora com 15 dias de garantia? Com seu perfil inovador, tenho certeza que vai tirar muito proveito.
+                <div class="bubble-time">08:16</div>
+              </div>
+              <div class="bubble bubble-lead">
+                [envia conversa com Vanessa do time de vendas que garantiu a vaga até dia 30] Só vê pra mim se esse contato da Vanessa é da equipe mesmo de vocês. Se for, já tem tudo alinhado. Ela conversou com o pessoal do financeiro, vai fazer o pagamento até dia 28.
+                <div class="bubble-time">+3 dias</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Sim, a Vanessa é da nossa equipe! Pode ficar tranquilo. Que ótimo que já resolveu tudo certinho com ela. Parabéns pela decisão! Bem-vindo ao time QPH!
+                <div class="bubble-time">+3 dias</div>
+              </div>
+              <div class="wapp-separator"><span>4 dias depois</span></div>
+              <div class="bubble bubble-lead">
+                [áudio] Boa tarde equipe. Rapaz, tô com medo de entrar no grupo porque se o cara economizou 3 litros por hectare quer dizer que gasta bem mais né — e eu tô gastando 2 a 2,5 litros. Não tô entendendo mais nada...
+                <div class="bubble-time">15:03</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Calma, deixa eu explicar! Quando a gente fala em economizar 3 litros, é só um exemplo — tem gente que usava 6-7 litros e passou pra 3-4. Você que já usa 2-3 litros por safra tá MUITO na frente! O método QPH foca na QUALIDADE da aplicação: momento certo, combinações certas, manejo preventivo. Com 2-3L você já tá no caminho certo — imagina então aprendendo a melhorar ainda mais o controle com a mesma dose?
+                <div class="bubble-time">15:05</div>
+              </div>
+              <div class="wapp-separator"><span>6 dias depois</span></div>
+              <div class="bubble bubble-lead">
+                [áudio] Boa tarde equipe. Já estamos há 8 dias sem mexer as máquinas — chuva e chuva. Vou ter que colher um pouco e entregar pra fazer dinheiro pra daí entrar. Assim que a gente faz o pagamento, eu espero que vocês façam o material para nós. Tranquilo?
+                <div class="bubble-time">16:41</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Boa tarde! 8 dias parado por causa da chuva é complicado mesmo. Fica tranquilo — a Vanessa já alinhou tudo certinho. Sua vaga tá garantida até dia 28! Pode focar aí em colher quando o tempo abrir. Força aí com a colheita!
+                <div class="bubble-time">16:42</div>
+              </div>
+            </div>
+          </div>
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- GILSON — Banco bloqueou o Pix como golpe → voltou 2 dias depois -->
+      <div class="reveal reveal-delay-3">
+        <p class="conv-label">Gilson · R$3.997 · banco acusou "golpe" → entrou 2 dias depois</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="wapp-name">Gilson</div>
+              <div class="wapp-status">Pix bloqueado pelo banco</div>
+            </div>
+          </div>
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Banco bloqueou o Pix (<span class="hl">código SPF099 "cuidado com golpes"</span>) — a IA não entrou em pânico, deu alternativas concretas</li>
+              <li>Sugeriu checar o <span class="hl">Instagram da Gizelly</span> para confirmar legitimidade — resolveu a desconfiança com prova social</li>
+              <li>2 dias depois: <span class="hl">"Já estou dentro"</span></li>
+            </ul>
+          </div>
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Meu aplicativo não aceitou o Pix. Acusou golpe.
+                <div class="bubble-time">14:38</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Às vezes os bancos travam pagamentos maiores por segurança. Opções: ligar pro banco e avisar que é Hotmart, ou pagar no cartão em 12x. Se quiser confirmar que é seguro, entra no Instagram @gizelly.qph — o link tá na bio dela também.
+                <div class="bubble-time">14:39</div>
+              </div>
+              <div class="bubble bubble-lead">
+                [print: SPF099 — "Cuidado com GOLPES! Transação negada"] Não foi. Vou tentar amanhã.
+                <div class="bubble-time">14:44</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Exatamente isso! O banco tá bloqueando por segurança. Dicas: liga pro banco e avisa que vai pagar pra Hotmart, ou tenta pelo cartão. Fica com o link salvo.
+                <div class="bubble-time">14:45</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Amanhã vai dar certo
+                <div class="bubble-time">14:46</div>
+              </div>
+              <div class="wapp-separator"><span>2 dias depois</span></div>
+              <div class="bubble bubble-lead">
+                Boa noite. Já estou dentro.
+                <div class="bubble-time">21:03</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que massa! Parabéns pela decisão! Bem-vindo ao time QPH!
+                <div class="bubble-time">21:03</div>
+              </div>
+            </div>
+          </div>
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Achei que eu conseguiria parcelar o boleto
+                <div class="bubble-time">13:52</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Consegue sim! 12x de R$450,00 no boleto parcelado.
+                <div class="bubble-time">13:53</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Vou fazer o Pix — vai sair mais em conta
+                <div class="bubble-time">13:55</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Perfeito! O Pix à vista sai R$3.997,00. No link você escolhe a opção Pix e o sistema gera o código.
+                <div class="bubble-time">13:56</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Meu aplicativo não aceitou o Pix. Acusou golpe.
+                <div class="bubble-time">14:38</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Às vezes os bancos travam pagamentos maiores por segurança. Duas opções: ligar pro banco avisando que é pagamento pra Hotmart, ou pagar no cartão em 12x de R$398,91. Se quiser confirmar que é seguro, entra no Instagram da Gizelly @gizelly.qph — é o mesmo link da bio dela.
+                <div class="bubble-time">14:39</div>
+              </div>
+              <div class="bubble bubble-lead">
+                [print: SPF099 — "Cuidado com GOLPES! Transação negada"] Não foi. Vou tentar amanhã.
+                <div class="bubble-time">14:44</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Ah, é exatamente isso — banco bloqueando por segurança. Dicas pra amanhã: liga pro banco antes e avisa que vai fazer um pagamento pra Hotmart; ou tenta pelo cartão, que geralmente passa direto; ou tenta pelo computador em vez do celular. Fica com o link salvo. E se quiser confirmar a legitimidade, o link tá na bio do @gizelly.qph também.
+                <div class="bubble-time">14:45</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Amanhã vai dar certo
+                <div class="bubble-time">14:46</div>
+              </div>
+              <div class="wapp-separator"><span>2 dias depois</span></div>
+              <div class="bubble bubble-lead">
+                Boa noite. Já estou dentro.
+                <div class="bubble-time">21:03</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Que massa! Parabéns pela decisão! Você acabou de dar o primeiro passo pra se livrar das daninhas gastando menos. Bem-vindo ao time QPH!
+                <div class="bubble-time">21:03</div>
+              </div>
+            </div>
+          </div>
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- KELI — Cartão recusado → Pix em 3min → mãe com bebê -->
+      <div class="reveal reveal-delay-1">
+        <p class="conv-label">Keli · R$3.997 · cartão recusado → Pix em 3 minutos</p>
+        <div class="wapp-mockup">
+          <div class="wapp-header">
+            <div class="wapp-avatar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8696A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="wapp-name">Keli</div>
+              <div class="wapp-status">Mãe produtora rural</div>
+            </div>
+          </div>
+          <div class="wapp-insight">
+            <div class="wapp-insight-label">O que a IA fez bem</div>
+            <ul>
+              <li>Cartão recusado → 4 alternativas em uma mensagem → <span class="hl">Pix pago 3 minutos depois</span></li>
+              <li>Quando Keli mencionou o bebê, a IA reconheceu e adaptou: <span class="hl">mentorias ficam gravadas</span></li>
+              <li>Encerrou com <span class="hl">conexão humana real</span> — não foi só suporte técnico</li>
+            </ul>
+          </div>
+          <!-- SUMMARY -->
+          <div class="wapp-summary">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                [print: "Tente com outra forma de pagamento. Não foi possível finalizar sua compra"]
+                <div class="bubble-time">20:14</div>
+              </div>
+              <div class="bubble bubble-ai">
+                O cartão não tá passando — pode ser limite ou bloqueio do banco. Opções: outro cartão, Pix à vista, dividir em 2 cartões, ou Pix/boleto parcelado em 12x.
+                <div class="bubble-time">20:14</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Pronto, fiz pix
+                <div class="bubble-time">20:17</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Vou tentar participar das aulas. Vou tentar me ajustar com ele.
+                <div class="bubble-time">20:19</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Mãe guerreira e produtora — combinação de força! Fica tranquila: as mentorias ficam gravadas. Se não conseguir assistir ao vivo por causa do pequeno, vê depois no seu tempo. E o grupo com +2.700 alunos é seu melhor amigo — qualquer dúvida, o pessoal ajuda na hora.
+                <div class="bubble-time">20:20</div>
+              </div>
+            </div>
+          </div>
+          <!-- FULL -->
+          <div class="wapp-full">
+            <div class="wapp-body">
+              <div class="bubble bubble-lead">
+                Olá. Estou tentando fazer o pagamento.
+                <div class="bubble-time">20:12</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Opa, que ótima notícia! Tá tendo alguma dificuldade no pagamento? Me conta o que tá acontecendo que eu te ajudo!
+                <div class="bubble-time">20:13</div>
+              </div>
+              <div class="bubble bubble-lead">
+                [print: Hotmart — "Tente com outra forma de pagamento. Não foi possível finalizar sua compra"]
+                <div class="bubble-time">20:14</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Entendi! O cartão não tá passando — pode ser limite ou algum bloqueio do banco. Vamos resolver! Opções: outro cartão, Pix à vista (pagamento na hora, sem erro), dividir em 2 cartões, ou Pix/boleto parcelado em 12x de R$450. Qual dessas funciona melhor pra você?
+                <div class="bubble-time">20:14</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Pronto, fiz pix
+                <div class="bubble-time">20:17</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Parabéns pela decisão! O Pix costuma cair na hora. Já apareceu a confirmação do pagamento pra você? Assim que confirmar, você recebe o acesso por email. Seja muito bem-vinda à família QPH!
+                <div class="bubble-time">20:17</div>
+              </div>
+              <div class="bubble bubble-lead">
+                Vou tentar participar das aulas. Vou tentar me ajustar com ele.
+                <div class="bubble-time">20:19</div>
+              </div>
+              <div class="bubble bubble-ai">
+                Mãe guerreira e produtora — combinação de força! Fica tranquila: as mentorias ficam gravadas. Se não conseguir assistir ao vivo por causa do pequeno (1 ano e 7 meses!), vê depois no seu tempo. E o grupo do WhatsApp com +2.700 alunos vai ser seu melhor amigo — qualquer dúvida, o pessoal ajuda na hora. A Gizelly também é mãe e entende bem essa correria. Sucesso na sua jornada QPH!
+                <div class="bubble-time">20:20</div>
+              </div>
+            </div>
+          </div>
+          <button class="conv-toggle" onclick="toggleConv(this)">
+            <span>Ver conversa completa</span>
+            <svg class="conv-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="reveal" style="margin-top:20px;font-size:12px;color:var(--dim)">
+      Mentoria QPH · Gizelly Santos · Resultados de alunos reais
+    </p>
+
+  </div>
+</section>
+
+<!-- =============================================
+     CTA INTERMEDIÁRIO 1
+     ============================================= -->
+<div class="section-cta reveal">
+  <a href="#" data-cta class="btn btn-primary">GARANTIR MINHA VAGA</a>
+  <p style="margin-top:14px;font-size:13px;color:var(--dim)">30 vagas — acompanho cada implementação individualmente</p>
+</div>
+
+<!-- =============================================
+     O QUE TU LEVA
+     ============================================= -->
+<section id="what-you-build">
+  <div class="container">
+
+    <div class="reveal" style="max-width:680px;margin-bottom:0">
+      <span class="label" style="display:block;margin-bottom:24px">Entregáveis</span>
+      <h2 class="h2">O que você leva do workshop.</h2>
+    </div>
+
+    <div class="deliverables">
+
+      <div class="deliverable-item reveal reveal-delay-1">
+        <div class="deliverable-title">IA de vendas rodando</div>
+        <div class="deliverable-desc">Seu agente de IA conectado ao WhatsApp Business (API oficial). Qualifica, quebra objeção, faz follow-up e fecha venda. 24/7, sem você precisar estar online.</div>
+      </div>
+
+      <div class="deliverable-item reveal reveal-delay-2">
+        <div class="deliverable-title">Aula ao vivo de 4 horas</div>
+        <div class="deliverable-desc">Implementação guiada comigo. Não é teoria. Tu monta tudo ao vivo, com suporte em tempo real. Saio dali quando todo mundo tiver rodando.</div>
+      </div>
+
+      <div class="deliverable-item reveal reveal-delay-1">
+        <div class="deliverable-title">Gravação completa</div>
+        <div class="deliverable-desc">Acesso à gravação pra revisar qualquer etapa depois. Preso num passo? É só voltar ao vídeo.</div>
+      </div>
+
+      <div class="deliverable-item reveal reveal-delay-2">
+        <div class="deliverable-title">JSON do fluxo n8n</div>
+        <div class="deliverable-desc">O mesmo fluxo de automação que gerou R$140K em vendas. Importa no seu n8n e roda. Não começa do zero.</div>
+      </div>
+
+      <div class="deliverable-item reveal reveal-delay-3">
+        <div class="deliverable-title">Guia de pré-requisitos</div>
+        <div class="deliverable-desc">Passo a passo pra preparar tudo antes do dia 11. API do WhatsApp, n8n, VPS — tudo explicado. Leva ~2 dias.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     AGENDA
+     ============================================= -->
+<section id="agenda" style="border-top:1px solid var(--border)">
+  <div class="container">
+
+    <div class="reveal" style="max-width:620px;margin-bottom:0">
+      <span class="label" style="display:block;margin-bottom:24px">Como funciona</span>
+      <h2 class="h2">4 horas. Do zero ao bot rodando.</h2>
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-time">8h — 8h30</div>
+        <div class="tl-body">
+          <h3>Contexto</h3>
+          <p>Por que a IA performa melhor que SDR humano no WhatsApp. A lógica por trás da stack e dos fluxos de conversação.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal reveal-delay-1">
+        <div class="tl-time">8h30 — 9h</div>
+        <div class="tl-body">
+          <h3>Framework</h3>
+          <p>Os 4 fluxos que toda IA de vendas precisa ter pra converter: abertura, qualificação, quebra de objeção e fechamento.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal reveal-delay-2">
+        <div class="tl-time">9h — 11h</div>
+        <div class="tl-body">
+          <h3>Mão na massa</h3>
+          <p>Você monta a sua IA comigo, ao vivo. Linha por linha. Fluxo por fluxo. Eu acompanho cada implementação individualmente.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal reveal-delay-3">
+        <div class="tl-time">11h — 12h</div>
+        <div class="tl-body">
+          <h3>Testes e ajustes</h3>
+          <p>Testa, ajusta, tira dúvida. Você sai com tudo rodando — não com um projeto pela metade.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PRA QUEM É / NÃO É
+     ============================================= -->
+<section id="for-who" style="border-top:1px solid var(--border)">
+  <div class="container">
+
+    <div class="reveal">
+      <span class="label" style="display:block;margin-bottom:24px">Fit</span>
+      <h2 class="h2">Esse workshop é pra ti?</h2>
+    </div>
+
+    <div class="who-grid">
+
+      <div class="who-col yes reveal reveal-delay-1">
+        <h3 style="color:var(--green)">É pra ti se</h3>
+        <div class="who-item">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--green)" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+          </svg>
+          <span>Dono de negócio que vende pelo WhatsApp (serviço, produto, infoproduto)</span>
+        </div>
+        <div class="who-item">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--green)" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+          </svg>
+          <span>Cansado de perder venda por demora no atendimento</span>
+        </div>
+        <div class="who-item">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--green)" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+          </svg>
+          <span>Quer escalar vendas sem contratar SDR</span>
+        </div>
+        <div class="who-item">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--green)" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+          </svg>
+          <span>Não tem medo de meter a mão na massa numa manhã de sábado</span>
+        </div>
+      </div>
+
+      <div class="who-col no reveal reveal-delay-2">
+        <h3 style="color:var(--muted)">Não é pra ti se</h3>
+        <div class="who-item" style="color:var(--muted)">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--dim)" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+          </svg>
+          <span>Quem quer só assistir (aqui é implementation day)</span>
+        </div>
+        <div class="who-item" style="color:var(--muted)">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--dim)" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+          </svg>
+          <span>Quem não tem produto ou serviço pra vender ainda</span>
+        </div>
+        <div class="who-item" style="color:var(--muted)">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--dim)" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+          </svg>
+          <span>Quem espera resultado mágico sem fazer nada</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     CTA INTERMEDIÁRIO 2
+     ============================================= -->
+<div class="section-cta reveal">
+  <a href="#" data-cta class="btn btn-primary">QUERO SAIR COM MINHA IA RODANDO</a>
+</div>
+
+<!-- =============================================
+     PROVA — TESTA NO WHATSAPP
+     ============================================= -->
+<section id="proof">
+  <div class="container" style="text-align:center">
+
+    <div class="reveal">
+      <span class="label" style="display:block;margin-bottom:24px">Não acredita? Teste você mesmo.</span>
+      <h2 class="h2" style="max-width:640px;margin:0 auto 24px">
+        Bota seu número e conversa<br>com a IA no WhatsApp agora.
+      </h2>
+      <p style="font-size:17px;color:var(--muted);max-width:520px;margin:0 auto;line-height:1.7">
+        Ela vai te atender igualzinho atenderia seu cliente.
+      </p>
+
+      <form class="phone-form" id="proof-form" onsubmit="handleProofSubmit(event)">
+        <input
+          id="proof-phone"
+          class="phone-input"
+          type="tel"
+          placeholder="(51) 99999-9999"
+          maxlength="15"
+          autocomplete="tel"
+          inputmode="numeric"
+        />
+        <button type="submit" class="btn btn-primary">QUERO TESTAR A IA</button>
+      </form>
+
+      <p id="proof-success" style="display:none;margin-top:16px;font-size:14px;color:var(--green)">
+        Abre o WhatsApp — a IA entra em contato em segundos.
+      </p>
+
+      <p style="margin-top:20px;font-size:13px;color:var(--dim);max-width:420px;margin-left:auto;margin-right:auto;line-height:1.65">
+        É a mesma IA que você vai aprender a montar no workshop. Você tá experimentando o produto.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+     PRÉ-REQUISITOS
+     ============================================= -->
+<section id="prerequisites" style="border-top:1px solid var(--border)">
+  <div class="container">
+
+    <div class="reveal" style="max-width:660px;margin-bottom:0">
+      <span class="label" style="display:block;margin-bottom:24px">Pré-requisitos</span>
+      <h2 class="h2" style="margin-bottom:16px">Você precisa chegar com isso pronto.</h2>
+      <p style="font-size:16px;color:var(--muted)">Não tem ainda? Sem estresse. Depois da inscrição você recebe um guia passo a passo. Leva ~2 dias.</p>
+    </div>
+
+    <div class="prereq-grid">
+
+      <div class="prereq-card reveal reveal-delay-1">
+        <div class="num">01</div>
+        <h3>WhatsApp Business API</h3>
+        <p>API oficial (BM verificada). Não o app normal — a versão pra negócios com integração.</p>
+      </div>
+
+      <div class="prereq-card reveal reveal-delay-2">
+        <div class="num">02</div>
+        <h3>Conta no n8n</h3>
+        <p>A ferramenta low-code que vai conectar tudo. Gratuito pra começar. Te ensino a criar se não tiver.</p>
+      </div>
+
+      <div class="prereq-card reveal reveal-delay-3">
+        <div class="num">03</div>
+        <h3>VPS básica</h3>
+        <p>Opcional, mas recomendado. R$30–50/mês. Garante que a IA roda 24/7 sem depender do seu computador.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+     PREÇO
+     ============================================= -->
+<section id="pricing" style="border-top:1px solid var(--border)">
+  <div class="container">
+
+    <div class="reveal" style="max-width:620px;margin-bottom:0">
+      <span class="label" style="display:block;margin-bottom:24px">Investimento</span>
+      <h2 class="h2" style="margin-bottom:16px">Quanto custa?</h2>
+      <p style="font-size:16px;color:var(--muted)">
+        Um SDR junior custa R$2.500/mês + encargos. Uma IA que performa melhor, você monta em 4 horas.
+      </p>
+    </div>
+
+    <!-- Value Stack -->
+    <div class="value-stack reveal reveal-delay-1">
+      <div style="padding:20px 28px;border-bottom:1px solid var(--border)">
+        <p class="label-muted">O que você leva</p>
+      </div>
+      <div class="value-row">
+        <span class="value-name">IA de vendas rodando no WhatsApp</span>
+        <span class="value-price">R$2.000+</span>
+      </div>
+      <div class="value-row">
+        <span class="value-name">Aula ao vivo de 4h com implementação</span>
+        <span class="value-price">R$1.500</span>
+      </div>
+      <div class="value-row">
+        <span class="value-name">Gravação completa</span>
+        <span class="value-price">R$500</span>
+      </div>
+      <div class="value-row">
+        <span class="value-name">JSON do fluxo n8n (o que gerou R$140K)</span>
+        <span class="value-price">R$1.000</span>
+      </div>
+      <div class="value-row">
+        <span class="value-name">Guia de pré-requisitos</span>
+        <span class="value-price">R$200</span>
+      </div>
+      <div class="value-total">
+        <span>Valor total</span>
+        <span class="value-total-price">R$5.200+</span>
+      </div>
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- LOTE 1 — ESGOTADO -->
+      <div class="pricing-card dim reveal reveal-delay-1">
+        <div class="lote-badge inactive">
+          <span class="lote-dot inactive"></span>
+          Lote 1 — Esgotado
+        </div>
+        <div class="pricing-price" style="text-decoration:line-through;color:var(--dim)">R$150</div>
+        <div class="pricing-original">Vagas 1–10</div>
+        <p style="font-size:13px;color:var(--dim)">Esgotado.</p>
+      </div>
+
+      <!-- LOTE 2 — FEATURED -->
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="featured-badge">Melhor preço</div>
+        <div class="lote-badge active">
+          <span class="lote-dot active"></span>
+          Lote 2 — Ativo
+        </div>
+        <div class="pricing-price" style="color:var(--green)">R$200</div>
+        <div class="pricing-original">R$300</div>
+
+        <a href="#" data-cta class="btn btn-primary" style="width:100%;justify-content:center">
+          GARANTIR MINHA VAGA
+        </a>
+
+        <div class="pricing-vagas">
+          <strong><span data-vagas>10</span> vagas restantes</strong> de 10
+          <div class="vagas-bar" style="margin-top:8px">
+            <div class="vagas-fill" style="width:0%"></div>
+          </div>
+        </div>
+
+        <p style="margin-top:20px;font-size:12px;color:var(--dim);line-height:1.6">
+          Até 12x no cartão · Terça-feira, 21/04 · 8h–12h · Google Meet
+        </p>
+      </div>
+
+      <!-- LOTE 3 -->
+      <div class="pricing-card dim reveal reveal-delay-3">
+        <div class="lote-badge inactive">
+          <span class="lote-dot inactive"></span>
+          Lote 3
+        </div>
+        <div class="pricing-price">R$300</div>
+        <div class="pricing-original">Vagas 21–30</div>
+        <p style="font-size:13px;color:var(--dim)">Disponível após Lote 2 encerrar.</p>
+      </div>
+
+    </div>
+
+    <!-- Garantia -->
+    <div class="reveal" style="margin-top:56px;padding:40px 48px;background:var(--bg-2);border:1px solid var(--border-green);border-radius:var(--radius);display:grid;grid-template-columns:72px 1fr;gap:40px;align-items:center">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M32 8L10 18v18c0 13 9.6 25 22 28 12.4-3 22-15 22-28V18L32 8z" stroke="rgba(0,255,136,0.3)" stroke-width="1.5" fill="rgba(0,255,136,0.05)"/>
+        <path d="M23 33l6 6 12-13" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <p class="label" style="margin-bottom:10px">Garantia</p>
+        <p style="font-family:var(--font-display);font-size:clamp(18px,2.5vw,24px);font-weight:700;margin-bottom:10px;line-height:1.2">30 minutos pra decidir.</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.7;max-width:540px">Se nos primeiros 30 minutos tu achar que não é pra ti, devolvo 100%. Sem perguntas. Sem burocracia.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+     SOBRE AUGUSTO
+     ============================================= -->
+<section id="about" style="border-top:1px solid var(--border)">
+  <div class="container">
+
+    <div class="reveal">
+      <span class="label" style="display:block;margin-bottom:24px">Quem ensina</span>
+      <h2 class="h2">Augusto Gobatto</h2>
+    </div>
+
+    <div class="about-grid">
+
+      <div class="reveal reveal-delay-1">
+        <div class="about-photo">
+          <img src="gobatto.jpg" alt="Augusto Gobatto" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <p style="font-size:17px;color:var(--muted);line-height:1.75;margin-bottom:24px">
+          9 anos construindo negócios digitais. Já fez múltiplos 6 em 7. Analisa lançamentos.
+        </p>
+        <p style="font-size:17px;color:var(--muted);line-height:1.75;margin-bottom:24px">
+          Hoje usa IA pra rodar negócios com margem de 80%+, sem equipe, trabalhando 4h por dia. A IA de vendas que gerou R$140K? Ele montou.
+        </p>
+        <p style="font-size:18px;font-family:var(--font-display);font-weight:700">
+          Não ensina teoria. Ensina o que roda.
+        </p>
+
+        <div class="about-stats">
+          <div class="about-stat">
+            <div class="stat-num">9+</div>
+            <div class="stat-label">anos em negócios digitais</div>
+          </div>
+          <div class="about-stat">
+            <div class="stat-num">80%+</div>
+            <div class="stat-label">margem com IA</div>
+          </div>
+          <div class="about-stat">
+            <div class="stat-num">4h/dia</div>
+            <div class="stat-label">de trabalho</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     FAQ
+     ============================================= -->
+<section id="faq" style="border-top:1px solid var(--border)">
+  <div class="container">
+
+    <div class="reveal">
+      <span class="label" style="display:block;margin-bottom:24px">FAQ</span>
+      <h2 class="h2" style="max-width:500px">Suas dúvidas respondidas.</h2>
+    </div>
+
+    <div class="faq-list" style="max-width:760px">
+
+      <div class="faq-item reveal">
+        <button class="faq-q">
+          Preciso saber programar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            Não. A stack é low-code. Se você sabe usar Instagram, você consegue. O n8n funciona com blocos visuais que você conecta sem escrever uma linha de código.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q">
+          E se eu não tiver a API do WhatsApp pronta?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            Sem estresse. Depois da inscrição você recebe um guia completo passo a passo pra preparar tudo antes do dia 11. Leva em torno de 2 dias.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-q">
+          Vai ter gravação?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            Sim. Mas o valor tá na implementação ao vivo com suporte. A gravação sozinha não substitui ter alguém do lado enquanto você constrói — especialmente quando trava em algum passo.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q">
+          Posso parcelar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            Sim. Até 12x no cartão.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-q">
+          E se eu não gostar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            Garantia de 30 minutos. Se nos primeiros 30 minutos tu achar que não é pra ti, devolvo 100%. Sem perguntas.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-3">
+        <button class="faq-q">
+          O que acontece depois do workshop?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            Você sai com a IA rodando. Se quiser ir mais fundo — mais fluxos, automações, frameworks, comunidade — tem o Club. Mas isso é opcional. O workshop é completo por si só.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     CTA FINAL
+     ============================================= -->
+<section id="final-cta">
+  <div class="container">
+
+    <div class="reveal" style="max-width:700px;margin:0 auto;text-align:center">
+      <span class="label" style="display:block;margin-bottom:28px">Últimas vagas no Lote 2</span>
+      <h2 class="h2" style="margin-bottom:28px">
+        A próxima vez que tu perder uma venda<br>porque demorou pra responder —<br>
+        <span style="color:var(--green)">lembra que tu sabia.</span>
+      </h2>
+      <p style="font-size:16px;color:var(--muted);margin-bottom:44px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7">
+        Por R$200 tu poderia ter uma IA fazendo isso por ti. 24/7. Enquanto dorme, treina ou janta com a família.
+      </p>
+
+      <a href="#" data-cta class="btn btn-primary lg">
+        QUERO MINHA VAGA — R$200
+      </a>
+
+      <p style="margin-top:20px;font-size:13px;color:var(--dim)">
+        Restam <span data-vagas>10</span> vagas · Lote 2 · Terça-feira 21/04 · 8h–12h · Google Meet
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer>
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <p style="font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:4px">
+          Workshop IA de Vendas no WhatsApp
+        </p>
+        <p style="font-size:13px;color:var(--dim)">
+          Augusto Gobatto · Terça-feira, 21 de abril de 2026 · 8h–12h · Google Meet
+        </p>
+      </div>
+      <p style="font-size:13px;color:var(--dim)">
+        Dúvidas? Fala com a IA no chat.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /page-wrapper -->
+
+<!-- =============================================
+     CHAT WIDGET (fora do wrapper — fixed funciona em qualquer contexto)
+     ============================================= -->
+<div id="chat-widget">
+
+  <div class="chat-panel" id="chat-panel">
+
+    <div class="chat-header">
+      <div class="chat-avatar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">Claudinei</div>
+        <div class="chat-header-status">
+          <span class="status-dot"></span>
+          Online agora
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-msgs" id="chat-msgs"></div>
+
+    <div class="chat-footer">
+      <input
+        id="chat-input"
+        class="chat-input"
+        type="text"
+        placeholder="Sua dúvida sobre o workshop..."
+        autocomplete="off"
+      />
+      <button class="chat-send" id="chat-send" aria-label="Enviar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+
+  <button class="chat-btn" id="chat-btn" aria-label="Abrir chat">
+    <span class="chat-ring"></span>
+    <span class="chat-ring"></span>
+    <span class="chat-pulse"></span>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

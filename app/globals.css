@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Hex base values — OKLCH equivalents noted in comments */
+  --bg:          #0A0C0A;   /* oklch(8.5% 0.007 145) */
+  --bg-2:        #111511;   /* oklch(11% 0.006 145) */
+  --bg-3:        #161C16;   /* oklch(13.5% 0.006 145) */
+  --surface:     #1A221A;   /* oklch(15% 0.007 145) */
+  --surface-2:   #1F291F;   /* oklch(18% 0.007 145) */
+
+  --green:          #00FF88;
+  --green-20:       rgba(0, 255, 136, 0.18);
+  --green-10:       rgba(0, 255, 136, 0.09);
+  --green-subtle:   #0D2918;
+
+  --text:           #EDEFEC;
+  --text-muted:     #7A8678;
+  --text-dim:       #3E4A3E;
+
+  --border:         #1E271E;
+  --border-2:       #2C3A2C;
+
+  --yellow:         #FFD60A;
+  --red:            #FF453A;
+
+  --font-display:   'Barlow Condensed', sans-serif;
+  --font-ui:        'Onest', sans-serif;
+
+  --radius:    6px;
+  --radius-sm: 4px;
+  --radius-lg: 10px;
+
+  --sidebar-w: 224px;
+}
+
+/* ── Reset ────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+
+/* ── Grain overlay ────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.032;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── Typography helpers ───────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-ui      { font-family: var(--font-ui); }
+
+/* ── Focus ring ───────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* ── Input base ───────────────────────────────────── */
+input, textarea {
+  font-family: var(--font-ui);
+  color: var(--text);
+}
+input::placeholder, textarea::placeholder { color: var(--text-dim); }
+
+/* ── Page load animation ──────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.fade-up-1 { animation-delay: 0.05s; }
+.fade-up-2 { animation-delay: 0.10s; }
+.fade-up-3 { animation-delay: 0.15s; }
+.fade-up-4 { animation-delay: 0.20s; }
+
+/* ── Progress bar ─────────────────────────────────── */
+@keyframes progressFill {
+  from { width: 0%; }
+}
+
+.progress-bar {
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 1px;
+  animation: progressFill 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.2s;
+}
+
+/* ── Pulse dot ────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.pulse { animation: pulse 2s ease-in-out infinite; }
