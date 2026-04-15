@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     {
       cookies: {
         getAll() { return request.cookies.getAll() },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
@@ -29,7 +29,6 @@ export async function middleware(request: NextRequest) {
   const isCallback = request.nextUrl.pathname === '/auth/callback'
   const isMembersArea = request.nextUrl.pathname.startsWith('/members')
 
-  // Deixa o callback passar sempre
   if (isCallback) return supabaseResponse
 
   if (isMembersArea && !isLoginPage && !user) {
