@@ -2,12 +2,22 @@
 
 import { useState } from 'react'
 
-export function WorkshopTranscriptCopy() {
+interface Props {
+  file?: string
+  downloadName?: string
+}
+
+export function WorkshopTranscriptCopy({
+  file = 'transcricao-workshop.txt',
+  downloadName,
+}: Props) {
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 
+  const dl = downloadName ?? file
+
   async function handleCopy() {
-    const res = await fetch('/downloads/transcricao-workshop.txt')
+    const res = await fetch(`/downloads/${file}`)
     const text = await res.text()
     await navigator.clipboard.writeText(text)
     setCopied(true)
@@ -101,8 +111,8 @@ export function WorkshopTranscriptCopy() {
             </button>
 
             <a
-              href="/downloads/transcricao-workshop.txt"
-              download="transcricao-workshop.txt"
+              href={`/downloads/${file}`}
+              download={dl}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

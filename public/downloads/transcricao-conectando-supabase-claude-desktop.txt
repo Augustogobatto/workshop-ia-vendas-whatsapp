@@ -1,0 +1,25 @@
+0:01 Agora eu vou mostrar pra vocês uma coisa muito importante, cara. Muito importante, uma coisa que pra mim foi game changer.
+0:09 E que eu aprendi a um tempo atrás e eu uso praticamente todos os dias. Que é conectar o cloud com o super base e fazer o cloud criar coisas dentro do meu super base e dentro do meu banco de dados.
+0:24 É muito, muito simples, não é uma conexão difícil de fazer, mas também não é trivial. Então, eu vou fazer essa miniala aqui para você entender como fazer essa conexão.
+0:34 Primeiramente, o que você precisa? Você vai precisar entrar aqui no Cloud, certo?
+0:46 Você vai entrar aqui no Cloud.com, barra, download. Você vai baixar o Cloud no seu desktop. é crucial que você tenha o cloud no seu desktop não dá pra fazer com o cloud aqui do navegador.
+1:03 Beleza? Segunda coisa, você vai entrar dentro do seu supa-base, aqui dentro do supa-base, a gente vai precisar pegar um token que vai ficar aqui dentro do projeto, Você vem no seu usuário, account preference, access token, e aqui você vai gerar o seu token de acesso do Cloud, então vou colocar aqui Cloud
+1:30 , eu vou colocar pra espirar em uma hora, você vai poder colocar aqui pra nunca espirar, quando você for criar, você pode colocar aqui pra nunca espirar, que aí você não precisa ficar trocando, eu vou deixar uma hora porque, enfim, é um token da aula, pode ser que ele vazia, então, eu prefiro deixar 
+1:49 em uma hora, depois ele vai espirar. Então, criei o token, aquele vai gerar a informação e depois ele não mostra mais, então, copia aqui por garantia.
+2:02 quando você abrir o seu cloud no seu desktop, ele vai abrir normal aqui, não muda nada. Mesma coisa que você já conhece, você vai vir aqui, ó, no seu nome, vai vir em configurações, vai vir em desenvolvedor, e vai clicar aqui, ó, em Edite Config.
+2:19 Quando você clicar nisso vai aparecer uma pasta com um documento. Esse documento é o cloud desktop, config de zoom. Você vai abrir esse documento e é possível que ele não tenha nada, ou que ele tenha isso aqui, que nem está aparecendo aqui o meu.
+2:35 O que você vai fazer? Você vai copiar o arquivo que eu vou deixar disponível para vocês aí, onde você vai ter o template de como o seu JSON, o seu primeiro mcp server aí dentro do seu JSON, então vou copiar vou colar aqui e aqui a gente tem mcp server super base, aqui a gente tem o last mcp server de
+3:02 super base e aqui você vai colar o seu token, então vou pegar o token aqui, o que eu criei, vou colar aqui, esse é um documento JSON, Então você consegue abrir com algum editor de texto, alguma coisa assim, bloco de notas também vai funcionar.
+3:19 Eu estou abrindo aqui, eu acho que com o cursor, que é o que eu uso, mas você pode usar o que você preferir.
+3:26 Você vai, então, salvar, Eu não falei, mas quando você estiver editando, aqui você pode trocar o nome supa Beise, pelo nome desse conector caso você vai ter mais bancos então gosto de colocar aqui a super e aqui eu coloco workshop que é o nome desse projeto que eu tenho ali dentro desse super base e 
+3:53 aí ele vai salvar esse nome pra mim, fechou? Então, dito isso, terminado isso, o que você vai fazer? Você vai fechar o seu cloud?
+4:07 Emcerra ele mesmo, fecha todos os processos, ele precisa reiniciar E você vai abrir novamente, não precisa reiniciar o computador, abril você vem aqui em conectores e ele vai aparecer aqui, super workshop.
+4:25 Esse é o conector que eu acabei de fazer. E aí eu posso conversar com o cloud sobre esse projeto. Se você consegue acessar o projeto super workshop.
+4:39 Ainda na primeira vez ele normalmente pede uma aprovação, acessei o server só aparece um projeto na sua conta, ele pegou o projeto errado, tem o mcp aqui, o servidor mcp super workshop, isso estava falando do mcp.
+5:04 Sempre permitir acesso confirmado, então está conectado ao meu supa MCP, faça um relatório visual de todas as conversas que têm nesse banco de dados.
+5:28 E agora ele vai trabalhar para fazer o relatório. e aí galera está feito, o relatório visual, pode pedir para ele transformar esse daqui em PDF, analisar padrão, pode pedir para ele monte uma estrutura de banco de dados, robusta para o projeto, xy só vamos ver, ele vai criar coisa lá dentro, enfim, depois
+5:57 de fazer essa conexão, o cello é o limite, você pode conectar vários MCPs ao mesmo tempo, trabalhar com vários aqui ao mesmo tempo ligado, então copi e a estrutura do banco de dados 1 para o banco de dados 2.
+6:08 Enfim, é bastante coisa mesmo que dá para conectar aqui nesse sentido. Tem outros MCPs que você também consegue conectar, mas o do Supa-Base é um que funciona muito bem.
+6:20 E eu indico, todo mundo que está trabalhando aqui, ter essa conexão. Até para a na hora que você vai criar o projeto, você conseguir fazer o banco de dados usando tabelas relacionais, funcionais entre elas, entendendo as lógicas ali do banco de dados, e até depois para fazer análises como eu mostrei 
+6:38 aqui. Beleza? Essa é a linha rápida aí de conexão dos supebeis com o Cloud desktop para uso tanto para criar esquema, quanto para fazer análises encontrar coisas.
+6:51 Peixe-o, valeu!

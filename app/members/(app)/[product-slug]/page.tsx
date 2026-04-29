@@ -159,11 +159,14 @@ export default async function CoursePage({ params }: PageProps) {
 
           <AulaBlock label="Ferramentas N8N">
             <LoomEmbed id="859e54f205954355a9844ddb830248a3" label="Como transferir conversas para humano" />
+            <WorkshopTranscriptCopy file="transcricao-como-transferir-conversas-para-humano.txt" />
             <LoomEmbed id="d5ea5cdefac34f9db7423307ee2fa3ce" label="Como configurar OpenAI no N8N — Imagem e Áudio" />
+            <WorkshopTranscriptCopy file="transcricao-como-configurar-openai-n8n-imagem-audio.txt" />
           </AulaBlock>
 
           <AulaBlock label="Bônus">
             <LoomEmbed id="522631959a394c48bbfff49e80b37c68" label="Conectando Supabase ao Claude Desktop 🔥" />
+            <WorkshopTranscriptCopy file="transcricao-conectando-supabase-claude-desktop.txt" />
           </AulaBlock>
 
           <AulaBlock label="Oferta do Club. Fundadores.">
