@@ -1,8 +1,14 @@
+export const dynamic = 'force-dynamic'
+
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { Module, Lesson, LessonProgress } from '@/lib/supabase/types'
-import { formatDuration } from '@/lib/utils'
+import { LessonRow } from '@/components/lesson-row'
+import { WorkshopBanner, WorkshopChecklist } from '@/components/workshop-banner'
+import { N8nDownload } from '@/components/workshop-n8n-download'
+import { AulaBlock } from '@/components/aula-block'
+import { WorkshopTranscriptCopy } from '@/components/workshop-transcript-copy'
 
 interface PageProps {
   params: Promise<{ 'product-slug': string }>
@@ -83,15 +89,12 @@ export default async function CoursePage({ params }: PageProps) {
   const progressPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
 
   return (
-    <div style={{ padding: '40px 48px', maxWidth: 800 }}>
+    <div className="page-wrap" style={{ maxWidth: 800 }}>
 
       {/* Breadcrumb */}
       <div className="fade-up" style={{ marginBottom: 32 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20, fontSize: 12.5, color: 'var(--text-muted)' }}>
-          <Link href="/members" style={{ color: 'var(--text-muted)', transition: 'color 0.15s' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-          >
+          <Link href="/members" className="link-muted">
             Dashboard
           </Link>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
@@ -101,9 +104,9 @@ export default async function CoursePage({ params }: PageProps) {
         </div>
 
         <h1
+          className="heading-lg"
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 26,
             fontWeight: 700,
             letterSpacing: '-0.01em',
             color: 'var(--text)',
@@ -133,23 +136,86 @@ export default async function CoursePage({ params }: PageProps) {
         )}
       </div>
 
+      {hasAccess && productSlug === 'workshop-ia-vendas-whatsapp' && (
+        <>
+          <WorkshopChecklist />
+
+          <AulaBlock label="Pré-Configurações" defaultOpen={false}>
+            <LoomEmbed id="71b85bb424ea46eaaea17c8c3d3b98e9" label="🦾 IA Revolution — Bem-vindo" />
+            <LoomEmbed id="460cb65da690425c9fb2c488cb14a1c9" label="🦾 IA Revolution — VPS Setup · n8n + Chatwoot" />
+          </AulaBlock>
+
+          <AulaBlock label="Gravação do Workshop">
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', margin: '0 0 16px', lineHeight: 1.5 }}>
+              em breve o Gobatto vai cortar essa aula e dividir em partes pra ficar melhor a compreensão.
+            </p>
+            <LoomEmbed id="d9f5071486ed40f6a2bb4d1d26eed00b" />
+            <WorkshopTranscriptCopy />
+          </AulaBlock>
+
+          <AulaBlock label="Automação n8n — JSON Completo" defaultOpen={false}>
+            <N8nDownload />
+          </AulaBlock>
+
+          <AulaBlock label="Ferramentas N8N">
+            <LoomEmbed id="859e54f205954355a9844ddb830248a3" label="Como transferir conversas para humano" />
+            <LoomEmbed id="d5ea5cdefac34f9db7423307ee2fa3ce" label="Como configurar OpenAI no N8N — Imagem e Áudio" />
+          </AulaBlock>
+
+          <AulaBlock label="Bônus">
+            <LoomEmbed id="522631959a394c48bbfff49e80b37c68" label="Conectando Supabase ao Claude Desktop 🔥" />
+          </AulaBlock>
+
+          <AulaBlock label="Oferta do Club. Fundadores.">
+            <div style={{
+              background: 'rgba(255,45,45,0.06)',
+              border: '1px solid rgba(255,45,45,0.2)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '16px 20px',
+              marginBottom: 20,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+            }}>
+              <span style={{
+                width: 7, height: 7, borderRadius: '50%',
+                background: '#FF2D2D', flexShrink: 0,
+                boxShadow: '0 0 6px #FF2D2D',
+              }} />
+              <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#FF2D2D' }}>
+                Oferta por tempo limitado — exclusiva pra quem fez o workshop
+              </span>
+            </div>
+            <LoomEmbed id="d8ea57f7b0fa4debb738c47a54831460" />
+            <a
+              href="https://ia.augustogobatto.com/club"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '14px 28px',
+                background: 'var(--green)',
+                color: '#0A0A0A',
+                borderRadius: 'var(--radius)',
+                fontWeight: 700,
+                fontSize: 14,
+                letterSpacing: '0.03em',
+                textDecoration: 'none',
+                marginTop: 20,
+                boxShadow: '0 0 24px rgba(0,255,136,0.25)',
+              }}
+            >
+              Quero fazer parte do Club. Fundadores →
+            </a>
+          </AulaBlock>
+        </>
+      )}
+
       {/* Module list */}
       <div className="fade-up fade-up-1" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {(modules ?? []).length === 0 ? (
-          <div
-            style={{
-              padding: '40px 24px',
-              background: 'var(--bg-2)',
-              border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-lg)',
-              textAlign: 'center',
-            }}
-          >
-            <p style={{ fontSize: 13.5, color: 'var(--text-muted)' }}>
-              As aulas serão publicadas em breve.
-            </p>
-          </div>
-        ) : (
+        {(modules ?? []).length > 0 && (
           (modules as Module[]).map((mod, modIdx) => {
             const lessons = lessonsByModule.get(mod.id) ?? []
             const modCompleted = lessons.filter(
@@ -233,162 +299,44 @@ export default async function CoursePage({ params }: PageProps) {
   )
 }
 
-function LessonRow({
-  lesson,
-  progress,
-  canAccess,
-  productSlug,
-  moduleSlug,
-  lessonNumber,
-}: {
-  lesson: Lesson
-  progress: { isCompleted: boolean; isInProgress: boolean }
-  canAccess: boolean
-  productSlug: string
-  moduleSlug: string
-  lessonNumber: number
-}) {
-  const { isCompleted, isInProgress } = progress
 
-  const StatusIcon = () => {
-    if (!canAccess) return (
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-        <rect x="2" y="5.5" width="10" height="7" rx="1.5" stroke="var(--text-dim)" strokeWidth="1.3"/>
-        <path d="M4.5 5.5V4a2.5 2.5 0 0 1 5 0v1.5" stroke="var(--text-dim)" strokeWidth="1.3" strokeLinecap="round"/>
-      </svg>
-    )
-    if (isCompleted) return (
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-        <circle cx="7" cy="7" r="6" fill="var(--green-subtle)" stroke="var(--green)" strokeWidth="1.3"/>
-        <path d="M4.5 7l2 2 3-3" stroke="var(--green)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    )
-    if (isInProgress) return (
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-        <circle cx="7" cy="7" r="6" stroke="var(--green)" strokeWidth="1.3" strokeDasharray="2 1"/>
-        <path d="M5.5 5.5 8.5 7l-3 1.5V5.5Z" fill="var(--green)"/>
-      </svg>
-    )
-    return (
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-        <circle cx="7" cy="7" r="6" stroke="var(--border-2)" strokeWidth="1.3"/>
-        <path d="M5.5 5.5 8.5 7l-3 1.5V5.5Z" stroke="var(--text-dim)" strokeWidth="1.2" strokeLinejoin="round"/>
-      </svg>
-    )
-  }
-
-  const content = (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-        padding: '10px 12px',
-        borderRadius: 'var(--radius)',
-        opacity: canAccess ? 1 : 0.5,
-        transition: 'background 0.12s',
-        cursor: canAccess ? 'pointer' : 'default',
-      }}
-    >
-      <StatusIcon />
-
-      <span
+function LoomEmbed({ id, label }: { id: string; label?: string }) {
+  return (
+    <div style={{ marginBottom: 20 }}>
+      {label && (
+        <p
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 14,
+            fontWeight: 600,
+            color: 'var(--text)',
+            marginBottom: 10,
+            marginTop: 0,
+          }}
+        >
+          {label}
+        </p>
+      )}
+      <div
         style={{
-          fontSize: 11,
-          fontWeight: 500,
-          color: 'var(--text-dim)',
-          minWidth: 18,
-          flexShrink: 0,
-          fontVariantNumeric: 'tabular-nums',
+          position: 'relative',
+          paddingBottom: '56.25%',
+          background: '#000',
+          borderRadius: 'var(--radius-lg)',
+          overflow: 'hidden',
         }}
       >
-        {lessonNumber.toString().padStart(2, '0')}
-      </span>
-
-      <span
-        style={{
-          flex: 1,
-          fontSize: 13.5,
-          color: isCompleted ? 'var(--text-muted)' : canAccess ? 'var(--text)' : 'var(--text-muted)',
-          textDecoration: isCompleted ? 'line-through' : 'none',
-          textDecorationColor: 'var(--text-dim)',
-        }}
-      >
-        {lesson.name}
-      </span>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-        {lesson.is_free && !canAccess && (
-          <span
-            style={{
-              fontSize: 10,
-              fontWeight: 600,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--green)',
-              background: 'var(--green-10)',
-              padding: '2px 6px',
-              borderRadius: 3,
-            }}
-          >
-            Grátis
-          </span>
-        )}
-        {lesson.duration_seconds && (
-          <span style={{ fontSize: 11.5, color: 'var(--text-dim)', fontVariantNumeric: 'tabular-nums' }}>
-            {formatDuration(lesson.duration_seconds)}
-          </span>
-        )}
-        <ContentTypeIcon type={lesson.content_type} />
+        <iframe
+          src={`https://www.loom.com/embed/${id}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
+          allowFullScreen
+          style={{
+            position: 'absolute',
+            top: 0, left: 0,
+            width: '100%', height: '100%',
+            border: 'none',
+          }}
+        />
       </div>
     </div>
   )
-
-  if (!canAccess) return <div>{content}</div>
-
-  return (
-    <Link
-      href={`/members/${productSlug}/${moduleSlug}/${lesson.slug}`}
-      style={{ textDecoration: 'none' }}
-      onMouseEnter={(e) => {
-        const div = e.currentTarget.querySelector('div') as HTMLElement | null
-        if (div) div.style.background = 'var(--surface)'
-      }}
-      onMouseLeave={(e) => {
-        const div = e.currentTarget.querySelector('div') as HTMLElement | null
-        if (div) div.style.background = 'transparent'
-      }}
-    >
-      {content}
-    </Link>
-  )
-}
-
-function ContentTypeIcon({ type }: { type: Lesson['content_type'] }) {
-  const icons: Record<string, React.ReactNode> = {
-    video: (
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M1.5 3.5A1 1 0 0 1 2.5 2.5h7a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-5Z" stroke="var(--text-dim)" strokeWidth="1.1"/>
-        <path d="M4.5 4.5 7.5 6l-3 1.5V4.5Z" fill="var(--text-dim)"/>
-      </svg>
-    ),
-    loom: (
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <circle cx="6" cy="6" r="4.5" stroke="var(--text-dim)" strokeWidth="1.1"/>
-        <path d="M4.5 4.5 7.5 6l-3 1.5V4.5Z" fill="var(--text-dim)"/>
-      </svg>
-    ),
-    text: (
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M2 3.5h8M2 6h6M2 8.5h7" stroke="var(--text-dim)" strokeWidth="1.1" strokeLinecap="round"/>
-      </svg>
-    ),
-    pdf: (
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M2 1.5h6l2 2v7a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-9A.5.5 0 0 1 2 1.5Z" stroke="var(--text-dim)" strokeWidth="1.1"/>
-        <path d="M8 1.5V3.5h2" stroke="var(--text-dim)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
-  }
-  return <>{icons[type] ?? icons.video}</>
 }

@@ -1,8 +1,10 @@
 .claude/
-n8n-ia-chatwoot
 .DS_Store
+tsconfig.tsbuildinfo
 .env.local
 .env
 node_modules/
 .next/
 out/
+.vercel
+.env*.local

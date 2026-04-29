@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import DOMPurify from 'dompurify'
 import { createClient } from '@/lib/supabase/client'
 import type { LessonContent, Module, Lesson, LessonProgress } from '@/lib/supabase/types'
 import { formatDuration } from '@/lib/utils'
@@ -207,7 +208,7 @@ export default function LessonPage({ params }: PageProps) {
               textDecoration: 'none',
             }}
           >
-            ← Voltar ao curso
+            ← Voltar ao workshop
           </Link>
         </div>
       </div>
@@ -319,7 +320,7 @@ export default function LessonPage({ params }: PageProps) {
                 fontSize: 15,
                 color: 'var(--text)',
               }}
-              dangerouslySetInnerHTML={{ __html: lesson.content_body }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(lesson.content_body) }}
             />
           )}
 
@@ -478,7 +479,7 @@ export default function LessonPage({ params }: PageProps) {
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2, opacity: 0.7 }}>Fim do curso</div>
+                  <div style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2, opacity: 0.7 }}>Fim do workshop</div>
                   <div>Ver certificado →</div>
                 </div>
               </Link>

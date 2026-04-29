@@ -1,6 +1,8 @@
+export const dynamic = 'force-dynamic'
+
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { Sidebar } from '@/components/sidebar'
+import { AppShell } from '@/components/app-shell'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -10,25 +12,23 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const { data: lead } = await supabase
     .from('leads')
-    .select('name, first_name, email')
+    .select('name, first_name, email, welcomed_at')
     .single()
 
+  if (lead && !lead.welcomed_at) redirect('/members/welcome')
+
+  const { data: catalog = [] } = await supabase.rpc('get_catalog_with_access')
+  const ownedProducts = (catalog ?? [])
+    .filter((p: { has_access: boolean; product_slug: string; product_name: string }) => p.has_access)
+    .map((p: { product_slug: string; product_name: string }) => ({ slug: p.product_slug, name: p.product_name }))
+
   return (
-    <div style={{ display: 'flex', minHeight: '100dvh' }}>
-      <Sidebar
-        userName={lead?.name ?? null}
-        userEmail={lead?.email ?? user.email ?? null}
-      />
-      <main
-        style={{
-          flex: 1,
-          marginLeft: 'var(--sidebar-w)',
-          minHeight: '100dvh',
-          overflowY: 'auto',
-        }}
-      >
-        {children}
-      </main>
-    </div>
+    <AppShell
+      userName={lead?.first_name ?? lead?.name ?? null}
+      userEmail={lead?.email ?? user.email ?? null}
+      ownedProducts={ownedProducts}
+    >
+      {children}
+    </AppShell>
   )
 }

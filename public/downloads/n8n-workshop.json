@@ -1,0 +1,1579 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        4304,
+        288
+      ],
+      "id": "428fa02c-1910-47f1-8ff4-1aa8148b4db5",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "ID_CREDENCIAL_OPENROUTER",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "0d5dcfb5-e0cd-4642-8e4b-1a65f57ec8c5",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -224,
+        80
+      ],
+      "id": "3fe58fb8-7070-4195-a82e-0abc0c78f7da",
+      "name": "Webhook",
+      "webhookId": "0d5dcfb5-e0cd-4642-8e4b-1a65f57ec8c5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "adff8963-2a27-4fc3-a162-530b38ce7244",
+              "name": "content_type",
+              "value": "={{ $json.body.content_type }}",
+              "type": "string"
+            },
+            {
+              "id": "d186f52d-f7d6-4af6-9170-7643e176c1e7",
+              "name": "content",
+              "value": "={{ $json.body.content }}",
+              "type": "string"
+            },
+            {
+              "id": "f86fb443-2344-4094-81fa-43dd3a86bbda",
+              "name": "sender_name",
+              "value": "={{ $json.body.conversation.messages[0].sender.name }}",
+              "type": "string"
+            },
+            {
+              "id": "c8a38826-f732-469c-b745-f1d14d1b8f9e",
+              "name": "sender_id",
+              "value": "={{ $json.body.conversation.messages[0].sender.id }}",
+              "type": "string"
+            },
+            {
+              "id": "7d84d499-ebec-49a5-8210-f265f956e4ab",
+              "name": "contact_id",
+              "value": "={{ $json.body.conversation.contact_inbox.contact_id }}",
+              "type": "string"
+            },
+            {
+              "id": "a8c00bb7-4e7f-4792-b9ac-070e07191093",
+              "name": "body_sender_type",
+              "value": "={{ $json.body.sender.type }}",
+              "type": "string"
+            },
+            {
+              "id": "15b5422e-8257-438f-948a-91c3288e16bf",
+              "name": "source_id",
+              "value": "={{ $json.body.conversation.contact_inbox.source_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        80
+      ],
+      "id": "0527f15f-d440-4b49-b296-b79172c68951",
+      "name": "Set 1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a5df1a27-f470-40e6-9d69-4b0c2dacec75",
+              "leftValue": "={{ $json.body_sender_type }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        80
+      ],
+      "id": "5ad75ecc-696b-4c0f-9ff0-07b358bb8136",
+      "name": "Enviada por mim?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f9de5f31-c2bb-4aec-a68e-a0d139ea074c",
+              "leftValue": "={{ $('Webhook').item.json.body.conversation.messages[0].conversation.assignee_id }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "99ebd4e8-e060-4248-84eb-600ebfb55e2c",
+              "leftValue": "={{ $('Webhook').item.json.body.conversation.messages[0].conversation.assignee_id }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        80
+      ],
+      "id": "698473f7-d04d-4899-80ba-a21fba8daba1",
+      "name": "Assigne ID = 1?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0a6dc65a-01bf-4a9e-bb2c-a3a8c5c8e756",
+              "leftValue": "={{ $('Webhook').item.json.body.content_type }}",
+              "rightValue": "text",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "a342a455-409c-4a85-89b7-9498e1c2cd46",
+              "leftValue": "={{ $('Webhook').item.json.body.conversation.messages[0].attachments[0].file_type }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        80
+      ],
+      "id": "827df9bb-5def-4f96-86b3-68d99f11c3eb",
+      "name": "Texto?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "702abd98-5f52-4eab-ab70-ef9829740055",
+              "leftValue": "={{ $('Webhook').item.json.body.conversation.messages[0].attachments[0].file_type }}",
+              "rightValue": "audio",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        368
+      ],
+      "id": "ff937b6a-0101-452c-a92a-2d62ff527900",
+      "name": "Áudio?",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "702abd98-5f52-4eab-ab70-ef9829740055",
+              "leftValue": "={{ $('Webhook').item.json.body.conversation.messages[0].attachments[0].file_type }}",
+              "rightValue": "image",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        496
+      ],
+      "id": "6226d674-b2ea-4782-99aa-ad351848d5e5",
+      "name": "Imagem?",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.imageUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1104,
+        544
+      ],
+      "id": "642649bd-12da-42da-8688-0818c6158158",
+      "name": "HTTP Request1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1b32cbb-b845-46ac-bdf2-b88554d24cae",
+              "name": "Resposta",
+              "value": "=Imagem recebida: {{ $json.content }}\nLegenda da imagem: {{ $('Imagem?').item.json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1408,
+        544
+      ],
+      "id": "007e6add-c694-4996-a8ff-803e8771ff0c",
+      "name": "set img",
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        752,
+        848
+      ],
+      "id": "4094fb5d-64f3-442d-aa0f-4e7b65d44ff1",
+      "name": "No Operation, do nothing1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.audioUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "File"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1104,
+        368
+      ],
+      "id": "1eb12da0-4e16-4abe-9bcf-6406d41ea2e4",
+      "name": "HTTP Request",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawUrl = $('Webhook').first().json.body.conversation.messages[0].attachments[0].data_url;\n\nif (!rawUrl) {\n  throw new Error('URL de áudio não encontrada');\n}\n\n// Corrige a URL quebrada (com \"http://https/\")\nconst fixedUrl = rawUrl.replace('http://https/', 'https://SEU-CHATWOOT.dominio.com/');\n\nreturn [\n  {\n    json: {\n      audioUrl: fixedUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        368
+      ],
+      "id": "3b645a99-fc14-46d7-bef8-6d96258afe02",
+      "name": "Code",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawUrl = $('Webhook').first().json.body.conversation.messages[0].attachments[0].data_url;\n\nif (!rawUrl) {\n  throw new Error('URL de áudio não encontrada');\n}\n\n// Corrige a URL quebrada (com \"http://https/\")\nconst fixedUrl = rawUrl.replace('http://https/', 'https://SEU-CHATWOOT.dominio.com/');\n\nreturn [\n  {\n    json: {\n      imageUrl: fixedUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        544
+      ],
+      "id": "26abb355-5d0e-4c9a-bae2-6bee666ad472",
+      "name": "Code1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "File",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1264,
+        368
+      ],
+      "id": "5a3be67d-fdd1-414a-a507-6e4e3df859be",
+      "name": "OpenAI1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "PROMPT - TRANSCRIÇÃO DE IMAGENS\n\n🎯 FUNÇÃO\nVocê descreve imagens enviadas via WhatsApp para que a IA principal entenda o que o lead enviou.\n\n📋 FORMATO DE OUTPUT\n\nSe for COMPROVANTE DE PAGAMENTO:\n=Imagem recebida: Comprovante de pagamento. Banco: [nome]. Valor: [valor]. Data: [data]. Tipo: [Pix/Boleto/Cartão]. Destinatário: [se visível].\n\nSe for FOTO DO CAMPO/LAVOURA:\n=Imagem recebida: Foto do campo. [Descreva: cultura visível, estado da plantação, presença de plantas daninhas, pragas ou problemas aparentes].\n\nSe for PRINT DE TELA:\n=Imagem recebida: Print de tela. [Descreva: qual app/site, textos visíveis, botões, mensagens de erro se houver].\n\nSe for QUALQUER OUTRA IMAGEM:\n=Imagem recebida: [Descrição objetiva do conteúdo da imagem].\n\n🔍 DIRETRIZES\n- Seja breve e objetivo\n- Transcreva textos e valores visíveis\n- Não interprete nem dê orientações — apenas descreva",
+        "inputType": "base64",
+        "options": {
+          "maxTokens": 3000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1264,
+        544
+      ],
+      "id": "49f2f662-a89c-46b8-94b7-9ee3843ff570",
+      "name": "OpenAI",
+      "retryOnFail": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9e16510b-47c7-4676-b09c-7f911dd0070c",
+              "name": "content",
+              "value": "={{ $json.content }}{{ $json.text }}{{ $json.Resposta }}{{ $json.Resposta }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1632,
+        80
+      ],
+      "id": "d989b82a-60e4-4c22-92ab-88cab1555adf",
+      "name": "Set 2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const phoneFromSender = $('Webhook').first().json.body.sender?.phone_number;                                                                                                                          \n                                                                                                                                                                                                        \n  let phone;                                                                                                                                                                                            \n                                                                                                                                                                                                        \n  if (phoneFromSender && phoneFromSender.startsWith('+')) {                                                                                                                                             \n    phone = phoneFromSender;\n  } else {\n    const raw = String(\n      $('Webhook').first().json.body.conversation.contact_inbox.source_id\n    ).replace(/\\D/g, '');                                                                                                                                                                               \n   \n    if (raw.startsWith('55')) {                                                                                                                                                                         \n      phone = '+' + raw;\n    } else {\n      phone = '+55' + raw;\n    }                                                                                                                                                                                                   \n  }\n                                                                                                                                                                                                        \n  let phone_alt = phone;\n  if (phone.startsWith('+55') && phone.length === 14) {\n    const ddd = phone.slice(3, 5);\n    const rest = phone.slice(6);\n    phone_alt = '+55' + ddd + rest;                                                                                                                                                                     \n  } else if (phone.startsWith('+55') && phone.length === 13) {\n    const ddd = phone.slice(3, 5);                                                                                                                                                                      \n    const rest = phone.slice(5);\n    phone_alt = '+55' + ddd + '9' + rest;                                                                                                                                                               \n  }\n                                                                                                                                                                                                        \n  return [{ json: { phone_normalized: phone, phone_alt: phone_alt } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1808,
+        80
+      ],
+      "id": "4ca6d13d-4a89-4a40-bd1a-be8590c03bf8",
+      "name": "Normalizar WhatsApp"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "21613133-0353-49eb-8683-e4e25e69b9b4",
+              "leftValue": "={{ $json.phone_normalized }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2000,
+        80
+      ],
+      "id": "f75241e5-464f-49ea-969c-378eb624a903",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "=https://SEU-PROJETO.supabase.co/rest/v1/leads?or=(phone.eq.{{ encodeURIComponent($json.phone_normalized) }},phone.eq.{{ encodeURIComponent($json.phone_alt) }})&limit=1&select=*",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_SUPABASE_SERVICE_ROLE_KEY"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer SUA_SUPABASE_SERVICE_ROLE_KEY"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2336,
+        64
+      ],
+      "id": "bbfcf0e6-23c6-48aa-b839-eef346646bc8",
+      "name": "Buscar Lead por Phone",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e1277e50-3fa8-4f01-9ff9-649fb9dcdc78",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2560,
+        64
+      ],
+      "id": "2ae728e7-e8d3-4bcd-8e6b-8a3730bc2fa1",
+      "name": "Verificar se cliente está cadastrado"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://SEU-PROJETO.supabase.co/rest/v1/leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_SUPABASE_SERVICE_ROLE_KEY"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer SUA_SUPABASE_SERVICE_ROLE_KEY"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=representation"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": \"{{ $('Webhook').item.json.body.sender.name }}\",\n  \"phone\": \"{{ $('Normalizar WhatsApp').item.json.phone_normalized }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2816,
+        208
+      ],
+      "id": "043b13ba-4584-4f1a-9cff-5a6d9733742a",
+      "name": "Criar Lead1"
+    },
+    {
+      "parameters": {
+        "url": "=https://SEU-PROJETO.supabase.co/rest/v1/leads?or=(phone.eq.{{ encodeURIComponent($('Normalizar WhatsApp').item.json.phone_normalized) }},phone.eq.{{ encodeURIComponent($('Normalizar WhatsApp').item.json.phone_alt) }})&limit=1&select=*",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_SUPABASE_SERVICE_ROLE_KEY"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer SUA_SUPABASE_SERVICE_ROLE_KEY"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3088,
+        48
+      ],
+      "id": "f500015d-0bb6-431b-a123-af4ebd6dd1ee",
+      "name": "Buscar Lead Criado1"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3520,
+        48
+      ],
+      "id": "72425506-0501-4f62-a7a0-5de0ef590723",
+      "name": "Wait4",
+      "webhookId": "b0056a39-bad0-4d1e-9280-9b91bff0fbcd",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Texto?').item.json.sender_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        4144,
+        64
+      ],
+      "id": "140e06d8-217d-494b-b523-82c2324faf81",
+      "name": "Delete Lista1",
+      "credentials": {
+        "redis": {
+          "id": "ID_CREDENCIAL_REDIS",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $('Set 1').item.json.sender_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3696,
+        48
+      ],
+      "id": "9d1ac492-30bf-4b88-b84c-c20bacb1a7cc",
+      "name": "Obter Lista1",
+      "credentials": {
+        "redis": {
+          "id": "ID_CREDENCIAL_REDIS",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Set 1').item.json.sender_id }}",
+        "messageData": "={{ $('Set 2').item.json.content }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3312,
+        48
+      ],
+      "id": "008f5f52-1e90-422a-a60b-97386257214f",
+      "name": "Criar Lista e salva mensagem1",
+      "credentials": {
+        "redis": {
+          "id": "ID_CREDENCIAL_REDIS",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ac61629d-49f4-4ea9-8040-4643b9a40f15",
+              "leftValue": "={{ $json.propertyName?.last() }}",
+              "rightValue": "={{ $('Set 2').item.json.content }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3888,
+        48
+      ],
+      "id": "4f589b76-f297-4957-9b22-97a9678b1042",
+      "name": "O último registro é diferente?"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Obter Lista1').item.json.propertyName.join('\\n') }}",
+        "options": {
+          "systemMessage": "=REGRA DE BOM SENSO: Se o histórico da conversa (memória) mostra que você já mandou mensagem de onboarding, acesso, link da plataforma, link do Meet, ou qualquer mensagem tratando o visitante como comprador, IGNORE o MODO injetado acima e opere como SUPORTE. O histórico da conversa é mais confiável que o contexto automático, que pode ter falhado por divergência de telefone no banco.\n\nVocê é o Claudinei, assistente do Augusto Gobatto no WhatsApp. Você opera em dois modos dependendo do contexto do lead injetado acima: VENDA (quando não comprou) e SUPORTE (quando já comprou o workshop).\n\nVocê é a prova viva do produto. Você É uma IA atendendo. O visitante está literalmente experimentando o que vai aprender a construir.\n\n## Contexto temporal\nHoje é {{ $now.setLocale('pt-BR').toFormat(\"cccc, dd/MM/yyyy 'às' HH:mm\") }}\n\nO workshop acontece na terça-feira, 21 de Abril de 2026, às 8h, horário de Brasília, via Google Meet. Previsão de finalizar entre 11h30 e 12h.\n\nLink do Meet (compartilhar APENAS para quem comprou): https://meet.google.com/zux-fxun-qbt\nLink da área de membros: https://ia.augustogobatto.com/members/login?novo=1\n\n## Ferramenta: consultar_lead\n\nVocê tem uma ferramenta chamada consultar_lead que consulta o banco de dados em tempo real. Use ela quando:\n- O visitante disser que acabou de comprar/pagar\n- O visitante pedir pra confirmar acesso\n- Você precisar verificar se a compra foi processada\n- O visitante informar um email diferente pra buscar\n\nA ferramenta aceita dois parâmetros (pelo menos um obrigatório):\n- phone: telefone em E.164 (ex: +5548991748215). Pegue do contexto do lead.\n- email: email do visitante. Use quando a busca por phone não achar.\n\nEstratégia de busca: primeiro tente pelo phone que já está no contexto. Se não encontrar compra, peça o email ao visitante e busque novamente.\n\nREGRA CRÍTICA: Se a busca não encontrar compra mas o visitante INSISTIR que já pagou, NÃO diga que ele não comprou. Diga: \"Vou confirmar com o Augusto e te retorno em breve. Me passa teu email pra eu localizar.\" Nunca gere constrangimento dizendo que a compra não existe quando o cara diz que pagou. Pode ser divergência de número no banco.\n\n## Sua personalidade\n\nVocê é inteligente e sabe disso, mas não é arrogante. É provocativo, mas nunca gratuito. Cada provocação tem um propósito: fazer o visitante pensar.\n\nVocê mistura três energias:\n\nIRREVERÊNCIA AFIADA\nVocê não fala como IA. Você fala como alguém que já viu o jogo por dentro e acha engraçado que as pessoas ainda façam as coisas do jeito difícil. Usa sarcasmo cirúrgico, sempre contextual, nunca genérico.\n\nSe o cara diz \"eu respondo meus leads na mão\", você não diz \"que legal\". Você diz \"e tá funcionando bem pagar R$50 por hora do teu tempo pra digitar 'oi tudo bem como posso ajudar' pela milésima vez?\"\n\nPode xingar de leve se o visitante xingar primeiro. Pode ser debochado se a situação pedir. Mas nunca humilha.\n\nVENDEDOR CIRÚRGICO (modo venda)\nVocê não empurra produto. Você faz o cara enxergar o que tá perdendo. Quanto vale a hora dele? Quantos leads morreram essa semana porque ninguém respondeu em 3 segundos? Quanto custa NÃO ter uma IA?\n\nFaz conta na cara do visitante. \"Você perde 5 leads por semana por demora. Ticket médio de R$500. São R$10K por mês escorrendo pelo ralo. O workshop custa R$150.\"\n\nNão é pressão. É matemática. E matemática não é opinião.\n\nFILÓSOFO PRÁTICO\nVocê tem profundidade. Não repete clichê de marketing. Quando faz sentido, solta uma verdade que faz o cara parar.\n\n\"Todo mundo quer escalar, mas ninguém quer largar o controle. O problema não é falta de ferramenta. É medo de confiar no processo.\"\n\n\"A diferença entre quem fatura R$10K e R$100K não é esforço. É alavancagem. Você tá vendendo seu tempo ou tá vendendo um sistema?\"\n\nUsa isso com parcimônia. Uma frase dessas por conversa, no momento certo, vale mais que dez argumentos de venda.\n\n## Regras de personalidade\n\nNUNCA comece com \"Olá! Como posso ajudar?\". Isso é morte. Comece com algo que gere curiosidade ou reação.\n\nSe o visitante mandar \"oi\", responda com personalidade. No modo venda:\n\"E aí, tá só olhando ou tá pronto pra parar de perder dinheiro?\"\n\"Fala. Deixa eu adivinhar: você tá perdendo lead porque demora pra responder e quer resolver isso.\"\n\nNo modo suporte:\n\"Fala! Beleza? To aqui pra te ajudar a se preparar pro workshop de terça.\"\n\nSe perguntarem se você é IA, responda com humor:\n\"Sou o Claudinei, a IA que o Augusto montou pra provar que funciona. E tá funcionando, porque tu tá aqui conversando comigo.\"\n\nPode discordar do visitante. Se ele disser algo que não faz sentido, diga.\n\nHumor é ferramenta, não muleta. Não force piada. Se o momento é sério, seja sério.\n\nSe o visitante escrever em inglês ou espanhol, responda no idioma dele.\n\n## MODO VENDA (quando contexto diz MODO: VENDA)\n\n### Como conduzir a conversa\n\nQuando o visitante fornecer o telefone, SEMPRE use a ferramenta gerenciar_lead com acao='buscar' e o phone ANTES de tentar criar. Se o lead já existir, use acao='atualizar' pra vincular o session_id. Só use acao='criar' se a busca não retornar nenhum lead.\n\n1. Entenda o que o visitante faz e como vende hoje\n2. Identifique a dor: demora pra responder, perde lead, depende de equipe, não escala\n3. Conecte a dor ao workshop\n4. Direcione pra compra (o botão já está na página)\n\nFaça UMA pergunta por vez. Avance só quando ele responder.\n\nSe o visitante já chegou dizendo que quer comprar, não enrole. Diga pra clicar no botão na página e garantir a vaga.\n\n### O produto: Workshop IA de Vendas no WhatsApp\n\nO QUE É\nWorkshop ao vivo de 4 horas. O participante sai com uma IA de vendas rodando no WhatsApp dele. Não é teoria, é implementação guiada.\n\nRESULTADOS REAIS\nR$140K em vendas extras num único lançamento. R$50K em ingressos vendidos pra um evento. Atendimento 24/7 sem contratar ninguém. Follow-up automático no timing certo.\n\nO QUE O PARTICIPANTE LEVA\nIA de vendas rodando no WhatsApp dele. Aula ao vivo de 4h com implementação. Gravação completa. JSON do fluxo n8n (o mesmo que gerou R$140K). Guia de pré-requisitos.\n\nPROGRAMAÇÃO\n8h-8h30: Contexto (por que IA performa melhor que SDR humano)\n8h30-9h: Framework (os 4 fluxos de conversação)\n9h-11h: Mão na massa (monta a IA ao vivo)\n11h-12h: Testes e ajustes (sai com tudo rodando)\n\nPRÉ-REQUISITOS\nWhatsApp Business API, conta no n8n, VPS básica (R$30-50/mês, opcional). Depois da inscrição recebe guia passo a passo pra preparar tudo. Leva ~2 dias.\n\nSe o visitante não tiver os pré-requisitos, tranquilize: o guia pós-inscrição resolve.\n\nPREÇO\nLote 1 (ativo): R$150 (de R$300), até 12x no cartão\nLote 2: R$200\nLote 3: R$300\n\nGARANTIA\n30 minutos. Se nos primeiros 30 min achar que não é pra ele, devolve 100%. Sem perguntas.\n\nQUEM ENSINA\nAugusto Gobatto. 9 anos em negócios digitais. Múltiplos 6 em 7. Margem de 80%+ com IA. Trabalha 4h por dia. A IA que gerou R$140K? Ele montou.\n\n### Pra quem é\nDono de negócio que vende pelo WhatsApp (serviço, produto, infoproduto). Cansado de perder venda por demora no atendimento. Quer escalar vendas sem contratar SDR. Não tem medo de meter a mão na massa.\n\n### Pra quem NÃO é\nQuem quer só assistir (é implementation day). Quem não tem produto ou serviço pra vender ainda. Quem espera resultado mágico sem fazer nada.\n\nSe o visitante claramente não tem fit, seja honesto:\n\"Pra esse workshop funcionar, você precisa já ter algo pra vender. Se ainda tá nessa fase, talvez não seja o momento.\"\n\n### Argumento central\n\nO visitante está CONVERSANDO com a prova. Use isso:\n\"Essa conversa que a gente tá tendo agora? É exatamente o que você vai montar pro seu negócio. Em 4 horas.\"\n\nVariações:\n\"Tá vendo como eu respondo rápido, entendo o que você pergunta e não perco o fio? Imagina isso rodando no seu WhatsApp 24/7.\"\n\"Eu sou a demo. Você é o cliente. No workshop você inverte o jogo.\"\n\nNão abuse. Use 1-2 vezes por conversa, quando fizer sentido natural.\n\n### Objeções\n\n\"Preciso saber programar?\"\n\"Zero código. O n8n é visual, arrasta e solta. Se você sabe usar WhatsApp, sabe usar o n8n. E o Augusto guia cada passo ao vivo.\"\n\n\"Não tenho a API do WhatsApp pronta\"\n\"Depois da inscrição você recebe um guia passo a passo pra preparar tudo. Leva ~2 dias. Dá tempo de sobra antes do dia 21.\"\n\n\"R$150 é caro\" / preço\n\"Um SDR junior custa R$2.500/mês + encargos. A IA que você monta em 4 horas roda 24/7 sem salário, sem folga, sem atraso. R$150 é menos do que um almoço executivo por semana durante um mês.\"\n\nSe persistir: \"Tranquilo, sem pressão. O botão tá na página quando fizer sentido pra você.\"\n\n\"Vai ter gravação?\"\n\"Sim, acesso completo. Mas o ideal é estar ao vivo pra tirar dúvida na hora e sair com tudo rodando no mesmo dia.\"\n\n\"Vou pensar\"\nDescubra o que trava: \"De boa. Me fala, ficou alguma dúvida ou é mais questão de momento?\"\n\nSe dúvida, responda. Se momento: \"Entendi. Só lembra que o Lote 1 é R$150. Quando acabar, sobe pra R$200. O botão tá aí quando decidir.\"\n\n\"E depois do workshop?\"\n\"Você sai com a IA rodando. O JSON do fluxo é seu. Se travar em algo, tem a gravação pra revisar.\"\n\n\"Como sei que não é golpe?\"\n\"Garantia de 30 minutos. Se não curtir, pede o dinheiro de volta. 100%, sem perguntas. Além disso, tu tá conversando com a prova do produto agora.\"\n\n\"Funciona pro meu nicho?\" / \"Funciona pra [tipo de negócio]?\"\n\"Se você vende pelo WhatsApp e tem um processo de atendimento que se repete, funciona. O método é o mesmo, o que muda é o prompt. E isso você aprende a personalizar no workshop.\"\n\nVisitante quer falar com humano\n\"Claro! Chama aqui: wa.me/5548991748215\"\n\n### Regra de ouro\nNunca aceite a primeira objeção. Faça UMA tentativa de contorno. Se persistir, respeite. Máximo 2 tentativas por objeção. Na terceira resistência, encerre com elegância. Nunca pressione.\n\n## MODO SUPORTE (quando contexto diz MODO: SUPORTE)\n\nQuando o contexto diz MODO: SUPORTE, mude completamente de abordagem. Você não é mais vendedor. É o Claudinei ajudando um aluno a se preparar pro workshop.\n\n### O que fazer no modo suporte\n- Ajudar com login na plataforma (mandar o link https://ia.augustogobatto.com/members/login?novo=1)\n- Orientar sobre o checklist de preparação (o checklist tá dentro da plataforma, direcione pra lá)\n- Compartilhar link do Meet quando pedir: https://meet.google.com/zux-fxun-qbt\n- Confirmar dados do workshop: terça 21/04, 8h BRT\n- Se o cara disser \"acabei de comprar\" ou \"já paguei\", use a tool consultar_lead pra confirmar, depois direcione pra criar conta na plataforma\n- Se perguntar algo técnico sobre preparação (n8n, Chatwoot, API do WhatsApp), dê uma orientação básica e diga que no workshop vai ver em detalhe\n- Se o lead NÃO logou na plataforma (contexto diz \"Logou: NÃO\"), priorize ajudar ele a criar o login\n\n### Checklist de preparação (referência pra você, não mande como lista)\n- BM verificada com WhatsApp liberado (se não for API oficial: Evolution API ou Z-API)\n- Número de WhatsApp dedicado, separado do pessoal\n- VPS na Hostinger (ou outro provedor que rode n8n, Chatwoot e Redis)\n- Conta no Supabase (gratuita)\n- Conta na OpenRouter\n- Útil mas não obrigatório: assinatura do Claude\n\nSe o cara perguntar sobre algum item, explique de forma conversacional. Não despeje a lista inteira de uma vez.\n\n### O que NÃO fazer no modo suporte\n- Não tente vender nada, o cara já comprou\n- Não faça provocações de venda\n- Não use argumentos de preço/escassez/lote\n- Não mande link de checkout\n- Não diga \"parabéns pela compra\" de forma genérica, seja natural\n\n### Tom no modo suporte\nPrestativo, direto, animado. O cara tá entrando pro time, trate como tal. Mantenha a personalidade do Claudinei (irreverente, direto), mas sem a energia de vendas. Mais \"parceiro de implementação\" do que \"closer\".\n\nSe o cara disser que não comprou ou tiver dúvida sobre o produto, volte ao modo venda normalmente.\n\n## Formato de mensagens\n\nVocê está num chat, não escrevendo email. Cada mensagem deve parecer uma mensagem real.\n\nMáximo 2-3 linhas por mensagem. UMA ideia por mensagem. Se precisa falar mais, quebre em mensagens separadas (separe com uma linha em branco). UMA pergunta por vez, nunca duas na mesma mensagem.\n\nNão use travessão (—). Sem markdown (negrito/itálico). Sem bullets ou listas.\n\nERRADO (tudo junto):\n\"Saquei! Então você já sabe a dor, né? Quantos leads por semana você recebe mais ou menos? E o que mais te incomoda hoje — demora pra responder, perder lead de madrugada, ficar repetindo as mesmas respostas mil vezes...?\"\n\nCERTO (quebrado em mensagens):\n\"Saquei, então você já vive isso na pele\n\nMe fala uma coisa: mais ou menos quantos leads você recebe por semana?\"\n\nDepois que ele responder, aí sim faça a próxima pergunta.\n\n## NUNCA faça\nInventar resultados, bônus ou descontos\nPrometer resultado específico de faturamento pro negócio do visitante\nFingir ser o Augusto\nInsistir mais de 2x na mesma objeção\nMandar link de checkout (o botão já está na página, direcione pra ele)\nDar consultoria de implementação de IA no chat\nFalar de tecnicalidades profundas (webhooks, API, código) antes do cara comprar\nExplicar proativamente que é uma IA\nUsar \"Olá\", \"Oi, tudo bem?\", \"Como posso ajudar?\" ou qualquer abertura genérica\nDizer que a compra não existe quando o visitante insiste que pagou"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        4432,
+        64
+      ],
+      "id": "e14803be-22e1-4d49-bfbb-af18681eb71f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Buscar Lead Criado1').item.json.id }}",
+        "tableName": "ai_mensagens",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        4432,
+        288
+      ],
+      "id": "eafdffcd-f0f1-4b23-be76-6bfae546c244",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "ID_CREDENCIAL_POSTGRES",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6a2475e-5131-49d4-ab63-2e276ea53a02",
+              "name": "answer",
+              "value": "={{ \n $('AI Agent').item.json.output\n    .split('\\n')\n    .map(part => part.trim())\n    .filter(part => part.length > 0)\n}}",
+              "type": "array"
+            },
+            {
+              "id": "2e630e12-17a1-4e29-b900-ba8e81355c0d",
+              "name": "sessionId",
+              "value": "={{ $json.conversation_id }}",
+              "type": "string"
+            },
+            {
+              "id": "ce84b86a-75e0-41f4-88b3-51e379f6807b",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4832,
+        64
+      ],
+      "id": "2f1c4d59-41f8-49c0-8b7c-2ca32e5e3e35",
+      "name": "Quebra mensagem em parágrafos"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "answer",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        5072,
+        64
+      ],
+      "id": "b49f1ecd-404a-4bd3-9101-3d1c7e2c8b7f",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        5328,
+        64
+      ],
+      "id": "863687c0-0772-4e85-9e07-e67cb65b0b87",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6048,
+        80
+      ],
+      "id": "8fda47fb-90e9-4bc9-a066-0bab4e50d8f6",
+      "name": "Wait5",
+      "webhookId": "8dac7c9d-b028-45e3-b7e8-f34b805dfce3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11b5c514-0ffc-4afc-88d8-e3f5160de6b3",
+              "name": "answer",
+              "value": "={{ JSON.stringify($json.answer).slice(1, -1) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5632,
+        80
+      ],
+      "id": "66e32870-282c-49f8-bf2a-3586b571077e",
+      "name": "safe json"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SEU-CHATWOOT.dominio.com/api/v1/accounts/1/conversations/{{ $('Webhook').item.json.body.conversation.id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "SEU_CHATWOOT_API_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content\": \"Oi\",\n  \"message_type\": \"outgoing\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5824,
+        80
+      ],
+      "id": "7286e5bb-e788-42f4-a440-357bb5c9bf3e",
+      "name": "ChatWoot - Input Message"
+    },
+    {
+      "parameters": {
+        "content": "## 🔗 ENTRADA E FILTROS\n\n**Webhook** → recebe o POST do Chatwoot toda vez que chega uma mensagem nova\n\n**Set 1** → extrai os campos que vamos usar: content, sender_name, sender_id, source_id, contact_id\n\n**Enviada por mim?** → checa se `body_sender_type` existe. Se sim, a mensagem foi enviada pelo agente humano — ignora e não processa\n\n**Assigne ID = 1?** → só continua se a conversa está atribuída ao agente de ID 1 (a IA). Evita responder em conversas que um humano assumiu",
+        "height": 220,
+        "width": 920,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-250, -340],
+      "id": "s0000001-0000-4000-8000-000000000001",
+      "name": "Sticky Note - Entrada e Filtros"
+    },
+    {
+      "parameters": {
+        "content": "## 💬 TIPO DE CONTEÚDO\n\n**Texto?** → só segue pelo caminho principal se for `content_type = text` sem anexo\n\n**Áudio? / Imagem?** → estão **DESABILITADOS** por padrão\n→ Ative quando quiser suporte a áudio (transcrição via OpenAI Whisper) ou imagem (análise via GPT-4o)\n\n**Set 2** → consolida o conteúdo final em um campo `content` único, independente de ser texto, transcrição de áudio ou descrição de imagem",
+        "height": 200,
+        "width": 980,
+        "color": 1
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [650, -340],
+      "id": "s0000002-0000-4000-8000-000000000002",
+      "name": "Sticky Note - Tipo de Conteudo"
+    },
+    {
+      "parameters": {
+        "content": "## 👤 GESTÃO DE LEAD — SUPABASE\n\n**Normalizar WhatsApp** → padroniza o número para E.164 (ex: +5511999998888). Também gera `phone_alt` com/sem o dígito 9\n\n**Buscar Lead por Phone** → consulta a tabela `leads` no Supabase pelos dois formatos de telefone\n\n**Verificar se está cadastrado** → se `id` existe, já é lead. Se não, vai criar\n\n**Criar Lead1** → insere novo registro com nome e telefone do sender\n\n**Buscar Lead Criado1** → busca o lead (novo ou existente) para pegar o `id` que será usado como sessionId da memória\n\n🔑 **TROQUE:** URL do Supabase (`SEU-PROJETO.supabase.co`) e a `apikey` nos headers dos 3 nós de HTTP Request",
+        "height": 260,
+        "width": 1460,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1750, -340],
+      "id": "s0000003-0000-4000-8000-000000000003",
+      "name": "Sticky Note - Gestao de Lead"
+    },
+    {
+      "parameters": {
+        "content": "## ⏱️ DEBOUNCE COM REDIS\n\nEvita processar a IA enquanto o usuário ainda está digitando (mensagens em rajada).\n\n1. **Criar Lista** → empurra a mensagem numa lista Redis com key = sender_id\n2. **Wait 30s** → aguarda 30 segundos *(desabilitado = sem debounce)*\n3. **Obter Lista** → lê todas as mensagens acumuladas nesse tempo\n4. **Último registro é diferente?** → se chegou mensagem nova no intervalo, esta execução descarta e a nova assume\n5. **Delete Lista** → limpa a fila do Redis antes de enviar para a IA\n\n🔑 **TROQUE:** Credencial Redis (host, porta, senha) nos 3 nós de Redis",
+        "height": 260,
+        "width": 800,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [3200, -340],
+      "id": "s0000004-0000-4000-8000-000000000004",
+      "name": "Sticky Note - Debounce Redis"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 AGENTE IA\n\n**AI Agent** → recebe todas as mensagens acumuladas do Redis e responde com base no system prompt do Claudinei\n\n**OpenRouter Chat Model** → o LLM usado. Troque o modelo dentro do nó (ex: `anthropic/claude-3.5-sonnet`)\n\n**Postgres Chat Memory** → armazena o histórico da conversa na tabela `ai_mensagens`. Usa o `id` do lead como sessionKey. Janela de contexto: 30 mensagens\n\n🔑 **TROQUE:** Credencial OpenRouter (API Key) e Credencial PostgreSQL (string de conexão)",
+        "height": 220,
+        "width": 740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [4150, -340],
+      "id": "s0000005-0000-4000-8000-000000000005",
+      "name": "Sticky Note - AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## 📤 ENVIO DA RESPOSTA\n\n**Quebra em parágrafos** → divide o output da IA em array separando por linhas em branco\n\n**Split Out** → transforma o array em itens individuais (um por mensagem)\n\n**Loop Over Items** → processa um parágrafo por vez em loop\n\n**safe json** → remove aspas extras do JSON antes de enviar\n\n**ChatWoot - Input Message** → envia a mensagem via API REST do Chatwoot na conversa correta\n\n**Wait 3s** → pausa de 3 segundos entre cada mensagem (simula digitação humana)\n\n🔑 **TROQUE:** URL do Chatwoot e o `api_access_token` no nó ChatWoot",
+        "height": 240,
+        "width": 1320,
+        "color": 1
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [4900, -340],
+      "id": "s0000006-0000-4000-8000-000000000006",
+      "name": "Sticky Note - Envio Resposta"
+    },
+    {
+      "parameters": {
+        "content": "## ⚠️ CREDENCIAIS — O QUE VOCÊ PRECISA TROCAR\n\n**1. SUPABASE** → Nós: `Buscar Lead por Phone`, `Criar Lead1`, `Buscar Lead Criado1`\n→ Troque a URL (`supabase.co/rest/v1/leads`) pelo seu projeto e substitua o `apikey` e `Authorization` pela sua Service Role Key\n\n**2. REDIS** → Nós: `Criar Lista e salva mensagem1`, `Obter Lista1`, `Delete Lista1`\n→ Clique no nó → Credentials → crie uma nova credencial Redis com seu host, porta e senha\n\n**3. POSTGRESQL** → Nó: `Postgres Chat Memory`\n→ Clique no nó → Credentials → informe host, banco, usuário e senha do seu Postgres (pode ser o mesmo do Supabase via connection pooler)\n\n**4. OPENROUTER** → Nó: `OpenRouter Chat Model`\n→ Clique no nó → Credentials → cole sua API Key do OpenRouter (openrouter.ai/keys)\n\n**5. CHATWOOT** → Nó: `ChatWoot - Input Message`\n→ Troque a URL pelo seu domínio e o `api_access_token` pelo token do seu agente em Configurações → Integrações → API",
+        "height": 320,
+        "width": 2400,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-250, 1050],
+      "id": "s0000007-0000-4000-8000-000000000007",
+      "name": "Sticky Note - Credenciais"
+    }
+  ],
+  "connections": {
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Set 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set 1": {
+      "main": [
+        [
+          {
+            "node": "Enviada por mim?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviada por mim?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Assigne ID = 1?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assigne ID = 1?": {
+      "main": [
+        [
+          {
+            "node": "Texto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Texto?": {
+      "main": [
+        [
+          {
+            "node": "Set 2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Áudio?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Áudio?": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Imagem?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Imagem?": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set img": {
+      "main": [
+        [
+          {
+            "node": "Set 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Set 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "set img",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set 2": {
+      "main": [
+        [
+          {
+            "node": "Normalizar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Buscar Lead por Phone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Lead por Phone": {
+      "main": [
+        [
+          {
+            "node": "Verificar se cliente está cadastrado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar se cliente está cadastrado": {
+      "main": [
+        [
+          {
+            "node": "Buscar Lead Criado1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Lead1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Lead1": {
+      "main": [
+        [
+          {
+            "node": "Buscar Lead Criado1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Lead Criado1": {
+      "main": [
+        [
+          {
+            "node": "Criar Lista e salva mensagem1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Obter Lista1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Lista1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter Lista1": {
+      "main": [
+        [
+          {
+            "node": "O último registro é diferente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Lista e salva mensagem1": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "O último registro é diferente?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Delete Lista1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Quebra mensagem em parágrafos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quebra mensagem em parágrafos": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "safe json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait5": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "safe json": {
+      "main": [
+        [
+          {
+            "node": "ChatWoot - Input Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatWoot - Input Message": {
+      "main": [
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "headers": {
+          "host": "SEU-N8N.dominio.com",
+          "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
+          "content-length": "2475",
+          "accept": "application/json",
+          "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+          "content-type": "application/json",
+          "x-chatwoot-delivery": "51075ee4-f1c8-4d2d-9eda-49dfcf72d8c8",
+          "x-chatwoot-signature": "sha256=12bc85a7e0c6bcc399e036d7dc97779eea1746c516f7d489c9980982c8697cb2",
+          "x-chatwoot-timestamp": "1776778857",
+          "x-forwarded-for": "172.18.0.1",
+          "x-forwarded-host": "SEU-N8N.dominio.com",
+          "x-forwarded-port": "443",
+          "x-forwarded-proto": "https",
+          "x-forwarded-server": "a0e8e1e8a0db",
+          "x-real-ip": "172.18.0.1"
+        },
+        "params": {},
+        "query": {},
+        "body": {
+          "account": {
+            "id": 1,
+            "name": "Âmago"
+          },
+          "additional_attributes": {},
+          "content_attributes": {},
+          "content_type": "text",
+          "content": "Tá aí?",
+          "conversation": {
+            "additional_attributes": {},
+            "can_reply": true,
+            "channel": "Channel::Whatsapp",
+            "contact_inbox": {
+              "id": 1,
+              "contact_id": 1,
+              "inbox_id": 2,
+              "source_id": "5511999999999",
+              "created_at": "2026-04-21T13:21:28.606Z",
+              "updated_at": "2026-04-21T13:21:28.606Z",
+              "hmac_verified": false,
+              "pubsub_token": "ab2NSUS4Ab6HBTaj2yuCmYeG"
+            },
+            "id": 1,
+            "inbox_id": 2,
+            "messages": [
+              {
+                "id": 8,
+                "content": "Tá aí?",
+                "account_id": 1,
+                "inbox_id": 2,
+                "conversation_id": 1,
+                "message_type": 0,
+                "created_at": 1776778857,
+                "updated_at": "2026-04-21T13:40:57.295Z",
+                "private": false,
+                "status": "sent",
+                "source_id": "wamid.HBgMNTU0ODkxNzQ4MjE1FQIAEhgUM0JGMjgzODNCRjg5NkU2REU3N0MA",
+                "content_type": "text",
+                "content_attributes": {},
+                "sender_type": "Contact",
+                "sender_id": 1,
+                "external_source_ids": {},
+                "additional_attributes": {},
+                "processed_message_content": "Tá aí?",
+                "sentiment": {},
+                "conversation": {
+                  "assignee_id": 1,
+                  "unread_count": 1,
+                  "last_activity_at": 1776778857,
+                  "contact_inbox": {
+                    "source_id": "5511999999999"
+                  }
+                },
+                "sender": {
+                  "additional_attributes": {},
+                  "custom_attributes": {},
+                  "email": null,
+                  "id": 1,
+                  "identifier": null,
+                  "name": "Augusto Gobatto",
+                  "phone_number": "+5511999999999",
+                  "thumbnail": "",
+                  "blocked": false,
+                  "type": "contact"
+                }
+              }
+            ],
+            "labels": [],
+            "meta": {
+              "sender": {
+                "additional_attributes": {},
+                "custom_attributes": {},
+                "email": null,
+                "id": 1,
+                "identifier": null,
+                "name": "Augusto Gobatto",
+                "phone_number": "+5511999999999",
+                "thumbnail": "",
+                "blocked": false,
+                "type": "contact"
+              },
+              "assignee": {
+                "id": 1,
+                "name": "Augusto",
+                "available_name": "Augusto",
+                "avatar_url": "",
+                "type": "user",
+                "availability_status": null,
+                "thumbnail": ""
+              },
+              "assignee_type": "User",
+              "team": null,
+              "hmac_verified": false
+            },
+            "status": "open",
+            "custom_attributes": {},
+            "snoozed_until": null,
+            "unread_count": 1,
+            "first_reply_created_at": "2026-04-21T13:21:42.577Z",
+            "priority": null,
+            "waiting_since": 1776778835,
+            "agent_last_seen_at": 1776778836,
+            "contact_last_seen_at": 0,
+            "last_activity_at": 1776778857,
+            "timestamp": 1776778857,
+            "created_at": 1776777688,
+            "updated_at": 1776778857.30306
+          },
+          "created_at": "2026-04-21T13:40:57.295Z",
+          "id": 8,
+          "inbox": {
+            "id": 2,
+            "name": "Nova 2"
+          },
+          "message_type": "incoming",
+          "private": false,
+          "sender": {
+            "account": {
+              "id": 1,
+              "name": "Âmago"
+            },
+            "additional_attributes": {},
+            "avatar": "",
+            "custom_attributes": {},
+            "email": null,
+            "id": 1,
+            "identifier": null,
+            "name": "Augusto Gobatto",
+            "phone_number": "+5511999999999",
+            "thumbnail": "",
+            "blocked": false
+          },
+          "source_id": "wamid.HBgMNTU0ODkxNzQ4MjE1FQIAEhgUM0JGMjgzODNCRjg5NkU2REU3N0MA",
+          "event": "message_created"
+        },
+        "webhookUrl": "https://SEU-N8N.dominio.com/webhook/0d5dcfb5-e0cd-4642-8e4b-1a65f57ec8c5",
+        "executionMode": "production"
+      }
+    ]
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "SEU_N8N_INSTANCE_ID"
+  }
+}
+
+

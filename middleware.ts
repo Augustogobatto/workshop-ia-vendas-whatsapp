@@ -26,17 +26,16 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   const isLoginPage = request.nextUrl.pathname === '/members/login'
-  const isCallback = request.nextUrl.pathname === '/auth/callback'
   const isMembersArea = request.nextUrl.pathname.startsWith('/members')
 
-  if (isCallback) return supabaseResponse
-
+  // Protect members area: no session → login
   if (isMembersArea && !isLoginPage && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/members/login'
     return NextResponse.redirect(url)
   }
 
+  // Already logged in: login page → dashboard
   if (isLoginPage && user) {
     const url = request.nextUrl.clone()
     url.pathname = '/members'
@@ -47,5 +46,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/members/:path*', '/auth/callback'],
+  matcher: ['/members/:path*'],
 }
