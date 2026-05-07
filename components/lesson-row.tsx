@@ -53,29 +53,33 @@ export function LessonRow({
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
-        padding: '12px 12px',
+        gap: 14,
+        padding: '13px 10px',
         borderRadius: 'var(--radius)',
-        opacity: canAccess ? 1 : 0.5,
+        opacity: canAccess ? 1 : 0.4,
         transition: 'background 0.12s',
         cursor: canAccess ? 'pointer' : 'default',
       }}
     >
       <StatusIcon />
-      <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-dim)', minWidth: 18, flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
-        {lessonNumber.toString().padStart(2, '0')}
-      </span>
-      <span style={{ flex: 1, fontSize: 13.5, color: isCompleted ? 'var(--text-muted)' : canAccess ? 'var(--text)' : 'var(--text-muted)', textDecoration: isCompleted ? 'line-through' : 'none', textDecorationColor: 'var(--text-dim)' }}>
+      <span style={{
+        flex: 1,
+        fontSize: 14,
+        color: isCompleted ? 'var(--text-dim)' : canAccess ? 'var(--text)' : 'var(--text-muted)',
+        textDecoration: isCompleted ? 'line-through' : 'none',
+        textDecorationColor: 'var(--border-2)',
+        lineHeight: 1.4,
+      }}>
         {lesson.name}
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
         {lesson.is_free && !canAccess && (
-          <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--green)', background: 'var(--green-10)', padding: '2px 6px', borderRadius: 3 }}>
+          <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', border: '1px solid var(--border-2)', padding: '2px 6px', borderRadius: 3 }}>
             Grátis
           </span>
         )}
         {lesson.duration_seconds && (
-          <span style={{ fontSize: 11.5, color: 'var(--text-dim)', fontVariantNumeric: 'tabular-nums' }}>
+          <span style={{ fontSize: 11, color: 'var(--text-dim)', fontVariantNumeric: 'tabular-nums' }}>
             {formatDuration(lesson.duration_seconds)}
           </span>
         )}

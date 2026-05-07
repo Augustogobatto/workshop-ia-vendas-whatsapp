@@ -150,49 +150,57 @@ export default async function CoursePage({ params }: PageProps) {
       </div>
 
       {/* Module list */}
-      <div className="fade-up fade-up-1" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div className="fade-up fade-up-1" style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
         {(modules as Module[]).map((mod, modIdx) => {
           const lessons = lessonsByModule.get(mod.id) ?? []
           const modCompleted = lessons.filter(l => progressMap.get(l.id)?.status === 'completed').length
           return (
             <div key={mod.id}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingBottom: 10,
-                marginBottom: 4,
-                borderBottom: '1px solid var(--border)',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {/* Editorial chapter header */}
+              <div style={{ marginBottom: 2 }}>
+                <div style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(52px, 8vw, 80px)',
+                  fontWeight: 300,
+                  lineHeight: 0.85,
+                  color: 'var(--border-2)',
+                  letterSpacing: '-0.04em',
+                  marginBottom: 12,
+                  userSelect: 'none',
+                }}>
+                  {String(modIdx + 1).padStart(2, '0')}
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  justifyContent: 'space-between',
+                  paddingBottom: 14,
+                  borderBottom: '1px solid var(--border)',
+                  gap: 16,
+                }}>
                   <span style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 10,
+                    fontSize: 'clamp(16px, 2.5vw, 20px)',
                     fontWeight: 700,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: 'var(--text-dim)',
-                    minWidth: 24,
-                  }}>
-                    M{modIdx + 1}
-                  </span>
-                  <span style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    letterSpacing: '0.03em',
-                    textTransform: 'uppercase',
-                    color: 'var(--text-muted)',
+                    letterSpacing: '-0.02em',
+                    color: 'var(--text)',
+                    lineHeight: 1.2,
                   }}>
                     {mod.name}
                   </span>
+                  {lessons.length > 0 && (
+                    <span style={{
+                      fontSize: 11,
+                      color: 'var(--text-dim)',
+                      fontVariantNumeric: 'tabular-nums',
+                      flexShrink: 0,
+                    }}>
+                      {modCompleted}/{lessons.length}
+                    </span>
+                  )}
                 </div>
-                {lessons.length > 0 && (
-                  <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
-                    {modCompleted}/{lessons.length}
-                  </span>
-                )}
               </div>
+
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {lessons.map((lesson, lessonIdx) => {
                   const progress = progressMap.get(lesson.id)

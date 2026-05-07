@@ -281,10 +281,11 @@ function NavLink({
         padding: open ? '7px 10px' : '9px',
         borderRadius: 'var(--radius)',
         fontSize: 13.5,
-        fontWeight: active ? 500 : 400,
+        fontWeight: active ? 600 : 400,
         color: active ? 'var(--text)' : 'var(--text-muted)',
         background: active ? 'var(--surface)' : 'transparent',
-        transition: 'background 0.15s, color 0.15s',
+        boxShadow: active ? 'inset 2px 0 0 var(--green)' : 'none',
+        transition: 'background 0.15s, color 0.15s, box-shadow 0.15s',
         width: open ? '100%' : 'auto',
         textDecoration: 'none',
       }}
@@ -301,7 +302,7 @@ function NavLink({
         }
       }}
     >
-      <span style={{ color: active ? 'var(--green)' : 'inherit', flexShrink: 0, display: 'flex' }}>
+      <span style={{ flexShrink: 0, display: 'flex', opacity: active ? 1 : 0.6 }}>
         {children}
       </span>
       {open && label}
