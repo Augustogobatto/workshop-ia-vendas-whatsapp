@@ -72,7 +72,7 @@ function BotAvatar({ size = 28 }: { size?: number }) {
         borderRadius: '50%',
         flexShrink: 0,
         objectFit: 'cover',
-        boxShadow: '0 0 0 1px rgba(0,255,136,0.2)',
+        boxShadow: '0 0 0 1px rgba(255,255,255,0.12)',
       }}
     />
   )
@@ -343,7 +343,7 @@ export function AIPanel({ open, onToggle, width, onWidthChange, userName, ownedP
                     ? (isGrouped ? '14px 4px 4px 14px' : '14px 14px 4px 14px')
                     : (isGrouped ? '4px 14px 14px 4px' : '4px 14px 14px 14px'),
                   background: msg.role === 'user' ? 'var(--green-20)' : 'var(--surface)',
-                  border: `1px solid ${msg.role === 'user' ? 'rgba(0,255,136,0.15)' : 'var(--border)'}`,
+                  border: `1px solid ${msg.role === 'user' ? 'rgba(255,255,255,0.08)' : 'var(--border)'}`,
                   fontSize: 13.5,
                   lineHeight: 1.6,
                   color: 'var(--text)',
@@ -390,11 +390,11 @@ export function AIPanel({ open, onToggle, width, onWidthChange, userName, ownedP
         <div style={{
           display: 'flex', alignItems: 'flex-end', gap: 0,
           background: 'var(--surface)',
-          border: `1px solid ${inputFocused ? 'rgba(0,255,136,0.35)' : 'var(--border-2)'}`,
+          border: `1px solid ${inputFocused ? 'rgba(255,255,255,0.25)' : 'var(--border-2)'}`,
           borderRadius: 10,
           padding: '8px 8px 8px 13px',
           transition: 'border-color 0.15s',
-          boxShadow: inputFocused ? '0 0 0 3px rgba(0,255,136,0.06)' : 'none',
+          boxShadow: inputFocused ? '0 0 0 3px rgba(255,255,255,0.04)' : 'none',
         }}>
           <textarea
             ref={textareaRef}

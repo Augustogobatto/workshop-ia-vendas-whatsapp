@@ -3,35 +3,42 @@
 @tailwind utilities;
 
 :root {
-  /* Hex base values — OKLCH equivalents noted in comments */
-  --bg:          #0A0C0A;   /* oklch(8.5% 0.007 145) */
-  --bg-2:        #111511;   /* oklch(11% 0.006 145) */
-  --bg-3:        #161C16;   /* oklch(13.5% 0.006 145) */
-  --surface:     #1A221A;   /* oklch(15% 0.007 145) */
-  --surface-2:   #1F291F;   /* oklch(18% 0.007 145) */
+  /* ── Backgrounds ───────────────────────────────── */
+  --bg:          #080808;   /* near-pure black */
+  --bg-2:        #0E0E0E;   /* cards, sidebar */
+  --bg-3:        #141414;   /* hover state */
+  --surface:     #1A1A1A;   /* elevated surfaces */
+  --surface-2:   #202020;
 
-  --green:          #00FF88;
-  --green-20:       rgba(0, 255, 136, 0.18);
-  --green-10:       rgba(0, 255, 136, 0.09);
-  --green-subtle:   #0D2918;
+  /* ── Accent — white replaces green ────────────── */
+  --green:          #FFFFFF;
+  --green-20:       rgba(255, 255, 255, 0.12);
+  --green-10:       rgba(255, 255, 255, 0.06);
+  --green-subtle:   #1A1A1A;
 
-  --text:           #EDEFEC;
-  --text-muted:     #7A8678;
-  --text-dim:       #3E4A3E;
+  /* ── Text ──────────────────────────────────────── */
+  --text:           #F0F0F0;
+  --text-muted:     #666666;
+  --text-dim:       #333333;
 
-  --border:         #1E271E;
-  --border-2:       #2C3A2C;
+  /* ── Borders ───────────────────────────────────── */
+  --border:         #1C1C1C;
+  --border-2:       #2C2C2C;
 
+  /* ── Semantic ──────────────────────────────────── */
   --yellow:         #FFD60A;
   --red:            #FF453A;
 
-  --font-display:   'Space Grotesk', sans-serif;
-  --font-ui:        'Inter', sans-serif;
+  /* ── Typography ────────────────────────────────── */
+  --font-display:   'Bricolage Grotesque', sans-serif;
+  --font-ui:        'DM Sans', sans-serif;
 
-  --radius:    6px;
-  --radius-sm: 4px;
-  --radius-lg: 10px;
+  /* ── Radii ──────────────────────────────────────── */
+  --radius:    5px;
+  --radius-sm: 3px;
+  --radius-lg: 8px;
 
+  /* ── Layout ─────────────────────────────────────── */
   --sidebar-w: 224px;
   --sidebar-collapsed-w: 54px;
 }
@@ -63,7 +70,7 @@ body::before {
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.032;
+  opacity: 0.045;
   pointer-events: none;
   z-index: 9998;
 }
@@ -74,7 +81,7 @@ body::before {
 
 /* ── Focus ring ───────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--green);
+  outline: 1px solid rgba(255, 255, 255, 0.4);
   outline-offset: 2px;
 }
 
@@ -87,7 +94,7 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); }
 
 /* ── Page load animation ──────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -96,20 +103,20 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); }
 
 .club-btn {
   padding: 11px 32px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-2);
   border-radius: var(--radius);
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
   transition: border-color 0.15s, color 0.15s;
 }
 .club-btn:hover {
-  border-color: var(--border-2);
+  border-color: rgba(255, 255, 255, 0.2);
   color: var(--text);
 }
 
@@ -128,14 +135,14 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); }
 
 .progress-bar {
   height: 2px;
-  background: var(--border);
+  background: var(--border-2);
   border-radius: 1px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--green);
+  background: var(--text-muted);
   border-radius: 1px;
   animation: progressFill 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.2s;

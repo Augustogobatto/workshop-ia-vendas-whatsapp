@@ -93,7 +93,7 @@ export function AppShell({ userName, userEmail, ownedProducts = [], children }: 
             style={{
               width: 36, height: 36, flexShrink: 0,
               background: aiOpen ? 'var(--green-10)' : 'transparent',
-              border: `1px solid ${aiOpen ? 'rgba(0,255,136,0.25)' : 'transparent'}`,
+              border: `1px solid ${aiOpen ? 'rgba(255,255,255,0.15)' : 'transparent'}`,
               borderRadius: 'var(--radius)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer',
@@ -141,16 +141,16 @@ export function AppShell({ userName, userEmail, ownedProducts = [], children }: 
             background: 'var(--green)', border: 'none',
             cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 0 1px rgba(0,255,136,0.25), 0 6px 20px rgba(0,255,136,0.15)',
+            boxShadow: '0 0 0 1px rgba(255,255,255,0.15), 0 6px 20px rgba(255,255,255,0.08)',
             transition: 'transform 0.15s, box-shadow 0.15s',
           }}
           onMouseEnter={e => {
             e.currentTarget.style.transform = 'scale(1.08)'
-            e.currentTarget.style.boxShadow = '0 0 0 1px rgba(0,255,136,0.4), 0 8px 28px rgba(0,255,136,0.25)'
+            e.currentTarget.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.3), 0 8px 28px rgba(255,255,255,0.15)'
           }}
           onMouseLeave={e => {
             e.currentTarget.style.transform = 'scale(1)'
-            e.currentTarget.style.boxShadow = '0 0 0 1px rgba(0,255,136,0.25), 0 6px 20px rgba(0,255,136,0.15)'
+            e.currentTarget.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.15), 0 6px 20px rgba(255,255,255,0.08)'
           }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
