@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 
-export function N8nDownload() {
+export function N8nDownload({ url = '/downloads/n8n-workshop.json' }: { url?: string }) {
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
-    const res = await fetch('/downloads/n8n-workshop.json')
+    const res = await fetch(url)
     const text = await res.text()
     await navigator.clipboard.writeText(text)
     setCopied(true)
@@ -76,8 +76,8 @@ export function N8nDownload() {
         </button>
 
         <a
-          href="/downloads/n8n-workshop.json"
-          download="n8n-workshop.json"
+          href={url}
+          download={url.split('/').pop()}
           style={{
             display: 'inline-flex',
             alignItems: 'center',

@@ -35,7 +35,7 @@ export interface Lesson {
   name: string
   slug: string
   description: string | null
-  content_type: 'video' | 'loom' | 'text' | 'embed' | 'pdf'
+  content_type: 'video' | 'loom' | 'text' | 'embed' | 'pdf' | 'download'
   content_url: string | null
   content_body: string | null
   duration_seconds: number | null
@@ -55,7 +55,7 @@ export interface LessonContent {
   lesson_id: string
   lesson_name: string
   lesson_slug: string
-  content_type: 'video' | 'loom' | 'text' | 'embed' | 'pdf'
+  content_type: 'video' | 'loom' | 'text' | 'embed' | 'pdf' | 'download'
   content_url: string | null
   content_body: string | null
   duration_seconds: number | null

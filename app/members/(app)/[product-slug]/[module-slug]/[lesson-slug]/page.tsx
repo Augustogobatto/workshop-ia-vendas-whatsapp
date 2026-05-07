@@ -7,6 +7,7 @@ import DOMPurify from 'dompurify'
 import { createClient } from '@/lib/supabase/client'
 import type { LessonContent, Module, Lesson, LessonProgress } from '@/lib/supabase/types'
 import { formatDuration } from '@/lib/utils'
+import { N8nDownload } from '@/components/workshop-n8n-download'
 
 interface PageProps {
   params: {
@@ -294,6 +295,13 @@ export default function LessonPage({ params }: PageProps) {
                 </svg>
                 Abrir PDF
               </a>
+            </div>
+          )}
+
+          {/* Download */}
+          {lesson.content_type === 'download' && lesson.content_url && (
+            <div style={{ marginBottom: 32 }}>
+              <N8nDownload url={lesson.content_url} />
             </div>
           )}
 
