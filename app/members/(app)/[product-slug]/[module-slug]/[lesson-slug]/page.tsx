@@ -34,9 +34,18 @@ export default function LessonPage({ params }: PageProps) {
   const [error, setError] = useState<string | null>(null)
   const [markingDone, setMarkingDone] = useState(false)
   const [isDone, setIsDone] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [outlineOpen, setOutlineOpen] = useState(false)
 
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const loadData = useCallback(async () => {
     setLoading(true)
@@ -214,39 +223,77 @@ export default function LessonPage({ params }: PageProps) {
   return (
     <div style={{ display: 'flex', minHeight: '100dvh' }}>
 
+      {/* Mobile outline drawer backdrop */}
+      {isMobile && outlineOpen && (
+        <div
+          onClick={() => setOutlineOpen(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 30,
+            background: 'rgba(0,0,0,0.7)',
+            backdropFilter: 'blur(2px)',
+          }}
+        />
+      )}
+
       {/* Main content */}
       <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
 
         {/* Header bar */}
         <div
           style={{
-            padding: '0 32px',
+            padding: isMobile ? '0 16px' : '0 32px',
             height: 48,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: 8,
             borderBottom: '1px solid var(--border)',
             background: 'var(--bg)',
             flexShrink: 0,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: 'var(--text-muted)', minWidth: 0, overflow: 'hidden' }}>
-            <Link href="/members" style={{ color: 'var(--text-muted)', flexShrink: 0 }}>Dashboard</Link>
-            <ChevronRight />
-            <Link href={`/members/${productSlug}`} style={{ color: 'var(--text-muted)', flexShrink: 0 }}>
-              {lesson.product_name}
-            </Link>
-            <ChevronRight />
-            <span style={{ color: 'var(--text-dim)', flexShrink: 0 }}>{lesson.module_name}</span>
-            <ChevronRight />
-            <span style={{ color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {lesson.lesson_name}
-            </span>
-          </div>
+          {isMobile ? (
+            /* Mobile breadcrumb: só volta + nome da aula */
+            <>
+              <Link href={`/members/${productSlug}`} style={{ color: 'var(--text-muted)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4, fontSize: 12.5 }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M9 3L5 7l4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Voltar
+              </Link>
+              <span style={{ flex: 1, fontSize: 12.5, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}>
+                {lesson.lesson_name}
+              </span>
+              <button
+                onClick={() => setOutlineOpen(true)}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px', flexShrink: 0 }}
+                title="Ver conteúdo"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                </svg>
+              </button>
+            </>
+          ) : (
+            /* Desktop breadcrumb completo */
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: 'var(--text-muted)', minWidth: 0, overflow: 'hidden' }}>
+              <Link href="/members" style={{ color: 'var(--text-muted)', flexShrink: 0 }}>Dashboard</Link>
+              <ChevronRight />
+              <Link href={`/members/${productSlug}`} style={{ color: 'var(--text-muted)', flexShrink: 0 }}>
+                {lesson.product_name}
+              </Link>
+              <ChevronRight />
+              <span style={{ color: 'var(--text-dim)', flexShrink: 0 }}>{lesson.module_name}</span>
+              <ChevronRight />
+              <span style={{ color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {lesson.lesson_name}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Content area */}
-        <div style={{ flex: 1, padding: '32px 40px 48px', overflowY: 'auto' }}>
+        <div style={{ flex: 1, padding: isMobile ? '20px 16px 32px' : '32px 40px 48px', overflowY: 'auto' }}>
 
           {/* Video / Embed */}
           {(lesson.content_type === 'video' || lesson.content_type === 'loom' || lesson.content_type === 'embed') && lesson.content_url && (
@@ -353,7 +400,7 @@ export default function LessonPage({ params }: PageProps) {
           </div>
 
           {/* Navigation */}
-          <div style={{ display: 'flex', gap: 10, paddingTop: 28, borderTop: '1px solid var(--border)', maxWidth: 600 }}>
+          <div style={{ display: 'flex', gap: 10, paddingTop: 28, borderTop: '1px solid var(--border)', maxWidth: isMobile ? '100%' : 600 }}>
 
             {/* Anterior */}
             {prevLesson ? (
@@ -495,7 +542,7 @@ export default function LessonPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Course outline sidebar */}
+      {/* Course outline sidebar — sticky no desktop, drawer no mobile */}
       <div
         style={{
           width: 260,
@@ -503,8 +550,17 @@ export default function LessonPage({ params }: PageProps) {
           borderLeft: '1px solid var(--border)',
           background: 'var(--bg-2)',
           height: '100dvh',
-          position: 'sticky',
-          top: 0,
+          ...(isMobile ? {
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            zIndex: 35,
+            transform: outlineOpen ? 'translateX(0)' : 'translateX(100%)',
+            transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
+          } : {
+            position: 'sticky',
+            top: 0,
+          }),
           overflowY: 'auto',
           display: 'flex',
           flexDirection: 'column',
@@ -515,6 +571,9 @@ export default function LessonPage({ params }: PageProps) {
             padding: '14px 16px 10px',
             borderBottom: '1px solid var(--border)',
             flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
           <Link
@@ -526,6 +585,16 @@ export default function LessonPage({ params }: PageProps) {
             </svg>
             {lesson.product_name}
           </Link>
+          {isMobile && (
+            <button
+              onClick={() => setOutlineOpen(false)}
+              style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+              </svg>
+            </button>
+          )}
         </div>
 
         <div style={{ flex: 1, padding: '8px 0' }}>
