@@ -76,10 +76,13 @@ export default async function CoursePage({ params }: PageProps) {
   )
 
   const lessonsByModule = new Map<string, Lesson[]>()
+  const moduleByLessonId = new Map<string, Module>()
   for (const lesson of (allLessons ?? []) as Lesson[]) {
     const arr = lessonsByModule.get(lesson.module_id) ?? []
     arr.push(lesson)
     lessonsByModule.set(lesson.module_id, arr)
+    const mod = (modules as Module[]).find(m => m.id === lesson.module_id)
+    if (mod) moduleByLessonId.set(lesson.id, mod)
   }
 
   const totalLessons = (allLessons ?? []).length
@@ -87,6 +90,11 @@ export default async function CoursePage({ params }: PageProps) {
     (p: LessonProgress) => p.status === 'completed'
   ).length
   const progressPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
+
+  const nextLesson = (allLessons as Lesson[]).find(
+    l => (progressMap.get(l.id)?.status ?? 'not_started') !== 'completed'
+  ) ?? null
+  const nextModule = nextLesson ? moduleByLessonId.get(nextLesson.id) ?? null : null
 
   return (
     <div className="page-wrap" style={{ maxWidth: 800 }}>
@@ -125,13 +133,35 @@ export default async function CoursePage({ params }: PageProps) {
 
         {/* Progress strip */}
         {hasAccess && totalLessons > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <div className="progress-bar" style={{ flex: 1, maxWidth: 200 }}>
               <div className="progress-fill" style={{ width: `${progressPct}%` }} />
             </div>
             <span style={{ fontSize: 12, color: progressPct === 100 ? 'var(--green)' : 'var(--text-muted)', fontWeight: 500 }}>
               {progressPct === 100 ? '✓ Concluído' : `${progressPct}% · ${completedLessons}/${totalLessons} aulas`}
             </span>
+            {nextLesson && nextModule && progressPct < 100 && (
+              <Link
+                href={`/members/${productSlug}/${nextModule.slug}/${nextLesson.slug}`}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '5px 14px',
+                  background: 'var(--green)',
+                  color: '#0A0A0A',
+                  borderRadius: 'var(--radius)',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  fontFamily: 'var(--font-display)',
+                }}
+              >
+                {progressPct === 0 ? 'Começar →' : 'Continuar →'}
+              </Link>
+            )}
           </div>
         )}
       </div>
@@ -145,13 +175,48 @@ export default async function CoursePage({ params }: PageProps) {
             <LoomEmbed id="460cb65da690425c9fb2c488cb14a1c9" label="🦾 IA Revolution — VPS Setup · n8n + Chatwoot" />
           </AulaBlock>
 
-          <AulaBlock label="Gravação do Workshop">
-            <p style={{ fontSize: 13, color: 'var(--text-muted)', margin: '0 0 16px', lineHeight: 1.5 }}>
-              em breve o Gobatto vai cortar essa aula e dividir em partes pra ficar melhor a compreensão.
-            </p>
-            <LoomEmbed id="d9f5071486ed40f6a2bb4d1d26eed00b" />
-            <WorkshopTranscriptCopy />
-          </AulaBlock>
+          {/* Aulas do Workshop */}
+          <div style={{ marginBottom: 36 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              {(modules as Module[]).map((mod, modIdx) => {
+                const lessons = lessonsByModule.get(mod.id) ?? []
+                const modCompleted = lessons.filter(l => progressMap.get(l.id)?.status === 'completed').length
+                return (
+                  <div key={mod.id}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 10, marginBottom: 4, borderBottom: '1px solid var(--border)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-dim)', minWidth: 24 }}>
+                          M{modIdx + 1}
+                        </span>
+                        <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, letterSpacing: '0.03em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                          {mod.name}
+                        </span>
+                      </div>
+                      {lessons.length > 0 && (
+                        <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>{modCompleted}/{lessons.length}</span>
+                      )}
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      {lessons.map((lesson, lessonIdx) => {
+                        const progress = progressMap.get(lesson.id)
+                        return (
+                          <LessonRow
+                            key={lesson.id}
+                            lesson={lesson}
+                            progress={{ isCompleted: progress?.status === 'completed', isInProgress: progress?.status === 'in_progress' }}
+                            canAccess={hasAccess || lesson.is_free}
+                            productSlug={productSlug}
+                            moduleSlug={mod.slug}
+                            lessonNumber={lessonIdx + 1}
+                          />
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
 
           <AulaBlock label="Automação n8n — JSON Completo" defaultOpen={false}>
             <N8nDownload />
@@ -216,76 +281,36 @@ export default async function CoursePage({ params }: PageProps) {
         </>
       )}
 
-      {/* Module list */}
-      <div className="fade-up fade-up-1" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {(modules ?? []).length > 0 && (
-          (modules as Module[]).map((mod, modIdx) => {
+      {/* Module list for non-workshop products */}
+      {productSlug !== 'workshop-ia-vendas-whatsapp' && (
+        <div className="fade-up fade-up-1" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {(modules as Module[]).map((mod, modIdx) => {
             const lessons = lessonsByModule.get(mod.id) ?? []
-            const modCompleted = lessons.filter(
-              (l) => progressMap.get(l.id)?.status === 'completed'
-            ).length
-
+            const modCompleted = lessons.filter(l => progressMap.get(l.id)?.status === 'completed').length
             return (
               <div key={mod.id}>
-                {/* Module header */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    paddingBottom: 10,
-                    marginBottom: 4,
-                    borderBottom: '1px solid var(--border)',
-                  }}
-                >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 10, marginBottom: 4, borderBottom: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 10,
-                        fontWeight: 700,
-                        letterSpacing: '0.1em',
-                        textTransform: 'uppercase',
-                        color: 'var(--text-dim)',
-                        minWidth: 24,
-                      }}
-                    >
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-dim)', minWidth: 24 }}>
                       M{modIdx + 1}
                     </span>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 13,
-                        fontWeight: 600,
-                        letterSpacing: '0.03em',
-                        textTransform: 'uppercase',
-                        color: 'var(--text-muted)',
-                      }}
-                    >
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, letterSpacing: '0.03em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                       {mod.name}
                     </span>
                   </div>
                   {lessons.length > 0 && (
-                    <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
-                      {modCompleted}/{lessons.length}
-                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>{modCompleted}/{lessons.length}</span>
                   )}
                 </div>
-
-                {/* Lesson rows */}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   {lessons.map((lesson, lessonIdx) => {
                     const progress = progressMap.get(lesson.id)
-                    const isCompleted = progress?.status === 'completed'
-                    const isInProgress = progress?.status === 'in_progress'
-                    const canAccess = hasAccess || lesson.is_free
-
                     return (
                       <LessonRow
                         key={lesson.id}
                         lesson={lesson}
-                        progress={{ isCompleted, isInProgress }}
-                        canAccess={canAccess}
+                        progress={{ isCompleted: progress?.status === 'completed', isInProgress: progress?.status === 'in_progress' }}
+                        canAccess={hasAccess || lesson.is_free}
                         productSlug={productSlug}
                         moduleSlug={mod.slug}
                         lessonNumber={lessonIdx + 1}
@@ -295,9 +320,9 @@ export default async function CoursePage({ params }: PageProps) {
                 </div>
               </div>
             )
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
     </div>
   )
 }
