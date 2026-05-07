@@ -129,6 +129,12 @@ export function ContentTypeIcon({ type }: { type: Lesson['content_type'] }) {
         <path d="M8 1.5V3.5h2" stroke="var(--text-dim)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
+    download: (
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M6 1.5v6M3.5 5.5l2.5 2.5 2.5-2.5" stroke="var(--text-dim)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M1.5 9.5h9" stroke="var(--text-dim)" strokeWidth="1.1" strokeLinecap="round"/>
+      </svg>
+    ),
   }
   return <>{icons[type] ?? icons.video}</>
 }
