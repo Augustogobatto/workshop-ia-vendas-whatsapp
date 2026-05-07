@@ -129,7 +129,7 @@ export default function LessonPage({ params }: PageProps) {
 
   useEffect(() => { loadData() }, [loadData])
 
-  async function markComplete() {
+  async function markCompleteAndAdvance(nextUrl: string) {
     if (!leadId || !lesson || isDone) return
     setMarkingDone(true)
     try {
@@ -151,7 +151,7 @@ export default function LessonPage({ params }: PageProps) {
         },
         { onConflict: 'lead_id,lesson_id' }
       )
-      setIsDone(true)
+      router.push(nextUrl)
     } finally {
       setMarkingDone(false)
     }
@@ -327,7 +327,7 @@ export default function LessonPage({ params }: PageProps) {
               {lesson.lesson_name}
             </h1>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28 }}>
               {lesson.duration_seconds && (
                 <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
                   {formatDuration(lesson.duration_seconds)}
@@ -342,50 +342,12 @@ export default function LessonPage({ params }: PageProps) {
                 </span>
               )}
             </div>
-
-            {/* Mark complete button */}
-            {!isDone && (
-              <button
-                onClick={markComplete}
-                disabled={markingDone}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 7,
-                  padding: '8px 16px',
-                  marginBottom: 32,
-                  background: 'transparent',
-                  color: 'var(--text-muted)',
-                  border: '1px solid var(--border-2)',
-                  borderRadius: 'var(--radius)',
-                  fontFamily: 'var(--font-display)',
-                  fontWeight: 600,
-                  fontSize: 13,
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  cursor: markingDone ? 'wait' : 'pointer',
-                  opacity: markingDone ? 0.5 : 1,
-                  transition: 'border-color 0.15s, color 0.15s, opacity 0.15s',
-                }}
-              >
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" strokeWidth="1.3"/>
-                </svg>
-                {markingDone ? 'Salvando...' : 'Marcar como concluída'}
-              </button>
-            )}
           </div>
 
-          {/* Prev / Next navigation */}
-          <div
-            style={{
-              display: 'flex',
-              gap: 10,
-              paddingTop: 28,
-              borderTop: '1px solid var(--border)',
-              maxWidth: 600,
-            }}
-          >
+          {/* Navigation */}
+          <div style={{ display: 'flex', gap: 10, paddingTop: 28, borderTop: '1px solid var(--border)', maxWidth: 600 }}>
+
+            {/* Anterior */}
             {prevLesson ? (
               <Link
                 href={`/members/${productSlug}/${prevLesson.moduleSlug}/${prevLesson.slug}`}
@@ -411,12 +373,62 @@ export default function LessonPage({ params }: PageProps) {
                 </svg>
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2, color: 'var(--text-dim)' }}>Anterior</div>
-                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'inherit' }}>{prevLesson.name}</div>
+                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{prevLesson.name}</div>
                 </div>
               </Link>
             ) : <div style={{ flex: 1 }} />}
 
-            {nextLesson ? (
+            {/* Concluir e avançar (único botão) */}
+            {!isDone ? (
+              <button
+                onClick={() => {
+                  const next = nextLesson
+                    ? `/members/${productSlug}/${nextLesson.moduleSlug}/${nextLesson.slug}`
+                    : `/members/${productSlug}`
+                  markCompleteAndAdvance(next)
+                }}
+                disabled={markingDone}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  gap: 8,
+                  padding: '12px 16px',
+                  background: 'var(--green)',
+                  color: '#0A0A0A',
+                  border: 'none',
+                  borderRadius: 'var(--radius)',
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 700,
+                  fontSize: 13,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  cursor: markingDone ? 'wait' : 'pointer',
+                  opacity: markingDone ? 0.7 : 1,
+                  textAlign: 'right',
+                  transition: 'opacity 0.15s',
+                }}
+              >
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 10, letterSpacing: '0.08em', marginBottom: 2, opacity: 0.7 }}>
+                    {nextLesson ? 'Próxima' : 'Fim do curso'}
+                  </div>
+                  <div>
+                    {markingDone
+                      ? 'Salvando...'
+                      : nextLesson
+                        ? nextLesson.name
+                        : 'Concluir workshop'}
+                  </div>
+                </div>
+                {!markingDone && (
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                )}
+              </button>
+            ) : nextLesson ? (
               <Link
                 href={`/members/${productSlug}/${nextLesson.moduleSlug}/${nextLesson.slug}`}
                 style={{
@@ -440,7 +452,7 @@ export default function LessonPage({ params }: PageProps) {
               >
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2, color: 'var(--text-dim)' }}>Próxima</div>
-                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'inherit' }}>{nextLesson.name}</div>
+                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{nextLesson.name}</div>
                 </div>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
                   <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
