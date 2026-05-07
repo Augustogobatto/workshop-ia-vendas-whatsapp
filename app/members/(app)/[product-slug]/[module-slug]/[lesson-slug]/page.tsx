@@ -354,22 +354,22 @@ export default function LessonPage({ params }: PageProps) {
                   gap: 7,
                   padding: '8px 16px',
                   marginBottom: 32,
-                  background: 'var(--green)',
-                  color: '#0A0A0A',
-                  border: 'none',
+                  background: 'transparent',
+                  color: 'var(--text-muted)',
+                  border: '1px solid var(--border-2)',
                   borderRadius: 'var(--radius)',
                   fontFamily: 'var(--font-display)',
-                  fontWeight: 700,
+                  fontWeight: 600,
                   fontSize: 13,
                   letterSpacing: '0.04em',
                   textTransform: 'uppercase',
                   cursor: markingDone ? 'wait' : 'pointer',
-                  opacity: markingDone ? 0.7 : 1,
-                  transition: 'opacity 0.15s',
+                  opacity: markingDone ? 0.5 : 1,
+                  transition: 'border-color 0.15s, color 0.15s, opacity 0.15s',
                 }}
               >
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <path d="M2 6.5l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" strokeWidth="1.3"/>
                 </svg>
                 {markingDone ? 'Salvando...' : 'Marcar como concluída'}
               </button>
