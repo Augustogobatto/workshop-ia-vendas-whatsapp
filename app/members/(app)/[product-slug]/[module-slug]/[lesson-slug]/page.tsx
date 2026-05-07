@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import DOMPurify from 'dompurify'
@@ -9,11 +9,11 @@ import type { LessonContent, Module, Lesson, LessonProgress } from '@/lib/supaba
 import { formatDuration } from '@/lib/utils'
 
 interface PageProps {
-  params: Promise<{
+  params: {
     'product-slug': string
     'module-slug': string
     'lesson-slug': string
-  }>
+  }
 }
 
 interface OutlineLesson extends Lesson {
@@ -22,11 +22,9 @@ interface OutlineLesson extends Lesson {
 }
 
 export default function LessonPage({ params }: PageProps) {
-  const [slugs, setSlugs] = useState<{
-    productSlug: string
-    moduleSlug: string
-    lessonSlug: string
-  } | null>(null)
+  const productSlug = params['product-slug']
+  const moduleSlug = params['module-slug']
+  const lessonSlug = params['lesson-slug']
 
   const [lesson, setLesson] = useState<LessonContent | null>(null)
   const [outline, setOutline] = useState<{ module: Module; lessons: OutlineLesson[] }[]>([])
@@ -37,20 +35,9 @@ export default function LessonPage({ params }: PageProps) {
   const [isDone, setIsDone] = useState(false)
 
   const router = useRouter()
-  const supabase = createClient()
-
-  useEffect(() => {
-    params.then((p) =>
-      setSlugs({
-        productSlug: p['product-slug'],
-        moduleSlug: p['module-slug'],
-        lessonSlug: p['lesson-slug'],
-      })
-    )
-  }, [params])
+  const supabase = useMemo(() => createClient(), [])
 
   const loadData = useCallback(async () => {
-    if (!slugs) return
     setLoading(true)
     setError(null)
 
@@ -60,9 +47,9 @@ export default function LessonPage({ params }: PageProps) {
 
       // Get lesson content via RPC
       const { data: lessonData } = await supabase.rpc('get_lesson', {
-        p_lesson_slug: slugs.lessonSlug,
-        p_module_slug: slugs.moduleSlug,
-        p_product_slug: slugs.productSlug,
+        p_lesson_slug: lessonSlug,
+        p_module_slug: moduleSlug,
+        p_product_slug: productSlug,
       })
 
       if (!lessonData || lessonData.length === 0) {
@@ -80,7 +67,7 @@ export default function LessonPage({ params }: PageProps) {
       const { data: product } = await supabase
         .from('products')
         .select('id')
-        .eq('slug', slugs.productSlug)
+        .eq('slug', productSlug)
         .single()
 
       if (!product) { setLoading(false); return }
@@ -117,7 +104,7 @@ export default function LessonPage({ params }: PageProps) {
 
       // Check if current lesson is done
       const currentLesson = (allLessons ?? []).find(
-        (l: Lesson) => l.slug === slugs.lessonSlug
+        (l: Lesson) => l.slug === lessonSlug
       ) as Lesson | undefined
       if (currentLesson) {
         setIsDone(progressMap.get(currentLesson.id)?.status === 'completed')
@@ -138,7 +125,7 @@ export default function LessonPage({ params }: PageProps) {
     } finally {
       setLoading(false)
     }
-  }, [slugs, supabase, router])
+  }, [productSlug, moduleSlug, lessonSlug, supabase, router])
 
   useEffect(() => { loadData() }, [loadData])
 
@@ -196,7 +183,7 @@ export default function LessonPage({ params }: PageProps) {
           </svg>
           <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 20, lineHeight: 1.6 }}>{error}</p>
           <Link
-            href={slugs ? `/members/${slugs.productSlug}` : '/members'}
+            href={`/members/${productSlug}`}
             style={{
               display: 'inline-flex',
               padding: '8px 16px',
@@ -215,11 +202,11 @@ export default function LessonPage({ params }: PageProps) {
     )
   }
 
-  if (!lesson || !slugs) return null
+  if (!lesson) return null
 
   // Find prev/next lesson across all modules
   const allOutlineLessons = outline.flatMap((m) => m.lessons)
-  const currentIdx = allOutlineLessons.findIndex((l) => l.slug === slugs.lessonSlug)
+  const currentIdx = allOutlineLessons.findIndex((l) => l.slug === lessonSlug)
   const prevLesson = currentIdx > 0 ? allOutlineLessons[currentIdx - 1] : null
   const nextLesson = currentIdx < allOutlineLessons.length - 1 ? allOutlineLessons[currentIdx + 1] : null
 
@@ -245,7 +232,7 @@ export default function LessonPage({ params }: PageProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: 'var(--text-muted)', minWidth: 0, overflow: 'hidden' }}>
             <Link href="/members" style={{ color: 'var(--text-muted)', flexShrink: 0 }}>Dashboard</Link>
             <ChevronRight />
-            <Link href={`/members/${slugs.productSlug}`} style={{ color: 'var(--text-muted)', flexShrink: 0 }}>
+            <Link href={`/members/${productSlug}`} style={{ color: 'var(--text-muted)', flexShrink: 0 }}>
               {lesson.product_name}
             </Link>
             <ChevronRight />
@@ -401,7 +388,7 @@ export default function LessonPage({ params }: PageProps) {
           >
             {prevLesson ? (
               <Link
-                href={`/members/${slugs.productSlug}/${prevLesson.moduleSlug}/${prevLesson.slug}`}
+                href={`/members/${productSlug}/${prevLesson.moduleSlug}/${prevLesson.slug}`}
                 style={{
                   flex: 1,
                   display: 'flex',
@@ -431,7 +418,7 @@ export default function LessonPage({ params }: PageProps) {
 
             {nextLesson ? (
               <Link
-                href={`/members/${slugs.productSlug}/${nextLesson.moduleSlug}/${nextLesson.slug}`}
+                href={`/members/${productSlug}/${nextLesson.moduleSlug}/${nextLesson.slug}`}
                 style={{
                   flex: 1,
                   display: 'flex',
@@ -461,7 +448,7 @@ export default function LessonPage({ params }: PageProps) {
               </Link>
             ) : (
               <Link
-                href={slugs ? `/members/${slugs.productSlug}` : '/members'}
+                href={`/members/${productSlug}`}
                 style={{
                   flex: 1,
                   display: 'flex',
@@ -511,7 +498,7 @@ export default function LessonPage({ params }: PageProps) {
           }}
         >
           <Link
-            href={slugs ? `/members/${slugs.productSlug}` : '/members'}
+            href={`/members/${productSlug}`}
             style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-muted)', textDecoration: 'none' }}
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -537,13 +524,13 @@ export default function LessonPage({ params }: PageProps) {
                 {section.module.name}
               </div>
               {section.lessons.map((l) => {
-                const isActive = l.slug === slugs?.lessonSlug
+                const isActive = l.slug === lessonSlug
                 const isComplete = l.progress?.status === 'completed'
 
                 return (
                   <Link
                     key={l.id}
-                    href={`/members/${slugs?.productSlug}/${l.moduleSlug}/${l.slug}`}
+                    href={`/members/${productSlug}/${l.moduleSlug}/${l.slug}`}
                     style={{
                       display: 'flex',
                       alignItems: 'flex-start',
