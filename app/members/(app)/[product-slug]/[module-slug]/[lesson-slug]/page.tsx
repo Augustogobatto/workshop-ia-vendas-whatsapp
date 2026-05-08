@@ -309,7 +309,11 @@ export default function LessonPage({ params }: PageProps) {
               }}
             >
               <iframe
-                src={lesson.content_url}
+                src={
+                  lesson.content_type === 'loom'
+                    ? `${lesson.content_url}?hide_owner=true&hide_share=true&hideEmbedTopBar=true`
+                    : lesson.content_url
+                }
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
