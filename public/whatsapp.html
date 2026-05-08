@@ -498,7 +498,6 @@
             allow="autoplay; fullscreen; picture-in-picture"
             allowfullscreen
           ></iframe>
-          <div id="loom-mask" style="position:absolute;inset:0;z-index:1;cursor:default;display:none;"></div>
         </div>
       </div>
     </div>
@@ -1208,18 +1207,6 @@
      JAVASCRIPT
 ═══════════════════════════════════ -->
 <script>
-  // Ativa a máscara durante a reprodução e desativa ao pausar/terminar
-  window.addEventListener('message', function(e) {
-    if (e.origin !== 'https://www.loom.com') return;
-    try {
-      var d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-      var mask = document.getElementById('loom-mask');
-      if (!mask) return;
-      if (d.type === 'play') mask.style.display = 'block';
-      else if (d.type === 'pause' || d.type === 'ended') mask.style.display = 'none';
-    } catch(_) {}
-  });
-
   // Sticky header
   const sh = document.getElementById('sh');
   const hero = document.getElementById('hero');

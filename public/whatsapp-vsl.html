@@ -146,7 +146,6 @@
       allow="autoplay; fullscreen; picture-in-picture"
       allowfullscreen
     ></iframe>
-    <div id="loom-mask" style="position:absolute;inset:0;z-index:1;cursor:default;display:none;"></div>
   </div>
 
   <!-- PREÇO -->
@@ -269,18 +268,6 @@
 
 <script>
   const WEBHOOK = 'https://n8n-n8n.0pqeuc.easypanel.host/webhook/3409a797-a9b1-4ca8-8699-5c63c405572b';
-
-  // Ativa a máscara durante a reprodução e desativa ao pausar/terminar
-  window.addEventListener('message', function(e) {
-    if (e.origin !== 'https://www.loom.com') return;
-    try {
-      var d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-      var mask = document.getElementById('loom-mask');
-      if (!mask) return;
-      if (d.type === 'play') mask.style.display = 'block';
-      else if (d.type === 'pause' || d.type === 'ended') mask.style.display = 'none';
-    } catch(_) {}
-  });
 
   // Botão "Falar com IA" abre o chat
   document.getElementById('open-chat-btn').addEventListener('click', () => {
