@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vendedor de IA — Augusto Gobatto</title>
+  <meta name="description" content="Coloque uma IA vendendo no seu WhatsApp por R$150." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>" />
+  <!-- Meta Pixel -->
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2685766708197733');fbq('track','PageView');</script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2685766708197733&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:     #0A0A0A;
+      --bg-2:   #111111;
+      --green:  #00FF88;
+      --white:  #F2F2F2;
+      --muted:  #888888;
+      --dim:    #444444;
+      --border: rgba(255,255,255,0.08);
+      --red:    #FF6B6B;
+      --fd: 'Space Grotesk', sans-serif;
+      --fb: 'Inter', sans-serif;
+      --r: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--white); font-family: var(--fb); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+    /* grain */
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); opacity: 0.038; pointer-events: none; z-index: 9998; }
+
+    /* layout */
+    .page { max-width: 640px; margin: 0 auto; padding: 60px 24px 80px; }
+
+    /* título */
+    .eyebrow { font-family: var(--fd); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
+    h1 { font-family: var(--fd); font-size: clamp(24px, 4vw, 36px); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 8px; }
+    h1 .g { color: var(--green); }
+    .tagline { font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+
+    /* vídeo */
+    .video-wrap { width: 100%; aspect-ratio: 16/9; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; margin-bottom: 32px; position: relative; overflow: hidden; }
+    .video-wrap::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(0,255,136,0.05) 0%, transparent 65%); }
+    .play-btn { width: 64px; height: 64px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .play-btn svg { margin-left: 4px; }
+    .video-lbl { font-size: 12px; color: var(--dim); font-family: var(--fd); letter-spacing: 0.06em; }
+
+    /* preço */
+    .price-block { text-align: center; margin-bottom: 24px; }
+    .price-from { font-family: var(--fd); font-size: 14px; color: var(--muted); text-decoration: line-through; margin-bottom: 4px; }
+    .price-val { font-family: var(--fd); font-size: 56px; font-weight: 800; color: var(--white); letter-spacing: -0.04em; line-height: 1; margin-bottom: 6px; }
+    .price-sub { font-size: 13px; color: var(--dim); }
+
+    /* botões */
+    .btn-buy { display: flex; align-items: center; justify-content: center; width: 100%; background: var(--green); color: #000; font-family: var(--fd); font-weight: 700; font-size: 15px; letter-spacing: 0.05em; text-transform: uppercase; padding: 17px 24px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 28px rgba(0,255,136,0.28); margin-bottom: 12px; }
+    .btn-buy:hover { background: #11ffaa; box-shadow: 0 0 44px rgba(0,255,136,0.45); transform: translateY(-1px); }
+    .btn-ia { display: flex; align-items: center; justify-content: center; width: 100%; background: transparent; color: var(--white); font-family: var(--fd); font-weight: 600; font-size: 14px; padding: 14px 24px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; margin-bottom: 28px; gap: 8px; }
+    .btn-ia:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
+    .micro { text-align: center; font-size: 12px; color: var(--dim); margin-bottom: 40px; }
+
+    /* entregáveis */
+    .delivers-title { font-family: var(--fd); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .deliver-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 32px; }
+    .deliver-item { display: flex; align-items: flex-start; gap: 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; }
+    .di-num { font-family: var(--fd); font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 0.05em; flex-shrink: 0; padding-top: 4px; min-width: 22px; }
+    .di-name { font-family: var(--fd); font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+    .di-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* garantia */
+    .guarantee { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 28px; }
+    .guarantee-icon { font-size: 22px; flex-shrink: 0; }
+    .guarantee-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .guarantee-text strong { color: var(--white); }
+
+    /* divider */
+    .sep { height: 1px; background: var(--border); margin: 32px 0; }
+
+    /* bio */
+    .bio-grid { display:grid; grid-template-columns:180px 1fr; gap:32px; align-items:start; }
+    .bio-photo { width:100%; border-radius:10px; border:1px solid var(--border); display:block; }
+    @media(max-width:560px){ .bio-grid { grid-template-columns:1fr; } .bio-photo { max-width:140px; } }
+
+    /* footer */
+    footer { text-align: center; font-size: 12px; color: var(--dim); font-family: var(--fd); letter-spacing: 0.05em; padding-top: 24px; border-top: 1px solid var(--border); }
+
+    /* ── CHAT WIDGET ── */
+    #chat-widget { position:fixed; bottom:24px; right:24px; z-index:1000; font-family:var(--fb); }
+    .chat-btn { width:58px; height:58px; border-radius:50%; background:var(--green); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 24px rgba(0,255,136,0.3); transition:transform 0.2s,box-shadow 0.2s; position:relative; color:#000; }
+    .chat-btn:hover { transform:scale(1.08); }
+    .chat-pulse { position:absolute; top:-1px; right:-1px; width:14px; height:14px; background:var(--red); border-radius:50%; border:2px solid var(--bg); animation:pulse-anim 2.5s infinite; }
+    @keyframes pulse-anim { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
+    .chat-ring { position:absolute; inset:-2px; border-radius:50%; border:2px solid var(--green); opacity:0; pointer-events:none; animation:ring-anim 5s ease-out infinite; }
+    .chat-ring:nth-child(2){animation-delay:0.5s}
+    @keyframes ring-anim { 0%{transform:scale(1);opacity:0.65} 30%{transform:scale(1.9);opacity:0} 100%{transform:scale(1.9);opacity:0} }
+    .chat-panel { position:absolute; bottom:70px; right:0; width:380px; background:#1C1C1C; border:1px solid #2A2A2A; border-radius:16px; overflow:hidden; box-shadow:0 20px 64px rgba(0,0,0,0.6); display:none; flex-direction:column; animation:panel-in 0.2s ease; }
+    @keyframes panel-in { from{opacity:0;transform:translateY(8px) scale(0.98)} to{opacity:1;transform:none} }
+    .chat-panel.open { display:flex; }
+    @media(max-width:420px){.chat-panel{width:calc(100vw - 48px)}}
+    .chat-header { padding:14px 16px; background:#222; border-bottom:1px solid #2A2A2A; display:flex; align-items:center; gap:10px; }
+    .chat-avatar { width:34px; height:34px; background:rgba(0,255,136,0.07); border:1px solid rgba(0,255,136,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .chat-hname { font-family:var(--fd); font-size:14px; font-weight:600; color:var(--white); margin-bottom:2px; }
+    .chat-hstatus { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); }
+    .status-dot { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse-anim 2s infinite; }
+    .chat-msgs { height:360px; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; scroll-behavior:smooth; }
+    .chat-msgs::-webkit-scrollbar{width:2px} .chat-msgs::-webkit-scrollbar-thumb{background:#333}
+    .msg { max-width:86%; padding:10px 13px; border-radius:12px; font-size:13.5px; line-height:1.55; white-space:pre-wrap; }
+    .msg-bot { background:#2A2A2A; color:var(--white); align-self:flex-start; border-bottom-left-radius:3px; }
+    .msg-user { background:var(--green); color:#000; align-self:flex-end; border-bottom-right-radius:3px; font-weight:500; }
+    .typing { display:flex; gap:4px; align-items:center; padding:12px 14px; background:#2A2A2A; border-radius:12px; border-bottom-left-radius:3px; align-self:flex-start; width:fit-content; }
+    .typing span { width:6px; height:6px; background:var(--muted); border-radius:50%; animation:tbounce 1.4s infinite ease-in-out; }
+    .typing span:nth-child(2){animation-delay:0.2s} .typing span:nth-child(3){animation-delay:0.4s}
+    @keyframes tbounce { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-5px);opacity:1} }
+    .chat-footer { padding:10px 12px; border-top:1px solid #2A2A2A; background:#222; display:flex; gap:8px; }
+    .chat-input { flex:1; background:#2A2A2A; border:1px solid #333; border-radius:8px; padding:9px 13px; font-size:13px; color:var(--white); font-family:var(--fb); outline:none; transition:border-color 0.2s; }
+    .chat-input:focus { border-color:rgba(0,255,136,0.3); }
+    .chat-input::placeholder { color:#444; }
+    .chat-send { width:36px; height:36px; background:var(--green); border:none; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#000; flex-shrink:0; transition:background 0.15s,transform 0.15s; }
+    .chat-send:hover { background:#1aff96; transform:scale(1.05); }
+    .chat-send:disabled { opacity:0.4; cursor:default; transform:none; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- TÍTULO -->
+  <div class="eyebrow">Mini Curso · IA de Vendas no WhatsApp</div>
+  <h1>Uma IA vendendo no seu<br>WhatsApp por <span class="g">R$150.</span></h1>
+  <p class="tagline">Qualifica lead, quebra objeção e fecha venda em 3 segundos.<br>A mesma IA que vendeu R$140.000 no WhatsApp do meu cliente.</p>
+
+  <!-- VSL -->
+  <div class="video-wrap">
+    <iframe
+      src="https://www.loom.com/embed/41ed3a9c0c6a4250a757e0eadb7315df"
+      style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+
+  <!-- PREÇO -->
+  <div class="price-block">
+    <div class="price-from">De R$497 por:</div>
+    <div class="price-val">R$150</div>
+    <div class="price-sub">à vista · acesso por 12 meses</div>
+  </div>
+
+  <!-- BOTÃO COMPRAR -->
+  <a href="https://buy.stripe.com/9B628s7XmdRH5Hq7By9fW0d" class="btn-buy">
+    INSTALAR MEU VENDEDOR DE IA — R$150
+  </a>
+
+  <!-- BOTÃO FALAR COM IA -->
+  <button class="btn-ia" id="open-chat-btn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Converse com a IA antes de comprar
+  </button>
+
+  <div class="micro">Acesso imediato &nbsp;·&nbsp; 12 meses &nbsp;·&nbsp; Garantia tripla</div>
+
+  <!-- O QUE ENTREGA -->
+  <div class="delivers-title">O que vem incluso</div>
+  <div class="deliver-list">
+    <div class="deliver-item">
+      <div class="di-num">01</div>
+      <div>
+        <div class="di-name">Curso Vendedor de IA</div>
+        <div class="di-desc">Instalação completa, módulo a módulo. Cada passo mostra exatamente o que clicar, copiar e colar. Acesso por 12 meses.</div>
+      </div>
+    </div>
+    <div class="deliver-item">
+      <div class="di-num">02</div>
+      <div>
+        <div class="di-name">Bônus — O Fluxo Pronto (JSON do n8n)</div>
+        <div class="di-desc">O fluxo que gerou R$140K em produção. Importa com 2 cliques, ajusta credenciais, tá rodando.</div>
+      </div>
+    </div>
+    <div class="deliver-item">
+      <div class="di-num">03</div>
+      <div>
+        <div class="di-name">Bônus — Suporte do Claudinei 24/7</div>
+        <div class="di-desc">Travou em algum passo? A IA do curso te responde na hora, qualquer dia, qualquer hora.</div>
+      </div>
+    </div>
+    <div class="deliver-item">
+      <div class="di-num">04</div>
+      <div>
+        <div class="di-name">Bônus — Guia Pré-requisitos Express</div>
+        <div class="di-desc">Passo a passo pra configurar WhatsApp Business API + n8n + VPS do zero em 48h.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GARANTIA -->
+  <div class="guarantee">
+    <div class="guarantee-text"><strong>Garantia de 7 dias.</strong> Não gostou por qualquer motivo — devolvo 100%. Sem pergunta, sem burocracia.</div>
+  </div>
+
+  <!-- BOTÃO COMPRAR FINAL -->
+  <a href="https://buy.stripe.com/9B628s7XmdRH5Hq7By9fW0d" class="btn-buy">
+    INSTALAR MEU VENDEDOR DE IA — R$150
+  </a>
+  <div class="micro" style="margin-top:12px">De R$497 por R$150 &nbsp;·&nbsp; Acesso imediato &nbsp;·&nbsp; 7 dias de garantia</div>
+
+  <!-- QUEM ENSINA -->
+  <div class="sep"></div>
+  <div class="bio-grid">
+    <img src="/gobatto.jpg" alt="Augusto Gobatto" class="bio-photo" />
+    <div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:10px">Quem ensina</div>
+      <h2 style="font-family:var(--fd);font-size:22px;font-weight:800;margin-bottom:14px">Augusto Gobatto</h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:10px">
+        9 anos construindo negócios digitais. Já fez múltiplos 6 em 7.
+      </p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:16px">
+        Hoje usa IA pra rodar negócios sem equipe. A IA de vendas que gerou R$140K? Ele montou.
+      </p>
+      <p style="font-size:15px;font-family:var(--fd);font-weight:700">Não ensina teoria. Ensina o que roda.</p>
+      <div style="display:flex;gap:24px;margin-top:18px;flex-wrap:wrap">
+        <div><div style="font-family:var(--fd);font-size:22px;font-weight:800">9+</div><div style="font-size:11px;color:var(--muted)">anos em negócios digitais</div></div>
+        <div><div style="font-family:var(--fd);font-size:22px;font-weight:800">R$140K</div><div style="font-size:11px;color:var(--muted)">vendidos pela IA</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+  <footer>Vendedor de IA · Augusto Gobatto &nbsp;·&nbsp; Dúvidas? Fala com a IA no chat ↗</footer>
+
+</div>
+
+<!-- CHAT WIDGET -->
+<div id="chat-widget">
+  <div class="chat-panel" id="chat-panel">
+    <div class="chat-header">
+      <div class="chat-avatar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div>
+        <div class="chat-hname">Claudinei</div>
+        <div class="chat-hstatus"><span class="status-dot"></span>Online agora</div>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-footer">
+      <input id="chat-input" class="chat-input" type="text" placeholder="Sua dúvida sobre o Vendedor de IA..." autocomplete="off" />
+      <button class="chat-send" id="chat-send">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+  <button class="chat-btn" id="chat-btn">
+    <span class="chat-ring"></span>
+    <span class="chat-ring"></span>
+    <span class="chat-pulse"></span>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+</div>
+
+<script>
+  const WEBHOOK = 'https://n8n-n8n.0pqeuc.easypanel.host/webhook/3409a797-a9b1-4ca8-8699-5c63c405572b';
+
+  // Botão "Falar com IA" abre o chat
+  document.getElementById('open-chat-btn').addEventListener('click', () => {
+    document.getElementById('chat-btn').click();
+    setTimeout(() => {
+      document.getElementById('chat-panel')?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+  });
+
+  // Chat widget
+  (function() {
+    const btn   = document.getElementById('chat-btn');
+    const panel = document.getElementById('chat-panel');
+    const input = document.getElementById('chat-input');
+    const send  = document.getElementById('chat-send');
+    const msgs  = document.getElementById('chat-msgs');
+    let isOpen = false, isBusy = false, greeted = false;
+    let sid = sessionStorage.getItem('vsl_sid') || ('s_' + Math.random().toString(36).slice(2,10));
+    sessionStorage.setItem('vsl_sid', sid);
+
+    btn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      panel.classList.toggle('open', isOpen);
+      if (isOpen && !greeted) { greet(); greeted = true; }
+      if (isOpen) input?.focus();
+    });
+    input?.addEventListener('keydown', e => { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); doSend(); } });
+    send?.addEventListener('click', doSend);
+
+    function greet() { addMsg('Fala! Aposto que você tá perdendo pelo menos 3 leads por semana porque demora pra responder no WhatsApp. Acertei?', 'bot'); }
+
+    function addMsg(text, type) {
+      const el = document.createElement('div');
+      el.className = `msg msg-${type}`;
+      el.innerHTML = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+      msgs.appendChild(el);
+      setTimeout(() => msgs.scrollTop = msgs.scrollHeight, 40);
+    }
+    function showTyping() {
+      const el = document.createElement('div');
+      el.className = 'typing'; el.id = 'typing';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      msgs.appendChild(el);
+      setTimeout(() => msgs.scrollTop = msgs.scrollHeight, 40);
+    }
+    function hideTyping() { document.getElementById('typing')?.remove(); }
+
+    async function doSend() {
+      if (isBusy || !input) return;
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      addMsg(text, 'user');
+      isBusy = true; if (send) send.disabled = true;
+      showTyping();
+      try {
+        const res = await fetch(WEBHOOK, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ message:text, sessionId:sid, source:'vsl_page', timestamp:new Date().toISOString() }) });
+        hideTyping();
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        addMsg(data.response || data.text || data.message || data.output || 'Desculpa, tenta de novo!', 'bot');
+      } catch { hideTyping(); addMsg('Erro de conexão. Tenta novamente.', 'bot'); }
+      finally { isBusy = false; if (send) send.disabled = false; input?.focus(); }
+    }
+  })();
+</script>
+</body>
+</html>
