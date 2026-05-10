@@ -1,13 +1,15 @@
 const BoxLoader = () => (
   <>
     <style>{`
-      .box-loader-wrap {
+      .box-loader-scene {
         --size: 28px;
         --duration: 800ms;
-        --green: #00FF88;
-        --dark: #0A0C0A;
-        --face-side: #00cc6e;
-        --face-top: #00ff88;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: calc(var(--size) * 1.5);
+      }
+      .box-loader-wrap {
         height: calc(var(--size) * 2);
         width: calc(var(--size) * 3);
         position: relative;
@@ -33,13 +35,13 @@ const BoxLoader = () => (
         width: var(--size);
         height: var(--size);
       }
-      .bl-face-front  { background: var(--green);    transform: translateZ(calc(var(--size) / 2)); }
-      .bl-face-back   { background: var(--green);    transform: rotateY(180deg) translateZ(calc(var(--size) / 2)); }
-      .bl-face-right  { background: var(--face-side); transform: rotateY(90deg) translateZ(calc(var(--size) / 2)); }
-      .bl-face-top    { background: var(--face-top);  transform: rotateX(90deg) translateZ(calc(var(--size) / 2)); }
+      .bl-face-front { background: var(--green);                    transform: translateZ(calc(var(--size) / 2)); }
+      .bl-face-back  { background: var(--green);                    transform: rotateY(180deg) translateZ(calc(var(--size) / 2)); }
+      .bl-face-right { background: rgba(255,255,255,0.5);           transform: rotateY(90deg) translateZ(calc(var(--size) / 2)); }
+      .bl-face-top   { background: rgba(255,255,255,0.75);          transform: rotateX(90deg) translateZ(calc(var(--size) / 2)); }
       @keyframes blBox1 {
         0%, 50% { transform: translate(100%, 0); }
-        100%     { transform: translate(200%, 0); }
+        100%    { transform: translate(200%, 0); }
       }
       @keyframes blBox2 {
         0%   { transform: translate(0, 100%); }
@@ -56,15 +58,17 @@ const BoxLoader = () => (
         100% { transform: translate(100%, 100%); }
       }
     `}</style>
-    <div className="box-loader-wrap">
-      {[1, 2, 3, 4].map((n) => (
-        <div key={n} className={`bl-box bl-box-${n}`}>
-          <div className="bl-face bl-face-front" />
-          <div className="bl-face bl-face-right" />
-          <div className="bl-face bl-face-top" />
-          <div className="bl-face bl-face-back" />
-        </div>
-      ))}
+    <div className="box-loader-scene">
+      <div className="box-loader-wrap">
+        {[1, 2, 3, 4].map((n) => (
+          <div key={n} className={`bl-box bl-box-${n}`}>
+            <div className="bl-face bl-face-front" />
+            <div className="bl-face bl-face-right" />
+            <div className="bl-face bl-face-top" />
+            <div className="bl-face bl-face-back" />
+          </div>
+        ))}
+      </div>
     </div>
   </>
 )

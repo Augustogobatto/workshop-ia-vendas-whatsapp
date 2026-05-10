@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import type { LessonContent, Module, Lesson, LessonProgress } from '@/lib/supabase/types'
 import { formatDuration } from '@/lib/utils'
 import { N8nDownload } from '@/components/workshop-n8n-download'
+import BoxLoader from '@/components/ui/box-loader'
 
 interface PageProps {
   params: {
@@ -169,8 +170,8 @@ export default function LessonPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100dvh', color: 'var(--text-muted)', fontSize: 13 }}>
-        Carregando aula...
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60dvh' }}>
+        <BoxLoader />
       </div>
     )
   }
