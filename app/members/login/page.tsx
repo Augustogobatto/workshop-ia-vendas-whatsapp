@@ -179,7 +179,7 @@ function LoginForm() {
               color: 'var(--text)',
             }}
           >
-            IA Revolution
+            CLUB
           </span>
         </div>
       </div>

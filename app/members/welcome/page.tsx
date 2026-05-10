@@ -58,7 +58,7 @@ export default async function WelcomePage() {
             color: 'var(--text)',
           }}
         >
-          IA Revolution
+          CLUB
         </span>
       </div>
 
