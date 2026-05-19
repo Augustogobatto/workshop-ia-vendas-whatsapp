@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oficina Claude Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f5f4f3;
+      --ink: #1a1915;
+      --orange: #D97757;
+    }
+
+    html, body {
+      background: var(--bg);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      color: var(--ink);
+    }
+
+    /* =====================
+       PAGES
+    ===================== */
+    .page {
+      position: fixed;
+      inset: 0;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      z-index: 1;
+    }
+    .page.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px);
+      z-index: 0;
+    }
+    #page-hero {
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    #page-hero::-webkit-scrollbar { display: none; }
+
+    /* =====================
+       PAGE 1 — CARTA
+    ===================== */
+    #page-carta { overflow: hidden; }
+
+    .scroller {
+      height: 100%;
+      overflow-y: scroll;
+      scrollbar-width: none;
+    }
+    .scroller::-webkit-scrollbar { display: none; }
+
+    .carta-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30vh clamp(1.5rem, 8vw, 5rem) 40vh;
+    }
+
+    .hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 14vh;
+    }
+    .hint-text {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: rgba(0,0,0,0.35);
+      text-align: center;
+      line-height: 1.8;
+    }
+    .hint-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+    }
+
+    .magic-text {
+      max-width: 54ch;
+      text-align: justify;
+      display: flex;
+      flex-direction: column;
+      gap: 2.4em;
+    }
+    .magic-text .gap-sm { margin-top: -1.6em; }
+    .magic-para { display: block; }
+
+    .magic-word {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      line-height: 1.65;
+      margin-right: 0.26em;
+      color: var(--ink);
+      opacity: 0.1;
+      transition: opacity 0.3s ease;
+      display: inline;
+    }
+    .magic-word.lit    { opacity: 1; }
+    .magic-word.italic { font-style: italic; }
+
+    .highlight-wrap {
+      display: inline;
+      background: linear-gradient(var(--orange), var(--orange)) no-repeat left center;
+      background-size: 0% 85%;
+      padding: 0.05em 0.2em;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      transition: background-size 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .highlight-wrap.active { background-size: 100% 85%; }
+
+    .question {
+      max-width: 54ch;
+      width: 100%;
+      margin-top: 5em;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none;
+    }
+    .question.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .question-text {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    .question-btns { display: flex; gap: 1rem; }
+    .q-btn {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+      color: var(--ink);
+      height: 2.8em;
+      padding: 0 1.4em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(26,25,21,0.25);
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      cursor: pointer;
+      background: none;
+    }
+    .q-btn:hover { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+    .blur {
+      pointer-events: none;
+      position: absolute;
+      left: 0; width: 100%;
+      height: 180px;
+      z-index: 10;
+    }
+    .blur-top {
+      top: 0;
+      background: linear-gradient(to top, transparent, var(--bg));
+      -webkit-mask-image: linear-gradient(to bottom, var(--bg) 50%, transparent);
+      mask-image: linear-gradient(to bottom, var(--bg) 50%, transparent);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+    .blur-bottom {
+      bottom: 0;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      -webkit-mask-image: linear-gradient(to top, var(--bg) 50%, transparent);
+      mask-image: linear-gradient(to top, var(--bg) 50%, transparent);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+
+    /* =====================
+       PAGE 2 — HERO
+    ===================== */
+
+    /* --- Hero section com hills --- */
+    .hero-section {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #hills-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: rgba(26,25,21,0.4);
+    }
+
+    .hero-tagline {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+      color: rgba(26,25,21,0.45);
+      font-style: italic;
+    }
+
+    .hero-h1 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.0;
+      color: var(--ink);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-scroll-hint span {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: rgba(26,25,21,0.3);
+    }
+    .hero-scroll-hint div {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, rgba(26,25,21,0.25), transparent);
+    }
+
+    /* --- Details section --- */
+    .details-section {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: clamp(4rem, 8vh, 6rem) clamp(1.5rem, 6vw, 3rem) clamp(4rem, 8vh, 6rem);
+    }
+
+    .details-intro {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      color: rgba(26,25,21,0.5);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .deliverables {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(26,25,21,0.12);
+      margin-bottom: 2.5rem;
+    }
+    .deliverable {
+      display: grid;
+      grid-template-columns: 1.8rem 1fr;
+      gap: 0 1.25rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(26,25,21,0.12);
+      align-items: start;
+    }
+    .deliverable-num {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      color: rgba(26,25,21,0.3);
+      padding-top: 0.3rem;
+    }
+    .deliverable-title {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+    .deliverable-desc {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.78rem, 1.3vw, 0.88rem);
+      color: rgba(26,25,21,0.5);
+      line-height: 1.65;
+    }
+
+    .details-note {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.82rem, 1.4vw, 0.92rem);
+      color: rgba(26,25,21,0.4);
+      line-height: 1.7;
+      margin-bottom: 3.5rem;
+      font-style: italic;
+    }
+
+    /* ── WhatsApp page ── */
+    .whats-wrap {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(2rem, 8vw, 5rem);
+      text-align: center;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .whats-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.3);
+      margin-bottom: 1.75rem;
+    }
+
+    .whats-question {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .whats-sub {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+      color: rgba(26,25,21,0.4);
+      margin-bottom: 3rem;
+      line-height: 1.6;
+    }
+
+    .whats-form {
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .whats-field {
+      position: relative;
+      border-bottom: 1px solid rgba(26,25,21,0.25);
+      padding-bottom: 0.75rem;
+      transition: border-color 0.2s;
+    }
+    .whats-field:focus-within {
+      border-color: var(--orange);
+    }
+
+    .whats-field input {
+      width: 100%;
+      background: none;
+      border: none;
+      outline: none;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--ink);
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+    .whats-field input::placeholder {
+      color: rgba(26,25,21,0.2);
+    }
+
+    .whats-btns {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .whats-submit {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      background: none;
+      border: 1px solid rgba(26,25,21,0.25);
+      padding: 0.85em 2.5em;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      width: 100%;
+    }
+    .whats-submit:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    .whats-skip {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      color: rgba(26,25,21,0.3);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .whats-skip:hover { color: rgba(26,25,21,0.6); }
+
+    /* ── Instrutor ── */
+    .instructor {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2.5rem;
+      align-items: stretch;
+      padding: 3rem 0;
+      border-top: 1px solid rgba(26,25,21,0.12);
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 520px) {
+      .instructor { grid-template-columns: 1fr; }
+    }
+
+    .instructor-photo {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: grayscale(15%);
+    }
+
+    .instructor-body {}
+
+    .instructor-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(26,25,21,0.35);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .instructor-name {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+
+    .instructor-bio {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.8rem, 1.4vw, 0.88rem);
+      color: rgba(26,25,21,0.5);
+      line-height: 1.75;
+    }
+
+    /* ── CTA block ── */
+    .cta-block {
+      border-top: 1px solid rgba(26,25,21,0.15);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cta-lote {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(26,25,21,0.35);
+      margin-bottom: 0.5rem;
+    }
+
+    .cta-price {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(4rem, 12vw, 7rem);
+      line-height: 0.95;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-urgency {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--orange);
+      margin-bottom: 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cta-urgency::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      flex-shrink: 0;
+    }
+
+    .btn-primary {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.82rem, 1.5vw, 0.92rem);
+      letter-spacing: 0.06em;
+      color: #fff;
+      background: var(--orange);
+      padding: 1.1rem 2rem;
+      text-decoration: none;
+      transition: background 0.18s;
+      display: block;
+      text-align: center;
+      width: 100%;
+      margin-bottom: 1.25rem;
+    }
+    .btn-primary:hover { background: #c4673f; }
+
+    .btn-secondary {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.8rem, 1.4vw, 0.88rem);
+      color: rgba(26,25,21,0.38);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: color 0.18s;
+      width: 100%;
+      text-align: center;
+    }
+    .btn-secondary:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+  <!-- ====== PAGE 1: CARTA ====== -->
+  <div class="page" id="page-carta">
+    <div class="blur blur-top"></div>
+    <div class="blur blur-bottom"></div>
+
+    <div class="scroller" id="scroller">
+      <div class="carta-content">
+
+        <div class="hint">
+          <span class="hint-text">Role a página</span>
+          <div class="hint-line"></div>
+        </div>
+
+        <div class="magic-text" id="magicText"></div>
+
+        <div class="question" id="question">
+          <p class="question-text">E aí, bora?</p>
+          <div class="question-btns">
+            <button class="q-btn" id="btn-sim">Bora</button>
+            <button class="q-btn" id="btn-nao">Tô fora</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== PAGE 1.5: WHATSAPP ====== -->
+  <div class="page hidden" id="page-whats">
+    <div class="blur blur-top"></div>
+    <div class="blur blur-bottom"></div>
+
+    <div class="whats-wrap">
+      <p class="whats-label">Antes de continuar</p>
+      <h2 class="whats-question">Qual o seu<br>WhatsApp?</h2>
+      <form class="whats-form" id="whatsForm">
+        <div class="whats-field">
+          <input type="tel" id="phoneInput" placeholder="(11) 99999-9999" autocomplete="tel" inputmode="numeric">
+        </div>
+        <div class="whats-btns">
+          <button type="submit" class="whats-submit">Continuar →</button>
+          <button type="button" class="whats-skip" id="whatsSkip">Prefiro não informar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====== PAGE 2: HERO ====== -->
+  <div class="page hidden" id="page-hero">
+
+    <!-- Hero com hills -->
+    <div class="hero-section">
+      <canvas id="hills-canvas"></canvas>
+      <canvas id="lightning-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
+
+      <div class="hero-text">
+        <p class="hero-label">05 de junho · Ao vivo</p>
+        <p class="hero-tagline">Seus Funcionários de IA em 3 Horas</p>
+        <h1 class="hero-h1">Oficina<br>Claude Code</h1>
+      </div>
+
+      <div class="hero-scroll-hint">
+        <span>Role para ver</span>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="details-section">
+
+      <p class="details-intro">Numa manhã, do zero, você sai com tudo isso rodando:</p>
+
+      <div class="deliverables">
+        <div class="deliverable">
+          <span class="deliverable-num">01</span>
+          <div>
+            <div class="deliverable-title">Sua VPS</div>
+            <div class="deliverable-desc">Computador na nuvem, seu, ligado 24/7. Base de tudo.</div>
+          </div>
+        </div>
+        <div class="deliverable">
+          <span class="deliverable-num">02</span>
+          <div>
+            <div class="deliverable-title">Cérebro</div>
+            <div class="deliverable-desc">3 camadas de memória. Lembra, aprende, conecta informações. Sozinho.</div>
+          </div>
+        </div>
+        <div class="deliverable">
+          <span class="deliverable-num">03</span>
+          <div>
+            <div class="deliverable-title">Bot Assistente Pessoal</div>
+            <div class="deliverable-desc">Seu canivete. Agenda, lembrete, pesquisa, resume conteúdo. Responde por áudio, texto e imagem.</div>
+          </div>
+        </div>
+        <div class="deliverable">
+          <span class="deliverable-num">04</span>
+          <div>
+            <div class="deliverable-title">Bot de Projeto</div>
+            <div class="deliverable-desc">Conectado a Hotmart, ClickUp, Google Sheets. Puxa relatório, avisa quando vende, atualiza status. Sem você abrir nenhuma aba.</div>
+          </div>
+        </div>
+        <div class="deliverable">
+          <span class="deliverable-num">05</span>
+          <div>
+            <div class="deliverable-title">Bot Financeiro</div>
+            <div class="deliverable-desc">Processa fatura, categoriza gasto, manda alerta. Seu CFO de IA por R$50/mês.</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="details-note">E depois da oficina, você cria quantos quiser. Copy, atendimento, ads, personal trainer. O sistema é o mesmo — muda o prompt e as conexões.</p>
+
+      <div class="cta-block">
+        <span class="cta-lote">Lote 1 de 4 &nbsp;·&nbsp; 05 de junho</span>
+        <div class="cta-price">R$70</div>
+        <span class="cta-urgency">Restam 15 vagas neste lote</span>
+        <a href="https://buy.stripe.com/8x27sM2D2dRHb1Kf409fW0e" class="btn-primary">Quero me inscrever</a>
+        <a href="[LINK_TELEGRAM]"  class="btn-secondary">Tenho Dúvidas →</a>
+      </div>
+
+      <div class="instructor">
+        <img src="/claude-code/augusto.png" alt="Augusto Gobatto" class="instructor-photo">
+        <div class="instructor-body">
+          <span class="instructor-label">Quem ensina</span>
+          <h3 class="instructor-name">Augusto<br>Gobatto</h3>
+          <p class="instructor-bio">
+            Estou há 10 anos no digital. Comecei como gestor de tráfego em 2016, me tornei sócio de alguns projetos, e hoje coordeno operações de 8 dígitos de faturamento por ano.<br><br>
+            Sempre gostei muito de tecnologia, e dois meses atrás comecei meu time de IAs no Telegram. Hoje tenho 10 funcionários de IA rodando 24h — um faz follow-up de vendas, outro lê emails e resume, outro gera relatório de lançamento de hora em hora, outro gerencia anúncios no Meta sozinho.<br><br>
+            Basicamente consigo coordenar boa parte das minhas operações mandando áudio pelo celular.<br><br>
+            Na oficina, eu não vou ensinar teoria. Vou abrir a tela, mostrar o que já tá rodando, e te ajudar a montar o teu.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== CARTA SCRIPT ====== -->
+  <script>
+    const paragraphs = [
+      { text: "Menos conversinha com IA." },
+      { text: "Mais IA trabalhando por você.", highlight: { from: 1 } },
+      { text: "Nos últimos 2 meses, com Claude Code, eu montei 10 funcionários de IA que trabalham pra mim." },
+      { text: "Checam email, mandam relatório de vendas, monitoram gastos pessoais, qualificam lead, criam copy, gerenciam anúncio, dão suporte aos alunos... e por aí vai." },
+      { text: "Tudo sozinhos." },
+      { text: "Sem reclamar.",            compact: true },
+      { text: "Sem esquecer de nada.",    compact: true },
+      { text: "Sem processo trabalhista.", compact: true },
+      { text: "Eu mando um áudio no Telegram, eles executam." },
+      { text: "Não é nenhuma mágica, óbvio." },
+      { text: "Eles não geram dinheiro sozinhos, nem me fizeram demitir todo mundo." },
+      { text: "Mas eles me tornaram no mínimo 5x mais produtivo. E fizeram eu conseguir ter tempo para lançar esse projeto aqui." },
+      { text: "Dia 05 de junho, numa tarde, eu vou montar esses funcionários de IA ao vivo, do zero, passo a passo, pra você sair com os seus rodando." },
+      { text: "PS: Sem mexer em código.", italic: true },
+    ]
+
+    const container = document.getElementById('magicText')
+    const scroller  = document.getElementById('scroller')
+    let highlightWrap = null
+
+    paragraphs.forEach(({ text, highlight, compact, italic }) => {
+      const block = document.createElement('span')
+      block.className = 'magic-para' + (compact ? ' gap-sm' : '')
+
+      text.split(' ').forEach((word, i) => {
+        const inHighlight = highlight && i >= (highlight.from ?? 0) &&
+                            (highlight.to === undefined || i <= highlight.to)
+        if (inHighlight && !highlightWrap) {
+          highlightWrap = document.createElement('span')
+          highlightWrap.className = 'highlight-wrap'
+          block.appendChild(highlightWrap)
+        }
+        if (!inHighlight && highlightWrap) highlightWrap = null
+
+        const span = document.createElement('span')
+        span.className = 'magic-word' + (italic ? ' italic' : '')
+        span.textContent = word + ' '
+        ;(highlightWrap || block).appendChild(span)
+      })
+
+      highlightWrap = null
+      container.appendChild(block)
+    })
+
+    const allWords = container.querySelectorAll('.magic-word')
+    const question = document.getElementById('question')
+
+    function update() {
+      const max      = scroller.scrollHeight - scroller.clientHeight
+      const progress = max > 0 ? scroller.scrollTop / max : 0
+      allWords.forEach((el, i) => {
+        el.classList.toggle('lit', progress >= i / allWords.length)
+        const wrap = el.closest('.highlight-wrap')
+        if (wrap) {
+          wrap.classList.toggle('active', wrap.querySelectorAll('.magic-word')[0].classList.contains('lit'))
+        }
+      })
+      if (allWords[allWords.length - 1].classList.contains('lit')) question.classList.add('visible')
+    }
+
+    scroller.addEventListener('scroll', update, { passive: true })
+    update()
+
+    let lightningStarted = false
+
+    function goToStripe() {
+      window.location.href = 'https://buy.stripe.com/8x27sM2D2dRHb1Kf409fW0e'
+    }
+
+    function showWhats() {
+      document.getElementById('page-hero').classList.add('hidden')
+      document.getElementById('page-whats').classList.remove('hidden')
+      setTimeout(() => document.getElementById('phoneInput').focus(), 400)
+    }
+
+    // Carta → Hero (direto)
+    document.getElementById('btn-sim').addEventListener('click', () => {
+      document.getElementById('page-carta').classList.add('hidden')
+      const hero = document.getElementById('page-hero')
+      hero.classList.remove('hidden')
+      hero.scrollTop = 0
+      if (!lightningStarted) { lightningStarted = true; setTimeout(initLightning, 50) }
+    })
+
+    // Hero CTA → WhatsApp
+    document.querySelector('.btn-primary').addEventListener('click', e => {
+      e.preventDefault()
+      showWhats()
+    })
+
+    // Máscara telefone BR
+    document.getElementById('phoneInput').addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11)
+      if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3')
+      else if (v.length > 6) v = v.replace(/^(\d{2})(\d{4})(\d*)$/, '($1) $2-$3')
+      else if (v.length > 2) v = v.replace(/^(\d{2})(\d*)$/, '($1) $2')
+      else if (v.length > 0) v = v.replace(/^(\d*)$/, '($1')
+      e.target.value = v
+    })
+
+    // WhatsApp → Stripe
+    document.getElementById('whatsForm').addEventListener('submit', e => {
+      e.preventDefault()
+      const phone = document.getElementById('phoneInput').value.replace(/\D/g, '')
+      if (phone.length < 10) {
+        document.querySelector('.whats-field').style.borderColor = 'var(--orange)'
+        return
+      }
+      goToStripe()
+    })
+
+    document.getElementById('whatsSkip').addEventListener('click', goToStripe)
+  </script>
+
+  <!-- ====== THREE.JS HILLS ====== -->
+  <script type="module">
+    import * as THREE from 'three'
+
+    const canvas   = document.getElementById('hills-canvas')
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true })
+    renderer.setClearColor(0x000000, 0)
+
+    const scene  = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(45, 1, 1, 10000)
+    camera.position.set(0, 16, 125)
+    camera.lookAt(new THREE.Vector3(0, 28, 0))
+
+    const clock    = new THREE.Clock()
+    const uniforms = { time: { value: 0 } }
+
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(256, 256, 256, 256),
+      new THREE.RawShaderMaterial({
+        uniforms, transparent: true,
+        vertexShader: `
+          attribute vec3 position;uniform mat4 projectionMatrix,modelViewMatrix;uniform float time;varying vec3 vPosition;
+          mat4 rotateX(float r){return mat4(1,0,0,0,0,cos(r),-sin(r),0,0,sin(r),cos(r),0,0,0,0,1);}
+          vec3 m3(vec3 x){return x-floor(x*(1./289.))*289.;}vec4 m4(vec4 x){return x-floor(x*(1./289.))*289.;}
+          vec4 perm(vec4 x){return m4(((x*34.)+1.)*x);}vec4 tis(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+          vec3 fade(vec3 t){return t*t*t*(t*(t*6.-15.)+10.);}
+          float cnoise(vec3 P){
+            vec3 Pi0=floor(P),Pi1=Pi0+1.;Pi0=m3(Pi0);Pi1=m3(Pi1);
+            vec3 Pf0=fract(P),Pf1=Pf0-1.;
+            vec4 ix=vec4(Pi0.x,Pi1.x,Pi0.x,Pi1.x),iy=vec4(Pi0.yy,Pi1.yy),iz0=Pi0.zzzz,iz1=Pi1.zzzz;
+            vec4 ixy=perm(perm(ix)+iy),ixy0=perm(ixy+iz0),ixy1=perm(ixy+iz1);
+            vec4 gx0=ixy0*(1./7.),gy0=fract(floor(gx0)*(1./7.))-.5;gx0=fract(gx0);
+            vec4 gz0=vec4(.5)-abs(gx0)-abs(gy0),sz0=step(gz0,vec4(0.));gx0-=sz0*(step(0.,gx0)-.5);gy0-=sz0*(step(0.,gy0)-.5);
+            vec4 gx1=ixy1*(1./7.),gy1=fract(floor(gx1)*(1./7.))-.5;gx1=fract(gx1);
+            vec4 gz1=vec4(.5)-abs(gx1)-abs(gy1),sz1=step(gz1,vec4(0.));gx1-=sz1*(step(0.,gx1)-.5);gy1-=sz1*(step(0.,gy1)-.5);
+            vec3 g000=vec3(gx0.x,gy0.x,gz0.x),g100=vec3(gx0.y,gy0.y,gz0.y),g010=vec3(gx0.z,gy0.z,gz0.z),g110=vec3(gx0.w,gy0.w,gz0.w);
+            vec3 g001=vec3(gx1.x,gy1.x,gz1.x),g101=vec3(gx1.y,gy1.y,gz1.y),g011=vec3(gx1.z,gy1.z,gz1.z),g111=vec3(gx1.w,gy1.w,gz1.w);
+            vec4 n0=tis(vec4(dot(g000,g000),dot(g010,g010),dot(g100,g100),dot(g110,g110)));
+            g000*=n0.x;g010*=n0.y;g100*=n0.z;g110*=n0.w;
+            vec4 n1=tis(vec4(dot(g001,g001),dot(g011,g011),dot(g101,g101),dot(g111,g111)));
+            g001*=n1.x;g011*=n1.y;g101*=n1.z;g111*=n1.w;
+            float n000=dot(g000,Pf0),n100=dot(g100,vec3(Pf1.x,Pf0.yz)),n010=dot(g010,vec3(Pf0.x,Pf1.y,Pf0.z)),n110=dot(g110,vec3(Pf1.xy,Pf0.z));
+            float n001=dot(g001,vec3(Pf0.xy,Pf1.z)),n101=dot(g101,vec3(Pf1.x,Pf0.y,Pf1.z)),n011=dot(g011,vec3(Pf0.x,Pf1.yz)),n111=dot(g111,Pf1);
+            vec3 fxyz=fade(Pf0);vec4 nz=mix(vec4(n000,n100,n010,n110),vec4(n001,n101,n011,n111),fxyz.z);
+            vec2 nyz=mix(nz.xy,nz.zw,fxyz.y);return 2.2*mix(nyz.x,nyz.y,fxyz.x);
+          }
+          void main(){
+            vec3 p=(rotateX(radians(90.))*vec4(position,1.)).xyz;float s=sin(radians(p.x/128.*90.));
+            vec3 np=p+vec3(0,0,time*-30.);float n1=cnoise(np*.08),n2=cnoise(np*.06),n3=cnoise(np*.4);
+            vec3 lp=p+vec3(0,n1*s*8.+n2*s*8.+n3*(abs(s)*2.+.5)+pow(s,2.)*40.,0);
+            vPosition=lp;gl_Position=projectionMatrix*modelViewMatrix*vec4(lp,1.);
+          }`,
+        fragmentShader: `precision highp float;varying vec3 vPosition;
+          void main(){float o=(96.-length(vPosition))/256.*.6;gl_FragColor=vec4(vec3(0.6),o);}`
+      })
+    )
+    scene.add(plane)
+
+    function resize() {
+      const w = canvas.clientWidth, h = canvas.clientHeight
+      camera.aspect = w/h; camera.updateProjectionMatrix()
+      renderer.setSize(w, h, false)
+    }
+    function loop() {
+      uniforms.time.value += clock.getDelta()*.5
+      renderer.render(scene, camera)
+      requestAnimationFrame(loop)
+    }
+    window.addEventListener('resize', resize)
+    resize(); loop()
+  </script>
+
+  <!-- ====== LIGHTNING ====== -->
+  <script>
+    function initLightning() {
+      const canvas = document.getElementById('lightning-canvas')
+      const ctx    = canvas.getContext('2d')
+      let W, H, dpr
+
+      function resize() {
+        dpr = window.devicePixelRatio || 1
+        W   = canvas.clientWidth
+        H   = canvas.clientHeight
+        canvas.width  = W * dpr
+        canvas.height = H * dpr
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      }
+
+      // Recursive midpoint displacement — returns array of [x,y] points
+      function bolt(x1, y1, x2, y2, rough, depth) {
+        if (depth === 0) return [[x1,y1],[x2,y2]]
+        const mx  = (x1+x2)/2, my = (y1+y2)/2
+        const dx  = x2-x1,    dy = y2-y1
+        const len = Math.hypot(dx, dy)
+        const nx  = -dy/len,   ny = dx/len
+        const off = (Math.random()-.5) * len * rough
+        const px  = mx + nx*off, py = my + ny*off
+        return [
+          ...bolt(x1,y1,px,py, rough*.92, depth-1).slice(0,-1),
+          ...bolt(px,py,x2,y2, rough*.92, depth-1)
+        ]
+      }
+
+      // Draw a path with glow
+      function stroke(pts, alpha, w) {
+        if (pts.length < 2) return
+        const r = 217, g = 119, b = 87
+
+        const path = () => {
+          ctx.beginPath()
+          ctx.moveTo(pts[0][0], pts[0][1])
+          for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1])
+        }
+
+        // outer glow
+        path(); ctx.strokeStyle=`rgba(${r},${g},${b},${alpha*.07})`; ctx.lineWidth=w*12; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.stroke()
+        // mid glow
+        path(); ctx.strokeStyle=`rgba(${r},${g},${b},${alpha*.2})`;  ctx.lineWidth=w*4;  ctx.stroke()
+        // core
+        path(); ctx.strokeStyle=`rgba(${r},${g},${b},${alpha})`;     ctx.lineWidth=w;    ctx.stroke()
+      }
+
+      class Bolt {
+        constructor() {
+          const x1 = W * (.15 + Math.random()*.7)
+          const y1 = -10
+          const x2 = x1 + (Math.random()-.5)*W*.4
+          const y2 = H * (.4 + Math.random()*.45)
+
+          this.main     = bolt(x1,y1,x2,y2, .42, 8)
+          this.branches = []
+          // only 1 branch, sometimes none
+          if (Math.random() > .35) {
+            const t   = .3 + Math.random()*.4
+            const idx = Math.floor(t * this.main.length)
+            const [bx1,by1] = this.main[idx]
+            const bx2 = bx1 + (Math.random()-.5)*W*.2
+            const by2 = by1 + Math.random()*H*.25
+            this.branches.push(bolt(bx1,by1,bx2,by2, .38, 5))
+          }
+
+          this.drawDur = 90 + Math.random()*60    // ms to stroke top→bottom
+          this.holdDur = 80 + Math.random()*80    // ms to hold at full
+          this.fadeDur = 300 + Math.random()*200  // ms to fade out
+          this.life    = this.drawDur + this.holdDur + this.fadeDur
+          this.age     = 0
+          this.w       = .8 + Math.random()*.5
+        }
+
+        // how many points to draw (0→full as bolt travels down)
+        get visiblePts() {
+          const t = Math.min(this.age / this.drawDur, 1)
+          return Math.ceil(t * this.main.length)
+        }
+
+        get alpha() {
+          if (this.age < this.drawDur + this.holdDur) return 1
+          const t = (this.age - this.drawDur - this.holdDur) / this.fadeDur
+          return Math.max(0, 1 - t)
+        }
+
+        get dead() { return this.age >= this.life }
+
+        draw() {
+          const a   = this.alpha
+          const vis = this.visiblePts
+          if (vis < 2 || a <= 0) return
+
+          const mainSlice = this.main.slice(0, vis)
+          stroke(mainSlice, a, this.w)
+
+          // branches only appear once main bolt has passed their origin
+          this.branches.forEach(b => {
+            const [bx1] = b[0]
+            const idx = this.main.findIndex(p => p[0] === bx1)
+            if (idx !== -1 && vis > idx) stroke(b, a * .55, this.w * .5)
+          })
+        }
+      }
+
+      const bolts = []
+      let last = 0, nextSpawn = 1200
+
+      function frame(now) {
+        const dt = now - last; last = now
+        ctx.clearRect(0, 0, W, H)
+
+        for (let i = bolts.length-1; i >= 0; i--) {
+          bolts[i].age += dt
+          bolts[i].draw()
+          if (bolts[i].dead) bolts.splice(i, 1)
+        }
+
+        nextSpawn -= dt
+        if (nextSpawn <= 0 && bolts.length < 2) {
+          bolts.push(new Bolt())
+          nextSpawn = 1400 + Math.random()*1800
+        }
+
+        requestAnimationFrame(frame)
+      }
+
+      window.addEventListener('resize', resize)
+      resize()
+      bolts.push(new Bolt())
+      requestAnimationFrame(t => { last = t; frame(t) })
+    }
+  </script>
+
+</body>
+</html>
