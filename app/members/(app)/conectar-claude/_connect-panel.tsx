@@ -145,7 +145,7 @@ export function ConnectPanel({
               <li>
                 Em <strong style={{ color: 'var(--text)' }}>Nome</strong>, coloca:{' '}
                 <code
-                  onClick={() => navigator.clipboard.writeText('🦾 Push Club — Gobatto')}
+                  onClick={() => navigator.clipboard.writeText('Push Club Gobatto')}
                   title="Clica pra copiar"
                   style={{
                     padding: '2px 8px',
@@ -158,9 +158,9 @@ export function ConnectPanel({
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  🦾 Push Club — Gobatto
+                  Push Club Gobatto
                 </code>{' '}
-                <span style={{ fontSize: 11.5, color: 'var(--text-dim)' }}>(clica pra copiar)</span>
+                <span style={{ fontSize: 11.5, color: 'var(--text-dim)' }}>(clica pra copiar — sem emoji ou símbolos, o Claude não gosta)</span>
               </li>
               <li>Em <strong style={{ color: 'var(--text)' }}>URL</strong>, cola a URL que você copiou acima</li>
               <li>Confirma, abre um <strong style={{ color: 'var(--text)' }}>chat novo</strong> e pergunta qualquer coisa das aulas — ele responde citando o Club 🦾</li>
