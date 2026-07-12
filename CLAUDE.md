@@ -1,4 +1,4 @@
-# IA Revolution — Área de Membros
+# Push Club — Área de Membros
 
 Projeto Next.js 14 que serve duas coisas no mesmo deploy:
 - `/` → landing page do Workshop (HTML estático servido por `app/route.ts`)

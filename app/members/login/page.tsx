@@ -179,7 +179,7 @@ function LoginForm() {
               color: 'var(--text)',
             }}
           >
-            CLUB
+            PUSH CLUB
           </span>
         </div>
       </div>

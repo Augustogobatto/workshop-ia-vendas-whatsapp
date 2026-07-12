@@ -84,7 +84,7 @@ export function AppShell({ userName, userEmail, ownedProducts = [], children }: 
               fontFamily: 'var(--font-display)', fontWeight: 700,
               fontSize: 13, letterSpacing: '0.04em', textTransform: 'uppercase',
               color: 'var(--text)', whiteSpace: 'nowrap',
-            }}>CLUB</span>
+            }}>PUSH CLUB</span>
           </div>
 
           <button

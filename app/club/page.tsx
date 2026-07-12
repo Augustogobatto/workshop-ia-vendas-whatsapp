@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Club Apresentação',
+  title: 'Push Club — Apresentação',
 }
 
 export default function ClubPage() {
@@ -31,7 +31,7 @@ export default function ClubPage() {
           userSelect: 'none',
         }}
       >
-        Club
+        Push Club
       </h1>
 
       <div

@@ -62,7 +62,7 @@ export function Sidebar({ userName, userEmail, ownedProducts = [], open = true, 
       }}>
         <Link
           href="/members"
-          title="CLUB"
+          title="PUSH CLUB"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minWidth: 0 }}
         >
           <div style={{
@@ -80,7 +80,7 @@ export function Sidebar({ userName, userEmail, ownedProducts = [], open = true, 
                 fontSize: 13.5, letterSpacing: '0.04em', textTransform: 'uppercase',
                 color: 'var(--text)', lineHeight: 1.1, whiteSpace: 'nowrap',
               }}>
-                CLUB
+                PUSH CLUB
               </div>
               <div style={{ fontSize: 10, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 1 }}>
                 Área de membros

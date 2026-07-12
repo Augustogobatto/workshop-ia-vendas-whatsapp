@@ -3,7 +3,7 @@ import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'CLUB — Área de Membros',
+  title: 'Push Club — Área de Membros',
   description: 'Acesse seus cursos e workshops de IA para vendas.',
 }
 
