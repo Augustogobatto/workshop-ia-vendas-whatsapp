@@ -193,14 +193,12 @@ const handler = createMcpHandler(
   { basePath: '/api/mcp' }
 )
 
-type AuthResult = { mode: 'admin' } | { mode: 'student'; leadId: string; tokenId: string } | null
+type AuthResult = { mode: 'student'; leadId: string; tokenId: string } | null
 
 async function authenticate(req: Request): Promise<AuthResult> {
   const url = new URL(req.url)
   const key = url.searchParams.get('key') ?? req.headers.get('authorization')?.replace(/^Bearer\s+/i, '')
-  if (!key) return null
-  if (process.env.MCP_TEST_TOKEN && key === process.env.MCP_TEST_TOKEN) return { mode: 'admin' }
-  if (!key.startsWith('club_')) return null
+  if (!key || !key.startsWith('club_')) return null
   const { createHash } = await import('node:crypto')
   const hash = createHash('sha256').update(key).digest('hex')
   const sb = createServiceClient()
