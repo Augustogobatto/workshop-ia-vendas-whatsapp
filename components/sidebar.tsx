@@ -153,6 +153,21 @@ export function Sidebar({ userName, userEmail, ownedProducts = [], open = true, 
           )
         })}
 
+        {/* Conectar seu Claude */}
+        {(() => {
+          const href = '/members/conectar-claude'
+          const active = pathname.startsWith(href)
+          return (
+            <NavLink key="conectar-claude" href={href} label="Conectar seu Claude" active={active} open={open}>
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
+                <path d="M9.5 6.5 12.3 3.7a2.2 2.2 0 0 0-3.1-3.1L6.4 3.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" transform="translate(1 5)" />
+                <path d="M6.5 9.5 3.7 12.3a2.2 2.2 0 0 1-3.1-3.1L3.4 6.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" transform="translate(2 -2)" />
+                <path d="M6 10l4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+              </svg>
+            </NavLink>
+          )
+        })()}
+
         {/* Expandir — só aparece no modo compacto desktop */}
         {!open && !isMobile && onToggle && (
           <button
