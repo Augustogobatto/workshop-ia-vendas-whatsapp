@@ -73,9 +73,17 @@ export default async function CoursePage({ params }: PageProps) {
     if (mod) moduleByLessonId.set(lesson.id, mod)
   }
 
+  // Curso com aula única: pula a capa e vai direto pro conteúdo
+  if ((allLessons ?? []).length === 1) {
+    const only = (allLessons as Lesson[])[0]
+    const onlyModule = (modules as Module[]).find(m => m.id === only.module_id)
+    if (onlyModule) redirect(`/members/${productSlug}/${onlyModule.slug}/${only.slug}`)
+  }
+
   const totalLessons = (allLessons ?? []).length
+  const lessonIdsHere = new Set((allLessons as Lesson[]).map(l => l.id))
   const completedLessons = (progressRows ?? []).filter(
-    (p: LessonProgress) => p.status === 'completed'
+    (p: LessonProgress) => p.status === 'completed' && lessonIdsHere.has(p.lesson_id)
   ).length
   const progressPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
 
