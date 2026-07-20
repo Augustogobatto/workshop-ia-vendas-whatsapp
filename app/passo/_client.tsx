@@ -122,12 +122,8 @@ export default function PassoClient({
       if (city && country === 'BR') partes.push(`tá em ${city}${region ? `/${region}` : ''}`)
       const dev = detectDevice()
       if (dev) partes.push(`usando ${dev}`)
-      const hora = new Date()
-      partes.push(
-        `às ${hora.getHours()}h${String(hora.getMinutes()).padStart(2, '0')}`
-      )
 
-      if (partes.length > 1) {
+      if (partes.length >= 1) {
         await say('deixa eu adivinhar…', 900)
         await say(`você ${partes.join(', ')}.`, 1100)
         await say('acertei?', 700)
