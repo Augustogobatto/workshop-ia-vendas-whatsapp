@@ -376,7 +376,7 @@ export default function PassoClient({
               {loading ? '•••' : 'liberar meu acesso →'}
             </button>
             <p style={{ fontSize: 11, color: '#4a4a4a', lineHeight: 1.5, margin: 0 }}>
-              você recebe um código de 8 dígitos no email. sem senha, sem cartão.
+              você recebe um código de 8 dígitos no email.
             </p>
           </form>
         )}
