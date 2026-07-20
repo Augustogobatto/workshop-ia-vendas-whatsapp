@@ -24,3 +24,19 @@ export function getGreeting(name?: string | null): string {
 export function cn(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(' ')
 }
+
+/**
+ * Normaliza telefone BR pra formato canônico +55DDDNÚMERO.
+ * Aceita "+55 (48) 99174-8215", "48 991748215", "5548991748215" etc.
+ * Retorna null se não conseguir formar um número BR válido (10-11 dígitos após DDI).
+ */
+export function normalizePhoneBR(raw: string): string | null {
+  let d = raw.replace(/\D/g, '')
+  if (d.startsWith('00')) d = d.slice(2)
+  if (d.startsWith('55') && d.length >= 12) d = d.slice(2)
+  if (d.length === 10 || d.length === 11) {
+    const ddd = parseInt(d.slice(0, 2), 10)
+    if (ddd >= 11 && ddd <= 99) return `+55${d}`
+  }
+  return null
+}

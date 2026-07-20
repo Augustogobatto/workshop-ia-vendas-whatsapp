@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { normalizePhoneBR } from '@/lib/utils'
 
 type Stage = 'form' | 'otp'
 type Mode = 'signup' | 'login'
@@ -52,13 +53,21 @@ function LoginForm() {
   async function handleSendOtp(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
+    let phoneNorm: string | null = null
+    if (mode === 'signup') {
+      phoneNorm = normalizePhoneBR(phone)
+      if (!phoneNorm) {
+        setError('Confere o WhatsApp — DDD + número (ex.: 48 99917-4821).')
+        return
+      }
+    }
     setLoading(true)
     try {
       const { error } = await supabase.auth.signInWithOtp({
-        email,
+        email: email.trim().toLowerCase(),
         options: {
           shouldCreateUser: mode === 'signup',
-          ...(mode === 'signup' && { data: { name, phone } }),
+          ...(mode === 'signup' && { data: { name: name.trim(), phone: phoneNorm } }),
         },
       })
       if (error) throw error
@@ -82,7 +91,7 @@ function LoginForm() {
     setLoading(true)
     try {
       const { error } = await supabase.auth.verifyOtp({
-        email,
+        email: email.trim().toLowerCase(),
         token,
         type: 'email',
       })
