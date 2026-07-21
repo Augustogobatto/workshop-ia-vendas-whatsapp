@@ -166,12 +166,24 @@ const handler = createMcpHandler(
         const sb = createServiceClient()
         const { data: lesson, error } = await sb
           .from('lessons')
-          .select('id, name, duration_seconds')
+          .select('id, name, duration_seconds, content_type, content_body')
           .eq('slug', aula_slug)
           .eq('is_published', true)
           .single()
         if (error || !lesson) {
           return { content: [{ type: 'text', text: `Aula "${aula_slug}" não encontrada. Use listar_aulas para ver os slugs.` }] }
+        }
+        // Aula de texto: o conteúdo É o content_body (HTML -> texto legível)
+        if (lesson.content_type === 'text' && lesson.content_body) {
+          const plain = lesson.content_body
+            .replace(/<pre[^>]*>([\s\S]*?)<\/pre>/g, (_m: string, c: string) => '\n```\n' + c + '\n```\n')
+            .replace(/<h2[^>]*>([\s\S]*?)<\/h2>/g, '\n## $1\n')
+            .replace(/<li[^>]*>/g, '\n- ')
+            .replace(/<[^>]+>/g, '')
+            .replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim()
+          return { content: [{ type: 'text', text: `# ${lesson.name}\n\n${plain}` }] }
         }
         const { data: tr } = await sb
           .from('lesson_transcriptions')
