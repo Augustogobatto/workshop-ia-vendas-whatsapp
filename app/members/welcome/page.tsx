@@ -1,8 +1,11 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import type { CatalogProduct } from '@/lib/supabase/types'
 import { markWelcomed } from './actions'
 
 const VIDEO_URL = 'https://www.loom.com/embed/71b85bb424ea46eaaea17c8c3d3b98e9?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true'
+const TELEGRAM_URL = 'https://t.me/+eob6ZxFvkNFmNjI5'
+const TELEGRAM_BLUE = '#229ED9'
 
 export default async function WelcomePage() {
   const supabase = await createClient()
@@ -18,6 +21,12 @@ export default async function WelcomePage() {
   if (lead?.welcomed_at) redirect('/members')
 
   const firstName = lead?.first_name ?? lead?.name?.split(' ')[0] ?? null
+
+  // O grupo do Telegram é só de assinante. Quem criou conta grátis pelo lead
+  // magnet também cai nesta tela, então o convite fica atrás do acesso ao Club.
+  const { data: catalog } = await supabase.rpc('get_catalog_with_access')
+  const hasClub = ((catalog ?? []) as CatalogProduct[])
+    .some((p) => p.product_slug === 'club' && p.has_access)
 
   return (
     <div
@@ -107,6 +116,61 @@ export default async function WelcomePage() {
             Assista ao vídeo acima antes de entrar na área de membros.
             Tem informações importantes sobre o workshop e como aproveitar ao máximo.
           </p>
+
+          {hasClub && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 16,
+                flexWrap: 'wrap',
+                padding: '16px 18px',
+                marginBottom: 28,
+                background: 'rgba(34,158,217,0.07)',
+                border: `1px solid rgba(34,158,217,0.25)`,
+                borderRadius: 'var(--radius-lg)',
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: 'var(--text)',
+                    marginBottom: 4,
+                  }}
+                >
+                  Primeiro passo: entra no grupo
+                </p>
+                <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                  É no Telegram que a gente conversa todo dia, e onde o Claudinei responde suas dúvidas.
+                </p>
+              </div>
+              <a
+                href={TELEGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  padding: '11px 22px',
+                  background: TELEGRAM_BLUE,
+                  color: '#FFFFFF',
+                  borderRadius: 'var(--radius)',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: '0.03em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                }}
+              >
+                Entrar no grupo →
+              </a>
+            </div>
+          )}
 
           <form action={markWelcomed}>
             <button
