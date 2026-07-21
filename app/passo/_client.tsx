@@ -16,27 +16,12 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 type Msg = { text: string }
 type Stage = 'wake' | 'form' | 'otp'
 
-// modelo de iPhone por (largura, altura, dpr) do viewport CSS
-const IPHONES: Record<string, string> = {
-  '430x932x3': 'iPhone 15 Pro Max',
-  '393x852x3': 'iPhone 15 Pro',
-  '428x926x3': 'iPhone 13 Pro Max',
-  '390x844x3': 'iPhone 13',
-  '375x812x3': 'iPhone 11 Pro',
-  '414x896x2': 'iPhone 11',
-  '414x896x3': 'iPhone 11 Pro Max',
-  '375x667x2': 'iPhone SE',
-  '402x874x3': 'iPhone 16 Pro',
-  '440x956x3': 'iPhone 16 Pro Max',
-}
-
 function detectDevice(): string | null {
   const ua = navigator.userAgent
-  if (/iPhone/.test(ua)) {
-    const key = `${Math.min(screen.width, screen.height)}x${Math.max(screen.width, screen.height)}x${Math.round(window.devicePixelRatio)}`
-    const model = IPHONES[key]
-    return model ? `um ${model}` : 'um iPhone'
-  }
+  // Sem modelo de propósito. Dava pra adivinhar pelo viewport, mas modelos
+  // diferentes têm a MESMA medida (14 Pro / 15 Pro / 16 são todos 393x852x3),
+  // então errava e queimava a credibilidade logo na primeira frase.
+  if (/iPhone/.test(ua)) return 'um iPhone'
   if (/iPad/.test(ua)) return 'um iPad'
   if (/Android/.test(ua)) {
     const m = ua.match(/;\s*([A-Za-z0-9\-_ ]+)\s+Build\//)
@@ -137,7 +122,7 @@ export default function PassoClient({
   async function handleChoice(resposta: string) {
     setChoiceOn(false)
     setMessages((m) => [...m, { text: `> ${resposta}` }])
-    await say('pois é. nenhuma bruxaria — só o que seu navegador entrega pra QUALQUER página.', 500)
+    await say('pois é. nenhuma bruxaria, só o que seu navegador entrega pra QUALQUER página.', 500)
     await say('a diferença é que quase ninguém usa isso. igual quase ninguém usa IA de verdade no próprio negócio.', 600)
     await say('o tutorial que você veio buscar é o primeiro passo: um robô que te manda isto aqui todo dia 👇', 600)
     setMessages((m) => [...m, { text: '[card]' }])
@@ -162,7 +147,7 @@ export default function PassoClient({
     setError(null)
     const phoneNorm = normalizePhoneBR(phone)
     if (!phoneNorm) {
-      setError('Confere o WhatsApp — DDD + número (ex.: 48 99917-4821). Pode incluir o +55.')
+      setError('Confere o WhatsApp: DDD + número (ex.: 48 99917-4821). Pode incluir o +55.')
       return
     }
     setLoading(true)
@@ -358,7 +343,7 @@ export default function PassoClient({
               required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="whatsapp — 48 99999-9999"
+              placeholder="whatsapp (48 99999-9999)"
               autoComplete="tel"
               style={inputStyle}
             />
