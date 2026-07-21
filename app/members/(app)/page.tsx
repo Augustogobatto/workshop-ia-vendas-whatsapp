@@ -89,7 +89,7 @@ export default async function DashboardPage() {
       {/* Available (locked) products */}
       {available.length > 0 && (
         <section className="fade-up fade-up-2">
-          <SectionLabel>Próximos</SectionLabel>
+          <SectionLabel>Conteúdo exclusivo para membros do Club</SectionLabel>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             {available.map((product) => (
               <LockedProductCard key={product.product_id} product={product} />
