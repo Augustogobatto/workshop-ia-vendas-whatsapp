@@ -9,7 +9,7 @@ const DEFAULT_AI_W = 360
 interface AppShellProps {
   userName?: string | null
   userEmail?: string | null
-  ownedProducts?: { slug: string; name: string }[]
+  ownedProducts?: { slug: string; name: string; type?: string }[]
   children: React.ReactNode
 }
 

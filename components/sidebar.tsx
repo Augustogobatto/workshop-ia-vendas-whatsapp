@@ -4,6 +4,12 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
+const TOOL_ICON = (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+  </svg>
+)
+
 const WORKSHOP_ICON = (
   <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
     <path d="M2 4.5C2 3.67 2.67 3 3.5 3h9C13.33 3 14 3.67 14 4.5v7c0 .83-.67 1.5-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5v-7Z" stroke="currentColor" strokeWidth="1.4"/>
@@ -14,7 +20,7 @@ const WORKSHOP_ICON = (
 interface SidebarProps {
   userName?: string | null
   userEmail?: string | null
-  ownedProducts?: { slug: string; name: string }[]
+  ownedProducts?: { slug: string; name: string; type?: string }[]
   open?: boolean
   onToggle?: () => void
   isMobile?: boolean
@@ -148,7 +154,7 @@ export function Sidebar({ userName, userEmail, ownedProducts = [], open = true, 
           const active = pathname.startsWith(href)
           return (
             <NavLink key={product.slug} href={href} label={product.name} active={active} open={open}>
-              {WORKSHOP_ICON}
+              {product.type === 'tool' ? TOOL_ICON : WORKSHOP_ICON}
             </NavLink>
           )
         })}

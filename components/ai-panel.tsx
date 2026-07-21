@@ -31,7 +31,7 @@ function renderText(raw: string): string {
 function buildContext(
   pathname: string,
   userName?: string | null,
-  ownedProducts?: { slug: string; name: string }[],
+  ownedProducts?: { slug: string; name: string; type?: string }[],
 ) {
   const parts = pathname.replace(/^\/members\/?/, '').split('/').filter(Boolean)
 
@@ -84,7 +84,7 @@ interface AIPanelProps {
   width: number
   onWidthChange: (w: number) => void
   userName?: string | null
-  ownedProducts?: { slug: string; name: string }[]
+  ownedProducts?: { slug: string; name: string; type?: string }[]
   isMobile?: boolean
 }
 

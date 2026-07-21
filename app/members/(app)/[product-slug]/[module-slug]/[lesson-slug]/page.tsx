@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import DOMPurify from 'dompurify'
@@ -220,12 +220,36 @@ export default function LessonPage({ params }: PageProps) {
   const currentIdx = allOutlineLessons.findIndex((l) => l.slug === lessonSlug)
   const prevLesson = currentIdx > 0 ? allOutlineLessons[currentIdx - 1] : null
   const nextLesson = currentIdx < allOutlineLessons.length - 1 ? allOutlineLessons[currentIdx + 1] : null
+  const showOutline = allOutlineLessons.length > 1
+
+  // Botão "Copiar" em todo bloco <pre> do conteúdo (prompts, comandos)
+  const contentRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const root = contentRef.current
+    if (!root) return
+    root.querySelectorAll('pre').forEach((pre) => {
+      if (pre.querySelector('.ceq-copy')) return
+      const code = pre.innerText
+      const btn = document.createElement('button')
+      btn.className = 'ceq-copy'
+      btn.textContent = 'Copiar'
+      btn.style.cssText = 'position:absolute;top:8px;right:8px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-muted);cursor:pointer'
+      btn.onclick = () => {
+        navigator.clipboard.writeText(code)
+        btn.textContent = 'Copiado'
+        setTimeout(() => { btn.textContent = 'Copiar' }, 1500)
+      }
+      const el = pre as HTMLElement
+      el.style.position = 'relative'
+      el.appendChild(btn)
+    })
+  })
 
   return (
     <div style={{ display: 'flex', minHeight: '100dvh' }}>
 
       {/* Mobile outline drawer backdrop */}
-      {isMobile && outlineOpen && (
+      {isMobile && showOutline && outlineOpen && (
         <div
           onClick={() => setOutlineOpen(false)}
           style={{
@@ -265,15 +289,17 @@ export default function LessonPage({ params }: PageProps) {
               <span style={{ flex: 1, fontSize: 12.5, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'center' }}>
                 {lesson.lesson_name}
               </span>
-              <button
-                onClick={() => setOutlineOpen(true)}
-                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px', flexShrink: 0 }}
-                title="Ver conteúdo"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-                </svg>
-              </button>
+              {showOutline ? (
+                <button
+                  onClick={() => setOutlineOpen(true)}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px', flexShrink: 0 }}
+                  title="Ver conteúdo"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                  </svg>
+                </button>
+              ) : <span style={{ width: 24, flexShrink: 0 }} />}
             </>
           ) : (
             /* Desktop breadcrumb completo */
@@ -360,6 +386,7 @@ export default function LessonPage({ params }: PageProps) {
           {/* Text / Markdown body */}
           {lesson.content_type === 'text' && lesson.content_body && (
             <div
+              ref={contentRef}
               style={{
                 maxWidth: '68ch',
                 marginBottom: 32,
@@ -547,7 +574,8 @@ export default function LessonPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Course outline sidebar — sticky no desktop, drawer no mobile */}
+      {/* Course outline sidebar — só quando há mais de uma aula */}
+      {showOutline && (
       <div
         style={{
           width: 260,
@@ -670,6 +698,7 @@ export default function LessonPage({ params }: PageProps) {
           ))}
         </div>
       </div>
+      )}
     </div>
   )
 }

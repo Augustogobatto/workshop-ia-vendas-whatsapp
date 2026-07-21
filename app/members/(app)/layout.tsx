@@ -19,8 +19,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const { data: catalog = [] } = await supabase.rpc('get_catalog_with_access')
   const ownedProducts = (catalog ?? [])
-    .filter((p: { has_access: boolean; product_slug: string; product_name: string }) => p.has_access)
-    .map((p: { product_slug: string; product_name: string }) => ({ slug: p.product_slug, name: p.product_name }))
+    .filter((p: { has_access: boolean }) => p.has_access)
+    .map((p: { product_slug: string; product_name: string; product_type: string }) => (
+      { slug: p.product_slug, name: p.product_name, type: p.product_type }))
 
   return (
     <AppShell
