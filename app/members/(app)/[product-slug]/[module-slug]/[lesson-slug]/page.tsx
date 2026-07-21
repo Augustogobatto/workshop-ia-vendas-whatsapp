@@ -140,6 +140,29 @@ export default function LessonPage({ params }: PageProps) {
 
   useEffect(() => { loadData() }, [loadData])
 
+  // Botão "Copiar" em todo bloco <pre> do conteúdo (prompts, comandos)
+  const contentRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const root = contentRef.current
+    if (!root) return
+    root.querySelectorAll('pre').forEach((pre) => {
+      if (pre.querySelector('.ceq-copy')) return
+      const code = pre.innerText
+      const btn = document.createElement('button')
+      btn.className = 'ceq-copy'
+      btn.textContent = 'Copiar'
+      btn.style.cssText = 'position:absolute;top:8px;right:8px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-muted);cursor:pointer'
+      btn.onclick = () => {
+        navigator.clipboard.writeText(code)
+        btn.textContent = 'Copiado'
+        setTimeout(() => { btn.textContent = 'Copiar' }, 1500)
+      }
+      const el = pre as HTMLElement
+      el.style.position = 'relative'
+      el.appendChild(btn)
+    })
+  })
+
   async function markCompleteAndAdvance(nextUrl: string) {
     if (!leadId || !lesson || isDone) return
     setMarkingDone(true)
@@ -221,29 +244,6 @@ export default function LessonPage({ params }: PageProps) {
   const prevLesson = currentIdx > 0 ? allOutlineLessons[currentIdx - 1] : null
   const nextLesson = currentIdx < allOutlineLessons.length - 1 ? allOutlineLessons[currentIdx + 1] : null
   const showOutline = allOutlineLessons.length > 1
-
-  // Botão "Copiar" em todo bloco <pre> do conteúdo (prompts, comandos)
-  const contentRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const root = contentRef.current
-    if (!root) return
-    root.querySelectorAll('pre').forEach((pre) => {
-      if (pre.querySelector('.ceq-copy')) return
-      const code = pre.innerText
-      const btn = document.createElement('button')
-      btn.className = 'ceq-copy'
-      btn.textContent = 'Copiar'
-      btn.style.cssText = 'position:absolute;top:8px;right:8px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-muted);cursor:pointer'
-      btn.onclick = () => {
-        navigator.clipboard.writeText(code)
-        btn.textContent = 'Copiado'
-        setTimeout(() => { btn.textContent = 'Copiar' }, 1500)
-      }
-      const el = pre as HTMLElement
-      el.style.position = 'relative'
-      el.appendChild(btn)
-    })
-  })
 
   return (
     <div style={{ display: 'flex', minHeight: '100dvh' }}>
