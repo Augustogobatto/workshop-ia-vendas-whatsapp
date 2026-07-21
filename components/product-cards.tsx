@@ -9,6 +9,17 @@ const TYPE_LABEL: Record<string, string> = {
   workshop: 'Workshop',
   mentorship: 'Mentoria',
   community: 'Comunidade',
+  tool: 'Ferramenta',
+}
+
+function WrenchIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+      style={{ verticalAlign: '-2px', marginRight: 6 }} aria-hidden="true">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+    </svg>
+  )
 }
 
 export function OwnedProductCard({ product }: { product: CatalogProduct }) {
@@ -45,6 +56,7 @@ export function OwnedProductCard({ product }: { product: CatalogProduct }) {
         marginBottom: 10,
         fontFamily: 'var(--font-display)',
       }}>
+        {product.product_type === 'tool' && <WrenchIcon />}
         {TYPE_LABEL[product.product_type] ?? product.product_type}
       </div>
 
@@ -112,6 +124,7 @@ export function LockedProductCard({ product }: { product: CatalogProduct }) {
         marginBottom: 10,
         fontFamily: 'var(--font-display)',
       }}>
+        {product.product_type === 'tool' && <WrenchIcon />}
         {TYPE_LABEL[product.product_type] ?? product.product_type}
       </div>
 
