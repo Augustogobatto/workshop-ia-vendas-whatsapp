@@ -57,7 +57,7 @@ function buildContext(
 function greetingFor(pathname: string, userName?: string | null): string {
   const first = userName?.split(' ')[0]
   const fala = first ? `Fala, ${first}.` : 'Fala!'
-  return `${fala} Já fechou quantas missões?`
+  return `${fala} Em que posso te ajudar?`
 }
 
 /* ── Avatar do bot ────────────────────────────────── */

@@ -46,6 +46,25 @@ export function ConnectPanel({
       >
         O conector do Claude é um benefício exclusivo de <strong style={{ color: 'var(--text)' }}>assinantes ativos do Club</strong>.
         Assine o Club pra liberar o seu.
+        <div style={{ marginTop: 16 }}>
+          <a
+            href="/club"
+            target="_blank"
+            rel="noopener"
+            style={{
+              display: 'inline-block',
+              padding: '10px 22px',
+              background: 'var(--text)',
+              color: 'var(--bg)',
+              borderRadius: 'var(--radius)',
+              fontWeight: 600,
+              fontSize: 13.5,
+              textDecoration: 'none',
+            }}
+          >
+            Entre para o Club
+          </a>
+        </div>
       </div>
     )
   }
