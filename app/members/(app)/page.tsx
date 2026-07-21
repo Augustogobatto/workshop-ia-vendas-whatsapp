@@ -17,7 +17,8 @@ export default async function DashboardPage() {
   const { data: catalog = [] } = await supabase.rpc('get_catalog_with_access')
   const products = (catalog ?? []) as CatalogProduct[]
 
-  const owned = products.filter((p) => p.has_access)
+  const tools = products.filter((p) => p.product_type === 'tool' && p.has_access)
+  const owned = products.filter((p) => p.has_access && p.product_type !== 'tool')
   const available = products.filter((p) => !p.has_access)
   const ownedSlugs = new Set(owned.map((p) => p.product_slug))
 
@@ -69,6 +70,18 @@ export default async function DashboardPage() {
             <p style={{ fontSize: 13.5, color: 'var(--text-muted)' }}>
               Você ainda não tem workshops. Confira os disponíveis abaixo.
             </p>
+          </div>
+        </section>
+      )}
+
+      {/* Tools (Club) */}
+      {tools.length > 0 && (
+        <section className="fade-up fade-up-1" style={{ marginBottom: 52 }}>
+          <SectionLabel>Ferramentas</SectionLabel>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {tools.map((product) => (
+              <OwnedProductCard key={product.product_id} product={product} />
+            ))}
           </div>
         </section>
       )}

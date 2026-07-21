@@ -13,7 +13,7 @@ export interface CatalogProduct {
   product_name: string
   product_slug: string
   product_description: string | null
-  product_type: 'course' | 'workshop' | 'mentorship' | 'community'
+  product_type: 'course' | 'workshop' | 'mentorship' | 'community' | 'tool'
   price_cents: number | null
   is_active: boolean
   has_access: boolean
