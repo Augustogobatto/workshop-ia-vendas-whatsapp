@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Parecer TrazpraCa Club · Augusto Gobatto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --wash:#F6F5F1;
+    --ink:#16181C;
+    --muted:#5B6270;
+    --line:#E3E1DB;
+    --brand:#E8590C;
+    --leak:#C92A2A;
+    --gain:#2B7A3E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Archivo',system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    border-bottom:1px solid var(--ink);
+    padding:14px 0;
+  }
+  .topbar .wrap{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+  }
+  .topbar .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink);
+  }
+  .topbar .tag strong{color:var(--brand);font-weight:600;}
+  .topbar .date{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--muted);letter-spacing:.08em;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 48px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--brand);font-weight:600;
+    display:block;margin-bottom:18px;
+  }
+  .hero h1{
+    font-weight:900;
+    font-size:clamp(2.1rem,6.5vw,3.7rem);
+    line-height:1.04;
+    letter-spacing:-.02em;
+    max-width:15ch;
+  }
+  .hero h1 em{
+    font-style:normal;color:var(--brand);
+  }
+  .hero .lede{
+    margin-top:26px;max-width:58ch;font-size:1.06rem;color:var(--ink);
+  }
+  .hero .lede + .lede{margin-top:14px;color:var(--muted);}
+
+  .numstrip{
+    margin-top:44px;
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    display:grid;grid-template-columns:1fr 1fr 1fr;
+  }
+  .numstrip div{
+    padding:18px 14px;
+    border-right:1px solid var(--line);
+  }
+  .numstrip div:last-child{border-right:none;}
+  .numstrip .n{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(1.4rem,4vw,2rem);font-weight:600;line-height:1.1;
+  }
+  .numstrip .n.gain{color:var(--gain);}
+  .numstrip .l{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin-top:6px;
+  }
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0;}
+  section.washed{background:var(--wash);}
+  .sec-head{margin-bottom:34px;}
+  .sec-head h2{
+    font-weight:800;font-size:clamp(1.5rem,4vw,2.1rem);
+    letter-spacing:-.01em;line-height:1.15;max-width:24ch;
+  }
+  .sec-head p{margin-top:12px;color:var(--muted);max-width:60ch;}
+
+  /* ---------- método ---------- */
+  .metodo-list{list-style:none;display:grid;gap:0;border-top:1px solid var(--line);}
+  .metodo-list li{
+    display:flex;gap:14px;align-items:flex-start;
+    padding:14px 2px;border-bottom:1px solid var(--line);
+  }
+  .metodo-list svg{flex:none;margin-top:3px;}
+  .metodo-list .t{font-weight:600;}
+  .metodo-list .d{color:var(--muted);font-size:.95rem;}
+
+  /* ---------- etiquetas de achado ---------- */
+  .achados{display:grid;gap:22px;}
+  .etq{
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    position:relative;
+  }
+  .etq-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 16px;
+    border-bottom:1px dashed var(--ink);
+    gap:10px;
+  }
+  .etq-head .ref{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  }
+  .etq-head .ref span{color:var(--muted);font-weight:400;}
+  .stamp{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;letter-spacing:.14em;font-weight:600;text-transform:uppercase;
+    color:var(--leak);border:1.5px solid var(--leak);
+    padding:3px 8px;
+    transform:rotate(-3deg);
+    white-space:nowrap;
+  }
+  .stamp.neutral{color:var(--muted);border-color:var(--muted);}
+  .stamp.opp{color:var(--gain);border-color:var(--gain);}
+  .etq-body{padding:18px 16px 20px;}
+  .etq-body h3{
+    font-weight:800;font-size:1.15rem;line-height:1.25;letter-spacing:-.01em;
+    max-width:34ch;
+  }
+  .etq-body .desc{margin-top:10px;color:var(--ink);font-size:.97rem;max-width:62ch;}
+  .evid{
+    margin-top:14px;
+    background:var(--wash);
+    border-left:3px solid var(--brand);
+    padding:10px 12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;line-height:1.55;color:var(--ink);
+  }
+  .evid b{font-weight:600;color:var(--brand);}
+  .barcode{
+    position:absolute;right:14px;bottom:12px;opacity:.5;
+  }
+
+  /* ---------- a conta ---------- */
+  .conta{
+    border:1.5px solid var(--ink);
+    background:var(--paper);
+  }
+  .conta-row{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    padding:14px 18px;border-bottom:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;font-size:.92rem;
+  }
+  .conta-row:last-child{border-bottom:none;}
+  .conta-row .v{font-weight:600;white-space:nowrap;}
+  .conta-row.total{
+    background:var(--ink);color:var(--paper);
+    font-weight:600;
+  }
+  .conta-row.total .v{color:#7FD99A;font-size:1.05rem;}
+  .conta-note{margin-top:14px;color:var(--muted);font-size:.92rem;max-width:60ch;}
+
+  /* ---------- plano ---------- */
+  .atos{display:grid;gap:0;border-top:1.5px solid var(--ink);}
+  .ato{
+    display:grid;grid-template-columns:110px 1fr;gap:18px;
+    padding:26px 0;border-bottom:1px solid var(--line);
+  }
+  .ato .quando{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--brand);font-weight:600;line-height:1.5;padding-top:4px;
+  }
+  .ato h3{font-weight:800;font-size:1.2rem;letter-spacing:-.01em;}
+  .ato p{margin-top:8px;color:var(--muted);font-size:.97rem;max-width:58ch;}
+  .ato .entrega{
+    margin-top:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;
+    color:var(--ink);
+  }
+  .ato .entrega b{color:var(--gain);font-weight:600;}
+
+  /* ---------- modelo ---------- */
+  .modelo-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  .modelo-grid .cell{
+    background:var(--paper);padding:20px 18px;
+  }
+  .modelo-grid .cell svg{display:block;margin-bottom:12px;}
+  .modelo-grid .cell .t{font-weight:700;font-size:1rem;}
+  .modelo-grid .cell .d{margin-top:6px;color:var(--muted);font-size:.92rem;}
+
+  /* ---------- quem assina ---------- */
+  .assina p{max-width:62ch;}
+  .assina .provas{margin-top:22px;display:grid;gap:12px;}
+  .assina .prova{
+    display:flex;gap:12px;align-items:flex-start;
+    border-left:3px solid var(--brand);
+    padding:2px 0 2px 14px;
+  }
+  .assina .prova p{color:var(--ink);font-size:.97rem;}
+  .assina .prova b{font-weight:700;}
+
+  /* ---------- investimento ---------- */
+  .invest{
+    border:1.5px solid var(--ink);
+    background:var(--paper);
+  }
+  .invest-head{
+    padding:22px 20px;
+    border-bottom:1px dashed var(--ink);
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
+  }
+  .invest-head .valor{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;font-size:clamp(1.7rem,5vw,2.4rem);letter-spacing:-.01em;
+  }
+  .invest-head .periodo{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;
+  }
+  .invest-body{padding:20px;}
+  .invest-body ul{list-style:none;display:grid;gap:10px;}
+  .invest-body li{
+    display:flex;gap:10px;align-items:flex-start;font-size:.97rem;
+  }
+  .invest-body li svg{flex:none;margin-top:4px;}
+  .invest-foot{
+    padding:16px 20px;border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);
+  }
+  .invest-foot b{color:var(--ink);font-weight:600;}
+
+  /* ---------- cta ---------- */
+  .cta{padding:72px 0 84px;text-align:left;}
+  .cta h2{
+    font-weight:900;font-size:clamp(1.8rem,5.5vw,2.8rem);
+    letter-spacing:-.02em;line-height:1.08;max-width:18ch;
+  }
+  .cta p{margin-top:16px;color:var(--muted);max-width:52ch;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    margin-top:28px;
+    background:var(--brand);color:#fff;
+    font-weight:700;font-size:1.02rem;
+    padding:16px 26px;
+    text-decoration:none;
+    border:1.5px solid var(--brand);
+    transition:background .15s ease;
+  }
+  .btn:hover{background:#C94A08;}
+  .btn svg{flex:none;}
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:20px 0 40px;
+  }
+  footer .wrap{
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);
+    letter-spacing:.06em;
+  }
+
+  @media (max-width:640px){
+    .numstrip{grid-template-columns:1fr;}
+    .numstrip div{border-right:none;border-bottom:1px solid var(--line);}
+    .numstrip div:last-child{border-bottom:none;}
+    .ato{grid-template-columns:1fr;gap:6px;}
+    .modelo-grid{grid-template-columns:1fr;}
+    .topbar .date{display:none;}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+    .reveal.in{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="tag">PARECER TÉCNICO · <strong>TRAZPRACA CLUB</strong></span>
+    <span class="date">22 JUL 2026 · CONFIDENCIAL</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">De Augusto Gobatto para Felipe Guelfi</span>
+    <h1>Diagnóstico inicial: funil do <em>TPC Club</em></h1>
+    <p class="lede">Antes de escrever qualquer linha aqui, eu entrei no teu funil como cliente: caí no grupo, assisti a aula inteira, testei teu comercial, abandonei o checkout de propósito e auditei teus anúncios na Biblioteca da Meta.</p>
+    <p class="lede">O que eu encontrei não é um funil saturado que precisa de funil novo. É uma máquina boa de aquisição com muito dinheiro pra colher no que acontece depois do pitch. A diferença entre as 60 vendas de hoje e as 150 que tu já fez, na minha leitura, mora aí.</p>
+    <div class="numstrip">
+      <div><div class="n">60/mês</div><div class="l">Vendas hoje</div></div>
+      <div><div class="n">150/mês</div><div class="l">Meta do projeto</div></div>
+      <div><div class="n gain">+R$ 134 mil</div><div class="l">Por mês em jogo</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="washed">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Como esse parecer foi feito</h2>
+      <p>Nada aqui é achismo de consultor. Cada achado abaixo tem evidência colhida por mim, dentro do teu funil, nos dias 21 e 22 de julho.</p>
+    </div>
+    <ul class="metodo-list">
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <div><span class="t">Entrei no funil como lead</span><br><span class="d">Grupo de WhatsApp, aquecimento, mensagens da API oficial.</span></div>
+      </li>
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <div><span class="t">Assisti a aula inteira, do início à oferta</span><br><span class="d">Quase 3 horas, anotando estrutura, pitch e mecânica dos bônus.</span></div>
+      </li>
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <div><span class="t">Testei o comercial de ponta a ponta</span><br><span class="d">Mandei mensagem durante a live, demonstrei interesse no dia seguinte, abandonei o checkout.</span></div>
+      </li>
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <div><span class="t">Auditei os anúncios na Biblioteca da Meta</span><br><span class="d">Páginas TrazpraCa_Club, TrazpraCa.com e perfil felipeguelfi, consulta em 22/07/2026.</span></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Os 7 achados</h2>
+      <p>Separei com honestidade: <strong>vazamento</strong> é o que eu verifiquei na pele, <strong>oportunidade</strong> é onde eu vejo dinheiro parado, e <strong>para validar</strong> é hipótese que só os teus números confirmam.</p>
+    </div>
+    <div class="achados">
+
+      <div class="etq reveal">
+        <div class="etq-head">
+          <span class="ref mono">ACHADO 01 <span>· PÓS-CHECKOUT</span></span>
+          <span class="stamp">Vazamento</span>
+        </div>
+        <div class="etq-body">
+          <h3>Abandonei o checkout: a empresa de pagamento me chamou. O Club, não</h3>
+          <p class="desc">Ponto positivo primeiro: a recuperação do meio de pagamento funcionou e chegou no mesmo dia. O que senti falta foi da camada de vocês. Ninguém do Club me chamou pra tratar a objeção, oferecer condição ou perguntar o que travou. Num ticket de R$ 1.497, essa conversa é onde a venda acontece. E é correção rápida, de resultado imediato.</p>
+          <div class="evid"><b>EVIDÊNCIA</b> · 21/07, abandono proposital. Recuperação da empresa de pagamento: no mesmo dia. Contato do Club: nenhum até agora.</div>
+        </div>
+        <svg class="barcode" width="46" height="16" viewBox="0 0 46 16" fill="#16181C"><rect x="0" width="2" height="16"/><rect x="4" width="1" height="16"/><rect x="8" width="3" height="16"/><rect x="13" width="1" height="16"/><rect x="17" width="2" height="16"/><rect x="21" width="1" height="16"/><rect x="25" width="3" height="16"/><rect x="30" width="1" height="16"/><rect x="34" width="2" height="16"/><rect x="38" width="1" height="16"/><rect x="42" width="3" height="16"/></svg>
+      </div>
+
+      <div class="etq reveal">
+        <div class="etq-head">
+          <span class="ref mono">ACHADO 02 <span>· SHOW RATE</span></span>
+          <span class="stamp">Vazamento</span>
+        </div>
+        <div class="etq-body">
+          <h3>O "estamos ao vivo" chegou 36 minutos atrasado</h3>
+          <p class="desc">Todo o funil depende de uma coisa: gente dentro da live na hora do pitch. A mensagem mais importante do dia está chegando depois da aula ter começado.</p>
+          <div class="evid"><b>EVIDÊNCIA</b> · 21/07, mensagem da API oficial recebida com 36 min de atraso em relação ao início da transmissão.</div>
+        </div>
+        <svg class="barcode" width="46" height="16" viewBox="0 0 46 16" fill="#16181C"><rect x="0" width="3" height="16"/><rect x="5" width="1" height="16"/><rect x="9" width="2" height="16"/><rect x="13" width="1" height="16"/><rect x="17" width="3" height="16"/><rect x="22" width="1" height="16"/><rect x="26" width="2" height="16"/><rect x="31" width="1" height="16"/><rect x="35" width="1" height="16"/><rect x="39" width="3" height="16"/><rect x="44" width="1" height="16"/></svg>
+      </div>
+
+      <div class="etq reveal">
+        <div class="etq-head">
+          <span class="ref mono">ACHADO 03 <span>· FOLLOWUP</span></span>
+          <span class="stamp neutral">Para validar</span>
+        </div>
+        <div class="etq-body">
+          <h3>O que acontece com o lead depois da 3ª tentativa do comercial?</h3>
+          <p class="desc">Teu comercial funcionou comigo no 1:1: me chamou no dia seguinte, mandou áudio, tentou ligar. O que eu quero entender contigo é a cauda: decisão de R$ 1.497 costuma levar dias, e se a cadência para na terceira tentativa, pode ter venda esfriando ali. É o tipo de coisa que só o teu CRM responde.</p>
+          <div class="evid"><b>O QUE EU VIVI</b> · Mensagem ao adm durante a live: respondeu com atraso e não continuou. API oficial: sem resposta até hoje. Comercial: contato no dia seguinte, com áudio e ligação.</div>
+        </div>
+        <svg class="barcode" width="46" height="16" viewBox="0 0 46 16" fill="#16181C"><rect x="0" width="1" height="16"/><rect x="4" width="3" height="16"/><rect x="9" width="1" height="16"/><rect x="13" width="2" height="16"/><rect x="17" width="1" height="16"/><rect x="21" width="3" height="16"/><rect x="26" width="2" height="16"/><rect x="30" width="1" height="16"/><rect x="34" width="3" height="16"/><rect x="39" width="1" height="16"/><rect x="43" width="2" height="16"/></svg>
+      </div>
+
+      <div class="etq reveal">
+        <div class="etq-head">
+          <span class="ref mono">ACHADO 04 <span>· AQUISIÇÃO</span></span>
+          <span class="stamp opp">Oportunidade</span>
+        </div>
+        <div class="etq-body">
+          <h3>9 anúncios ativos, todos com a mesma copy, pra um funil que roda todo dia</h3>
+          <p class="desc">Com ROAS acima de 5, o teu funil não está saturado: está subalimentado. Um ângulo só ("evento gratuito"), criativos no ar há 7 semanas, tudo dependendo de ti gravar. Pra calibrar a régua: a Teacher Poli está rodando um funil que fatura R$ 1 milhão por semana, e o gamechanger deles é a esteira de 100 anúncios novos por semana, boa parte com IA. Escala é ads. E dá pra montar essa esteira sem depender da tua agenda de gravação.</p>
+          <div class="evid"><b>EVIDÊNCIA</b> · Biblioteca da Meta, 22/07: página TrazpraCa_Club com 9 anúncios ativos, mesma copy em todos, mais antigo no ar desde 04/jun, um deles já sinalizado com baixo volume de impressões.</div>
+        </div>
+        <svg class="barcode" width="46" height="16" viewBox="0 0 46 16" fill="#16181C"><rect x="0" width="2" height="16"/><rect x="4" width="1" height="16"/><rect x="8" width="1" height="16"/><rect x="12" width="3" height="16"/><rect x="17" width="1" height="16"/><rect x="21" width="2" height="16"/><rect x="26" width="3" height="16"/><rect x="31" width="1" height="16"/><rect x="35" width="2" height="16"/><rect x="39" width="1" height="16"/><rect x="43" width="3" height="16"/></svg>
+      </div>
+
+      <div class="etq reveal">
+        <div class="etq-head">
+          <span class="ref mono">ACHADO 05 <span>· REMARKETING</span></span>
+          <span class="stamp">Vazamento</span>
+        </div>
+        <div class="etq-body">
+          <h3>Quem assiste tua aula e não compra some do teu feed no dia seguinte</h3>
+          <p class="desc">Não encontrei nenhum criativo de remarketing rodando: nada segurando a decisão de quem já viu o pitch, que é o público mais barato de converter num ticket que leva dias pra fechar. E fica uma ideia pra explorar junto: o @trazpraca tem 398 mil seguidores. Sei que é a audiência da loja, não do Club, mas será que não tem um recorte ali (quem já vende, quem pergunta de fornecedor) que valeria um teste?</p>
+          <div class="evid"><b>EVIDÊNCIA</b> · Biblioteca da Meta, 22/07: nenhum criativo falando com público quente em nenhuma das páginas. TrazpraCa.com: 0 anúncios ativos.</div>
+        </div>
+        <svg class="barcode" width="46" height="16" viewBox="0 0 46 16" fill="#16181C"><rect x="0" width="3" height="16"/><rect x="5" width="2" height="16"/><rect x="9" width="1" height="16"/><rect x="13" width="3" height="16"/><rect x="18" width="1" height="16"/><rect x="22" width="2" height="16"/><rect x="27" width="1" height="16"/><rect x="31" width="3" height="16"/><rect x="36" width="1" height="16"/><rect x="40" width="2" height="16"/><rect x="44" width="1" height="16"/></svg>
+      </div>
+
+      <div class="etq reveal">
+        <div class="etq-head">
+          <span class="ref mono">ACHADO 06 <span>· BASE DE LEADS</span></span>
+          <span class="stamp opp">Oportunidade</span>
+        </div>
+        <div class="etq-body">
+          <h3>A base acumulada desde 2023 pode ser tua mina mais barata</h3>
+          <p class="desc">O Club roda live diária há três anos. Quantos leads tem acumulados aí? Se essa base não tem uma rotina de reativação hoje, é dinheiro que o teu tráfego já pagou esperando um motivo pra voltar. E motivo não falta no teu calendário: TPC Day, missão China, catálogo novo todo mês, Black Friday.</p>
+          <div class="evid"><b>EVIDÊNCIA</b> · Semana passada eu rodei exatamente esse playbook numa operação que atendo: disparo com IA numa base fria, primeira venda no mesmo dia.</div>
+        </div>
+        <svg class="barcode" width="46" height="16" viewBox="0 0 46 16" fill="#16181C"><rect x="0" width="1" height="16"/><rect x="4" width="2" height="16"/><rect x="8" width="3" height="16"/><rect x="13" width="1" height="16"/><rect x="17" width="1" height="16"/><rect x="21" width="3" height="16"/><rect x="26" width="2" height="16"/><rect x="30" width="1" height="16"/><rect x="34" width="2" height="16"/><rect x="38" width="3" height="16"/><rect x="43" width="1" height="16"/></svg>
+      </div>
+
+      <div class="etq reveal">
+        <div class="etq-head">
+          <span class="ref mono">ACHADO 07 <span>· A LIVE</span></span>
+          <span class="stamp neutral">Para validar</span>
+        </div>
+        <div class="etq-body">
+          <h3>A aula tem quase 3 horas e a oferta abre depois das 2h. O público aguenta?</h3>
+          <p class="desc">Assistindo inteira, minha sensação foi de peso: muita coisa boa, mas o pitch chega tarde. Sensação não é dado. A boa notícia é que vocês já geram o dado que responde isso: as 3 aulas girando são, na prática, um teste A/B/C diário. Retenção por minuto e conversão por aula dizem em uma semana qual das três é a campeã. E com a campeã na mão, o caminho natural é regravar uma versão melhor: script mais enxuto, ritmo mais rápido, oferta chegando mais cedo e mais afiada. A oferta é o coração desse funil, e é onde eu mais quero trabalhar contigo.</p>
+          <div class="evid"><b>PENDENTE</b> · Retenção por minuto e conversão por aula (hotwebinar). Primeira coisa que eu quero abrir contigo no projeto.</div>
+        </div>
+        <svg class="barcode" width="46" height="16" viewBox="0 0 46 16" fill="#16181C"><rect x="0" width="2" height="16"/><rect x="5" width="3" height="16"/><rect x="10" width="1" height="16"/><rect x="14" width="2" height="16"/><rect x="18" width="1" height="16"/><rect x="22" width="3" height="16"/><rect x="27" width="1" height="16"/><rect x="31" width="2" height="16"/><rect x="36" width="3" height="16"/><rect x="41" width="1" height="16"/><rect x="45" width="1" height="16"/></svg>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="washed">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>A conta que importa</h2>
+      <p>Nenhum achado acima precisa de verba nova de mídia pra começar a render. É recuperação do que o teu tráfego já pagou.</p>
+    </div>
+    <div class="conta">
+      <div class="conta-row"><span>Ticket da assinatura</span><span class="v">R$ 1.497</span></div>
+      <div class="conta-row"><span>Vendas hoje</span><span class="v">60 /mês</span></div>
+      <div class="conta-row"><span>Meta do projeto</span><span class="v">150 /mês</span></div>
+      <div class="conta-row total"><span>Receita incremental na meta</span><span class="v">+R$ 134.730 /mês</span></div>
+    </div>
+    <p class="conta-note">E 80% da margem do grupo está na assinatura, como tu mesmo falou na aula. Cada venda recuperada aqui é margem quase cheia, não faturamento de produto.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>O plano, começando por 3 meses</h2>
+      <p>Os 3 primeiros meses atacam o que gera caixa mais rápido: vazamentos e escala de aquisição. Os atos 3 e 4 já ficam mapeados pro ciclo seguinte, se os números pedirem.</p>
+    </div>
+    <div class="atos">
+      <div class="ato reveal">
+        <div class="quando">Ato 1<br>Mês 1</div>
+        <div>
+          <h3>Estancar os vazamentos e reativar a base</h3>
+          <p>Recuperação de checkout no WhatsApp, mensagem de live na hora certa, cadência de followup com IA que não desiste na terceira tentativa, e o primeiro disparo de reativação na base acumulada, em ondas, com IA conversando e o teu comercial fechando.</p>
+          <div class="entrega mono">RESULTADO ESPERADO · <b>caixa novo no primeiro mês</b>, sem R$ 1 de mídia nova</div>
+        </div>
+      </div>
+      <div class="ato reveal">
+        <div class="quando">Ato 2<br>Meses 2-3</div>
+        <div>
+          <h3>Escalar a aquisição sem depender da tua agenda</h3>
+          <p>Esteira de criativos com IA: cortes da própria aula por ângulo (dor, prova, autoridade), variações de imagem e UGC, dezenas de testes por semana. Remarketing ligado pra quem assistiu e não comprou, e a audiência de 398 mil finalmente trabalhando pro Club.</p>
+          <div class="entrega mono">RESULTADO ESPERADO · <b>mais lead no grupo com o mesmo ROAS</b>, criativo deixa de ser gargalo</div>
+        </div>
+      </div>
+      <div class="ato reveal">
+        <div class="quando">Ato 3<br>Próximo ciclo</div>
+        <div>
+          <h3>IA no meio do funil e live guiada por dado</h3>
+          <p>Agente de IA recebendo o lead antes da aula, mapeando a dor de cada um, garantindo presença e entregando o lead pro comercial com contexto. Leitura de retenção e conversão por aula pra eleger a campeã, e regravação otimizada: script mais enxuto, ritmo mais rápido, oferta retrabalhada chegando mais cedo.</p>
+          <div class="entrega mono">RESULTADO ESPERADO · <b>show rate e conversão da live sobem</b>, comercial recebe lead qualificado</div>
+        </div>
+      </div>
+      <div class="ato reveal">
+        <div class="quando">Ato 4<br>Próximo ciclo</div>
+        <div>
+          <h3>Camadas novas por cima do que já converte</h3>
+          <p>Aí sim, funil novo: aula condensada sob demanda pra recuperar no-show, e teste de degrau de entrada pra quem não fecha o anual. Sem canibalizar a live, brigando só pelos leads que hoje viram nada.</p>
+          <div class="entrega mono">RESULTADO ESPERADO · <b>segunda chance de conversão</b> pra cada lead que o funil atual perde</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="washed">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Como a gente trabalha</h2>
+      <p>Consultoria com mão na massa: teu time executa o que é de vocês, e a parte de IA e automação eu mesmo implemento.</p>
+    </div>
+    <div class="modelo-grid">
+      <div class="cell">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <div class="t">3 meses de arranque</div>
+        <div class="d">Tempo de acompanhamento, não pacote de calls. Onboard e planejamento na primeira semana; renovação só se os números pedirem.</div>
+      </div>
+      <div class="cell">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="t">Grupo direto no WhatsApp</div>
+        <div class="d">Dúvida não espera call. Áudio, vídeo e revisão no dia a dia, do meu jeito de operar.</div>
+      </div>
+      <div class="cell">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <div class="t">Planilha de execução com revisão</div>
+        <div class="d">Toda ação com dono, status e material de referência. O que teu time faz, eu reviso antes de ir pro ar.</div>
+      </div>
+      <div class="cell">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        <div class="t">IA implementada por mim</div>
+        <div class="d">Agente de followup, disparos de reativação, dashboards do funil. Isso não é recomendação, é entrega minha.</div>
+      </div>
+      <div class="cell">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="t">Call quinzenal de direção</div>
+        <div class="d">Leitura dos números, decisão do próximo ciclo. Urgência a gente resolve no grupo, sem esperar agenda.</div>
+      </div>
+      <div class="cell">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8590C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <div class="t">Um número guia tudo</div>
+        <div class="d">Assinaturas por mês. Todo ciclo começa e termina olhando pra ele, nada de vaidade métrica.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="assina">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Quem assina</h2>
+    </div>
+    <p>Augusto Gobatto. Eu não vendo consultoria de palco: eu rodo operação. Todos os dias tenho IA vendendo, atendendo e sendo auditada em negócios reais que eu opero, com meu dinheiro e o dos meus clientes em jogo.</p>
+    <div class="provas">
+      <div class="prova"><p><b>Agente de IA vendendo em operação de educação de grande porte:</b> milhares de conversas por mês no WhatsApp, com uma segunda IA supervisora auditando cada atendimento e apontando gargalo de funil por etapa.</p></div>
+      <div class="prova"><p><b>Reativação de base fria com IA:</b> campanha desenhada, disparada e respondida por agente, primeira venda no mesmo dia do disparo.</p></div>
+      <div class="prova"><p><b>Automação de ponta a ponta:</b> da captação ao pós-venda, incluindo dashboards diários de funil que o dono recebe no WhatsApp sem pedir.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="washed">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Investimento</h2>
+    </div>
+    <div class="invest">
+      <div class="invest-head">
+        <span class="valor">R$ 7.000<span style="font-size:.45em;color:var(--muted);">/mês</span></span>
+        <span class="periodo">Ciclo inicial · 3 meses</span>
+      </div>
+      <div class="invest-body">
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B7A3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Diagnóstico completo, planejamento e acompanhamento pelos 3 meses</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B7A3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Implementação das automações e agentes de IA feita por mim, não terceirizada</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B7A3E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Grupo direto, call quinzenal, revisão de tudo que o teu time executar no projeto</span></li>
+        </ul>
+      </div>
+      <div class="invest-foot">A conta na ponta: <b>15 assinaturas</b> pagam o ciclo inteiro. Só o Ato 1 já briga por isso.</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Teu funil já provou que converte. A oportunidade está no que vem depois do pitch.</h2>
+    <p>Fechou? Me responde ali no nosso papo do WhatsApp e essa semana a gente já começa: onboard e planejamento nos primeiros dias.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>PARECER PREPARADO EM 22/07/2026 · AUGUSTO GOBATTO</span>
+    <span>LINK PRIVADO · NÃO INDEXADO</span>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
