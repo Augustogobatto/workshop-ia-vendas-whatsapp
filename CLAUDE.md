@@ -83,6 +83,8 @@ Por que OTP e não magic link: o magic link no Next.js App Router com `@supabase
 - `products` — cursos/workshops disponíveis
 - `modules` — módulos de cada produto
 - `lessons` — aulas de cada módulo (content_type: video | loom | text | embed | pdf)
+  - `description` renderiza como HTML sanitizado abaixo do vídeo no player, em qualquer
+    content_type. É o jeito de pôr recado, link ou botão numa aula sem precisar de deploy.
 - `lesson_progress` — progresso por aula (status: not_started | in_progress | completed)
 
 **RPC:**
@@ -99,22 +101,22 @@ Por que OTP e não magic link: o magic link no Next.js App Router com `@supabase
 
 ## Design system
 
-Tema dark com acento verde neon. Definido inteiramente em CSS vars em `globals.css`.
+Tema dark quase-preto com acento BRANCO. Definido inteiramente em CSS vars em
+`globals.css` — esse arquivo é a fonte da verdade, este bloco é só resumo.
 
 **Cores principais:**
 ```css
---bg: #0A0C0A          /* fundo base */
---bg-2: #111511        /* cards, sidebar */
---surface: #1A221A     /* hover state */
---green: #00FF88       /* acento principal */
---text: #EDEFEC
---text-muted: #7A8678
---border: #1E271E
+--bg-2: #0E0E0E        /* cards, sidebar */
+--surface: #1A1A1A     /* elevated surfaces */
+--green: #FFFFFF       /* acento principal (nome legado: NÃO é verde) */
+--text-dim: #333333
+--border-2: #2C2C2C
+--yellow: #FFD60A      /* avisos */
 ```
 
 **Tipografia:**
-- Display: `Space Grotesk` (títulos, botões, labels uppercase)
-- UI: `Inter` (corpo, inputs)
+- Display: `Bricolage Grotesque` (títulos, botões, labels uppercase)
+- UI: `DM Sans` (corpo, inputs)
 
 **Regra importante — Server Components:**
 Event handlers (`onMouseEnter`, `onMouseLeave`, `onClick`) não podem estar em Server Components. Regra geral:
