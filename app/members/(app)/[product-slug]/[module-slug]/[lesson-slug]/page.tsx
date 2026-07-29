@@ -35,6 +35,7 @@ export default function LessonPage({ params }: PageProps) {
   const [error, setError] = useState<string | null>(null)
   const [markingDone, setMarkingDone] = useState(false)
   const [isDone, setIsDone] = useState(false)
+  const [lessonDescription, setLessonDescription] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [outlineOpen, setOutlineOpen] = useState(false)
 
@@ -120,6 +121,7 @@ export default function LessonPage({ params }: PageProps) {
       if (currentLesson) {
         setIsDone(progressMap.get(currentLesson.id)?.status === 'completed')
       }
+      setLessonDescription(currentLesson?.description ?? null)
 
       // Build outline
       const outlineModules = (modules as Module[]).map((mod) => ({
@@ -429,6 +431,16 @@ export default function LessonPage({ params }: PageProps) {
                 </span>
               )}
             </div>
+
+            {/* Descrição da aula (HTML curado no banco: recados, links, CTA) */}
+            {lessonDescription && (
+              <div
+                style={{ marginBottom: 28, lineHeight: 1.7, fontSize: 14.5, color: 'var(--text)' }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(lessonDescription, { ADD_ATTR: ['target'] }),
+                }}
+              />
+            )}
           </div>
 
           {/* Navigation */}
