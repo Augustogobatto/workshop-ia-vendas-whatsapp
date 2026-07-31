@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Anatomia de uma venda feita por IA — Augusto Gobatto</title>
+<meta name="description" content="Transcrição integral e anotada da conversa de WhatsApp em que uma IA de vendas conduziu uma lead do primeiro contato até uma compra de R$ 2.497, sem desconto.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Anatomia de uma venda de R$ 2.497 feita por uma IA">
+<meta property="og:description" content="Transcrição integral e anotada da conversa de WhatsApp em que uma IA de vendas conduziu uma lead do primeiro contato até uma compra de R$ 2.497, sem desconto.">
+<meta property="og:url" content="https://ia.augustogobatto.com/ia-vende">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%92%AC%3C/text%3E%3C/svg%3E">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, svg { max-width: 100%; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<style>
+:root {
+  --paper:#F5F2F3; --surface:#FFFFFF; --ink:#221A1E; --ink-2:#7A6A70; --ink-3:#A2949A;
+  --rule:#E2D9DC; --accent:#9E2A46; --accent-soft:#F3E1E6; --win:#2F6B4E; --win-soft:#E1EDE7;
+  --lead-bg:#EDE7E9; --shadow:0 1px 2px rgba(34,26,30,.06), 0 8px 24px -18px rgba(34,26,30,.5);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:#151113; --surface:#1E191B; --ink:#EFE8EA; --ink-2:#A29096; --ink-3:#77666C;
+    --rule:#2E2528; --accent:#E4778F; --accent-soft:#3A2229; --win:#6DB795; --win-soft:#1E332A;
+    --lead-bg:#2A2325; --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px #000;
+  }
+}
+:root[data-theme="light"] {
+  --paper:#F5F2F3; --surface:#FFFFFF; --ink:#221A1E; --ink-2:#7A6A70; --ink-3:#A2949A;
+  --rule:#E2D9DC; --accent:#9E2A46; --accent-soft:#F3E1E6; --win:#2F6B4E; --win-soft:#E1EDE7;
+  --lead-bg:#EDE7E9; --shadow:0 1px 2px rgba(34,26,30,.06), 0 8px 24px -18px rgba(34,26,30,.5);
+}
+:root[data-theme="dark"] {
+  --paper:#151113; --surface:#1E191B; --ink:#EFE8EA; --ink-2:#A29096; --ink-3:#77666C;
+  --rule:#2E2528; --accent:#E4778F; --accent-soft:#3A2229; --win:#6DB795; --win-soft:#1E332A;
+  --lead-bg:#2A2325; --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px #000;
+}
+
+body {
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:1080px; margin:0 auto; padding:0 24px 96px; }
+h1,h2,h3 { font-family:Georgia,"Iowan Old Style","Times New Roman",serif; font-weight:400; text-wrap:balance; }
+.mono { font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.88em;
+  background:var(--accent-soft); color:var(--accent); padding:1px 5px; border-radius:3px; }
+
+/* ---- cabeçalho ---- */
+.hero { padding:72px 0 40px; border-bottom:1px solid var(--rule); }
+.eyebrow { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11.5px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; }
+.hero h1 { font-size:clamp(34px,6vw,60px); line-height:1.04; letter-spacing:-.015em; margin:0 0 22px; max-width:16ch; }
+.hero h1 em { font-style:italic; color:var(--accent); }
+.lede { font-size:clamp(17px,2.2vw,20px); line-height:1.5; color:var(--ink-2); max-width:56ch; margin:0; }
+
+.stats { display:grid; gap:1px; background:var(--rule); border:1px solid var(--rule);
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); margin:44px 0 0; border-radius:4px; overflow:hidden; }
+.stat { background:var(--surface); padding:18px 20px; }
+.stat b { display:block; font-family:Georgia,serif; font-size:26px; font-weight:400; letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums; }
+.stat span { display:block; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10.5px;
+  letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); margin-top:6px; }
+.stat.win b { color:var(--win); }
+
+/* ---- legenda ---- */
+.legend { display:flex; flex-wrap:wrap; gap:10px 28px; padding:22px 0 0; font-size:13.5px; color:var(--ink-2); }
+.legend i { font-style:normal; display:inline-flex; align-items:center; gap:8px; }
+.swatch { width:14px; height:14px; border-radius:4px; display:inline-block; }
+.sw-ia { background:var(--surface); border:1px solid var(--rule); }
+.sw-lead { background:var(--lead-bg); }
+.sw-note { background:var(--accent); }
+
+/* ---- transcrição ---- */
+.thread { display:flex; flex-direction:column; gap:14px; padding-top:8px; }
+.act { display:grid; grid-template-columns:auto 1fr; gap:4px 16px; align-items:baseline;
+  margin:64px 0 12px; padding-bottom:14px; border-bottom:1px solid var(--rule); }
+.act-n { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--accent); }
+.act h2 { font-size:clamp(22px,3.4vw,30px); margin:0; letter-spacing:-.012em; }
+.act-d { grid-column:2; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11.5px;
+  color:var(--ink-3); letter-spacing:.06em; }
+
+.gap, .daymark { display:flex; align-items:center; gap:14px; margin:20px 0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3); }
+.gap::before, .gap::after, .daymark::before, .daymark::after { content:""; flex:1; height:1px; background:var(--rule); }
+.gap span, .daymark span { white-space:nowrap; }
+.gap { color:var(--accent); }
+.gap::before, .gap::after { background:repeating-linear-gradient(90deg,var(--rule) 0 4px,transparent 4px 8px); }
+
+.row { display:grid; grid-template-columns:minmax(0,1fr) 268px; gap:0 34px; align-items:start; }
+.msg { display:flex; }
+.msg.lead { justify-content:flex-start; }
+.msg.ia { justify-content:flex-end; }
+.bub { max-width:min(100%,46ch); padding:12px 15px 9px; border-radius:14px; box-shadow:var(--shadow); }
+.msg.ia .bub { background:var(--surface); border-bottom-right-radius:4px; }
+.msg.lead .bub { background:var(--lead-bg); border-bottom-left-radius:4px; box-shadow:none; }
+.bub p { margin:0 0 9px; font-size:15.2px; line-height:1.5; }
+.bub p:last-of-type { margin-bottom:2px; }
+.bub .link { color:var(--accent); word-break:break-all; border-bottom:1px solid var(--accent-soft); }
+.meta { display:flex; gap:8px; align-items:baseline; justify-content:flex-end;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10px; color:var(--ink-3);
+  letter-spacing:.06em; margin-top:4px; }
+.meta .who { text-transform:uppercase; }
+.msg.lead .meta { justify-content:flex-start; }
+
+.note { padding:2px 0 10px 15px; border-left:2px solid var(--accent); }
+.note-l { display:block; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10px;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent); margin-bottom:5px; }
+.note p { margin:0; font-size:13.6px; line-height:1.5; color:var(--ink-2); }
+
+/* ---- desfecho ---- */
+.outcome { margin:64px 0 0; border:1px solid var(--rule); border-radius:4px; overflow:hidden; background:var(--surface); }
+.outcome-h { padding:24px 28px; border-bottom:1px solid var(--rule); }
+.outcome-h .eyebrow { margin-bottom:10px; color:var(--win); }
+.outcome-h h2 { margin:0; font-size:clamp(22px,3.2vw,28px); letter-spacing:-.012em; }
+.receipt { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1px; background:var(--rule); }
+.receipt div { background:var(--surface); padding:16px 20px 18px; }
+.receipt dt { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-3); margin:0 0 6px; }
+.receipt dd { margin:0; font-size:15.5px; font-variant-numeric:tabular-nums; }
+.receipt dd.big { font-family:Georgia,serif; font-size:22px; color:var(--win); }
+
+.takeaways { margin:56px 0 0; }
+.takeaways h2 { font-size:clamp(22px,3.4vw,30px); margin:0 0 4px; letter-spacing:-.012em; }
+.takeaways > p { color:var(--ink-2); margin:0 0 28px; max-width:58ch; }
+.tk { display:grid; gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:4px; overflow:hidden; }
+.tk article { background:var(--surface); padding:22px 24px; display:grid; grid-template-columns:auto 1fr; gap:4px 18px; }
+.tk .n { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; color:var(--accent);
+  letter-spacing:.1em; padding-top:3px; }
+.tk h3 { margin:0; font-size:19px; letter-spacing:-.008em; }
+.tk p { grid-column:2; margin:6px 0 0; color:var(--ink-2); font-size:14.8px; max-width:62ch; }
+
+footer { margin-top:64px; padding-top:24px; border-top:1px solid var(--rule); color:var(--ink-3);
+  font-size:13px; max-width:62ch; }
+
+@media (max-width:900px) {
+  .row { grid-template-columns:minmax(0,1fr); }
+  .row.has-note { gap:10px 0; }
+  .note { margin:2px 0 8px; padding-bottom:0; }
+  .bub { max-width:88%; }
+  .hero { padding:48px 0 32px; }
+  .tk article { grid-template-columns:1fr; }
+  .tk p { grid-column:1; }
+}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <p class="eyebrow">Caso real &middot; Formação de Liderança Autêntica</p>
+  <h1>Anatomia de uma venda de <em>R$ 2.497</em> feita por uma IA</h1>
+  <p class="lede">Doze dias, três tentativas de abordagem, oito follow-ups automáticos (seis deles sem resposta) e uma
+  conversa de vinte minutos. A transcrição abaixo é integral e sem edição — só o sobrenome e o
+  telefone da cliente foram removidos. As notas na lateral apontam o que está sendo feito em cada movimento.</p>
+
+  <div class="stats">
+    <div class="stat"><b>12</b><span>dias do 1º oi à venda</span></div>
+    <div class="stat"><b>66</b><span>mensagens trocadas</span></div>
+    <div class="stat"><b>8</b><span>follow-ups automáticos</span></div>
+    <div class="stat"><b>18min</b><span>da retomada até o preço</span></div>
+    <div class="stat win"><b>5min</b><span>do link ao pagamento</span></div>
+  </div>
+
+  <div class="legend">
+    <i><span class="swatch sw-lead"></span> Franciele, a lead</i>
+    <i><span class="swatch sw-ia"></span> Camila, a IA</i>
+    <i><span class="swatch sw-note"></span> o que está acontecendo ali</i>
+  </div>
+</header>
+
+<div class="thread">
+<header class="act" id="ato-1"><span class="act-n">Ato 1</span><h2>A abordagem que não foi a lugar nenhum</h2><span class="act-d">18 de julho</span></header>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Oi, Franciele! Pode falar? ??</p><span class="meta"><span class="who">Camila</span><time>15:22</time></span></div></div><aside class="note"><span class="note-l">Abertura</span><p>Conversa iniciada por template aprovado da Meta. É o único jeito de falar com quem nunca escreveu primeiro.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Sim</p><span class="meta"><span class="who">Franciele</span><time>15:23</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Oi, Franciele! Aqui é a Camila, do time da Aline ☀️</p><span class="meta"><span class="who">Camila</span><time>15:24</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Me conta, o que te fez buscar mais sobre liderança?</p><span class="meta"><span class="who">Camila</span><time>15:24</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Franciele, tá tudo bem por aí? </p><p>Sei que a rotina é corrida... quando você tiver um minutinho, me conta o que te trouxe aqui, beleza? 😊</p><span class="meta"><span class="who">Camila</span><time>15:55</time></span></div></div><aside class="note"><span class="note-l">Nudge de 30 min</span><p>Ela disse “sim” e sumiu. A IA não deixa a janela de 24h morrer sozinha.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Franciele, lembrei de você agora porque a Aline sempre fala uma coisa que me marcou: &quot;A forma como você se vê determina como os outros te veem.&quot;</p><p>Muita líder competente não é levada a sério porque tenta se PROVAR em vez de se POSICIONAR.</p><p>Isso faz sentido pro seu momento?</p><span class="meta"><span class="who">Camila</span><time>17:25</time></span></div></div><aside class="note"><span class="note-l">Follow-up 2h</span><p>Muda de tática: em vez de repetir a pergunta, entrega uma frase da Aline. Autoridade emprestada.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Franciele, sei que decidir investir em você mesma pode dar aquele friozinho na barriga...</p><p>Mas só pra você saber: tem garantia de 7 dias (se não for pra você, é só pedir reembolso) + a garantia condicional de 100% se você aplicar tudo e não evoluir.</p><p>O risco fica com a gente, não com você 🧡</p><p>Qualquer dúvida que tiver, pode mandar!</p><span class="meta"><span class="who">Camila</span><time>19:25</time></span></div></div><aside class="note"><span class="note-l">Follow-up 4h</span><p>Quebra de risco antecipada, antes mesmo de existir preço na mesa. Não teve resposta.</p></aside></div>
+<header class="act" id="ato-2"><span class="act-n">Ato 2</span><h2>O resgate por conteúdo</h2><span class="act-d">28 de julho</span></header>
+<div class="gap"><span>10 dias sem resposta</span></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Oi, Franciele! A Aline gravou um conteudo sobre os <strong>8 comportamentos fundamentais</strong> da lideranca para mulheres.</p><p>Achei que podia te interessar. </p><p>Quer que eu te mande?</p><span class="meta"><span class="who">Camila</span><time>14:30</time></span></div></div><aside class="note"><span class="note-l">Reengajamento</span><p>Dez dias depois, volta por conteúdo e não por venda. Pergunta fechada, fácil de responder.</p></aside></div>
+<header class="act" id="ato-3"><span class="act-n">Ato 3</span><h2>A conversa que virou venda</h2><span class="act-d">29 e 30 de julho</span></header>
+<div class="gap"><span>24 horas de silêncio</span></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Oi, Franciele! Pode falar? ??</p><span class="meta"><span class="who">Camila</span><time>21:22</time></span></div></div><aside class="note"><span class="note-l">Terceira tentativa</span><p>Nova janela, novo template, onze dias depois da primeira abordagem. É aqui que destrava.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Sim</p><span class="meta"><span class="who">Franciele</span><time>21:22</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Que bom que você respondeu! 😊</p><span class="meta"><span class="who">Camila</span><time>21:23</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Me conta, o que te fez buscar mais sobre liderança?</p><span class="meta"><span class="who">Camila</span><time>21:23</time></span></div></div><aside class="note"><span class="note-l">Situação</span><p>Pergunta aberta, curta, sem pitch. A primeira coisa que a IA quer é a versão dela do problema.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Aprender a liderar</p><span class="meta"><span class="who">Franciele</span><time>21:27</time></span></div></div></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>É muito difícil lidar com pessoas, prazos em alta demanda, motivar a todos</p><span class="meta"><span class="who">Franciele</span><time>21:27</time></span></div></div></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Me sinto exausta</p><span class="meta"><span class="who">Franciele</span><time>21:27</time></span></div></div></div>
+<div class="row has-note"><div class="msg lead"><div class="bub"><p>É frustada</p><span class="meta"><span class="who">Franciele</span><time>21:28</time></span></div></div><aside class="note"><span class="note-l">O lead se abre</span><p>“Exausta”, “frustrada”. Dor emocional entregue de graça — e a IA continua sem falar de produto.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Entendo você, Franciele. Lidar com tudo isso ao mesmo tempo realmente pesa.</p><span class="meta"><span class="who">Camila</span><time>21:28</time></span></div></div><aside class="note"><span class="note-l">Validação</span><p>Uma frase de acolhimento, sem novela. Depois segue.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Hoje você lidera quantas pessoas?</p><span class="meta"><span class="who">Camila</span><time>21:28</time></span></div></div><aside class="note"><span class="note-l">Qualificação</span><p>Tamanho do time, no meio da emoção. Dado objetivo que muda o pitch lá na frente.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>4 pessoas</p><span class="meta"><span class="who">Franciele</span><time>21:29</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Entendi. E dessas coisas todas que você me falou - a dificuldade com pessoas, os prazos apertados, motivar o time, a exaustão - o que mais pesa no seu dia a dia?</p><span class="meta"><span class="who">Camila</span><time>21:30</time></span></div></div><aside class="note"><span class="note-l">Priorização</span><p>Devolve a lista dela com as palavras dela e pede pra escolher o que mais pesa.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Ter que atender as dúvidas, ajudas, orientar, validar e gestar ao mesmo tempo. Enquanto ainda tenho minhas demandas de coordenação.</p><span class="meta"><span class="who">Franciele</span><time>21:31</time></span></div></div></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Os colaboradores são quase todos novos, o que pesa ainda mais. O mais antigo tem um ano, dois tem dois meses e tem a última que contratei recentemente.</p><span class="meta"><span class="who">Franciele</span><time>21:31</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Isso que você descreveu é muito real, Franciele. Você acaba sendo interrompida o tempo todo e não consegue fazer o seu próprio trabalho, né?</p><span class="meta"><span class="who">Camila</span><time>21:32</time></span></div></div><aside class="note"><span class="note-l">Espelho</span><p>Resume o problema numa frase e pede confirmação. Quem confirma, avança.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Me diz uma coisa: como isso tem impactado os resultados da sua equipe e os seus próprios resultados?</p><span class="meta"><span class="who">Camila</span><time>21:32</time></span></div></div><aside class="note"><span class="note-l">Implicação</span><p>Puxa da dor pessoal pro resultado: o que isso está custando em entrega?</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Um impacto muito ruim</p><span class="meta"><span class="who">Franciele</span><time>21:32</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Entendi, time novo mesmo. E isso significa que eles dependem muito de você pra tudo agora.</p><span class="meta"><span class="who">Camila</span><time>21:32</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Mas me responde: se continuar assim pelos próximos meses, com você sendo a única fonte de resposta pra tudo, onde isso te leva?</p><span class="meta"><span class="who">Camila</span><time>21:32</time></span></div></div><aside class="note"><span class="note-l">Custo da inação</span><p>“Se continuar assim, onde isso te leva?” O lead constrói o custo sozinho — vale dez vezes mais do que a IA afirmar.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Estou há 7 meses liderando e parece que só piora</p><span class="meta"><span class="who">Franciele</span><time>21:32</time></span></div></div></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Sim, horrível por isso quero mudar algo</p><span class="meta"><span class="who">Franciele</span><time>21:33</time></span></div></div></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Precisa melhorar</p><span class="meta"><span class="who">Franciele</span><time>21:33</time></span></div></div></div>
+<div class="row has-note"><div class="msg lead"><div class="bub"><p>Está insustentável</p><span class="meta"><span class="who">Franciele</span><time>21:33</time></span></div></div><aside class="note"><span class="note-l">A urgência é dela</span><p>“Está insustentável.” A IA não precisou dizer nenhuma vez que era urgente.</p></aside></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Franciele, isso que você acabou de falar é muito importante: 7 meses assim e só piorando. Isso não é sustentável mesmo.</p><span class="meta"><span class="who">Camila</span><time>21:34</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>E em você, isso tem te custado o quê? Noites mal dormidas, vontade de desistir, a saúde?</p><span class="meta"><span class="who">Camila</span><time>21:34</time></span></div></div><aside class="note"><span class="note-l">Aprofundamento</span><p>Sono, saúde, vontade de desistir. Vinte e cinco minutos de conversa e ainda zero produto.</p></aside></div>
+<div class="row has-note"><div class="msg lead"><div class="bub"><p>Sim, tudo isso e ainda minha família, não passo tempo com eles e isso tem acabado comigo</p><span class="meta"><span class="who">Franciele</span><time>21:35</time></span></div></div><aside class="note"><span class="note-l">O ponto de virada</span><p>Família. Daqui pra frente a decisão deixou de ser sobre um curso.</p></aside></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Franciele, sinto muito que você esteja passando por isso. Perder tempo com a família, a saúde, o sono... isso tem um preço alto demais.</p><span class="meta"><span class="who">Camila</span><time>21:35</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Me diz uma coisa: se daqui a 6 meses sua liderança estivesse exatamente como você gostaria, o que teria mudado? Como seria o seu dia?</p><span class="meta"><span class="who">Camila</span><time>21:35</time></span></div></div><aside class="note"><span class="note-l">Necessidade-solução</span><p>Pede pro lead descrever o cenário ideal. O que ela responder vira o roteiro do pitch.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Teria meu tempo de volta, trabalhar feliz e produtiva, um trabalho tranquilo e justo</p><span class="meta"><span class="who">Franciele</span><time>21:39</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Que visão boa, Franciele. Tempo de volta, trabalhar feliz, tranquila. É exatamente isso que você merece.</p><span class="meta"><span class="who">Camila</span><time>21:39</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Investir no seu desenvolvimento pra chegar nesse cenário é prioridade pra você agora? E essa decisão você toma sozinha ou envolve mais alguém?</p><span class="meta"><span class="who">Camila</span><time>21:39</time></span></div></div><aside class="note"><span class="note-l">Prioridade e poder</span><p>Duas perguntas numa: é prioridade agora? E você decide sozinha? Sem isso, o fechamento é chute.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Sozinha</p><span class="meta"><span class="who">Franciele</span><time>21:40</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Perfeito, Franciele.</p><span class="meta"><span class="who">Camila</span><time>21:41</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Olha, é exatamente isso que a Formação de Liderança Autêntica resolve: você vai aprender a desenvolver esse time novo pra que eles ganhem autonomia e parem de depender de você pra tudo. Você vai sair do operacional e voltar pro seu papel de coordenadora.</p><span class="meta"><span class="who">Camila</span><time>21:41</time></span></div></div><aside class="note"><span class="note-l">Pitch</span><p>É a fala dela devolvida em forma de solução: time novo, autonomia, sair do operacional, voltar ao papel de coordenadora.</p></aside></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>A Aline ensina o passo a passo de delegação, feedback e desenvolvimento de pessoas. Tem um método específico (o MARCA) pra você dar orientação sem precisar validar tudo, e ferramentas pra estruturar o time de um jeito que eles cresçam e você recupere seu tempo e sua vida.</p><span class="meta"><span class="who">Camila</span><time>21:41</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>O investimento na Formação é 12x de R$ 258,25 no cartão, ou R$ 2.497 à vista.</p><span class="meta"><span class="who">Camila</span><time>21:41</time></span></div></div><aside class="note"><span class="note-l">Preço</span><p>Minuto 18 da conversa. Parcelado primeiro, à vista depois.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>E pelo que você me contou sobre o quanto isso tem te custado (sua família, sua saúde, sua paz), faz total sentido pro seu momento.</p><span class="meta"><span class="who">Camila</span><time>21:41</time></span></div></div><aside class="note"><span class="note-l">Ancoragem</span><p>No custo que ela declarou — família, saúde, paz — e não num benefício genérico.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>O que faz mais sentido pra você: cartão parcelado ou à vista?</p><span class="meta"><span class="who">Camila</span><time>21:41</time></span></div></div><aside class="note"><span class="note-l">Escolha alternativa</span><p>Não pergunta “quer comprar”. Pergunta “como”.</p></aside></div>
+<div class="row has-note"><div class="msg lead"><div class="bub"><p>Não teria algum em valor mais em conta ?</p><span class="meta"><span class="who">Franciele</span><time>21:43</time></span></div></div><aside class="note"><span class="note-l">Objeção</span><p>O momento em que a maior parte das conversas morre.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Entendo, Franciele. Mas olha só: você acabou de me dizer que está há 7 meses assim, perdendo tempo com sua família, sua saúde, trabalhando exausta e que tá insustentável.</p><span class="meta"><span class="who">Camila</span><time>21:43</time></span></div></div><aside class="note"><span class="note-l">Não baixa o preço</span><p>Nem oferece produto menor. Devolve o custo de continuar como está.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Sabe o que a Aline fala? A gente tem o time que tolera. Se hoje o time te frustra e te sobrecarrega, é porque falta uma peça no seu jeito de liderar, e isso dá pra desenvolver.</p><span class="meta"><span class="who">Camila</span><time>21:43</time></span></div></div><aside class="note"><span class="note-l">Reenquadramento</span><p>“A gente tem o time que tolera.” O problema deixa de ser falta de sorte e vira competência desenvolvível.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>E dá pra dividir em 12x de R$ 258,25, menos de R$ 9 por dia. Cabe melhor assim no seu mês?</p><span class="meta"><span class="who">Camila</span><time>21:44</time></span></div></div><aside class="note"><span class="note-l">Redução da unidade</span><p>R$ 9 por dia, e fecha com pergunta em vez de ponto final.</p></aside></div>
+<div class="gap"><span>a conversa parou às 21h44 — retomada 10h42 depois</span></div>
+<div class="daymark"><span>30 de julho</span></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Franciele, tô aqui! 😊</p><p>Conseguiu pensar melhor no parcelamento? Ou ficou alguma dúvida que eu posso te ajudar?</p><span class="meta"><span class="who">Camila</span><time>08:26</time></span></div></div><aside class="note"><span class="note-l">Manhã seguinte</span><p>Retoma exatamente de onde parou. Sem “oi, tudo bem?”.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Franciele, só pra você ficar tranquila: você tem 7 dias de garantia pra pedir reembolso se achar que não é pra você.</p><p>E além disso, tem a garantia condicional em contrato: se você consumir o conteúdo, aplicar as ferramentas e ainda assim sentir que não evoluiu, a gente devolve 100%.</p><p>O risco fica com a gente, não com você. Ficou alguma dúvida que tá te travando?</p><span class="meta"><span class="who">Camila</span><time>08:31</time></span></div></div><aside class="note"><span class="note-l">Reversão de risco</span><p>Garantia de 7 dias mais garantia condicional, e a pergunta certa: o que está te travando?</p></aside></div>
+<div class="row has-note"><div class="msg lead"><div class="bub"><p>Como que é o curso ? Quantas horas por dia ?</p><span class="meta"><span class="who">Franciele</span><time>08:37</time></span></div></div><aside class="note"><span class="note-l">Sinal de compra</span><p>“Como é o curso?” é pergunta de quem já decidiu e está procurando permissão.</p></aside></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Ótima pergunta, Franciele!</p><span class="meta"><span class="who">Camila</span><time>08:38</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>A Formação é totalmente gravada, você faz no seu ritmo, de onde estiver. Não tem horário fixo, não tem aula ao vivo obrigatória.</p><span class="meta"><span class="who">Camila</span><time>08:38</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>São mais de 90 videoaulas que você pode assistir, ouvir em áudio (tipo podcast) ou ler a transcrição. Você encaixa na sua rotina, pode ser 30 minutos por dia, 1 hora no fim de semana, do jeito que funcionar pra você.</p><span class="meta"><span class="who">Camila</span><time>08:38</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>E tem 12 meses de acesso pra você consumir tudo com calma e aplicar no seu time.</p><span class="meta"><span class="who">Camila</span><time>08:38</time></span></div></div><aside class="note"><span class="note-l">Objeção real</span><p>Ela perguntou horas porque o medo é não ter tempo. A resposta é factual: gravado, 90 aulas, áudio, 12 meses.</p></aside></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Faz sentido pro seu dia a dia?</p><span class="meta"><span class="who">Camila</span><time>08:38</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Franciele, imagina você daqui a 3 meses saindo do trabalho no horário, sem levar nada pra casa, e tendo sua noite com a sua família de volta.</p><p>É isso que tá na mesa agora.</p><p>Quer que eu te mande o link pra garantir sua vaga?</p><span class="meta"><span class="who">Camila</span><time>09:10</time></span></div></div><aside class="note"><span class="note-l">Fecha no cenário dela</span><p>Sair no horário, noite com a família. Devolve a visão que ela mesma escreveu e pede a venda.</p></aside></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Franciele, a Aline sempre fala uma coisa que me lembrou de você: &quot;Muita gente é contratada pela competência técnica e demitida pelo comportamento.&quot;</p><p>Você já tem a competência, coordena há 7 anos. O que falta é a estrutura de liderança pra esse time novo crescer sem sugar você.</p><p>Mais de 700 líderes já passaram por isso na comunidade da ELA e saíram do sufoco. Você pode ser a próxima.</p><p>Bora garantir sua vaga?</p><span class="meta"><span class="who">Camila</span><time>10:40</time></span></div></div><aside class="note"><span class="note-l">Último empurrão</span><p>Autoridade, o histórico dela e prova social. CTA direto.</p></aside></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Sim</p><span class="meta"><span class="who">Franciele</span><time>12:39</time></span></div></div></div>
+<div class="row"><div class="msg lead"><div class="bub"><p>Poder mandar o link</p><span class="meta"><span class="who">Franciele</span><time>12:39</time></span></div></div></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>Aqui está o link pra garantir sua vaga, Franciele:</p><span class="meta"><span class="who">Camila</span><time>12:40</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p><span class="link">pay.hotmart.com/X86207846B?…&amp;sck=camila</span></p><span class="meta"><span class="who">Camila</span><time>12:40</time></span></div></div><aside class="note"><span class="note-l">Link com rastreio</span><p>O <code>sck=camila</code> é o que permite atribuir a venda à IA no relatório da Hotmart.</p></aside></div>
+<div class="row"><div class="msg ia"><div class="bub"><p>É só finalizar por aí. Qualquer dúvida no meio do caminho, me chama que eu te ajudo na hora 😊</p><span class="meta"><span class="who">Camila</span><time>12:40</time></span></div></div></div>
+<div class="row has-note"><div class="msg ia"><div class="bub"><p>Me avisa se der certo!!</p><span class="meta"><span class="who">Camila</span><time>12:40</time></span></div></div><aside class="note"><span class="note-l">Pós-venda</span><p>Fecha se colocando junto, não com “qualquer dúvida é só chamar”.</p></aside></div>
+</div>
+
+<section class="outcome">
+  <div class="outcome-h">
+    <p class="eyebrow">Fechou</p>
+    <h2>O registro da compra, cinco minutos depois do link</h2>
+  </div>
+  <dl class="receipt">
+    <div><dt>Valor</dt><dd class="big">R$ 2.497,03</dd></div>
+    <div><dt>Pagamento</dt><dd>Cartão, 12x de R$ 258,25</dd></div>
+    <div><dt>Status</dt><dd>Completo</dd></div>
+    <div><dt>Data</dt><dd>30/07/2026, 12h45</dd></div>
+    <div><dt>Atribuição</dt><dd><code>sck=camila</code></dd></div>
+    <div><dt>Desconto concedido</dt><dd>Nenhum</dd></div>
+  </dl>
+</section>
+
+<section class="takeaways">
+  <h2>O que essa conversa mostra</h2>
+  <p>Nada aqui depende de a IA escrever bonito. Depende de ela seguir uma ordem e aguentar o silêncio.</p>
+  <div class="tk">
+    <article><span class="n">01</span><h3>A venda estava no follow-up, não na abordagem</h3>
+      <p>As duas primeiras tentativas morreram. Se a operação parasse depois do primeiro “sim” sem
+      sequência, essa lead teria virado estatística de lead frio. O que fechou foi a terceira janela,
+      onze dias depois — e a IA não cansa, não fica sem graça e não esquece de voltar.</p></article>
+    <article><span class="n">02</span><h3>Vinte minutos de perguntas antes de qualquer produto</h3>
+      <p>Situação, problema, implicação, custo da inação, cenário ideal, prioridade e poder de decisão.
+      O produto só aparece quando o próprio lead já disse “está insustentável”. O pitch é literalmente
+      a fala dela reorganizada.</p></article>
+    <article><span class="n">03</span><h3>Objeção de preço não virou desconto</h3>
+      <p>Diante de “não teria algo mais em conta?”, a IA não ofereceu produto menor nem cupom.
+      Reenquadrou no custo de continuar como está, trouxe a autoridade e reduziu a unidade de
+      comparação para R$ 9 por dia. O preço cheio foi pago.</p></article>
+    <article><span class="n">04</span><h3>Cada mensagem termina com uma pergunta</h3>
+      <p>Inclusive as de follow-up e as de quebra de objeção. Mensagem que termina em ponto final
+      encerra a conversa; mensagem que termina em pergunta devolve a bola. Não existe um
+      “qualquer dúvida é só chamar” na conversa inteira.</p></article>
+    <article><span class="n">05</span><h3>A venda é rastreável até a mensagem</h3>
+      <p>O link carrega <code>sck=camila</code>, então a compra na Hotmart volta amarrada à conversa
+      que a originou. Sem isso, o resultado vira achismo.</p></article>
+  </div>
+</section>
+
+<footer>
+  Conversa real da operação de vendas por WhatsApp da Escola da Líder Autêntica, entre 18 e 30 de
+  julho de 2026. Transcrição exportada do Chatwoot e conferida contra o registro de compra na Hotmart.
+  Nome parcial e telefone omitidos por privacidade.
+</footer>
+</div>
+
+</body>
+</html>
