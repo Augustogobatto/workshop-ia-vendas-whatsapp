@@ -107,11 +107,7 @@
   .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 52px 24px 80px; }
 
   /* ---------- header ---------- */
-  header.masthead { margin-bottom: 40px; padding-bottom: 26px; position: relative; }
-  header.masthead::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px;
-    border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink);
-  }
+  header.masthead { margin-bottom: 40px; }
   .eyebrow {
     font-family: var(--serif); font-style: italic;
     font-size: 17px; color: var(--ink-2); margin: 0 0 8px;
@@ -281,15 +277,6 @@
     font-size: 15px; color: var(--panel-accent); margin-bottom: 4px;
   }
 
-  .save-row { display: flex; gap: 10px; margin-top: 22px; }
-  .btn-primary {
-    flex: 1; border: none; background: var(--panel-accent); color: var(--panel-accent-ink);
-    font-weight: 700; font-size: 15px; padding: 12px; border-radius: 8px; cursor: pointer;
-    font-family: var(--sans);
-  }
-  .btn-primary:hover { filter: brightness(1.08); }
-  .btn-primary:focus-visible { outline: 2px solid var(--panel-ink); outline-offset: 2px; }
-
   /* ---------- rules ---------- */
   .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 44px; }
   @media (max-width: 700px) { .rules { grid-template-columns: 1fr; } }
@@ -301,34 +288,6 @@
   }
   .rule h3 svg { color: var(--accent); flex: none; }
   .rule p { margin: 0; font-size: 14px; color: var(--ink-2); }
-
-  /* ---------- history ---------- */
-  .history { margin-top: 52px; padding-top: 22px; position: relative; }
-  .history::before {
-    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px;
-    border-top: 1px solid var(--ink); border-bottom: 2px solid var(--ink);
-  }
-  .history h2 {
-    font-family: var(--serif);
-    font-size: 26px; font-weight: 400; margin: 0 0 6px;
-  }
-  .history .hint { font-size: 14px; color: var(--ink-2); margin: 0 0 18px; max-width: 62ch; }
-  .h-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  .h-table th {
-    text-align: left; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--ink-3); font-weight: 600; padding: 8px 12px; border-bottom: 1px solid var(--line);
-  }
-  .h-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
-  .h-table td:first-child { font-weight: 600; }
-  .h-empty { font-size: 14px; color: var(--ink-3); padding: 18px 0; font-family: var(--serif); font-style: italic; font-size: 16px; }
-  .tag { padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--surface-2); color: var(--ink-2); }
-  .tag.good { background: var(--good-soft); color: var(--good); }
-  .tag.bad { background: var(--bad-soft); color: var(--bad); }
-  select {
-    padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
-    background: var(--surface); color: var(--ink); font-size: 13px; font-family: var(--sans);
-  }
-  .table-scroll { overflow-x: auto; }
 
   footer {
     margin-top: 56px; font-size: 15px; color: var(--ink-2); max-width: 62ch;
@@ -362,13 +321,12 @@
 
   @media (max-width: 520px) {
     .wrap { padding: 32px 16px 120px; }
-    header.masthead { margin-bottom: 30px; padding-bottom: 20px; }
+    header.masthead { margin-bottom: 30px; }
     .card-head { padding: 16px 16px 0; }
     .card-body { padding: 14px 16px 18px; }
     .scenario { padding: 12px; }
     .verdict-body { padding: 20px 16px 18px; }
     .ev { font-size: 40px; }
-    select { font-size: 16px; }
     input[type="range"]::-webkit-slider-thumb { width: 26px; height: 26px; }
   }
 
@@ -439,10 +397,6 @@
             <div class="flip-title">A variável que decide</div>
             <div id="flip-text"></div>
           </div>
-
-          <div class="save-row">
-            <button class="btn-primary" id="btn-save" type="button">Registrar esta decisão</button>
-          </div>
         </div>
       </div>
     </div>
@@ -465,20 +419,6 @@
     </div>
   </div>
 
-  <div class="history">
-    <h2>Decisões registradas</h2>
-    <p class="hint">O ganho de registrar é conferir depois: quando o resultado sair, marque qual cenário aconteceu. Com o tempo você descobre se os seus chutes de probabilidade são bons ou otimistas demais.</p>
-    <div class="table-scroll">
-      <table class="h-table" id="h-table" hidden>
-        <thead>
-          <tr><th>Decisão</th><th>Data</th><th>Custo</th><th>Valor esperado</th><th>Veredito</th><th>O que aconteceu</th><th></th></tr>
-        </thead>
-        <tbody id="h-body"></tbody>
-      </table>
-    </div>
-    <p class="h-empty" id="h-empty">Nenhuma decisão registrada ainda. A primeira conta é a que mais ensina.</p>
-  </div>
-
   <footer>A conta nasceu em 1654, numa troca de cartas entre Blaise Pascal e Pierre de Fermat sobre como dividir o prêmio de um jogo interrompido. A resposta deles fundou a teoria da probabilidade: o valor de uma situação incerta é a média dos futuros possíveis, cada um pesado pela sua chance.</footer>
 </div>
 
@@ -489,7 +429,6 @@
 
 <script>
 (function () {
-  var STORAGE = 'vale-a-aposta-v1';
   var state = { scenarios: [] };
 
   var EXAMPLE = [
@@ -705,78 +644,6 @@
     compute();
   });
 
-  /* ---------- history ---------- */
-  function loadHistory() {
-    try { return JSON.parse(localStorage.getItem(STORAGE)) || []; }
-    catch (e) { return []; }
-  }
-  function saveHistory(h) { localStorage.setItem(STORAGE, JSON.stringify(h)); }
-
-  function renderHistory() {
-    var h = loadHistory();
-    var table = document.getElementById('h-table');
-    var empty = document.getElementById('h-empty');
-    var body = document.getElementById('h-body');
-    if (!h.length) { table.hidden = true; empty.hidden = false; return; }
-    table.hidden = false; empty.hidden = true;
-    body.innerHTML = '';
-    h.forEach(function (d, idx) {
-      var tr = document.createElement('tr');
-      var tag = d.verdict === 'good'
-        ? '<span class="tag good">valia</span>'
-        : d.verdict === 'bad' ? '<span class="tag bad">não valia</span>' : '<span class="tag">no fio</span>';
-      var opts = '<option value="">pendente</option>';
-      d.scenarios.forEach(function (s, si) {
-        opts += '<option value="' + si + '"' + (d.outcome === si ? ' selected' : '') + '>' + escapeHtml(s.name) + '</option>';
-      });
-      tr.innerHTML =
-        '<td>' + escapeHtml(d.name) + '</td>' +
-        '<td>' + d.date + '</td>' +
-        '<td>' + money(d.cost) + '</td>' +
-        '<td>' + money(d.ev) + '</td>' +
-        '<td>' + tag + '</td>' +
-        '<td><select data-out="' + idx + '" aria-label="Resultado da decisão ' + escapeHtml(d.name) + '">' + opts + '</select></td>' +
-        '<td><button class="btn-x" type="button" data-hdel="' + idx + '" aria-label="Apagar registro">' + ICON_X + '</button></td>';
-      body.appendChild(tr);
-    });
-  }
-
-  document.getElementById('h-body').addEventListener('change', function (e) {
-    var sel = e.target.closest('[data-out]');
-    if (!sel) return;
-    var h = loadHistory();
-    var idx = Number(sel.getAttribute('data-out'));
-    h[idx].outcome = sel.value === '' ? null : Number(sel.value);
-    saveHistory(h);
-  });
-
-  document.getElementById('h-body').addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-hdel]');
-    if (!btn) return;
-    var h = loadHistory();
-    h.splice(Number(btn.getAttribute('data-hdel')), 1);
-    saveHistory(h);
-    renderHistory();
-  });
-
-  document.getElementById('btn-save').addEventListener('click', function () {
-    var r = compute();
-    var h = loadHistory();
-    var now = new Date();
-    h.unshift({
-      name: elName.value || 'Sem nome',
-      date: now.toLocaleDateString('pt-BR'),
-      cost: r.cost,
-      ev: Math.round(r.ev),
-      verdict: r.cls || 'edge',
-      outcome: null,
-      scenarios: state.scenarios.map(function (s) { return { name: s.name, prob: s.prob, value: s.value }; })
-    });
-    saveHistory(h);
-    renderHistory();
-    document.querySelector('.history').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
   /* ---------- barra mobile ---------- */
   elMini.addEventListener('click', function () {
     document.querySelector('.verdict-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -795,7 +662,6 @@
   state.scenarios = EXAMPLE.map(function (s) { return { name: s.name, prob: s.prob, value: s.value }; });
   renderScenarios();
   compute();
-  renderHistory();
 })();
 </script>
 
