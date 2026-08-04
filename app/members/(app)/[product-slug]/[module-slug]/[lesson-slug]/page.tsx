@@ -96,7 +96,7 @@ export default function LessonPage({ params }: PageProps) {
       const { data: allLessons = [] } = moduleIds.length
         ? await supabase
             .from('lessons')
-            .select('id, module_id, name, slug, sort_order, content_type, duration_seconds, is_free, description, is_published, content_url, content_body')
+            .select('id, module_id, name, slug, sort_order, content_type, duration_seconds, is_free, description, is_published')
             .in('module_id', moduleIds)
             .eq('is_published', true)
             .order('sort_order')
