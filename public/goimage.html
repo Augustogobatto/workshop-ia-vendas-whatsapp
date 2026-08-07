@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Quando a IA não sabe · Go Image</title>
-<meta name="description" content="Sete conversas reais de uma operação de vendas com IA, no momento em que a conversa saiu do que ela sabia responder.">
+<meta name="description" content="Sete conversas reais de uma operação de vendas com IA, mais a planilha de custos de terceiros.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Quando a IA não sabe">
-<meta property="og:description" content="Sete conversas reais de uma operação de vendas com IA, no momento em que a conversa saiu do que ela sabia responder. Preparado para a Go Image.">
+<meta property="og:description" content="Sete conversas reais de uma operação de vendas com IA, no momento em que a conversa saiu do que ela sabia responder. Mais a planilha de custos de terceiros. Preparado para a Go Image.">
 <meta property="og:locale" content="pt_BR">
 <meta name="theme-color" content="#EEF1F0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0D1312" media="(prefers-color-scheme: dark)">
@@ -346,6 +346,173 @@
 
   ul.points li strong { color: var(--ink); font-weight: 700; }
 
+  /* ---------- custos ---------- */
+
+  .part-rule {
+    margin: 76px 0 0;
+    border: 0;
+    border-top: 3px double var(--rule);
+  }
+
+  .tbl-wrap {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    margin: 0 0 16px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15.5px;
+    min-width: 460px;
+  }
+
+  th {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+    padding: 14px 20px 10px;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+
+  tr:last-child td { border-bottom: 0; }
+
+  td.num, th.num {
+    text-align: right;
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  td small { display: block; color: var(--muted); font-size: 13.5px; margin-top: 3px; }
+
+  tr.total td {
+    border-top: 1px solid var(--rule);
+    font-weight: 700;
+    background: var(--surface-2);
+  }
+
+  .scen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 0 0 22px;
+  }
+
+  .scen {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    padding: 22px 22px 18px;
+  }
+
+  .scen .tag {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--signal);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .scen h4 {
+    font-size: 18.5px;
+    margin: 0 0 4px;
+    letter-spacing: -.01em;
+  }
+
+  .scen .vol { font-size: 14.5px; color: var(--muted); margin: 0 0 16px; }
+
+  .scen dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 9px 12px;
+    font-size: 15.5px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .scen dt { color: var(--ink-soft); }
+
+  .scen dd {
+    margin: 0;
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .scen .sum {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding-top: 14px;
+  }
+
+  .scen .sum span { font-size: 14px; color: var(--muted); }
+
+  .scen .sum b {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 22px;
+    letter-spacing: -.02em;
+  }
+
+  .scen .per {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 10px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .flag {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--signal);
+    border-radius: 0 4px 4px 0;
+    padding: 22px 24px 6px;
+    margin: 0 0 24px;
+  }
+
+  .flag h4 {
+    font-size: 18.5px;
+    margin: 0 0 12px;
+    letter-spacing: -.01em;
+  }
+
+  .notes {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    display: grid;
+    gap: 10px;
+    margin: 26px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .notes b { color: var(--ink-soft); font-weight: 700; }
+
   footer {
     margin-top: 64px;
     padding-top: 22px;
@@ -365,6 +532,8 @@
     .reading { grid-template-columns: 1fr; gap: 6px; }
     .reading .label { padding-top: 0; }
     .closing { padding: 24px 20px 8px; }
+    .scen-grid { grid-template-columns: 1fr; }
+    .flag { padding: 20px 18px 6px; }
   }
 </style>
 </head>
@@ -374,7 +543,7 @@
   <header>
     <p class="kicker">Dossiê técnico · Go Image</p>
     <h1>Quando a IA não sabe</h1>
-    <p class="standfirst">Sete trechos reais de uma operação de vendas por WhatsApp que roda com IA desde janeiro. Todos foram escolhidos pelo mesmo critério: o momento em que a conversa saiu do que a IA sabia responder.</p>
+    <p class="standfirst">Sete trechos reais de uma operação de vendas por WhatsApp que roda com IA desde janeiro. Todos foram escolhidos pelo mesmo critério: o momento em que a conversa saiu do que a IA sabia responder. Na segunda parte, a planilha de custos de terceiros que ficou pendente da nossa conversa.</p>
     <div class="meta">
       <span>Augusto Gobatto</span>
       <span>07 de agosto de 2026</span>
@@ -395,7 +564,7 @@
     <p>Por isso este dossiê não mostra a IA vendendo bem. Mostra ela topando com o limite. Os textos estão como saíram, sem edição. Só os nomes foram reduzidos ao primeiro nome.</p>
   </div>
 
-  <h2>Os casos</h2>
+  <h2>Parte 1 · Os casos</h2>
 
   <!-- 1 -->
   <section class="case">
@@ -610,6 +779,98 @@ E além disso, tem uma garantia condicional em contrato: se você consumir todo 
       <li><span class="n">03</span><span><strong>Toda conversa fica gravada e auditável.</strong> Os trechos deste documento saíram de uma consulta ao banco, hoje, em dois minutos. Vocês vão ter o mesmo: qualquer conversa, qualquer dia, com o histórico completo do que a IA disse e por quê.</span></li>
     </ul>
     <p>É por isso que a etapa de imersão vem antes de construir. O que decide se a IA alucina não é o modelo, é o que a gente decidiu que ela pode afirmar.</p>
+  </div>
+
+  <hr class="part-rule">
+
+  <h2>Parte 2 · Os custos de terceiros</h2>
+
+  <div class="lede">
+    <p>Isto é o que vocês pagam direto ao fornecedor, na conta de vocês, fora do meu projeto. São três linhas, e só uma delas é fixa.</p>
+    <p>O Rafael perguntou de que dimensão a gente está falando. A resposta honesta é que não existe um número só, porque duas das três linhas escalam por conversa. Então aqui vai o preço unitário de cada uma e dois cenários de volume, para vocês verem onde a conta muda de natureza.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fornecedor</th>
+          <th>Como cobra</th>
+          <th class="num">Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Servidor (Hostinger)<small>Onde a IA e as automações rodam, separado da infra de vocês</small></td>
+          <td>Mensalidade fixa<small>Não muda com o volume</small></td>
+          <td class="num">R$ 79/mês</td>
+        </tr>
+        <tr>
+          <td>Modelo de IA (OpenRouter)<small>O raciocínio da IA, cobrado por texto processado</small></td>
+          <td>Pay as you go<small>Sem mensalidade e sem plano. Paga só o que usar, e se ninguém falar com a IA no mês, o custo é zero</small></td>
+          <td class="num">R$ 3,10 a R$ 5,00<br>por conversa</td>
+        </tr>
+        <tr>
+          <td>WhatsApp oficial (Meta)<small>Cobrado por mensagem enviada, desde julho de 2025</small></td>
+          <td>Resposta dentro da janela de 24h<small>Todo o atendimento de quem falou com vocês primeiro</small></td>
+          <td class="num">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Template utilitário<small>Confirmação, status de pedido, aviso operacional</small></td>
+          <td class="num">R$ 0,04</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Template de marketing<small>Reativação de lista e follow-up fora da janela de 24h. É o que a régua usa</small></td>
+          <td class="num">R$ 0,35</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="figures-note">Os R$ 3,10 por conversa não são estimativa: é o custo medido na operação que gerou os casos da Parte 1. Uso R$ 5,00 nas projeções abaixo porque no desenho de vocês a IA consulta o catálogo no Sankhya antes de responder, e cada consulta é uma ida a mais ao modelo.</p>
+
+  <div class="scen-grid">
+
+    <div class="scen">
+      <span class="tag">Cenário A</span>
+      <h4>O funil de hoje</h4>
+      <p class="vol">Fotógrafo profissional, 300 conversas por mês</p>
+      <dl>
+        <dt>Servidor</dt><dd>R$ 79</dd>
+        <dt>Modelo de IA</dt><dd>R$ 1.500</dd>
+        <dt>WhatsApp</dt><dd>R$ 420</dd>
+      </dl>
+      <div class="sum"><span>Total por mês</span><b>R$ 1.999</b></div>
+      <p class="per">R$ 6,66 por conversa atendida. Menos da metade do custo de um SDR contratado, com atendimento em minutos e sem hora de dormir.</p>
+    </div>
+
+    <div class="scen">
+      <span class="tag">Cenário B</span>
+      <h4>Amador com tráfego</h4>
+      <p class="vol">Mesmo motor, 3.000 conversas por mês</p>
+      <dl>
+        <dt>Servidor</dt><dd>R$ 149</dd>
+        <dt>Modelo de IA</dt><dd>R$ 15.000</dd>
+        <dt>WhatsApp</dt><dd>R$ 4.200</dd>
+      </dl>
+      <div class="sum"><span>Total por mês</span><b>R$ 19.349</b></div>
+      <p class="per">R$ 6,45 por conversa. O custo por conversa quase não muda. O que muda é que ele deixa de ser detalhe e vira linha de margem.</p>
+    </div>
+
+  </div>
+
+  <div class="flag">
+    <h4>O ponto que o cenário B levanta, e que vale decidir antes de construir</h4>
+    <p>Num produto de ticket R$ 100, uma conversa que custa R$ 6,45 precisa de 6,5% de conversão só para pagar a própria conta, antes do custo do produto e do tráfego. Isso não é risco de servidor, é conta de margem, e é o motivo pelo qual eu prefiro que o público amador entre como uma fase própria em vez de junto na primeira.</p>
+    <p>Existe folga grande aí, e ela é trabalho de otimização com o funil já rodando: modelo barato nas etapas simples (saudação, coleta de dado, qualificação inicial) e catálogo em cache derrubam o custo para a faixa de R$ 1,00 a R$ 1,50 por conversa. No cenário B isso leva o total para cerca de <b>R$ 8.100 por mês</b>, ou R$ 2,70 por conversa. É um ajuste que se faz medindo conversa real, não no papel.</p>
+  </div>
+
+  <div class="notes">
+    <p><b>De onde vem cada número.</b> Servidor: plano KVM 2 da Hostinger, dedicado a vocês. Eu rodo 20 serviços em produção num equivalente hoje, com folga. Modelo de IA: OpenRouter, pay as you go, medido em US$ 200 num mês para 329 conversas na operação da Parte 1, com dólar a R$ 5,09 em 07/08/2026. WhatsApp: tabela oficial da Meta, cobrança por mensagem entregue.</p>
+    <p><b>O que é suposição minha e vocês fecham na imersão.</b> Os volumes de 300 e 3.000 conversas são ilustrativos, porque o número de vocês eu ainda não tenho. E assumi 4 mensagens de marketing por lead ao longo dos 90 dias da régua, contando que boa parte do atendimento acontece dentro da janela de 24h, que não é cobrada.</p>
+    <p><b>Onde isso pode subir.</b> Follow-up é o que escala o custo de WhatsApp, não a quantidade de leads: uma régua longa multiplica mensagens por gente que nunca respondeu. É uma das coisas que a gente calibra no mês 2, junto com o resto.</p>
   </div>
 
   <footer>
