@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Quando a IA não sabe · Go Image</title>
+<meta name="description" content="Sete conversas reais de uma operação de vendas com IA, no momento em que a conversa saiu do que ela sabia responder.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quando a IA não sabe">
+<meta property="og:description" content="Sete conversas reais de uma operação de vendas com IA, no momento em que a conversa saiu do que ela sabia responder. Preparado para a Go Image.">
+<meta property="og:locale" content="pt_BR">
+<meta name="theme-color" content="#EEF1F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1312" media="(prefers-color-scheme: dark)">
+<style>
+  :root {
+    --ground: #EEF1F0;
+    --surface: #FFFFFF;
+    --surface-2: #F7F9F8;
+    --ink: #131C1A;
+    --ink-soft: #3A4744;
+    --muted: #64726E;
+    --rule: #D9E0DD;
+    --rule-soft: #E7ECEA;
+    --signal: #0E5A52;
+    --mark-bg: #FBE9A8;
+    --mark-ink: #2E2708;
+    --shadow: 0 1px 2px rgba(19, 28, 26, .05), 0 8px 24px -16px rgba(19, 28, 26, .35);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0D1312;
+      --surface: #151D1B;
+      --surface-2: #1A2422;
+      --ink: #E9EEEC;
+      --ink-soft: #C3CDCA;
+      --muted: #8C9B97;
+      --rule: #26312F;
+      --rule-soft: #1F2A28;
+      --signal: #52C3AC;
+      --mark-bg: #4B4114;
+      --mark-ink: #FBEFC4;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0D1312;
+    --surface: #151D1B;
+    --surface-2: #1A2422;
+    --ink: #E9EEEC;
+    --ink-soft: #C3CDCA;
+    --muted: #8C9B97;
+    --rule: #26312F;
+    --rule-soft: #1F2A28;
+    --signal: #52C3AC;
+    --mark-bg: #4B4114;
+    --mark-ink: #FBEFC4;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0 20px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  /* ---------- cabeçalho ---------- */
+
+  header { padding: 72px 0 0; }
+
+  .kicker {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin: 0 0 22px;
+  }
+
+  h1 {
+    font-size: clamp(38px, 7.5vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -.022em;
+    font-weight: 700;
+    margin: 0 0 22px;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0 0 34px;
+    max-width: 34em;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ---------- números ---------- */
+
+  .figures {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 40px 0 8px;
+  }
+
+  .fig {
+    background: var(--surface);
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fig b {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 1;
+  }
+
+  .fig span {
+    font-size: 13.5px;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .figures-note {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0 0 44px;
+    font-style: italic;
+  }
+
+  /* ---------- texto ---------- */
+
+  p { margin: 0 0 20px; }
+
+  .lede p { font-size: 18px; }
+
+  h2 {
+    font-size: 15px;
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin: 64px 0 26px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ---------- casos ---------- */
+
+  .case { margin: 0 0 52px; }
+
+  .case-head { margin-bottom: 18px; }
+
+  .case-tag {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    padding: 4px 11px;
+    margin-bottom: 14px;
+  }
+
+  .case h3 {
+    font-size: 25px;
+    line-height: 1.2;
+    letter-spacing: -.015em;
+    font-weight: 700;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+
+  .case-sub {
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ---------- transcrição ---------- */
+
+  .transcript {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    padding: 6px 0;
+    margin: 0 0 18px;
+    overflow-x: auto;
+  }
+
+  .turn {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .turn:last-child { border-bottom: 0; }
+
+  .turn.ai { background: var(--surface-2); }
+
+  .who {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+
+  .turn.ai .who { color: var(--signal); }
+
+  .auto {
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1px 6px;
+    letter-spacing: .06em;
+    text-transform: none;
+    font-size: 10px;
+  }
+
+  .said {
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    white-space: pre-line;
+  }
+
+  .said em { font-style: italic; color: var(--muted); }
+
+  .turn.key .said {
+    background: var(--mark-bg);
+    color: var(--mark-ink);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 3px 6px;
+    margin: -3px -6px;
+    border-radius: 2px;
+  }
+
+  .reading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: start;
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    padding-left: 2px;
+  }
+
+  .reading .label {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--signal);
+    padding-top: 5px;
+    white-space: nowrap;
+  }
+
+  .reading p { margin: 0; }
+
+  /* ---------- fechamento ---------- */
+
+  .closing {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 30px 30px 12px;
+    margin-top: 34px;
+    box-shadow: var(--shadow);
+  }
+
+  .closing h3 {
+    font-size: 21px;
+    margin: 0 0 16px;
+    letter-spacing: -.012em;
+  }
+
+  .closing p:last-child { margin-bottom: 18px; }
+
+  ul.points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    display: grid;
+    gap: 16px;
+  }
+
+  ul.points li {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 10px;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  ul.points li .n {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--signal);
+    padding-top: 4px;
+  }
+
+  ul.points li strong { color: var(--ink); font-weight: 700; }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  @media (max-width: 600px) {
+    body { font-size: 16px; padding: 0 16px 72px; }
+    header { padding-top: 48px; }
+    .figures { grid-template-columns: 1fr; }
+    .fig b { font-size: 26px; }
+    .turn { padding: 13px 16px; }
+    .reading { grid-template-columns: 1fr; gap: 6px; }
+    .reading .label { padding-top: 0; }
+    .closing { padding: 24px 20px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">Dossiê técnico · Go Image</p>
+    <h1>Quando a IA não sabe</h1>
+    <p class="standfirst">Sete trechos reais de uma operação de vendas por WhatsApp que roda com IA desde janeiro. Todos foram escolhidos pelo mesmo critério: o momento em que a conversa saiu do que a IA sabia responder.</p>
+    <div class="meta">
+      <span>Augusto Gobatto</span>
+      <span>07 de agosto de 2026</span>
+      <span>Extraído do banco da operação</span>
+    </div>
+  </header>
+
+  <div class="figures">
+    <div class="fig"><b>4.127</b><span>conversas atendidas pela IA</span></div>
+    <div class="fig"><b>28.177</b><span>mensagens enviadas por ela</span></div>
+    <div class="fig"><b>59</b><span>conversas passadas para um humano</span></div>
+  </div>
+  <p class="figures-note">1,4% das conversas foram entregues a uma pessoa. Não porque a IA errou em 1,4% delas, e sim porque em 1,4% ela esbarrou em algo que não era dela.</p>
+
+  <div class="lede">
+    <p>A pergunta que ficou da nossa conversa foi a do Cris, e é a pergunta certa: como saber se o motor vai funcionar e não vai alucinar.</p>
+    <p>Alucinação quase nunca aparece no meio da conversa fácil. Ela aparece na borda: quando alguém pergunta um preço que a IA não recebeu, um horário que ninguém cadastrou, um material que ela não tem. Uma IA mal desenhada preenche esse vazio com algo plausível, porque preencher vazio com algo plausível é literalmente o que o modelo faz. Uma IA bem desenhada reconhece a borda e sai.</p>
+    <p>Por isso este dossiê não mostra a IA vendendo bem. Mostra ela topando com o limite. Os textos estão como saíram, sem edição. Só os nomes foram reduzidos ao primeiro nome.</p>
+  </div>
+
+  <h2>Os casos</h2>
+
+  <!-- 1 -->
+  <section class="case">
+    <div class="case-head">
+      <span class="case-tag">Cliente irritada</span>
+      <h3>A lead desistiu da compra e reclamou do método</h3>
+      <p class="case-sub">Depois de algumas perguntas de qualificação, ela perdeu a paciência e disse que estava desistindo. É o cenário em que insistir destrói a relação e defender-se é pior ainda.</p>
+    </div>
+    <div class="transcript">
+      <div class="turn ai">
+        <div class="who">IA <span class="auto">follow-up automático</span></div>
+        <div class="said">Ramilla, a janela de conversa fecha hoje e eu não quero que você fique sem resposta.
+
+Sobre investir em você pra resolver essa sobrecarga: é prioridade agora e você decide sozinha, ou precisa alinhar com alguém?</div>
+      </div>
+      <div class="turn">
+        <div class="who">Ramilla</div>
+        <div class="said">Infelizmente, eu não tenho tempo para ficar respondendo perguntas infinitas sobre o que eu penso ou sinto. O produto é vendido para líderes. Não entendo como o setor de vendas pode achar que nós temos disposição e tempo para perder batendo papo dessa forma. Desisto da compra e registro o feedback. É uma péssima estratégia de vendas.</div>
+      </div>
+      <div class="turn ai key">
+        <div class="who">IA</div>
+        <div class="said">Ramilla, entendo completamente e peço desculpas pela experiência. Seu feedback é super válido.
+
+Já te conectei com alguém do time que vai te passar as informações diretas e objetivas que você precisa. Alguém entra em contato em breve.
+
+Obrigada pela sinceridade 🧡</div>
+      </div>
+    </div>
+    <div class="reading">
+      <span class="label">Leitura</span>
+      <p>Não argumentou, não tentou reverter, não repetiu a pergunta. Reconheceu, encerrou e passou para uma pessoa. O impulso errado aqui, e o mais comum em bot de vendas, é seguir empurrando o funil.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="case">
+    <div class="case-head">
+      <span class="case-tag">Material que ela não tem</span>
+      <h3>Pediram um arquivo que a IA não podia entregar</h3>
+      <p class="case-sub">A lead mandou até um print da planilha que queria. Contexto suficiente para o modelo inventar um link de download convincente.</p>
+    </div>
+    <div class="transcript">
+      <div class="turn">
+        <div class="who">Gabrielle</div>
+        <div class="said">Durante a palestra da Aline, ela disponibilizou uma planilha sobre os feedbacks, porém ninguém que participou conseguiu salvar, não ficou salvo no celular. Será que teria alguma forma de você me passar?
+<em>[print de tela anexado]</em></div>
+      </div>
+      <div class="turn ai key">
+        <div class="who">IA</div>
+        <div class="said">Gabrielle, não tenho acesso direto aos materiais da palestra, mas já te transferi pra alguém do time que vai conseguir te ajudar com isso. Eles vão te responder aqui mesmo 🧡</div>
+      </div>
+    </div>
+    <div class="reading">
+      <span class="label">Leitura</span>
+      <p>Dizer "não tenho acesso" é a frase que separa uma IA confiável de uma que inventa um link quebrado e queima o atendimento.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="case">
+    <div class="case-head">
+      <span class="case-tag">Erro operacional</span>
+      <h3>A IA descobriu que algo tinha dado errado do lado de dentro</h3>
+      <p class="case-sub">Ela perguntou como foi a sessão agendada. A resposta foi que a sessão não aconteceu. A IA não controla a agenda e não tem como saber o motivo.</p>
+    </div>
+    <div class="transcript">
+      <div class="turn ai">
+        <div class="who">IA</div>
+        <div class="said">Bom dia, Amanda! 😊
+
+Que vitória! Parabéns por ter conseguido isso em março.
+
+E me conta, como foi a sessão com a Camila na quarta passada?</div>
+      </div>
+      <div class="turn">
+        <div class="who">Amanda</div>
+        <div class="said">Não tive sessão com ela</div>
+      </div>
+      <div class="turn ai key">
+        <div class="who">IA</div>
+        <div class="said">Entendi, Amanda. Deixa eu verificar com o time o que aconteceu e já vou te retornar certinho sobre isso, ok?
+
+Alguém da equipe vai entrar em contato com você em breve pra resolver isso 😊</div>
+      </div>
+    </div>
+    <div class="reading">
+      <span class="label">Leitura</span>
+      <p>Nenhuma tentativa de explicar um fato que ela não tem como conhecer. É o mesmo desenho que impede uma IA de vocês de justificar por que um pedido atrasou sem consultar o sistema.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="case">
+    <div class="case-head">
+      <span class="case-tag">Dado que ninguém cadastrou</span>
+      <h3>Perguntaram um horário que a IA nunca recebeu</h3>
+      <p class="case-sub">Este é o caso mais próximo do que o Cris viveu. A lead já estava interessada, já tinha o link, e fez uma pergunta específica cuja resposta não existia em lugar nenhum do sistema.</p>
+    </div>
+    <div class="transcript">
+      <div class="turn">
+        <div class="who">Micarla</div>
+        <div class="said">Quais são os horários desses encontros?</div>
+      </div>
+      <div class="turn ai key">
+        <div class="who">IA</div>
+        <div class="said">Boa pergunta, Micarla! Deixa eu confirmar os horários certinhos com o time e já te retorno, tá? 😊
+
+Alguém da equipe vai entrar em contato com você agora pra passar essa informação direitinho!</div>
+      </div>
+    </div>
+    <div class="reading">
+      <span class="label">Leitura</span>
+      <p>Havia todo o contexto do produto na conversa. Um modelo solto teria inventado "toda primeira quinta-feira, 19h" sem piscar, e ninguém perceberia até a cliente aparecer no dia errado.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="case">
+    <div class="case-head">
+      <span class="case-tag">Pedido explícito de humano</span>
+      <h3>"Ou falar com um atendente humano"</h3>
+      <p class="case-sub">Duas coisas foram pedidas na mesma mensagem: um preço, que a IA tem, e uma pessoa, que ela não é.</p>
+    </div>
+    <div class="transcript">
+      <div class="turn">
+        <div class="who">Andressa</div>
+        <div class="said">Pode me passar o valor, por gentileza?
+Ou falar com um atendente humano</div>
+      </div>
+      <div class="turn ai key">
+        <div class="who">IA</div>
+        <div class="said">Claro, Andressa!
+
+O investimento na Formação é 12x de R$ 258,25 no cartão, ou R$ 2.497 à vista.
+
+E já te conectei com alguém do time, que vai continuar o atendimento com você. 😊</div>
+      </div>
+    </div>
+    <div class="reading">
+      <span class="label">Leitura</span>
+      <p>Entregou o que sabia e passou o resto adiante, na mesma mensagem, sem negociar a permanência. Pedido de humano nunca é discutido, é cumprido.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="case">
+    <div class="case-head">
+      <span class="case-tag">Pergunta administrativa</span>
+      <h3>A venda estava fechando e ela transferiu mesmo assim</h3>
+      <p class="case-sub">A cliente já tinha dito que ia comprar. Faltava um documento para pedir reembolso na empresa dela.</p>
+    </div>
+    <div class="transcript">
+      <div class="turn">
+        <div class="who">Marcia</div>
+        <div class="said">Tá show! Me diz, tem algum tipo de contrato ou algum documento que valide a formação? Vou precisar pedir reembolso na empresa e geralmente precisa de alguma documento pra comprovar</div>
+      </div>
+      <div class="turn ai key">
+        <div class="who">IA</div>
+        <div class="said">Ótima pergunta, Marcia! Pra questão de nota fiscal e documentação pra reembolso empresarial, vou te conectar com alguém do time que cuida disso certinho e te passa tudo que você precisa 😊
+
+Já já entram em contato com você pra alinhar tudo antes de amanhã!</div>
+      </div>
+    </div>
+    <div class="reading">
+      <span class="label">Leitura</span>
+      <p>O incentivo de qualquer vendedor aqui seria responder qualquer coisa para não esfriar a compra. Nota fiscal e contrato são terreno jurídico, e um chute ali volta como problema. Ela preferiu perder o momento a errar.</p>
+    </div>
+  </section>
+
+  <h2>O outro lado</h2>
+
+  <section class="case">
+    <div class="case-head">
+      <span class="case-tag">Contraprova</span>
+      <h3>Reconhecer o limite não é fugir da conversa</h3>
+      <p class="case-sub">Uma IA que transfere tudo é tão inútil quanto uma que inventa tudo. Quando a resposta existe, ela responde com precisão e continua vendendo.</p>
+    </div>
+    <div class="transcript">
+      <div class="turn">
+        <div class="who">Bianca</div>
+        <div class="said">Obrigada! Vou avaliar com calma. Antes de decidir, só fiquei com uma dúvida: existe alguma garantia caso eu perceba nos primeiros dias que a formação não faz sentido para o meu momento?</div>
+      </div>
+      <div class="turn ai">
+        <div class="who">IA</div>
+        <div class="said">Sim, Bianca! Você tem garantia legal de 7 dias da Hotmart: se nos primeiros 7 dias você perceber que não é pra você, é só pedir o reembolso que é devolvido 100%.
+
+E além disso, tem uma garantia condicional em contrato: se você consumir todo o conteúdo, aplicar as ferramentas e seguir as orientações da equipe e da Aline e ainda assim sentir que não evoluiu, a gente devolve 100%. O risco fica com a gente, não com você.</div>
+      </div>
+      <div class="turn">
+        <div class="who">Bianca</div>
+        <div class="said">Gostei de conhecer melhor a proposta e vou avaliar com calma. Como é um investimento relevante e envolve 12 meses, prefiro tomar a decisão depois de refletir um pouco.</div>
+      </div>
+      <div class="turn ai key">
+        <div class="who">IA</div>
+        <div class="said">Entendi, Bianca! Só me ajuda a entender uma coisa: é alguma dúvida sobre a formação em si, é o investimento, ou é mais uma questão de timing mesmo?</div>
+      </div>
+    </div>
+    <div class="reading">
+      <span class="label">Leitura</span>
+      <p>Duas garantias distintas, cada uma com a condição certa, sem arredondar nem prometer a mais. E em seguida uma pergunta que devolve a conversa para o funil em vez de aceitar o "vou pensar".</p>
+    </div>
+  </section>
+
+  <h2>Como isso se aplica ao projeto de vocês</h2>
+
+  <div class="closing">
+    <h3>A borda é construída, não é sorte</h3>
+    <p>O que vocês viram acima não vem de um modelo mais caro nem de um prompt mais esperto. Vem de três decisões de arquitetura, e são as mesmas três que eu aplicaria na Go Image:</p>
+    <ul class="points">
+      <li><span class="n">01</span><span><strong>O catálogo não entra no prompt, entra por consulta.</strong> A IA não recebe o Fastbook inteiro e tenta lembrar. Ela consulta o produto no Sankhya e recebe o bloco exato, com o preço da tabela certa. O que não voltar da consulta ela não tem, e o que ela não tem ela não inventa.</span></li>
+      <li><span class="n">02</span><span><strong>A saída é escrita antes de ligar.</strong> A lista do que aciona um humano (dado que não existe, reclamação, pedido de pessoa, assunto jurídico ou financeiro fora do padrão) é definida com vocês na imersão e vira regra, não bom senso do modelo.</span></li>
+      <li><span class="n">03</span><span><strong>Toda conversa fica gravada e auditável.</strong> Os trechos deste documento saíram de uma consulta ao banco, hoje, em dois minutos. Vocês vão ter o mesmo: qualquer conversa, qualquer dia, com o histórico completo do que a IA disse e por quê.</span></li>
+    </ul>
+    <p>É por isso que a etapa de imersão vem antes de construir. O que decide se a IA alucina não é o modelo, é o que a gente decidiu que ela pode afirmar.</p>
+  </div>
+
+  <footer>
+    Conversas reais de um cliente em produção desde janeiro de 2026, no segmento de educação.<br>
+    Nomes reduzidos ao primeiro nome. Texto das mensagens sem edição.<br>
+    Preparado para Rafael e Cris, Go Image, em 07 de agosto de 2026.
+  </footer>
+
+</div>
+</body>
+</html>

@@ -115,8 +115,10 @@ export default function LessonPage({ params }: PageProps) {
       )
 
       // Check if current lesson is done
+      // sem anotar `l: Lesson`: o select do menu não traz content_url/content_body
+      // (removidos na correção de vazamento), então a linha inferida é mais estreita
       const currentLesson = (allLessons ?? []).find(
-        (l: Lesson) => l.slug === lessonSlug
+        (l) => l.slug === lessonSlug
       ) as Lesson | undefined
       if (currentLesson) {
         setIsDone(progressMap.get(currentLesson.id)?.status === 'completed')
