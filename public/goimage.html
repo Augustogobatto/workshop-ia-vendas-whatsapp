@@ -798,7 +798,7 @@ E além disso, tem uma garantia condicional em contrato: se você consumir todo 
 
   <div class="lede">
     <p>Isto é o que vocês pagam direto ao fornecedor, na conta de vocês, fora do meu projeto. São três linhas, e só uma delas é fixa.</p>
-    <p>Antes dos números, uma distinção que decide a conta inteira: <b>lead não é conversa</b>. Boa parte de quem entra no funil nunca responde a primeira mensagem. Esse lead custa WhatsApp, porque a mensagem saiu do mesmo jeito, e quase não custa IA, porque não houve conversa para processar. Uma linha se paga por lead tocado, a outra por conversa de verdade, e confundir as duas é o que faz projeção de custo de IA dar errado.</p>
+    <p>Antes dos números, uma distinção que decide a conta inteira: <b>lead não é conversa</b>. Boa parte de quem entra no funil nunca responde a primeira mensagem. Esse lead pode custar WhatsApp, se a mensagem sair fora da janela gratuita, mas quase não custa IA, porque não houve conversa para processar. Uma linha se paga por lead tocado, a outra por conversa de verdade, e confundir as duas é o que faz projeção de custo de IA dar errado.</p>
   </div>
 
   <div class="tbl-wrap">
@@ -888,24 +888,24 @@ E além disso, tem uma garantia condicional em contrato: se você consumir todo 
       <dl>
         <dt>Servidor</dt><dd>R$ 79</dd>
         <dt>Modelo de IA</dt><dd>R$ 970</dd>
-        <dt>WhatsApp</dt><dd>R$ 855</dd>
+        <dt>WhatsApp</dt><dd>R$ 137</dd>
       </dl>
-      <div class="sum"><span>Total por mês</span><b>R$ 1.904</b></div>
-      <p class="per">R$ 1,68 por lead tocado, R$ 3,20 por conversa. É o que custa manter no ar a operação que atendeu os sete casos da Parte 1, com resposta em minutos, a qualquer hora, sem fila. A linha de WhatsApp está no pior caso, explicado abaixo.</p>
+      <div class="sum"><span>Total por mês</span><b>R$ 1.186</b></div>
+      <p class="per">R$ 1,05 por lead tocado, R$ 1,99 por conversa. É o que custa manter no ar a operação que atendeu os sete casos da Parte 1, com resposta em minutos, a qualquer hora, sem fila.</p>
     </div>
 
   </div>
 
   <div class="flag">
-    <h4>O que essa conta diz sobre o público amador</h4>
-    <p>A operação acima vende um produto de ticket alto, onde R$ 3,20 por conversa é irrelevante. No amador que o Cris citou, ticket de R$ 80 a R$ 120, a mesma conversa precisaria de <b>3,2% de conversão só para pagar as ferramentas</b>, antes do custo do produto e do tráfego. Isso não é risco de servidor, é conta de margem, e é o motivo pelo qual eu prefiro que o amador entre como uma fase própria em vez de junto na primeira.</p>
-    <p>E repare em como as duas linhas reagem de formas opostas. O WhatsApp sobe com <b>lead</b>: se o tráfego trouxer muita gente que não responde, ele cresce e a IA não. A IA sobe com <b>conversa</b>: se vocês melhorarem a taxa de resposta, que é exatamente o que se quer, ela cresce. Um custo de IA subindo enquanto o de WhatsApp fica parado é sinal de funil melhorando, não de problema, e vale saber disso antes de olhar a fatura.</p>
-    <p>E existe folga dos dois lados. Modelo barato nas etapas simples (saudação, coleta de dado, qualificação inicial) e catálogo em cache derrubam a linha de IA. Do outro lado, encurtar a régua para quem nunca respondeu corta disparo pago sem perder venda. Os dois são ajustes que se fazem medindo conversa real, não no papel, e é para isso que serve o mês de calibragem.</p>
+    <h4>Onde essa conta cresce, e onde ela não cresce</h4>
+    <p>A linha que manda é a IA, e ela sobe com <b>conversa</b>, não com lead. Quem entra no funil e nunca responde consome 1,3 mensagem e sai da conta. Então melhorar a taxa de resposta, que é exatamente o que vocês querem, é o que faz esse número subir. Custo de IA crescendo é sinal de funil funcionando, e vale ter isso combinado antes de olhar a primeira fatura.</p>
+    <p>O WhatsApp quase não pesa enquanto o atendimento acontece dentro da conversa. Ele só vira linha relevante se a régua ficar longa e passar a disparar muito para quem nunca respondeu, que é a única situação em que se paga tarifa cheia por quem não deu sinal nenhum.</p>
+    <p>Sobre o público amador: a operação acima vende ticket alto, onde R$ 1,99 por conversa não significa nada. Num produto de R$ 80 a R$ 120, a mesma conversa exige 2% de conversão só para pagar as ferramentas, antes do produto e do tráfego. É pouco, mas deixa de ser zero, e some a isso que amador é outra linguagem, outro catálogo e outra régua. Por isso eu prefiro ele como fase própria, com número medido do funil de vocês, em vez de junto na primeira.</p>
   </div>
 
   <div class="notes">
-    <p><b>De onde vem cada número.</b> Servidor: plano KVM 2 da Hostinger, dedicado a vocês. Eu rodo 20 serviços em produção num equivalente hoje, com folga. Modelo de IA: OpenRouter, pay as you go, US$ 800 acumulados na conta da operação da Parte 1 desde o início, divididos pelas 4.127 conversas que ela atendeu, com dólar a R$ 5,09 em 07/08/2026. É um teto, porque essa mesma conta cobre outras automações do cliente além da IA de vendas. WhatsApp: tabela oficial da Meta, cobrança por mensagem entregue.</p>
-    <p><b>Como cheguei no WhatsApp, e por que ele é o pior caso.</b> Essa linha não veio da fatura da Meta, veio de contar no banco as mensagens que a IA enviou por iniciativa própria: primeiro toque, follow-ups e reativação, 10.256 disparos no período, contra 17.916 respostas dentro da conversa, que não são cobradas. Dá 2,2 disparos por lead. Cobrei todos a R$ 0,35, a tarifa de marketing, sendo que boa parte cai na janela de 24h ou na janela gratuita de quem chamou primeiro, e essas não são cobradas. O custo verdadeiro fica abaixo disso, então tratem R$ 855 como teto e não como conta.</p>
+    <p><b>De onde vem cada número.</b> Servidor: plano KVM 2 da Hostinger, dedicado a vocês. Eu rodo 20 serviços em produção num equivalente hoje, com folga. Modelo de IA: OpenRouter, pay as you go, US$ 800 acumulados na conta da operação da Parte 1 desde o início, divididos pelas 4.127 conversas que ela atendeu, com dólar a R$ 5,09 em 07/08/2026. É um teto, porque essa mesma conta cobre outras automações do cliente além da IA de vendas. WhatsApp: a fatura da Meta de julho de 2026, US$ 26,89. Ou seja, a linha de IA é a média do período e a de WhatsApp é um mês fechado.</p>
+    <p><b>O WhatsApp é a fatura, não uma estimativa.</b> US$ 26,89 cobrados pela Meta no mês de julho de 2026 nessa operação. Vale saber por que é tão baixo, porque é contraintuitivo: naquele período a IA disparou 10.256 mensagens por iniciativa própria e enviou outras 17.916 dentro de conversas. A esmagadora maioria não é cobrada, porque cai na janela de 24 horas ou na janela gratuita de quem chamou vocês primeiro. Se eu tivesse cobrado tudo à tarifa de marketing, daria seis vezes mais do que a conta real. A tarifa de R$ 0,35 vale, mas ela incide em muito menos mensagem do que parece.</p>
     <p><b>O que serve de ordem de grandeza e não de promessa.</b> A taxa de resposta de 53% e os 2,2 disparos por lead são medidos, mas vieram de outro público e de outro produto. Servem para vocês entenderem a forma da conta, não para prever a de vocês. Me passem quantos leads a Go Image recebe por mês e eu refaço com o número real.</p>
   </div>
 
