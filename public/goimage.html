@@ -414,6 +414,8 @@
     margin: 0 0 22px;
   }
 
+  .scen-grid.one { grid-template-columns: 1fr; }
+
   .scen {
     background: var(--surface);
     border: 1px solid var(--rule);
@@ -874,10 +876,10 @@ E além disso, tem uma garantia condicional em contrato: se você consumir todo 
 
   <p class="figures-note">A diferença entre as duas últimas linhas é o que a conta precisa separar: quem nunca responde consome <b>1,3 mensagem</b> da IA em média, quem responde consome <b>9,9</b>. São dois clientes de custo completamente diferentes, e o WhatsApp cobra pelos dois.</p>
 
-  <h3 class="sub-h">A conta fechada, e a mesma conta em escala</h3>
-  <p class="sub-p">O primeiro cenário não é simulação: é a fatura da operação da Parte 1. O segundo aplica as mesmas taxas medidas a um volume cinco vezes maior.</p>
+  <h3 class="sub-h">A conta fechada</h3>
+  <p class="sub-p">Isto não é simulação. É o que custa, hoje, manter no ar a operação que atendeu os casos da Parte 1.</p>
 
-  <div class="scen-grid">
+  <div class="scen-grid one">
 
     <div class="scen">
       <span class="tag">Medido</span>
@@ -889,35 +891,22 @@ E além disso, tem uma garantia condicional em contrato: se você consumir todo 
         <dt>WhatsApp</dt><dd>R$ 855</dd>
       </dl>
       <div class="sum"><span>Total por mês</span><b>R$ 1.904</b></div>
-      <p class="per">R$ 1,68 por lead tocado, R$ 3,20 por conversa. É o custo real de manter no ar a operação que atendeu os sete casos da Parte 1, com resposta em minutos, a qualquer hora, sem fila.</p>
-    </div>
-
-    <div class="scen">
-      <span class="tag">Projeção</span>
-      <h4>Amador com tráfego</h4>
-      <p class="vol">4.680 leads e 3.000 conversas por mês</p>
-      <dl>
-        <dt>Servidor</dt><dd>R$ 149</dd>
-        <dt>Modelo de IA</dt><dd>R$ 6.000</dd>
-        <dt>WhatsApp</dt><dd>R$ 3.541</dd>
-      </dl>
-      <div class="sum"><span>Total por mês</span><b>R$ 9.690</b></div>
-      <p class="per">R$ 2,07 por lead, R$ 3,23 por conversa. Mesma taxa de resposta de 53% e o mesmo 2,2 disparos por lead medidos acima. O custo unitário quase não muda, o que muda é que ele deixa de ser detalhe e vira linha de margem.</p>
+      <p class="per">R$ 1,68 por lead tocado, R$ 3,20 por conversa. É o que custa manter no ar a operação que atendeu os sete casos da Parte 1, com resposta em minutos, a qualquer hora, sem fila. A linha de WhatsApp está no pior caso, explicado abaixo.</p>
     </div>
 
   </div>
 
   <div class="flag">
-    <h4>O ponto que o cenário B levanta, e que vale decidir antes de construir</h4>
-    <p>Num produto de ticket R$ 100, uma conversa que custa R$ 3,23 precisa de 3,2% de conversão só para pagar a própria conta, antes do custo do produto e do tráfego. Isso não é risco de servidor, é conta de margem, e é o motivo pelo qual eu prefiro que o público amador entre como uma fase própria em vez de junto na primeira.</p>
+    <h4>O que essa conta diz sobre o público amador</h4>
+    <p>A operação acima vende um produto de ticket alto, onde R$ 3,20 por conversa é irrelevante. No amador que o Cris citou, ticket de R$ 80 a R$ 120, a mesma conversa precisaria de <b>3,2% de conversão só para pagar as ferramentas</b>, antes do custo do produto e do tráfego. Isso não é risco de servidor, é conta de margem, e é o motivo pelo qual eu prefiro que o amador entre como uma fase própria em vez de junto na primeira.</p>
     <p>E repare em como as duas linhas reagem de formas opostas. O WhatsApp sobe com <b>lead</b>: se o tráfego trouxer muita gente que não responde, ele cresce e a IA não. A IA sobe com <b>conversa</b>: se vocês melhorarem a taxa de resposta, que é exatamente o que se quer, ela cresce. Um custo de IA subindo enquanto o de WhatsApp fica parado é sinal de funil melhorando, não de problema, e vale saber disso antes de olhar a fatura.</p>
-    <p>Existe folga dos dois lados. Modelo barato nas etapas simples (saudação, coleta de dado, qualificação inicial) e catálogo em cache trazem a IA de volta para perto de R$ 1,00 por conversa, o que leva a projeção para cerca de <b>R$ 6.700 por mês</b>. Do outro lado, encurtar a régua para quem nunca respondeu corta disparo pago sem perder venda. Os dois são ajustes que se fazem medindo conversa real, não no papel.</p>
+    <p>E existe folga dos dois lados. Modelo barato nas etapas simples (saudação, coleta de dado, qualificação inicial) e catálogo em cache derrubam a linha de IA. Do outro lado, encurtar a régua para quem nunca respondeu corta disparo pago sem perder venda. Os dois são ajustes que se fazem medindo conversa real, não no papel, e é para isso que serve o mês de calibragem.</p>
   </div>
 
   <div class="notes">
     <p><b>De onde vem cada número.</b> Servidor: plano KVM 2 da Hostinger, dedicado a vocês. Eu rodo 20 serviços em produção num equivalente hoje, com folga. Modelo de IA: OpenRouter, pay as you go, US$ 800 acumulados na conta da operação da Parte 1 desde o início, divididos pelas 4.127 conversas que ela atendeu, com dólar a R$ 5,09 em 07/08/2026. É um teto, porque essa mesma conta cobre outras automações do cliente além da IA de vendas. WhatsApp: tabela oficial da Meta, cobrança por mensagem entregue.</p>
-    <p><b>Como cheguei no WhatsApp.</b> Contei as mensagens que a IA enviou por iniciativa própria naquela operação: primeiro toque, follow-ups e reativação, 10.256 disparos no período. As outras 17.916 foram respostas dentro da conversa, que a Meta não cobra. Dá 2,2 disparos por lead. Cobrei todos eles a R$ 0,35, a tarifa de marketing, que é o pior caso: parte cai na janela de 24h ou na janela gratuita de entrada e não é cobrada. Ou seja, o número está inflado a favor de vocês.</p>
-    <p><b>O que é suposição minha e vocês fecham na imersão.</b> O volume de 3.000 conversas da projeção é ilustrativo, porque o número de vocês eu ainda não tenho. A taxa de resposta de 53% e os 2,2 disparos por lead são medidos, mas vieram de outro público, então servem de ordem de grandeza e não de promessa. Traz o número de leads que a Go Image recebe por mês que eu refaço a conta com ele.</p>
+    <p><b>Como cheguei no WhatsApp, e por que ele é o pior caso.</b> Essa linha não veio da fatura da Meta, veio de contar no banco as mensagens que a IA enviou por iniciativa própria: primeiro toque, follow-ups e reativação, 10.256 disparos no período, contra 17.916 respostas dentro da conversa, que não são cobradas. Dá 2,2 disparos por lead. Cobrei todos a R$ 0,35, a tarifa de marketing, sendo que boa parte cai na janela de 24h ou na janela gratuita de quem chamou primeiro, e essas não são cobradas. O custo verdadeiro fica abaixo disso, então tratem R$ 855 como teto e não como conta.</p>
+    <p><b>O que serve de ordem de grandeza e não de promessa.</b> A taxa de resposta de 53% e os 2,2 disparos por lead são medidos, mas vieram de outro público e de outro produto. Servem para vocês entenderem a forma da conta, não para prever a de vocês. Me passem quantos leads a Go Image recebe por mês e eu refaço com o número real.</p>
   </div>
 
   <footer>
