@@ -210,7 +210,10 @@ export default function ClubV7Page({
                     <script>(function(){
                       var v=document.getElementById('p7scrub'); if(!v) return;
                       var alvo=0, atual=0, pronto=false, dur=0;
-                      v.addEventListener('loadedmetadata',function(){ dur=v.duration||0; pronto=true; v.currentTime=0.001 });
+                      function armar(){ if(pronto) return; dur=v.duration||0; if(!dur||!isFinite(dur)) return; pronto=true; try{v.currentTime=0.001}catch(e){} }
+                      v.addEventListener('loadedmetadata',armar);
+                      v.addEventListener('canplay',armar);
+                      if(v.readyState>=1) armar();  // ja tinha carregado antes do script rodar
                       var reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
                       addEventListener('pointermove',function(e){
                         if(!pronto||!dur) return;
