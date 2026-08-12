@@ -11,10 +11,15 @@ export const metadata: Metadata = {
 const STRIPE_MENSAL = 'https://buy.stripe.com/5kQ00k91qeVL2ve9JG9fW0f'
 const STRIPE_ANUAL = 'https://buy.stripe.com/9B628s4La14Vb1KaNK9fW0g'
 
-const HERO_ELEMENTS: Record<string, { src: string; alt: string }> = {
+const HERO_ELEMENTS: Record<string, { src: string; alt: string; glb?: string }> = {
   '1': { src: '/club-v7/el1.jpg', alt: 'Esfera de granito na quina de um plinto, um instante antes de cair' },
   '3': { src: '/club-v7/el3.jpg', alt: 'Bloco de granito erguido por uma alavanca fina de aço' },
   '4': { src: '/club-v7/el4.jpg', alt: 'Bloco de pedra metade bruto, metade esculpido em cunha polida' },
+  '4d': {
+    src: '/club-v7/el4.jpg',
+    alt: 'Bloco de pedra metade bruto, metade esculpido, em 3D',
+    glb: '/club-v7/bloco-sam.glb',
+  },
 }
 
 export default function ClubV7Page({
@@ -49,8 +54,21 @@ export default function ClubV7Page({
               </div>
             </div>
             <div className="p7-hero-el p7-r">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={hero.src} alt={hero.alt} className="p7-hero-img" />
+              {hero.glb ? (
+                <div
+                  className="p7-hero-3d"
+                  dangerouslySetInnerHTML={{
+                    __html: `<model-viewer src="${hero.glb}" alt="${hero.alt}"
+                      auto-rotate rotation-per-second="8deg" camera-controls disable-zoom disable-pan
+                      interaction-prompt="none" exposure="0.9" shadow-intensity="0"
+                      camera-orbit="15deg 78deg 105%" style="width:100%;aspect-ratio:4/5;background:transparent;"></model-viewer>
+                    <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>`,
+                  }}
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={hero.src} alt={hero.alt} className="p7-hero-img" />
+              )}
             </div>
           </div>
         </div>
