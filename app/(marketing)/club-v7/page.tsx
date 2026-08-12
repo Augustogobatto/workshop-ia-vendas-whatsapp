@@ -186,7 +186,6 @@ const HEADLINES: Record<
     sub: (
       <>
         A IA é uma alavanca. Ela não pede mais, multiplica o que você já tem.
-        Aprenda a utilizar IA para multiplicar seu potencial.
       </>
     ),
   },
@@ -296,6 +295,13 @@ export default function ClubV7Page({
           </div>
         </div>
       </section>
+
+      {/* linha-tese abaixo do hero */}
+      <div className="p7-wrap">
+        <p className="p7-tagline">
+          Aprenda a utilizar IA como uma alavanca para <em>multiplicar seu potencial.</em>
+        </p>
+      </div>
 
       {/* faixa de fatos */}
       <div className="p7-facts">

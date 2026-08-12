@@ -94,6 +94,19 @@
 .p7-cta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .p7-cta-note { font-size: 13px; color: var(--faint); line-height: 1.55; }
 
+/* linha-tese sob o hero */
+.p7-tagline {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.6vw, 27px);
+  line-height: 1.4;
+  color: var(--dim);
+  text-align: center;
+  max-width: 34ch;
+  margin: 0 auto clamp(48px, 8vh, 80px);
+  text-wrap: balance;
+}
+.p7-tagline em { color: var(--ink); }
+
 /* ── faixa de fatos ── */
 .p7-facts { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .p7-facts-in {
