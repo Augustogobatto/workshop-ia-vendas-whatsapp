@@ -3,10 +3,16 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Hero em vídeo com scrub pelo mouse (técnica Resend/Apple):
- * o vídeo é um giro de 360 do objeto, e a posição horizontal do mouse
- * define o tempo do vídeo. Cada quadro é um ângulo, então o efeito é
- * girar o objeto na mão, com a qualidade da foto de estúdio.
+ * Hero em vídeo com fluxo perpétuo + scrub suave.
+ *
+ * Motor conforme pesquisa 12/08 (padrão Lenis/Apple):
+ *  - o vídeo é ALL-INTRA (todo frame é keyframe), então cada seek decodifica
+ *    um único quadro em vez de até doze;
+ *  - eventos de mouse/scroll NUNCA tocam no vídeo: só injetam velocidade/alvo;
+ *  - um único loop de rAF integra tudo com damping exponencial dependente de
+ *    deltaTime (frame-rate independent), então 60Hz e 120Hz respondem igual;
+ *  - o tempo só é escrito no vídeo quando muda pelo menos 1 frame (~30fps) e
+ *    quando o seek anterior já terminou: pouquíssimos seeks, todos baratos.
  */
 export default function HeroScrub({
   src,
@@ -23,44 +29,47 @@ export default function HeroScrub({
     const v = ref.current
     if (!v) return
 
-    let alvo = 0
-    let atual = 0
     let dur = 0
     let pronto = false
     let tocou = false
     let raf = 0
-    // fluxo perpétuo: um pêndulo lento percorre o arco SEMPRE;
-    // mouse e scroll só somam um empurrão por cima, nunca param o fluxo
-    let fase = 0
-    let empMouseAlvo = 0
-    let empMouse = 0
-    let empScroll = 0
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    // estado do motor
+    let fase = 0 // pêndulo perpétuo
+    let velMouse = 0 // velocidade injetada pelo mouse (fração do arco por segundo)
+    let desvio = 0 // desvio acumulado pelo mouse, volta sozinho pro fluxo
+    let empScroll = 0
+    let syAlvo = 0
+    let syAtual = 0
+    let cur = 0 // tempo corrente que a gente persegue (s)
+    let escrito = -1 // último tempo efetivamente escrito no vídeo
+    let antes = performance.now()
 
     const armar = () => {
       if (pronto) return
       dur = v.duration || 0
       if (!dur || !isFinite(dur)) return
       pronto = true
-      // começa no meio do arco (ângulo central); o mouse abre pros lados
-      alvo = dur / 2
-      atual = dur / 2
+      cur = dur / 2
       try {
-        v.currentTime = dur / 2
+        v.currentTime = cur
       } catch {}
     }
 
+    v.addEventListener('loadedmetadata', armar)
+    v.addEventListener('canplay', armar)
+    if (v.readyState >= 1) armar()
+
     const onMove = (e: PointerEvent | MouseEvent) => {
       if (tocou) return
-      let f = e.clientX / window.innerWidth
-      f = f < 0 ? 0 : f > 1 ? 1 : f
-      // mexidinha: no máximo ±18% do arco, somada ao fluxo
-      empMouseAlvo = (f - 0.5) * 0.36
+      // o gesto vira velocidade, não posição: flick empurra, a cena desliza
+      const imp = (e.movementX / window.innerWidth) * 1.6
+      velMouse += imp
+      if (velMouse > 0.9) velMouse = 0.9
+      if (velMouse < -0.9) velMouse = -0.9
     }
-
-    let syAlvo = 0
-    let syAtual = 0
 
     const onScroll = () => {
       if (tocou) return
@@ -69,7 +78,7 @@ export default function HeroScrub({
       syAlvo = Math.min(window.scrollY, window.innerHeight) * 0.08
     }
 
-    // sem mouse (celular): deixa rodando em loop
+    // celular sem mouse: loop simples
     const onTouch = () => {
       if (tocou) return
       tocou = true
@@ -77,57 +86,56 @@ export default function HeroScrub({
       v.play().catch(() => {})
     }
 
-    const loop = (ts: number) => {
-      void ts
+    const loop = (agora: number) => {
+      let dt = (agora - antes) / 1000
+      antes = agora
+      if (dt > 1 / 30) dt = 1 / 30 // clampa saltos (troca de aba etc.)
+
       if (pronto && dur && !tocou) {
-        // o pêndulo nunca para (a não ser por reduced-motion)
-        if (!reduz) fase += 0.0032
+        // pêndulo perpétuo
+        if (!reduz) fase += 0.32 * dt
         const base = 0.5 + 0.3 * Math.sin(fase)
-        // o empurrão do mouse chega devagar e vai embora devagar
-        empMouse += (empMouseAlvo - empMouse) * 0.03
-        let f = base + empMouse + empScroll
+
+        // física do empurrão: velocidade decai, desvio escorre de volta
+        desvio += velMouse * dt
+        velMouse *= Math.exp(-2.6 * dt)
+        desvio *= Math.exp(-0.7 * dt)
+        if (desvio > 0.22) desvio = 0.22
+        if (desvio < -0.22) desvio = -0.22
+
+        let f = base + desvio + empScroll
         f = f < 0.02 ? 0.02 : f > 0.98 ? 0.98 : f
-        alvo = f * dur
-        // só avança quando o vídeo terminou o seek anterior (evita engasgo),
-        // e nunca mais que 50ms de vídeo por frame (evita pulo)
-        if (!v.seeking) {
-          let passo = (alvo - atual) * (reduz ? 1 : 0.05)
-          const maxPasso = 0.05
-          if (passo > maxPasso) passo = maxPasso
-          if (passo < -maxPasso) passo = -maxPasso
-          atual += passo
-          if (Math.abs(alvo - atual) > 0.004) {
-            try {
-              v.currentTime = atual
-            } catch {}
-          }
+
+        // damping exponencial frame-rate independent (padrão Lenis)
+        const alvo = f * dur
+        cur += (alvo - cur) * (1 - Math.exp(-7 * dt))
+
+        // escreve no vídeo só quando muda >= 1 frame e o seek anterior acabou
+        if (!v.seeking && Math.abs(cur - escrito) >= 1 / 30) {
+          escrito = cur
+          try {
+            v.currentTime = cur
+          } catch {}
         }
+
         // paralaxe com a mesma maciez
-        syAtual += (syAlvo - syAtual) * 0.06
-        if (Math.abs(syAlvo - syAtual) > 0.1) {
-          v.style.transform = `scale(1.14) translate3d(0, ${syAtual.toFixed(1)}px, 0)`
-        }
+        syAtual += (syAlvo - syAtual) * (1 - Math.exp(-6 * dt))
+        v.style.transform = `scale(1.14) translate3d(0, ${syAtual.toFixed(1)}px, 0)`
       }
       raf = requestAnimationFrame(loop)
     }
 
-    v.addEventListener('loadedmetadata', armar)
-    v.addEventListener('canplay', armar)
-    if (v.readyState >= 1) armar()
-
     window.addEventListener('pointermove', onMove, { passive: true })
-    window.addEventListener('mousemove', onMove, { passive: true })
-    window.addEventListener('touchstart', onTouch, { passive: true })
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('touchstart', onTouch, { passive: true })
     raf = requestAnimationFrame(loop)
 
     return () => {
       v.removeEventListener('loadedmetadata', armar)
       v.removeEventListener('canplay', armar)
       window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('touchstart', onTouch)
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('touchstart', onTouch)
       cancelAnimationFrame(raf)
     }
   }, [])
@@ -157,7 +165,6 @@ export default function HeroScrub({
           'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
       }}
     />
-    {/* grão removido a pedido (12/08): sujava a máscara; o vídeo já tem grão próprio */}
     </div>
   )
 }
