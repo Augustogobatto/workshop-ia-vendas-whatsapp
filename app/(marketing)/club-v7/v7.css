@@ -75,6 +75,11 @@
 .p7-hero-txt { order: 1; }
 .p7-hero-el { order: 2; }
 .p7-hero-el .p7-slot { aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; }
+.p7-hero-img {
+  width: 100%; display: block; aspect-ratio: 4 / 5; object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 76% 76% at 50% 48%, #000 52%, transparent 97%);
+  mask-image: radial-gradient(ellipse 76% 76% at 50% 48%, #000 52%, transparent 97%);
+}
 .p7-kicker {
   font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--faint); margin: 0 0 26px;

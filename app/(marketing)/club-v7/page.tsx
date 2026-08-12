@@ -11,7 +11,18 @@ export const metadata: Metadata = {
 const STRIPE_MENSAL = 'https://buy.stripe.com/5kQ00k91qeVL2ve9JG9fW0f'
 const STRIPE_ANUAL = 'https://buy.stripe.com/9B628s4La14Vb1KaNK9fW0g'
 
-export default function ClubV7Page() {
+const HERO_ELEMENTS: Record<string, { src: string; alt: string }> = {
+  '1': { src: '/club-v7/el1.jpg', alt: 'Esfera de granito na quina de um plinto, um instante antes de cair' },
+  '3': { src: '/club-v7/el3.jpg', alt: 'Bloco de granito erguido por uma alavanca fina de aço' },
+  '4': { src: '/club-v7/el4.jpg', alt: 'Bloco de pedra metade bruto, metade esculpido em cunha polida' },
+}
+
+export default function ClubV7Page({
+  searchParams,
+}: {
+  searchParams?: { el?: string }
+}) {
+  const hero = HERO_ELEMENTS[searchParams?.el ?? '1'] ?? HERO_ELEMENTS['1']
   return (
     <div className="p7">
       {/* topbar */}
@@ -38,7 +49,8 @@ export default function ClubV7Page() {
               </div>
             </div>
             <div className="p7-hero-el p7-r">
-              <div className="p7-slot">Elemento visual<br />(em criação no Higgsfield)</div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={hero.src} alt={hero.alt} className="p7-hero-img" />
             </div>
           </div>
         </div>
