@@ -21,6 +21,7 @@ const HERO_ELEMENTS: Record<
     glb?: string
     video?: string
     luz?: boolean
+    cru?: boolean
     spin?: boolean
     orbit?: string
     aspect?: string
@@ -54,6 +55,11 @@ const HERO_ELEMENTS: Record<
     src: '/club-v7/alavanca-b.jpg',
     alt: 'Bloco de granito erguido por uma alavanca de aço, em contraluz',
     luz: true,
+  },
+  cru: {
+    src: '/club-v7/alavanca-eclipse.webp',
+    alt: 'Bloco de granito erguido por uma alavanca de aço, sem iluminação',
+    cru: true,
   },
   '3d': {
     src: '/club-v7/el3.jpg',
@@ -227,7 +233,14 @@ export default function ClubV7Page({
               </div>
             </div>
             <div className="p7-hero-el p7-r">
-              {hero.luz ? (
+              {hero.cru ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={hero.src}
+                  alt={hero.alt}
+                  style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'contain', display: 'block' }}
+                />
+              ) : hero.luz ? (
                 <HeroLuz src={hero.src} alt={hero.alt} />
               ) : hero.video ? (
                 <HeroScrub src={hero.video} poster={hero.src} alt={hero.alt} />
