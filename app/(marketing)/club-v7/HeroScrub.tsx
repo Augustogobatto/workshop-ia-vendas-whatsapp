@@ -29,10 +29,12 @@ export default function HeroScrub({
     let pronto = false
     let tocou = false
     let raf = 0
-    let mouseT = 0.5 // fração 0..1 vinda do mouse
-    let ultimoGesto = 0 // timestamp da última interação
-    let ocioso = false
-    let fase = 0 // fase da deriva ociosa
+    // fluxo perpétuo: um pêndulo lento percorre o arco SEMPRE;
+    // mouse e scroll só somam um empurrão por cima, nunca param o fluxo
+    let fase = 0
+    let empMouseAlvo = 0
+    let empMouse = 0
+    let empScroll = 0
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -49,23 +51,12 @@ export default function HeroScrub({
       } catch {}
     }
 
-    const mira = () => {
-      if (!pronto || !dur) return
-      // mouse dá o ângulo base (comprimido: não usa o arco inteiro de uma vez);
-      // o scroll empurra um pouco mais, também suavizado
-      const rolagem = Math.min(1, window.scrollY / (window.innerHeight * 1.2))
-      let f = 0.5 + (mouseT - 0.5) * 0.72 + (rolagem - 0.15) * 0.2
-      f = f < 0 ? 0 : f > 1 ? 1 : f
-      alvo = f * dur
-    }
-
     const onMove = (e: PointerEvent | MouseEvent) => {
       if (tocou) return
-      ultimoGesto = performance.now()
-      ocioso = false
       let f = e.clientX / window.innerWidth
-      mouseT = f < 0 ? 0 : f > 1 ? 1 : f
-      mira()
+      f = f < 0 ? 0 : f > 1 ? 1 : f
+      // mexidinha: no máximo ±18% do arco, somada ao fluxo
+      empMouseAlvo = (f - 0.5) * 0.36
     }
 
     let syAlvo = 0
@@ -73,10 +64,8 @@ export default function HeroScrub({
 
     const onScroll = () => {
       if (tocou) return
-      ultimoGesto = performance.now()
-      ocioso = false
-      mira()
-      // paralaxe leve, aplicada com inércia no loop (nunca de forma seca)
+      const rolagem = Math.min(1, window.scrollY / (window.innerHeight * 1.2))
+      empScroll = rolagem * 0.14
       syAlvo = Math.min(window.scrollY, window.innerHeight) * 0.08
     }
 
@@ -89,20 +78,17 @@ export default function HeroScrub({
     }
 
     const loop = (ts: number) => {
+      void ts
       if (pronto && dur && !tocou) {
-        // sem gesto por 2,5s: deriva lenta em vai-e-vem pelo arco
-        if (!reduz && ts - ultimoGesto > 2500) {
-          if (!ocioso) {
-            ocioso = true
-            // entra na deriva a partir do ângulo atual, sem pulo
-            const norm = Math.max(-1, Math.min(1, (atual / dur - 0.5) / 0.38))
-            fase = Math.asin(norm)
-          }
-          fase += 0.0035
-          alvo = dur * (0.5 + 0.38 * Math.sin(fase))
-        }
-        // perseguição bem mais lenta: o ângulo flui atrás do gesto sem tranco
-        atual += (alvo - atual) * (reduz ? 1 : 0.045)
+        // o pêndulo nunca para (a não ser por reduced-motion)
+        if (!reduz) fase += 0.0032
+        const base = 0.5 + 0.3 * Math.sin(fase)
+        // o empurrão do mouse chega devagar e vai embora devagar
+        empMouse += (empMouseAlvo - empMouse) * 0.03
+        let f = base + empMouse + empScroll
+        f = f < 0.02 ? 0.02 : f > 0.98 ? 0.98 : f
+        alvo = f * dur
+        atual += (alvo - atual) * (reduz ? 1 : 0.05)
         if (Math.abs(alvo - atual) > 0.004) {
           try {
             v.currentTime = atual
