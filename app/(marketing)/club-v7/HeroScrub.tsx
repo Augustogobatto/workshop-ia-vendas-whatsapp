@@ -18,7 +18,6 @@ export default function HeroScrub({
   alt: string
 }) {
   const ref = useRef<HTMLVideoElement>(null)
-  const grain = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const v = ref.current
@@ -31,7 +30,6 @@ export default function HeroScrub({
     let tocou = false
     let raf = 0
     let mouseT = 0.5 // fração 0..1 vinda do mouse
-    let ultimoGrao = 0
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -91,13 +89,7 @@ export default function HeroScrub({
           } catch {}
         }
       }
-      // grão de filme vivo: salta de posição ~12x por segundo
-      if (grain.current && ts - ultimoGrao > 83) {
-        ultimoGrao = ts
-        const gx = Math.floor(Math.random() * 240)
-        const gy = Math.floor(Math.random() * 240)
-        grain.current.style.backgroundPosition = `${gx}px ${gy}px`
-      }
+      void ts
       raf = requestAnimationFrame(loop)
     }
 
@@ -147,25 +139,7 @@ export default function HeroScrub({
           'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
       }}
     />
-    {/* grão de filme vivo por cima da cena, preso à mesma máscara */}
-    <div
-      ref={grain}
-      aria-hidden="true"
-      style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        backgroundImage:
-          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E\")",
-        backgroundSize: '240px 240px',
-        mixBlendMode: 'overlay',
-        opacity: 0.4,
-        WebkitMaskImage:
-          'radial-gradient(ellipse 62% 62% at 50% 50%, #000 34%, rgba(0,0,0,0.5) 58%, transparent 82%)',
-        maskImage:
-          'radial-gradient(ellipse 62% 62% at 50% 50%, #000 34%, rgba(0,0,0,0.5) 58%, transparent 82%)',
-      }}
-    />
+    {/* grão removido a pedido (12/08): sujava a máscara; o vídeo já tem grão próprio */}
     </div>
   )
 }
