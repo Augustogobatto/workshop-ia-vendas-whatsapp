@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;650&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;650&display=swap');
 
 /* ═══════════════════════════════════════════════════════
    PUSH CLUB — V7 · carta editorial dark
@@ -16,7 +16,7 @@
   --faint: #6b6b6b;
   --line:  #232323;
 
-  --serif: 'Instrument Serif', Georgia, serif;
+  --serif: 'Source Serif 4', Georgia, serif;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   background: var(--bg);
@@ -60,26 +60,37 @@
 .p7-pill.big { font-size: 16px; padding: 14px 28px; }
 .p7-pill.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
 
-/* ── hero ── */
-.p7-hero { position: relative; overflow: hidden; padding: clamp(88px, 16vh, 180px) 0 clamp(56px, 9vh, 96px); }
+/* ── hero: elemento à esquerda, texto à direita ── */
+.p7-hero { position: relative; overflow: hidden; padding: clamp(64px, 11vh, 130px) 0 clamp(56px, 9vh, 96px); }
 .p7-hero::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 52% 46% at 50% -4%, rgba(237, 237, 237, 0.085), transparent 68%),
-    linear-gradient(115deg, transparent 42%, rgba(237, 237, 237, 0.028) 50%, transparent 58%);
+    radial-gradient(ellipse 48% 52% at 32% 30%, rgba(237, 237, 237, 0.07), transparent 68%),
+    linear-gradient(115deg, transparent 42%, rgba(237, 237, 237, 0.025) 50%, transparent 58%);
 }
+.p7-hero-grid { display: grid; gap: 44px; align-items: center; }
+@media (min-width: 880px) {
+  .p7-hero-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 64px; }
+}
+.p7-hero-el { order: 2; }
+.p7-hero-txt { order: 1; }
+@media (min-width: 880px) {
+  .p7-hero-el { order: 1; }
+  .p7-hero-txt { order: 2; }
+}
+.p7-hero-el .p7-slot { aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; }
 .p7-kicker {
   font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--faint); margin: 0 0 26px;
 }
 .p7-h1 {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(46px, 9vw, 104px);
-  line-height: 0.99; letter-spacing: -0.015em;
-  margin: 0 0 30px; max-width: 13ch; text-wrap: balance;
+  font-size: clamp(40px, 5.6vw, 66px);
+  line-height: 1.08; letter-spacing: -0.005em;
+  margin: 0 0 22px; text-wrap: balance;
 }
 .p7-h1 em { font-style: italic; }
-.p7-sub { font-size: 18px; color: var(--dim); margin: 0 0 36px; max-width: 56ch; }
+.p7-sub { font-size: 18px; color: var(--dim); margin: 0 0 32px; max-width: 44ch; }
 .p7-sub strong { color: var(--ink); font-weight: 650; }
 .p7-cta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .p7-cta-note { font-size: 13px; color: var(--faint); line-height: 1.55; }

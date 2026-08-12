@@ -22,21 +22,24 @@ export default function ClubV7Page() {
         </div>
       </header>
 
-      {/* hero */}
+      {/* hero: elemento à esquerda · frase grande + frase pequena + botão */}
       <section className="p7-hero">
         <div className="p7-wrap">
-          <p className="p7-kicker p7-r">Um aviso, com estudo de Harvard atrás</p>
-          <h1 className="p7-h1 p7-r">Gente pior que você, com IA, <em>vai te superar.</em></h1>
-          <p className="p7-sub p7-r">
-            Harvard e o BCG mediram isso com 758 consultores. Os da metade de baixo,
-            usando IA, ganharam <strong>43% de desempenho</strong> e passaram do nível
-            de quem não usou nada. Os melhores ganharam 17%. A vantagem que você levou
-            anos construindo, alguém mediano aluga por 20 dólares por mês.
-            O Push Club existe pra você ficar do lado certo dessa conta.
-          </p>
-          <div className="p7-cta-row p7-r">
-            <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
-            <span className="p7-cta-note">R$70/mês ou R$600/ano<br />sem fidelidade, cancela em 2 cliques</span>
+          <div className="p7-hero-grid">
+            <div className="p7-hero-el p7-r">
+              <div className="p7-slot">Elemento visual<br />(em criação no Higgsfield)</div>
+            </div>
+            <div className="p7-hero-txt">
+              <h1 className="p7-h1 p7-r">Gente pior que você, com IA, <em>vai te superar.</em></h1>
+              <p className="p7-sub p7-r">
+                Harvard mediu: com IA, o profissional mediano já passa quem não usa.
+                O Push Club te deixa do lado certo dessa conta.
+              </p>
+              <div className="p7-cta-row p7-r">
+                <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
+                <span className="p7-cta-note">R$70/mês · sem fidelidade</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -65,8 +68,9 @@ export default function ClubV7Page() {
                 o que o veterano sabia e entregou de graça pro resto da fila.
               </p>
               <p className="p7-dim p7-r">
-                Isso já aconteceu com consultor, com atendente, com programador.
-                Vai acontecer no seu mercado, com o seu concorrente.
+                A vantagem que você levou anos construindo, alguém mediano aluga por
+                20 dólares por mês. Isso já aconteceu com consultor, com atendente,
+                com programador. Vai acontecer no seu mercado, com o seu concorrente.
               </p>
             </div>
             <div className="p7-stats p7-r">
