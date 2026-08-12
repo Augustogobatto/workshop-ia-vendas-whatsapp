@@ -175,17 +175,19 @@ const HEADLINES: Record<
     ),
   },
   '8': {
-    nota: 'A BIG IDEA travada 12/08',
+    nota: 'A BIG IDEA (copy do Augusto 12/08)',
     h1: (
       <>
-        Uma pessoa. <em>O trabalho de dez.</em>
+        Uma pessoa.
+        <br />
+        <em>O trabalho de dez.</em>
       </>
     ),
     sub: (
       <>
-        Na minha empresa são 15 sistemas no ar e 43 rotinas rodando todo dia, montados
-        por mim e as IAs. Todo mundo tem a mesma IA, quase ninguém sabe onde colocar.
-        Todo mês eu abro no ao vivo onde eu coloquei, com o número na tela.
+        A IA é uma alavanca. E alavanca não requer mais esforço, requer conhecimento
+        para saber onde apoiar e como usar. Todo mundo já tem a mesma IA. Quase
+        ninguém sabe onde apoiar.
       </>
     ),
   },
