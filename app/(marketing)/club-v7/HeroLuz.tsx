@@ -18,7 +18,6 @@ export default function HeroLuz({
   src: string
   alt: string
 }) {
-  const flare = useRef<HTMLDivElement>(null)
   const img = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
@@ -43,9 +42,7 @@ export default function HeroLuz({
 
       const respira = 0.9 + Math.sin(t) * 0.1
 
-      if (flare.current) {
-        flare.current.style.transform = `translate3d(${cx * 9}%, ${cy * 6}%, 0) scale(${respira})`
-      }
+      void respira
       if (img.current) {
         img.current.style.transform = `translate3d(${cx * -0.8}%, ${cy * -0.5}%, 0)`
         // o rim acompanha o lado do flare: desloca o drop-shadow na direcao da luz
@@ -69,8 +66,7 @@ export default function HeroLuz({
 
   return (
     <div className="p7-luz">
-      <div className="p7-luz-flare" ref={flare} aria-hidden="true" />
-      <div className="p7-luz-grain" aria-hidden="true" />
+      {/* flare e grão removidos a pedido (12/08): fica só o objeto com o rim */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} ref={img} className="p7-luz-img" />
     </div>
