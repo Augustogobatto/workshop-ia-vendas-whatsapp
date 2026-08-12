@@ -46,8 +46,8 @@ const HERO_ELEMENTS: Record<
     video: '/club-v7/bloco-giro.mp4',
   },
   luz: {
-    src: '/club-v7/alavanca.jpg',
-    alt: 'Bloco de granito erguido por uma alavanca de aço, em contraluz',
+    src: '/club-v7/alavanca-eclipse.webp',
+    alt: 'Silhueta de um bloco de granito erguido por uma alavanca de aço, eclipsando uma luz forte',
     luz: true,
   },
   luz2: {
@@ -163,6 +163,21 @@ const HEADLINES: Record<
       </>
     ),
   },
+  '8': {
+    nota: 'A BIG IDEA travada 12/08',
+    h1: (
+      <>
+        Uma pessoa. <em>O trabalho de dez.</em>
+      </>
+    ),
+    sub: (
+      <>
+        Na minha empresa são 15 sistemas no ar e 43 rotinas rodando todo dia, montados
+        por mim e as IAs. Todo mundo tem a mesma IA, quase ninguém sabe onde colocar.
+        Todo mês eu abro no ao vivo onde eu coloquei, com o número na tela.
+      </>
+    ),
+  },
   '7': {
     nota: 'variação sem "paga" (pra quem usa a versão grátis)',
     h1: (
@@ -188,7 +203,7 @@ export default function ClubV7Page({
   searchParams?: { el?: string; h?: string }
 }) {
   const hero = HERO_ELEMENTS[searchParams?.el ?? 'default'] ?? HERO_ELEMENTS.default
-  const head = HEADLINES[searchParams?.h ?? '1'] ?? HEADLINES['1']
+  const head = HEADLINES[searchParams?.h ?? '8'] ?? HEADLINES['8']
   return (
     <div className="p7">
       {/* topbar */}
@@ -549,7 +564,7 @@ export default function ClubV7Page({
           <a
             key={k}
             href={`?h=${k}${searchParams?.el ? `&el=${searchParams.el}` : ''}`}
-            className={(searchParams?.h ?? '1') === k ? 'on' : ''}
+            className={(searchParams?.h ?? '8') === k ? 'on' : ''}
             title={v.nota}
           >
             {k}
