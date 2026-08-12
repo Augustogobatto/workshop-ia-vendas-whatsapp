@@ -619,29 +619,6 @@ if(q){
     });
   }
 }
-})();
-/* scrub do hero em video: o mouse controla o tempo, cada quadro e um angulo */
-(function(){
-  var v=document.getElementById('p7scrub'); if(!v) return;
-  var alvo=0, atual=0, pronto=false, dur=0, tocou=false;
-  var reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function armar(){ if(pronto) return; dur=v.duration||0; if(!dur||!isFinite(dur)) return; pronto=true; try{v.currentTime=0.001}catch(e){} }
-  v.addEventListener('loadedmetadata',armar);
-  v.addEventListener('canplay',armar);
-  if(v.readyState>=1) armar();
-  addEventListener('pointermove',function(e){
-    if(!pronto||!dur||tocou) return;
-    var f=e.clientX/innerWidth; if(f<0)f=0; if(f>1)f=1;
-    alvo=f*dur;
-  },{passive:true});
-  addEventListener('touchstart',function(){ if(!tocou){tocou=true; v.loop=true; v.play().catch(function(){})} },{passive:true});
-  (function loop(){
-    if(pronto&&dur&&!tocou){
-      atual += (alvo-atual)*(reduz?1:0.12);
-      if(Math.abs(alvo-atual)>0.004){ try{ v.currentTime=atual }catch(e){} }
-    }
-    requestAnimationFrame(loop);
-  })();
 })();`,
         }}
       />
