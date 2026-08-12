@@ -154,6 +154,24 @@ vsc-controller,
 .p7-dim { color: var(--dim); }
 .p7 strong { font-weight: 650; color: var(--ink); }
 
+/* epígrafe: sussurro acima do título, nunca compete com ele */
+.p7-epi {
+  font-family: var(--serif); font-style: italic;
+  font-size: 15.5px; line-height: 1.5; color: var(--faint);
+  padding-left: 20px; max-width: 44ch; margin: 0 0 26px;
+}
+.p7-epi .a {
+  display: block; margin-top: 6px;
+  font-style: normal; font-family: var(--sans, inherit);
+  font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+/* clímax do texto corrido: peso maior e respiro, sem virar card */
+.p7-destaque {
+  font-weight: 650; color: var(--ink);
+  margin: 34px 0 !important; max-width: 34ch;
+}
+
 /* afirmação à esquerda / evidência à direita (Vercel) */
 .p7-duo { display: grid; gap: 40px; margin-top: 28px; }
 @media (min-width: 880px) {

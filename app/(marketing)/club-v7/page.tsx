@@ -307,37 +307,54 @@ export default function ClubV7Page({
         </div>
       </div>
 
-      {/* a conta */}
+      {/* sábado passado */}
+      {/* números 15 e 43 = levantamento de 12/08/2026; conteúdo vivo, reconferir ao subir serviço novo */}
       <section className="p7-sec" id="entenda">
         <div className="p7-wrap">
           <div className="p7-duo">
             <div>
-              <span className="p7-eyebrow p7-r">A conta que ninguém te mostrou</span>
-              <h2 className="p7-h2 p7-r">A IA nivela o jogo. A pergunta é pra qual lado você fica.</h2>
+              <span className="p7-eyebrow p7-r">Sábado passado</span>
+              <p className="p7-epi p7-r">
+                &ldquo;Dê-me um ponto de apoio e uma alavanca, e moverei o mundo.&rdquo;
+                <span className="a">Arquimedes</span>
+              </p>
+              <h2 className="p7-h2 p7-r">
+                A alavanca todo mundo ganhou.<br />O ponto de apoio, ninguém deu.
+              </h2>
               <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
-                Três estudos, com milhares de pessoas, mediram a mesma coisa em áreas
-                diferentes. O conhecimento que te diferenciava virou commodity: o
-                atendente novato alcança o veterano em dois meses porque a IA destilou
-                o que o veterano sabia e entregou de graça pro resto da fila.
+                Abrir o ChatGPT e perguntar se vai chover amanhã também é usar IA. É o uso
+                que te venderam. Funciona. Só levanta um peso ridículo perto do que a
+                ferramenta aguenta.
               </p>
               <p className="p7-dim p7-r">
-                A vantagem que você levou anos construindo, alguém mediano aluga por
-                20 dólares por mês. Isso já aconteceu com consultor, com atendente,
-                com programador. Vai acontecer no seu mercado, com o seu concorrente.
+                Sábado eu peguei o celular no carro e mandei um áudio pra minha IA. Enquanto
+                eu dirigia, ela entrou nas páginas do meu curso e testou as automações uma
+                por uma. Corrigiu as que estavam quebradas. Entrou na minha conta de anúncios
+                e atualizou os links. Conferiu se as vendas estavam caindo na Hotmart com o
+                rastreio certo. E mandou o relatório de tudo no grupo.
+              </p>
+              <p className="p7-destaque p7-r">
+                Um testador, um programador, um gestor de tráfego, um analista e um
+                estagiário. Dez minutos. Eu dirigindo.
+              </p>
+              <p className="p7-dim p7-r">
+                É a mesma IA que você tem. A diferença não está na ferramenta. Está em onde
+                ela foi apoiada.
               </p>
             </div>
             <div className="p7-stats p7-r">
               <div className="p7-stat">
-                <span className="n">+43%</span>
-                <span className="l">de desempenho pros profissionais medianos com IA. Os melhores: +17%. (Harvard/BCG, 758 consultores)</span>
+                <span className="n">15</span>
+                <span className="l">serviços rodando 24 horas por dia na minha operação. Agora, enquanto você lê isso.</span>
               </div>
               <div className="p7-stat">
-                <span className="n">2 meses</span>
-                <span className="l">pra um novato com IA alcançar quem tinha 6 meses de experiência. (QJE, 5.179 atendentes)</span>
+                <span className="n">43</span>
+                <span className="l">tarefas que acontecem todo dia sem eu abrir o computador. Conciliação, cobrança, relatório, vigia de erro.</span>
               </div>
               <div className="p7-stat">
-                <span className="n">0,69 → 0,52</span>
-                <span className="l">quanto ser &ldquo;bom&rdquo; passou a prever o resultado final do trabalho. (Science, 453 profissionais)</span>
+                {/* legenda do 0 é obrigatória: sem a âncora da empresa separada o número vira alegação contestável */}
+                <span className="n">0</span>
+                <span className="l">funcionários nessa operação. É uma empresa separada que eu montei só pra testar IA: eu e as máquinas.</span>
               </div>
             </div>
           </div>
