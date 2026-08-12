@@ -13,7 +13,15 @@ const STRIPE_ANUAL = 'https://buy.stripe.com/9B628s4La14Vb1KaNK9fW0g'
 
 const HERO_ELEMENTS: Record<
   string,
-  { src: string; alt: string; glb?: string; spin?: boolean; orbit?: string; aspect?: string }
+  {
+    src: string
+    alt: string
+    glb?: string
+    video?: string
+    spin?: boolean
+    orbit?: string
+    aspect?: string
+  }
 > = {
   default: {
     src: '/club-v7/bloco.jpg',
@@ -28,6 +36,11 @@ const HERO_ELEMENTS: Record<
     glb: '/club-v7/bloco-3d-web.glb',
     spin: true,
     orbit: '12deg 80deg 34%',
+  },
+  vid: {
+    src: '/club-v7/bloco.jpg',
+    alt: 'Bloco de pedra girando, controlado pelo movimento do mouse',
+    video: '/club-v7/bloco-giro.mp4',
   },
   '3d': {
     src: '/club-v7/el3.jpg',
@@ -186,7 +199,38 @@ export default function ClubV7Page({
               </div>
             </div>
             <div className="p7-hero-el p7-r">
-              {hero.glb ? (
+              {hero.video ? (
+                /* técnica Resend/Apple: o giro é vídeo, o mouse controla o tempo dele */
+                <div
+                  className="p7-hero-3d"
+                  dangerouslySetInnerHTML={{
+                    __html: `<video id="p7scrub" src="${hero.video}" poster="${hero.src}"
+                      muted playsinline preload="auto" aria-label="${hero.alt}"
+                      style="width:100%;display:block;aspect-ratio:1/1;object-fit:cover"></video>
+                    <script>(function(){
+                      var v=document.getElementById('p7scrub'); if(!v) return;
+                      var alvo=0, atual=0, pronto=false, dur=0;
+                      v.addEventListener('loadedmetadata',function(){ dur=v.duration||0; pronto=true; v.currentTime=0.001 });
+                      var reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+                      addEventListener('pointermove',function(e){
+                        if(!pronto||!dur) return;
+                        var f=e.clientX/innerWidth; if(f<0)f=0; if(f>1)f=1;
+                        alvo=f*dur;
+                      },{passive:true});
+                      // fallback: sem mouse (toque), roda em loop lento
+                      var tocou=false;
+                      addEventListener('touchstart',function(){ if(!tocou){tocou=true; v.loop=true; v.play().catch(function(){}) } },{passive:true, once:true});
+                      (function loop(){
+                        if(pronto&&dur&&!tocou){
+                          atual += (alvo-atual)*(reduz?1:0.12);
+                          if(Math.abs(alvo-atual)>0.004){ try{ v.currentTime=atual }catch(e){} }
+                        }
+                        requestAnimationFrame(loop);
+                      })();
+                    })();</script>`,
+                  }}
+                />
+              ) : hero.glb ? (
                 <div
                   className="p7-hero-3d"
                   dangerouslySetInnerHTML={{
