@@ -158,7 +158,7 @@ vsc-controller,
 .p7-epi {
   font-family: var(--serif); font-style: italic;
   font-size: 15.5px; line-height: 1.5; color: var(--faint);
-  padding-left: 20px; max-width: 44ch; margin: 0 0 26px;
+  padding-left: 20px; margin: 0 0 26px;
 }
 .p7-epi .a {
   display: block; margin-top: 6px;
@@ -169,7 +169,7 @@ vsc-controller,
 /* clímax do texto corrido: peso maior e respiro, sem virar card */
 .p7-destaque {
   font-weight: 650; color: var(--ink);
-  margin: 34px 0 !important; max-width: 34ch;
+  margin: 34px 0 !important;
 }
 
 /* na versão centralizada a epígrafe perde o recuo e senta no eixo */
