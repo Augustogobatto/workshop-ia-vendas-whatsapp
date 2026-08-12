@@ -299,10 +299,11 @@ export default function ClubV7Page({
       {/* faixa de fatos */}
       <div className="p7-facts">
         <div className="p7-facts-in">
-          <span>R$140 mil vendidos por uma IA</span>
-          <span>10 assistentes rodando</span>
-          <span>50+ membros ativos</span>
-          <span>faturamento em painel aberto</span>
+          <span>IA no Whats</span>
+          <span>MCP</span>
+          <span>Agente de IA</span>
+          <span>Vibecoding</span>
+          <span>Dashboard</span>
         </div>
       </div>
 
