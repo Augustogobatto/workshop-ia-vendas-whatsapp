@@ -18,6 +18,7 @@ export default function HeroScrub({
   alt: string
 }) {
   const ref = useRef<HTMLVideoElement>(null)
+  const grain = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const v = ref.current
@@ -29,6 +30,8 @@ export default function HeroScrub({
     let pronto = false
     let tocou = false
     let raf = 0
+    let mouseT = 0.5 // fração 0..1 vinda do mouse
+    let ultimoGrao = 0
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -45,11 +48,30 @@ export default function HeroScrub({
       } catch {}
     }
 
-    const onMove = (e: PointerEvent | MouseEvent) => {
-      if (!pronto || !dur || tocou) return
-      let f = e.clientX / window.innerWidth
+    const mira = () => {
+      if (!pronto || !dur) return
+      // mouse dá o ângulo base; o scroll empurra o arco um pouco mais
+      const rolagem = Math.min(1, window.scrollY / (window.innerHeight * 1.2))
+      let f = mouseT + (rolagem - 0.15) * 0.35
       f = f < 0 ? 0 : f > 1 ? 1 : f
       alvo = f * dur
+    }
+
+    const onMove = (e: PointerEvent | MouseEvent) => {
+      if (tocou) return
+      let f = e.clientX / window.innerWidth
+      mouseT = f < 0 ? 0 : f > 1 ? 1 : f
+      mira()
+    }
+
+    const onScroll = () => {
+      if (tocou) return
+      mira()
+      // paralaxe leve: a cena sobe mais devagar que a página
+      if (ref.current) {
+        const sy = Math.min(window.scrollY, window.innerHeight) * 0.08
+        ref.current.style.transform = `scale(1.14) translate3d(0, ${sy.toFixed(1)}px, 0)`
+      }
     }
 
     // sem mouse (celular): deixa rodando em loop
@@ -60,7 +82,7 @@ export default function HeroScrub({
       v.play().catch(() => {})
     }
 
-    const loop = () => {
+    const loop = (ts: number) => {
       if (pronto && dur && !tocou) {
         atual += (alvo - atual) * (reduz ? 1 : 0.12)
         if (Math.abs(alvo - atual) > 0.004) {
@@ -68,6 +90,13 @@ export default function HeroScrub({
             v.currentTime = atual
           } catch {}
         }
+      }
+      // grão de filme vivo: salta de posição ~12x por segundo
+      if (grain.current && ts - ultimoGrao > 83) {
+        ultimoGrao = ts
+        const gx = Math.floor(Math.random() * 240)
+        const gy = Math.floor(Math.random() * 240)
+        grain.current.style.backgroundPosition = `${gx}px ${gy}px`
       }
       raf = requestAnimationFrame(loop)
     }
@@ -79,6 +108,7 @@ export default function HeroScrub({
     window.addEventListener('pointermove', onMove, { passive: true })
     window.addEventListener('mousemove', onMove, { passive: true })
     window.addEventListener('touchstart', onTouch, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
     raf = requestAnimationFrame(loop)
 
     return () => {
@@ -87,11 +117,13 @@ export default function HeroScrub({
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('touchstart', onTouch)
+      window.removeEventListener('scroll', onScroll)
       cancelAnimationFrame(raf)
     }
   }, [])
 
   return (
+    <div style={{ position: 'relative' }}>
     <video
       ref={ref}
       id="p7scrub"
@@ -115,5 +147,25 @@ export default function HeroScrub({
           'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
       }}
     />
+    {/* grão de filme vivo por cima da cena, preso à mesma máscara */}
+    <div
+      ref={grain}
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E\")",
+        backgroundSize: '240px 240px',
+        mixBlendMode: 'overlay',
+        opacity: 0.4,
+        WebkitMaskImage:
+          'radial-gradient(ellipse 62% 62% at 50% 50%, #000 34%, rgba(0,0,0,0.5) 58%, transparent 82%)',
+        maskImage:
+          'radial-gradient(ellipse 62% 62% at 50% 50%, #000 34%, rgba(0,0,0,0.5) 58%, transparent 82%)',
+      }}
+    />
+    </div>
   )
 }
