@@ -36,8 +36,11 @@ export default function HeroScrub({
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    // estado do motor (efeito de mouse removido a pedido 12/08: só pêndulo + scroll)
+    // estado do motor: pêndulo perpétuo + scroll + empurrão de mouse por
+    // velocidade (opção B, rodando limpa pela 1ª vez após remover o fantasma)
     let fase = 0 // pêndulo perpétuo
+    let velMouse = 0 // velocidade injetada pelo gesto (fração do arco/s)
+    let desvio = 0 // desvio acumulado, escorre de volta pro fluxo
     let empScroll = 0
     let syAlvo = 0
     let syAtual = 0
@@ -59,6 +62,14 @@ export default function HeroScrub({
     v.addEventListener('loadedmetadata', armar)
     v.addEventListener('canplay', armar)
     if (v.readyState >= 1) armar()
+
+    const onMove = (e: PointerEvent) => {
+      if (tocou) return
+      // o gesto vira velocidade, nunca posição: flick empurra, a cena desliza
+      velMouse += (e.movementX / window.innerWidth) * 1.2
+      if (velMouse > 0.6) velMouse = 0.6
+      if (velMouse < -0.6) velMouse = -0.6
+    }
 
     const onScroll = () => {
       if (tocou) return
@@ -85,7 +96,14 @@ export default function HeroScrub({
         if (!reduz) fase += 0.32 * dt
         const base = 0.5 + 0.3 * Math.sin(fase)
 
-        let f = base + empScroll
+        // física do empurrão: velocidade decai, desvio escorre de volta
+        desvio += velMouse * dt
+        velMouse *= Math.exp(-2.5 * dt)
+        desvio *= Math.exp(-0.8 * dt)
+        if (desvio > 0.18) desvio = 0.18
+        if (desvio < -0.18) desvio = -0.18
+
+        let f = base + desvio + empScroll
         f = f < 0.02 ? 0.02 : f > 0.98 ? 0.98 : f
 
         // damping exponencial frame-rate independent (padrão Lenis)
@@ -107,6 +125,7 @@ export default function HeroScrub({
       raf = requestAnimationFrame(loop)
     }
 
+    window.addEventListener('pointermove', onMove, { passive: true })
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('touchstart', onTouch, { passive: true })
     raf = requestAnimationFrame(loop)
@@ -114,6 +133,7 @@ export default function HeroScrub({
     return () => {
       v.removeEventListener('loadedmetadata', armar)
       v.removeEventListener('canplay', armar)
+      window.removeEventListener('pointermove', onMove)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('touchstart', onTouch)
       cancelAnimationFrame(raf)
