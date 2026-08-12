@@ -50,6 +50,15 @@
 }
 .p7-mark em { font-style: italic; color: var(--dim); }
 
+/* extensão Video Speed Controller: ela injeta <vsc-controller> como irmão do
+   vídeo; escondemos o host pra não aparecer o "1.00" sobre o hero */
+vsc-controller,
+.vsc-controller {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .p7-pill {
   display: inline-block; background: var(--ink); color: var(--bg);
   text-decoration: none; font-weight: 650; font-size: 14px;
