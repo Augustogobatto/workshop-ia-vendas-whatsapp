@@ -88,11 +88,19 @@ export default function HeroScrub({
         let f = base + empMouse + empScroll
         f = f < 0.02 ? 0.02 : f > 0.98 ? 0.98 : f
         alvo = f * dur
-        atual += (alvo - atual) * (reduz ? 1 : 0.05)
-        if (Math.abs(alvo - atual) > 0.004) {
-          try {
-            v.currentTime = atual
-          } catch {}
+        // só avança quando o vídeo terminou o seek anterior (evita engasgo),
+        // e nunca mais que 50ms de vídeo por frame (evita pulo)
+        if (!v.seeking) {
+          let passo = (alvo - atual) * (reduz ? 1 : 0.05)
+          const maxPasso = 0.05
+          if (passo > maxPasso) passo = maxPasso
+          if (passo < -maxPasso) passo = -maxPasso
+          atual += passo
+          if (Math.abs(alvo - atual) > 0.004) {
+            try {
+              v.currentTime = atual
+            } catch {}
+          }
         }
         // paralaxe com a mesma maciez
         syAtual += (syAlvo - syAtual) * 0.06
