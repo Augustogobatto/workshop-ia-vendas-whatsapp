@@ -387,8 +387,6 @@ if(q){
     });
   }
 }
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.1});
-document.querySelectorAll('.p7-r').forEach(function(el){io.observe(el)});
 })();`,
         }}
       />

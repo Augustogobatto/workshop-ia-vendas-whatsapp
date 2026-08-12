@@ -231,9 +231,7 @@
 }
 .p7-footer a { color: var(--faint); }
 
-/* reveal */
-.p7-r { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.p7-r.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  .p7-r { opacity: 1; transform: none; transition: none; }
-}
+/* reveal desativado por ora: o script de classe brigava com a hidratação do
+   React e a página ficava intermitentemente invisível. Voltar com animação
+   de entrada via client component quando a página estabilizar. */
+.p7-r { opacity: 1; transform: none; }
