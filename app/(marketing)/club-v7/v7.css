@@ -225,6 +225,24 @@
 .p7-final .p7-sub { margin: 0 auto 34px; }
 .p7-final .p7-cta-row { justify-content: center; }
 
+/* trocador de rascunhos (preview) */
+.p7-switch {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 20; display: flex; align-items: center; gap: 8px;
+  background: rgba(20,20,20,0.92); backdrop-filter: blur(10px);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 16px; font-size: 12px; color: var(--faint);
+  letter-spacing: 0.06em;
+}
+.p7-switch a {
+  color: var(--dim); text-decoration: none; padding: 3px 9px;
+  border-radius: 999px; border: 1px solid transparent;
+}
+.p7-switch a:hover { color: var(--ink); border-color: var(--line); }
+.p7-switch a.on { background: var(--ink); color: var(--bg); font-weight: 650; }
+.p7-switch b { color: var(--dim); font-weight: 400; font-style: italic; margin-left: 4px; }
+@media (max-width: 620px) { .p7-switch b { display: none } }
+
 .p7-footer {
   margin-top: 80px; border-top: 1px solid var(--line);
 }

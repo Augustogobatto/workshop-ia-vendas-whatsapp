@@ -39,12 +39,112 @@ const HERO_ELEMENTS: Record<
   },
 }
 
+// Rascunhos de hero pra lapidar. Trocar com ?h=1..6
+const HEADLINES: Record<
+  string,
+  { nota: string; h1: React.ReactNode; sub: React.ReactNode }
+> = {
+  '1': {
+    nota: 'atual, com sub corrigido',
+    h1: (
+      <>
+        Gente pior que você, com IA, <em>vai te superar.</em>
+      </>
+    ),
+    sub: (
+      <>
+        Harvard mediu isso em 758 consultores: os da metade de baixo subiram{' '}
+        <strong>43%</strong> e passaram quem não usava nada. No Push Club eu abro a
+        minha operação todo mês, com o número na tela, e você copia a peça que serve
+        pro seu negócio.
+      </>
+    ),
+  },
+  '2': {
+    nota: 'o aluguel da vantagem',
+    h1: (
+      <>
+        O que você levou dez anos pra aprender, hoje o cara <em>aluga por 100 reais
+        por mês.</em>
+      </>
+    ),
+    sub: (
+      <>
+        Harvard mediu em 758 consultores: com IA, a metade de baixo subiu{' '}
+        <strong>43%</strong> e passou quem não usava. O que ainda não dá pra alugar é
+        saber o que montar primeiro, e é isso que eu abro todo mês no Push Club.
+      </>
+    ),
+  },
+  '3': {
+    nota: 'a prova crua',
+    h1: (
+      <>
+        Uma IA que eu configurei vendeu <em>R$140 mil num lançamento.</em>
+      </>
+    ),
+    sub: (
+      <>
+        É uma das 10 que rodam a minha empresa hoje. Todo mês eu abro no ao vivo como
+        cada uma foi montada, com o painel de faturamento aberto do lado. R$70 por mês,
+        e você monta a sua.
+      </>
+    ),
+  },
+  '4': {
+    nota: 'o destino em número',
+    h1: (
+      <>
+        2 milhões de faturamento. <em>3 pessoas.</em>
+      </>
+    ),
+    sub: (
+      <>
+        É o tamanho de empresa que eu tô montando, com 10 IAs no lugar de time. Todo
+        mês eu abro no ao vivo o que funcionou e o que eu joguei fora. R$70 por mês pra
+        ver por dentro e copiar.
+      </>
+    ),
+  },
+  '5': {
+    nota: 'a dor com sujeito e prazo',
+    h1: (
+      <>
+        O novato com IA leva dois meses pra chegar <em>onde você levou anos.</em>
+      </>
+    ),
+    sub: (
+      <>
+        Foi medido em 5 mil e pouco atendentes, e repetido em consultoria. O que ainda
+        não vem no plano de 100 reais é saber o que montar primeiro. É isso que eu abro
+        todo mês no Push Club.
+      </>
+    ),
+  },
+  '6': {
+    nota: 'a tentativa frustrada',
+    h1: (
+      <>
+        Você já paga ChatGPT há um ano e a sua operação <em>continua igual.</em>
+      </>
+    ),
+    sub: (
+      <>
+        Ferramenta você já tem. Faltou ver a coisa montada rodando, com o faturamento
+        aberto do lado, pra saber qual pedaço copiar. É o que eu faço todo mês no Push
+        Club, por R$70.
+      </>
+    ),
+  },
+}
+
 export default function ClubV7Page({
   searchParams,
 }: {
-  searchParams?: { el?: string }
+  searchParams?: { el?: string; h?: string }
 }) {
   const hero = HERO_ELEMENTS[searchParams?.el ?? 'default'] ?? HERO_ELEMENTS.default
+  const head = HEADLINES[searchParams?.h ?? '1'] ?? HEADLINES['1']
   return (
     <div className="p7">
       {/* topbar */}
@@ -60,11 +160,8 @@ export default function ClubV7Page({
         <div className="p7-wrap">
           <div className="p7-hero-grid">
             <div className="p7-hero-txt">
-              <h1 className="p7-h1 p7-r">Gente pior que você, com IA, <em>vai te superar.</em></h1>
-              <p className="p7-sub p7-r">
-                Harvard mediu: com IA, o profissional mediano já passa quem não usa.
-                O Push Club te deixa do lado certo dessa conta.
-              </p>
+              <h1 className="p7-h1 p7-r">{head.h1}</h1>
+              <p className="p7-sub p7-r">{head.sub}</p>
               <div className="p7-cta-row p7-r">
                 <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
                 <span className="p7-cta-note">R$70/mês · sem fidelidade</span>
@@ -396,6 +493,22 @@ export default function ClubV7Page({
           </div>
         </div>
       </section>
+
+      {/* trocador de rascunhos de hero (só existe no preview) */}
+      <div className="p7-switch">
+        <span>hero:</span>
+        {Object.entries(HEADLINES).map(([k, v]) => (
+          <a
+            key={k}
+            href={`?h=${k}${searchParams?.el ? `&el=${searchParams.el}` : ''}`}
+            className={(searchParams?.h ?? '1') === k ? 'on' : ''}
+            title={v.nota}
+          >
+            {k}
+          </a>
+        ))}
+        <b>{head.nota}</b>
+      </div>
 
       <footer className="p7-footer">
         <div className="p7-footer-in">
