@@ -65,8 +65,9 @@ export default function ClubV7Page({
                   dangerouslySetInnerHTML={{
                     __html: `<model-viewer src="${hero.glb}" alt="${hero.alt}"
                       auto-rotate rotation-per-second="8deg" camera-controls disable-zoom disable-pan
-                      interaction-prompt="none" exposure="0.9" shadow-intensity="0"
-                      camera-orbit="15deg 78deg 105%" style="width:100%;aspect-ratio:4/5;background:transparent;"></model-viewer>
+                      interaction-prompt="none" exposure="1.25" shadow-intensity="0"
+                      camera-orbit="12deg 80deg 72%" min-camera-orbit="auto auto 72%" max-camera-orbit="auto auto 72%"
+                      style="width:100%;aspect-ratio:4/5;background:transparent;--progress-bar-color:transparent;"></model-viewer>
                     <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>`,
                   }}
                 />
