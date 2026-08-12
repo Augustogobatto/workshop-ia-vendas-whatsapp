@@ -51,9 +51,10 @@ export default function HeroScrub({
 
     const mira = () => {
       if (!pronto || !dur) return
-      // mouse dá o ângulo base; o scroll empurra o arco um pouco mais
+      // mouse dá o ângulo base (comprimido: não usa o arco inteiro de uma vez);
+      // o scroll empurra um pouco mais, também suavizado
       const rolagem = Math.min(1, window.scrollY / (window.innerHeight * 1.2))
-      let f = mouseT + (rolagem - 0.15) * 0.35
+      let f = 0.5 + (mouseT - 0.5) * 0.72 + (rolagem - 0.15) * 0.2
       f = f < 0 ? 0 : f > 1 ? 1 : f
       alvo = f * dur
     }
@@ -67,16 +68,16 @@ export default function HeroScrub({
       mira()
     }
 
+    let syAlvo = 0
+    let syAtual = 0
+
     const onScroll = () => {
       if (tocou) return
       ultimoGesto = performance.now()
       ocioso = false
       mira()
-      // paralaxe leve: a cena sobe mais devagar que a página
-      if (ref.current) {
-        const sy = Math.min(window.scrollY, window.innerHeight) * 0.08
-        ref.current.style.transform = `scale(1.14) translate3d(0, ${sy.toFixed(1)}px, 0)`
-      }
+      // paralaxe leve, aplicada com inércia no loop (nunca de forma seca)
+      syAlvo = Math.min(window.scrollY, window.innerHeight) * 0.08
     }
 
     // sem mouse (celular): deixa rodando em loop
@@ -100,11 +101,17 @@ export default function HeroScrub({
           fase += 0.0035
           alvo = dur * (0.5 + 0.38 * Math.sin(fase))
         }
-        atual += (alvo - atual) * (reduz ? 1 : 0.12)
+        // perseguição bem mais lenta: o ângulo flui atrás do gesto sem tranco
+        atual += (alvo - atual) * (reduz ? 1 : 0.045)
         if (Math.abs(alvo - atual) > 0.004) {
           try {
             v.currentTime = atual
           } catch {}
+        }
+        // paralaxe com a mesma maciez
+        syAtual += (syAlvo - syAtual) * 0.06
+        if (Math.abs(syAlvo - syAtual) > 0.1) {
+          v.style.transform = `scale(1.14) translate3d(0, ${syAtual.toFixed(1)}px, 0)`
         }
       }
       raf = requestAnimationFrame(loop)
