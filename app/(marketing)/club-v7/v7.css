@@ -62,12 +62,8 @@
 
 /* ── hero: elemento à esquerda, texto à direita ── */
 .p7-hero { position: relative; overflow: hidden; padding: clamp(64px, 11vh, 130px) 0 clamp(56px, 9vh, 96px); }
-.p7-hero::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 48% 52% at 68% 30%, rgba(237, 237, 237, 0.07), transparent 68%),
-    linear-gradient(115deg, transparent 42%, rgba(237, 237, 237, 0.025) 50%, transparent 58%);
-}
+/* luz ambiente do hero removida a pedido (12/08): o unico brilho da dobra
+   e o flare do eclipse dentro do HeroLuz */
 .p7-hero-grid { display: grid; gap: 44px; align-items: center; }
 @media (min-width: 880px) {
   .p7-hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 64px; }
