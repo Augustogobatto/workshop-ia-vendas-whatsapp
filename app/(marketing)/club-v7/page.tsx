@@ -15,6 +15,10 @@ const HERO_ELEMENTS: Record<
   string,
   { src: string; alt: string; glb?: string; spin?: boolean; orbit?: string; aspect?: string }
 > = {
+  default: {
+    src: '/club-v7/bloco.jpg',
+    alt: 'Bloco de pedra: metade bruta e fosca, metade esculpida em cunha polida',
+  },
   '1': { src: '/club-v7/el1.jpg', alt: 'Esfera de granito na quina de um plinto, um instante antes de cair' },
   '3': { src: '/club-v7/el3.jpg', alt: 'Bloco de granito erguido por uma alavanca fina de aço' },
   '4': { src: '/club-v7/el4.jpg', alt: 'Bloco de pedra metade bruto, metade esculpido em cunha polida' },
@@ -23,14 +27,14 @@ const HERO_ELEMENTS: Record<
     alt: 'Bloco de pedra metade bruto, metade esculpido, em 3D',
     glb: '/club-v7/bloco-3d-web.glb',
     spin: true,
-    orbit: '12deg 80deg 42%',
+    orbit: '12deg 80deg 34%',
   },
   '3d': {
     src: '/club-v7/el3.jpg',
     alt: 'Bloco de granito sobre alavanca de aço, em 3D',
     glb: '/club-v7/alavanca-3d-web.glb',
     spin: false,
-    orbit: '-24deg 82deg 30%',
+    orbit: '-24deg 82deg 26%',
     aspect: '1/1',
   },
 }
@@ -40,7 +44,7 @@ export default function ClubV7Page({
 }: {
   searchParams?: { el?: string }
 }) {
-  const hero = HERO_ELEMENTS[searchParams?.el ?? '1'] ?? HERO_ELEMENTS['1']
+  const hero = HERO_ELEMENTS[searchParams?.el ?? 'default'] ?? HERO_ELEMENTS.default
   return (
     <div className="p7">
       {/* topbar */}
