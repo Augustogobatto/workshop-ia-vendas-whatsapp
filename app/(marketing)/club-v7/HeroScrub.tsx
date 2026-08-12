@@ -106,11 +106,13 @@ export default function HeroScrub({
         display: 'block',
         aspectRatio: '1 / 1',
         objectFit: 'cover',
-        // dissolve a borda do vídeo no fundo da página (a cena tem margem)
+        // zoom leve empurra as bordas originais pra fora da zona visível
+        transform: 'scale(1.14)',
+        // fade mais cedo e mais longo: nenhum frame do arco alcança a borda
         WebkitMaskImage:
-          'radial-gradient(ellipse 82% 82% at 50% 50%, #000 58%, transparent 93%)',
+          'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
         maskImage:
-          'radial-gradient(ellipse 82% 82% at 50% 50%, #000 58%, transparent 93%)',
+          'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
       }}
     />
   )
