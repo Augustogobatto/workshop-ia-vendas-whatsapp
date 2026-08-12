@@ -122,17 +122,35 @@ const HEADLINES: Record<
     ),
   },
   '6': {
-    nota: 'a tentativa frustrada',
+    nota: 'a tentativa frustrada (favorita do revisor)',
     h1: (
       <>
-        Você já paga ChatGPT há um ano e a sua operação <em>continua igual.</em>
+        Você paga ChatGPT há mais de um ano e o seu negócio <em>continua igual.</em>
       </>
     ),
     sub: (
       <>
-        Ferramenta você já tem. Faltou ver a coisa montada rodando, com o faturamento
-        aberto do lado, pra saber qual pedaço copiar. É o que eu faço todo mês no Push
-        Club, por R$70.
+        A culpa não é sua. A IA responde tudo que você pergunta com a mesma confiança,
+        inclusive quando o plano é ruim, e ninguém nunca te disse o que montar primeiro.
+        Eu tenho 10 assistentes rodando na minha empresa e todo mês eu abro no ao vivo
+        qual deu dinheiro e qual eu joguei fora.
+      </>
+    ),
+  },
+  '7': {
+    nota: 'variação sem "paga" (pra quem usa a versão grátis)',
+    h1: (
+      <>
+        Faz um ano que você abre o ChatGPT todo dia e o seu negócio{' '}
+        <em>continua igual.</em>
+      </>
+    ),
+    sub: (
+      <>
+        A culpa não é sua. A IA responde tudo com a mesma confiança, inclusive quando o
+        plano é ruim, e ninguém nunca te disse o que montar primeiro. Eu tenho 10
+        assistentes rodando na minha empresa e todo mês eu abro no ao vivo qual deu
+        dinheiro e qual eu joguei fora.
       </>
     ),
   },
