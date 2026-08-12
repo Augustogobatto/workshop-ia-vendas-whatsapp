@@ -620,6 +620,27 @@ if(q){
     });
   }
 }
+})();
+(function(){
+// rolagem com calma nos anchors (#entenda, #planos): ease-in-out ~1.1s
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+document.addEventListener('click',function(e){
+  var a=e.target&&e.target.closest?e.target.closest('a[href^="#"]'):null;
+  if(!a)return;
+  var alvo=document.getElementById(a.getAttribute('href').slice(1));
+  if(!alvo)return;
+  e.preventDefault();
+  var de=window.scrollY,ate=alvo.getBoundingClientRect().top+de-24,ini=null,DUR=1100;
+  function passo(ts){
+    if(ini===null)ini=ts;
+    var p=Math.min(1,(ts-ini)/DUR);
+    window.scrollTo(0,de+(ate-de)*ease(p));
+    if(p<1)requestAnimationFrame(passo);
+    else history.replaceState(null,'',a.getAttribute('href'));
+  }
+  requestAnimationFrame(passo);
+});
 })();`,
         }}
       />
