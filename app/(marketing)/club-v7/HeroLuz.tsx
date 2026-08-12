@@ -48,6 +48,10 @@ export default function HeroLuz({
       }
       if (img.current) {
         img.current.style.transform = `translate3d(${cx * -0.8}%, ${cy * -0.5}%, 0)`
+        // o rim acompanha o lado do flare: desloca o drop-shadow na direcao da luz
+        const rx = (2 + cx * 3).toFixed(1)
+        const ry = (-2 + cy * 3).toFixed(1)
+        img.current.style.filter = `drop-shadow(${rx}px ${ry}px 2px rgba(255,255,255,0.5)) drop-shadow(0 0 9px rgba(255,255,255,0.16))`
       }
       raf = requestAnimationFrame(loop)
     }
@@ -66,6 +70,7 @@ export default function HeroLuz({
   return (
     <div className="p7-luz">
       <div className="p7-luz-flare" ref={flare} aria-hidden="true" />
+      <div className="p7-luz-grain" aria-hidden="true" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} ref={img} className="p7-luz-img" />
     </div>
