@@ -185,9 +185,8 @@ const HEADLINES: Record<
     ),
     sub: (
       <>
-        A IA é uma alavanca. E alavanca não requer mais esforço, requer conhecimento
-        para saber onde apoiar e como usar. Todo mundo já tem a mesma IA. Quase
-        ninguém sabe onde apoiar.
+        A IA é uma alavanca. Ela não pede mais, multiplica o que você já tem.
+        Aprenda a utilizar IA para multiplicar seu potencial.
       </>
     ),
   },
