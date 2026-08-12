@@ -65,19 +65,15 @@
 .p7-hero::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 48% 52% at 32% 30%, rgba(237, 237, 237, 0.07), transparent 68%),
+    radial-gradient(ellipse 48% 52% at 68% 30%, rgba(237, 237, 237, 0.07), transparent 68%),
     linear-gradient(115deg, transparent 42%, rgba(237, 237, 237, 0.025) 50%, transparent 58%);
 }
 .p7-hero-grid { display: grid; gap: 44px; align-items: center; }
 @media (min-width: 880px) {
-  .p7-hero-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 64px; }
+  .p7-hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 64px; }
 }
-.p7-hero-el { order: 2; }
 .p7-hero-txt { order: 1; }
-@media (min-width: 880px) {
-  .p7-hero-el { order: 1; }
-  .p7-hero-txt { order: 2; }
-}
+.p7-hero-el { order: 2; }
 .p7-hero-el .p7-slot { aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; }
 .p7-kicker {
   font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;

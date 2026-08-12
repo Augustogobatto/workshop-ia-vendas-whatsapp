@@ -26,9 +26,6 @@ export default function ClubV7Page() {
       <section className="p7-hero">
         <div className="p7-wrap">
           <div className="p7-hero-grid">
-            <div className="p7-hero-el p7-r">
-              <div className="p7-slot">Elemento visual<br />(em criação no Higgsfield)</div>
-            </div>
             <div className="p7-hero-txt">
               <h1 className="p7-h1 p7-r">Gente pior que você, com IA, <em>vai te superar.</em></h1>
               <p className="p7-sub p7-r">
@@ -39,6 +36,9 @@ export default function ClubV7Page() {
                 <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
                 <span className="p7-cta-note">R$70/mês · sem fidelidade</span>
               </div>
+            </div>
+            <div className="p7-hero-el p7-r">
+              <div className="p7-slot">Elemento visual<br />(em criação no Higgsfield)</div>
             </div>
           </div>
         </div>
