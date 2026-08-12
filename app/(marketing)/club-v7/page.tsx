@@ -308,7 +308,6 @@ export default function ClubV7Page({
       </div>
 
       {/* sábado passado */}
-      {/* números 15 e 43 = levantamento de 12/08/2026; conteúdo vivo, reconferir ao subir serviço novo */}
       <section className="p7-stage" id="entenda">
         <div className="p7-wrap">
           <p className="p7-epi p7-r">
@@ -339,21 +338,6 @@ export default function ClubV7Page({
               É a mesma IA que você tem. A diferença não está na ferramenta. Está em onde
               ela foi apoiada.
             </p>
-          </div>
-          <div className="p7-stats-row p7-r">
-            <div className="p7-stat">
-              <span className="n">15</span>
-              <span className="l">serviços rodando 24 horas por dia na minha operação. Agora, enquanto você lê isso.</span>
-            </div>
-            <div className="p7-stat">
-              <span className="n">43</span>
-              <span className="l">tarefas que acontecem todo dia sem eu abrir o computador. Conciliação, cobrança, relatório, vigia de erro.</span>
-            </div>
-            <div className="p7-stat">
-              {/* legenda do 0 é obrigatória: sem a âncora da empresa separada o número vira alegação contestável */}
-              <span className="n">0</span>
-              <span className="l">funcionários nessa operação. É uma empresa separada que eu montei só pra testar IA: eu e as máquinas.</span>
-            </div>
           </div>
         </div>
       </section>
