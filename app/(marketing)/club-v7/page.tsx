@@ -234,7 +234,7 @@ export default function ClubV7Page({
               <p className="p7-sub p7-r">{head.sub}</p>
               <div className="p7-cta-row p7-r">
                 <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
-                <span className="p7-cta-note">R$70/mês · sem fidelidade</span>
+                <a href="#entenda" className="p7-pill big ghost">Entenda</a>
               </div>
             </div>
             <div className="p7-hero-el p7-r">
@@ -307,7 +307,7 @@ export default function ClubV7Page({
       </div>
 
       {/* a conta */}
-      <section className="p7-sec">
+      <section className="p7-sec" id="entenda">
         <div className="p7-wrap">
           <div className="p7-duo">
             <div>
