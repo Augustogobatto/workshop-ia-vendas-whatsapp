@@ -30,6 +30,9 @@ export default function HeroScrub({
     let tocou = false
     let raf = 0
     let mouseT = 0.5 // fração 0..1 vinda do mouse
+    let ultimoGesto = 0 // timestamp da última interação
+    let ocioso = false
+    let fase = 0 // fase da deriva ociosa
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -57,6 +60,8 @@ export default function HeroScrub({
 
     const onMove = (e: PointerEvent | MouseEvent) => {
       if (tocou) return
+      ultimoGesto = performance.now()
+      ocioso = false
       let f = e.clientX / window.innerWidth
       mouseT = f < 0 ? 0 : f > 1 ? 1 : f
       mira()
@@ -64,6 +69,8 @@ export default function HeroScrub({
 
     const onScroll = () => {
       if (tocou) return
+      ultimoGesto = performance.now()
+      ocioso = false
       mira()
       // paralaxe leve: a cena sobe mais devagar que a página
       if (ref.current) {
@@ -82,6 +89,17 @@ export default function HeroScrub({
 
     const loop = (ts: number) => {
       if (pronto && dur && !tocou) {
+        // sem gesto por 2,5s: deriva lenta em vai-e-vem pelo arco
+        if (!reduz && ts - ultimoGesto > 2500) {
+          if (!ocioso) {
+            ocioso = true
+            // entra na deriva a partir do ângulo atual, sem pulo
+            const norm = Math.max(-1, Math.min(1, (atual / dur - 0.5) / 0.38))
+            fase = Math.asin(norm)
+          }
+          fase += 0.0035
+          alvo = dur * (0.5 + 0.38 * Math.sin(fase))
+        }
         atual += (alvo - atual) * (reduz ? 1 : 0.12)
         if (Math.abs(alvo - atual) > 0.004) {
           try {
@@ -89,7 +107,6 @@ export default function HeroScrub({
           } catch {}
         }
       }
-      void ts
       raf = requestAnimationFrame(loop)
     }
 
