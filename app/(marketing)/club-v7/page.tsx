@@ -18,7 +18,12 @@ const HERO_ELEMENTS: Record<string, { src: string; alt: string; glb?: string }> 
   '4d': {
     src: '/club-v7/el4.jpg',
     alt: 'Bloco de pedra metade bruto, metade esculpido, em 3D',
-    glb: '/club-v7/bloco-sam.glb',
+    glb: '/club-v7/bloco-3d-web.glb',
+  },
+  '3d': {
+    src: '/club-v7/el3.jpg',
+    alt: 'Bloco de granito sobre alavanca de aço, em 3D',
+    glb: '/club-v7/alavanca-3d-web.glb',
   },
 }
 
