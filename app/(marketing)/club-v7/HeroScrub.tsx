@@ -101,7 +101,17 @@ export default function HeroScrub({
       playsInline
       preload="auto"
       aria-label={alt}
-      style={{ width: '100%', display: 'block', aspectRatio: '1 / 1', objectFit: 'cover' }}
+      style={{
+        width: '100%',
+        display: 'block',
+        aspectRatio: '1 / 1',
+        objectFit: 'cover',
+        // dissolve a borda do vídeo no fundo da página (a cena tem margem)
+        WebkitMaskImage:
+          'radial-gradient(ellipse 82% 82% at 50% 50%, #000 58%, transparent 93%)',
+        maskImage:
+          'radial-gradient(ellipse 82% 82% at 50% 50%, #000 58%, transparent 93%)',
+      }}
     />
   )
 }
