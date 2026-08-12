@@ -37,8 +37,11 @@ export default function HeroScrub({
       dur = v.duration || 0
       if (!dur || !isFinite(dur)) return
       pronto = true
+      // começa no meio do arco (ângulo central); o mouse abre pros lados
+      alvo = dur / 2
+      atual = dur / 2
       try {
-        v.currentTime = 0.001
+        v.currentTime = dur / 2
       } catch {}
     }
 

@@ -46,6 +46,11 @@ const HERO_ELEMENTS: Record<
     alt: 'Bloco de pedra girando, controlado pelo movimento do mouse',
     video: '/club-v7/bloco-giro.mp4',
   },
+  note: {
+    src: '/club-v7/alavanca-note.jpg',
+    alt: 'Notebook com código erguendo um bloco de granito numa alavanca; o mouse muda o ângulo',
+    video: '/club-v7/alavanca-arco.mp4',
+  },
   luz: {
     src: '/club-v7/alavanca-eclipse.webp',
     alt: 'Silhueta de um bloco de granito erguido por uma alavanca de aço, eclipsando uma luz forte',
