@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import HeroScrub from './HeroScrub'
+import HeroLuz from './HeroLuz'
 import './v7.css'
 
 export const metadata: Metadata = {
@@ -18,6 +20,7 @@ const HERO_ELEMENTS: Record<
     alt: string
     glb?: string
     video?: string
+    luz?: boolean
     spin?: boolean
     orbit?: string
     aspect?: string
@@ -41,6 +44,16 @@ const HERO_ELEMENTS: Record<
     src: '/club-v7/bloco.jpg',
     alt: 'Bloco de pedra girando, controlado pelo movimento do mouse',
     video: '/club-v7/bloco-giro.mp4',
+  },
+  luz: {
+    src: '/club-v7/alavanca.jpg',
+    alt: 'Bloco de granito erguido por uma alavanca de aço, em contraluz',
+    luz: true,
+  },
+  luz2: {
+    src: '/club-v7/alavanca-b.jpg',
+    alt: 'Bloco de granito erguido por uma alavanca de aço, em contraluz',
+    luz: true,
   },
   '3d': {
     src: '/club-v7/el3.jpg',
@@ -199,16 +212,10 @@ export default function ClubV7Page({
               </div>
             </div>
             <div className="p7-hero-el p7-r">
-              {hero.video ? (
-                /* técnica Resend/Apple: o giro é vídeo, o mouse controla o tempo dele */
-                <div
-                  className="p7-hero-3d"
-                  dangerouslySetInnerHTML={{
-                    __html: `<video id="p7scrub" src="${hero.video}" poster="${hero.src}"
-                      muted playsinline preload="auto" aria-label="${hero.alt}"
-                      style="width:100%;display:block;aspect-ratio:1/1;object-fit:cover"></video>`,
-                  }}
-                />
+              {hero.luz ? (
+                <HeroLuz src={hero.src} alt={hero.alt} />
+              ) : hero.video ? (
+                <HeroScrub src={hero.video} poster={hero.src} alt={hero.alt} />
               ) : hero.glb ? (
                 <div
                   className="p7-hero-3d"
