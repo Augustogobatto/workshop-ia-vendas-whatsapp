@@ -77,9 +77,12 @@
 .p7-hero-el .p7-slot { aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; }
 .p7-hero-img {
   width: 100%; display: block; aspect-ratio: 4 / 5; object-fit: cover;
-  -webkit-mask-image: radial-gradient(ellipse 95% 95% at 50% 50%, #000 74%, transparent 100%);
-  mask-image: radial-gradient(ellipse 95% 95% at 50% 50%, #000 74%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 88%);
+  mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 88%);
+  transform: scale(1.35);
+  transform-origin: center;
 }
+.p7-hero-el { overflow: hidden; }
 .p7-kicker {
   font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--faint); margin: 0 0 26px;
