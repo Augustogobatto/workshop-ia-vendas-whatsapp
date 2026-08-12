@@ -13,7 +13,7 @@ const STRIPE_ANUAL = 'https://buy.stripe.com/9B628s4La14Vb1KaNK9fW0g'
 
 const HERO_ELEMENTS: Record<
   string,
-  { src: string; alt: string; glb?: string; spin?: boolean; orbit?: string }
+  { src: string; alt: string; glb?: string; spin?: boolean; orbit?: string; aspect?: string }
 > = {
   '1': { src: '/club-v7/el1.jpg', alt: 'Esfera de granito na quina de um plinto, um instante antes de cair' },
   '3': { src: '/club-v7/el3.jpg', alt: 'Bloco de granito erguido por uma alavanca fina de aço' },
@@ -30,7 +30,8 @@ const HERO_ELEMENTS: Record<
     alt: 'Bloco de granito sobre alavanca de aço, em 3D',
     glb: '/club-v7/alavanca-3d-web.glb',
     spin: false,
-    orbit: '-24deg 80deg 42%',
+    orbit: '-24deg 82deg 30%',
+    aspect: '1/1',
   },
 }
 
@@ -74,26 +75,32 @@ export default function ClubV7Page({
                       ${hero.spin ? 'auto-rotate rotation-per-second="6deg" camera-controls disable-zoom disable-pan' : ''}
                       interaction-prompt="none" exposure="1.1" shadow-intensity="0"
                       environment-image="/club-v7/studio.hdr"
-                      camera-orbit="${hero.orbit ?? '12deg 80deg 42%'}" min-camera-orbit="auto auto 42%" max-camera-orbit="auto auto 42%"
-                      style="width:100%;aspect-ratio:4/5;background:transparent;--progress-bar-color:transparent;"></model-viewer>
+                      camera-orbit="${hero.orbit ?? '12deg 80deg 42%'}"
+                      style="width:100%;aspect-ratio:${hero.aspect ?? '4/5'};background:transparent;--progress-bar-color:transparent;"></model-viewer>
                     <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
                     ${
                       hero.spin
                         ? ''
                         : `<script>(function(){
-                      var base=${JSON.stringify(hero.orbit ?? '12deg 80deg 42%')}.split(' ');
-                      var t0=parseFloat(base[0]),p0=parseFloat(base[1]),r=base[2];
-                      var tx=t0,ty=p0,cx=t0,cy=p0;
-                      addEventListener('pointermove',function(e){
-                        var nx=e.clientX/innerWidth*2-1, ny=e.clientY/innerHeight*2-1;
-                        tx=t0+nx*14; ty=p0-ny*7;
-                      },{passive:true});
-                      (function loop(){
-                        cx+=(tx-cx)*0.06; cy+=(ty-cy)*0.06;
+                      function start(){
                         var mv=document.getElementById('p7mv');
-                        if(mv&&mv.cameraOrbit!==undefined){mv.cameraOrbit=cx.toFixed(2)+'deg '+cy.toFixed(2)+'deg '+r}
-                        requestAnimationFrame(loop);
-                      })();
+                        if(!mv){return}
+                        var base=${JSON.stringify(hero.orbit ?? '12deg 80deg 42%')}.split(' ');
+                        var t0=parseFloat(base[0]),p0=parseFloat(base[1]),r=base[2];
+                        var tx=t0,ty=p0,cx=t0,cy=p0;
+                        addEventListener('pointermove',function(e){
+                          var nx=e.clientX/innerWidth*2-1, ny=e.clientY/innerHeight*2-1;
+                          tx=t0+nx*30; ty=p0-ny*12;
+                        },{passive:true});
+                        (function loop(){
+                          cx+=(tx-cx)*0.09; cy+=(ty-cy)*0.09;
+                          mv.cameraOrbit=cx.toFixed(2)+'deg '+cy.toFixed(2)+'deg '+r;
+                          requestAnimationFrame(loop);
+                        })();
+                      }
+                      if(window.customElements&&customElements.whenDefined){
+                        customElements.whenDefined('model-viewer').then(start);
+                      }else{addEventListener('load',start)}
                     })();</script>`
                     }`,
                   }}
