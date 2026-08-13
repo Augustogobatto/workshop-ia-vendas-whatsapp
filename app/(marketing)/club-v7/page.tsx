@@ -654,6 +654,14 @@ export default function ClubV7Page({
               <p>Montou o próprio Claudinei, batizou de Caio, e hoje vende implementação. O Club paga o Club.</p>
               <span className="who">Matheus · 09/06</span>
             </div>
+            <div className="p7-quote">
+              <p>&ldquo;Comenta eu Quero, instalado por aqui!!!&rdquo;</p>
+              <span className="who">Ritielle · Orca Mídias, professor universitário · 30/07</span>
+            </div>
+            <div className="p7-quote">
+              <p>&ldquo;muito massa workshop de claude&hellip; Tô aqui contigo pra mete uns experimento muito locuo com isso tudo ai&rdquo;</p>
+              <span className="who">Beto · 08/06</span>
+            </div>
           </div>
         </div>
       </section>
