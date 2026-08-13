@@ -835,7 +835,7 @@ export default function ClubV7Page({
       </section>
 
       {/* 11 · cascata de prova — quotes verbatim do grupo (prints reais: fila de upgrade) */}
-      <section className="p7-sec">
+      <section className="p7-sec p7-centro">
         <div className="p7-wrap">
           <span className="p7-eyebrow p7-r">Direto do grupo</span>
           <div className="p7-cascata p7-r">
