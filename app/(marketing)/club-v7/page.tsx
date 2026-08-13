@@ -4,9 +4,9 @@ import HeroLuz from './HeroLuz'
 import './v7.css'
 
 export const metadata: Metadata = {
-  title: 'Push Club — gente pior que você, com IA, vai te superar',
+  title: 'Push Club — uma pessoa, o trabalho de dez',
   description:
-    'Harvard mediu: profissionais medianos com IA ganharam 43% de desempenho. O Push Club é as peças validadas e o critério de quem já montou, por R$70/mês.',
+    'A IA é uma alavanca: multiplica a força que você já tem. Todo mundo tem a mesma IA; quase ninguém sabe onde apoiar. R$70/mês.',
   robots: { index: false, follow: false }, // preview: liberar indexação só quando assumir a /club
 }
 
@@ -185,7 +185,9 @@ const HEADLINES: Record<
     ),
     sub: (
       <>
-        Aprenda a utilizar IA como uma alavanca para multiplicar seu potencial.
+        A IA é uma alavanca: multiplica a força que você já tem.
+        <br />
+        Todo mundo tem a mesma IA. Quase ninguém sabe onde apoiar.
       </>
     ),
   },
@@ -233,8 +235,7 @@ export default function ClubV7Page({
               <h1 className="p7-h1 p7-r">{head.h1}</h1>
               <p className="p7-sub p7-r">{head.sub}</p>
               <div className="p7-cta-row p7-r">
-                <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
-                <a href="#entenda" className="p7-pill big ghost">Entenda</a>
+                <a href="#entenda" className="p7-pill big">Aprenda onde apoiar a sua →</a>
               </div>
             </div>
             <div className="p7-hero-el p7-r">
@@ -300,37 +301,69 @@ export default function ClubV7Page({
         </div>
       </section>
 
-      {/* faixa de fatos */}
-      <div className="p7-facts">
-        <div className="p7-facts-in">
-          <span>IA no Whats</span>
-          <span>MCP</span>
-          <span>Agente de IA</span>
-          <span>Vibecoding</span>
-          <span>Dashboard</span>
-        </div>
-      </div>
-
-      {/* sábado passado */}
-      <section className="p7-stage" id="entenda">
+      {/* seção 2: a demonstração */}
+      <section className="p7-sec" id="entenda">
         <div className="p7-wrap">
-          <h2 className="p7-h2 p7-r" style={{ maxWidth: '30ch' }}>
-            A alavanca todo mundo ganhou.<br />O ponto de apoio, ninguém deu.
-          </h2>
-          <div className="p7-measure p7-r">
-            <p className="p7-dim">
-              Abrir o ChatGPT e perguntar se vai chover amanhã também é usar IA. É o uso
-              que te venderam. Funciona. Só levanta um peso ridículo perto do que a
-              ferramenta aguenta.
-            </p>
+          <div className="p7-duo">
+            <div>
+              <span className="p7-eyebrow p7-r">Sábado passado</span>
+              <h2 className="p7-h2 p7-r">
+                A alavanca todo mundo ganhou.<br />O ponto de apoio, ninguém deu.
+              </h2>
+              <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
+                Abrir o ChatGPT e perguntar se vai chover amanhã também é usar IA. É o uso
+                que te venderam. Funciona. Só levanta um peso ridículo perto do que a
+                ferramenta aguenta.
+              </p>
+              <p className="p7-dim p7-r">
+                Sábado eu peguei o celular no carro e mandei um áudio pra minha IA. Enquanto
+                eu dirigia, ela entrou nas páginas do meu curso e testou as automações uma
+                por uma. Corrigiu as que estavam quebradas. Entrou na minha conta de anúncios
+                e atualizou os links. Conferiu se as vendas estavam caindo na Hotmart com o
+                rastreio certo. E mandou o relatório de tudo no grupo.
+              </p>
+              <p className="p7-destaque p7-r">
+                Um testador, um programador, um gestor de tráfego, um analista e um
+                estagiário. Dez minutos. Eu dirigindo.
+              </p>
+              <p className="p7-dim p7-r">
+                É a mesma IA que você tem. A diferença não está na ferramenta. Está em onde
+                ela foi apoiada.
+              </p>
+            </div>
+            <div>
+              <div className="p7-stats p7-r">
+                <div className="p7-stat">
+                  <span className="n">15</span>
+                  <span className="l">serviços rodando 24 horas por dia na minha operação. Agora, enquanto você lê isso.</span>
+                </div>
+                <div className="p7-stat">
+                  <span className="n">43</span>
+                  <span className="l">tarefas que acontecem todo dia sem eu abrir o computador. Conciliação, cobrança, relatório, vigia de erro.</span>
+                </div>
+                <div className="p7-stat">
+                  {/* legenda do 0 é obrigatória: sem a âncora da empresa separada o número vira alegação contestável */}
+                  <span className="n">0</span>
+                  <span className="l">funcionários nessa operação. É uma empresa separada que eu montei só pra testar IA: eu e as máquinas.</span>
+                </div>
+              </div>
+              <div className="p7-slot p7-r" style={{ marginTop: 14 }}>
+                Print do grupo do Telegram com o relatório de sábado chegando (horário visível, nomes borrados)
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* onde apoiar — PROVA VISUAL, copy de rascunho pro Augusto reescrever */}
+      {/* seção 3: o filtro */}
       <section className="p7-sec">
         <div className="p7-wrap">
-          <h2 className="p7-h2 p7-r">Na prática, IA que funciona:</h2>
+          <span className="p7-eyebrow p7-r">O filtro</span>
+          <h2 className="p7-h2 p7-r">Traz dinheiro, tira custo, ou te tira do meio.</h2>
+          <p className="p7-dim p7-r" style={{ marginTop: 18, maxWidth: '62ch' }}>
+            Antes de montar qualquer coisa eu pergunto isso. Se não faz nenhum dos três, é
+            brinquedo caro.
+          </p>
           <div className="p7-ledger p7-r">
             <div className="p7-led-row">
               <h3 className="p7-pilar">Traz dinheiro.</h3>
@@ -356,9 +389,240 @@ export default function ClubV7Page({
               </div>
             </div>
           </div>
+          <p className="p7-dim p7-r" style={{ marginTop: 36, maxWidth: '62ch' }}>
+            Não é só comigo. O Levi parou de pagar gestor de tráfego. O Camargo era
+            copywriter e hoje ninguém troca ele.
+          </p>
+          <p className="p7-destaque p7-r">Inclusive esta página. R$3.500 que eu não paguei.</p>
         </div>
       </section>
 
+      {/* seção 4: o que o guru não te conta */}
+      <section className="p7-stage">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">A parte que o guru de IA não te conta</span>
+          <h2 className="p7-h2 p7-r">IA crua amplifica o critério que você já tem. Inclusive a falta dele.</h2>
+          <div className="p7-measure p7-r">
+            <p className="p7-dim">
+              O único estudo grande feito com donos de pequeno negócio (640 empreendedores,
+              publicado na Management Science) deu o resultado invertido. Quem já ia bem
+              cresceu 15% usando IA. Quem ia mal piorou 8%.
+            </p>
+            <p className="p7-dim">
+              O motivo, medido no estudo: a diferença não estava no conselho que a IA dava,
+              estava no julgamento pra saber qual conselho implementar. A IA responde
+              qualquer coisa com a mesma confiança. Quem não sabe separar o que funciona do
+              que soa bonito implementa o que soa bonito. E afunda mais rápido, só que agora
+              com assinatura mensal.
+            </p>
+            <p className="p7-destaque">
+              Todo mundo te vende a ferramenta. Ninguém te vende o critério. O Club é o
+              critério, com a ferramenta dentro.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* seção 5: quem eu sou */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <div className="p7-duo">
+            <div>
+              <span className="p7-eyebrow p7-r">Por que eu posso falar disso</span>
+              <h2 className="p7-h2 p7-r">Eu sou o experimento. Com o faturamento aberto.</h2>
+              <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
+                10 anos de mercado digital. Mais de 300 lançamentos analisados. Sou sócio de
+                empresas que faturam milhões e que eu não posso virar de cabeça pra baixo pra
+                testar IA. Então montei uma empresa separada só pra isso: eu e as máquinas.
+              </p>
+              <p className="p7-dim p7-r">
+                Hoje ela tem 15 serviços e 43 tarefas rodando. Um responde meus alunos. Um
+                cuida do dinheiro. Um garimpa leads nos meus comentários. Foi a IA que
+                atendeu os leads de um lançamento de R$140 mil.
+              </p>
+              <p className="p7-dim p7-r">
+                O faturamento fica num painel aberto. Qualquer um confere, a qualquer hora.
+              </p>
+              <p className="p7-dim p7-r">
+                Onde isso vai dar: 2 milhões de faturamento com 3 pessoas. Empresa enxuta,
+                sem inchar time, sem virar refém de agência. É o caminho que eu tô
+                percorrendo em público, e é ele que o Club te entrega pronto pra copiar.
+              </p>
+            </div>
+            <div>
+              <div className="p7-slot p7-r" style={{ aspectRatio: '4 / 5' }}>Foto do Augusto</div>
+              <div className="p7-slot p7-r" style={{ marginTop: 14 }}>Print do painel de faturamento aberto</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* seção 6: o que tem dentro */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">O que tem dentro</span>
+          <h2 className="p7-h2 p7-r">Cada peça existe pra te mover na mesma direção.</h2>
+          <div className="p7-bento">
+            <div className="p7-slot full p7-r">
+              Loop mudo da plataforma, 8 a 12s (mp4/webm, autoplay, loop, playsinline, pôster JPG).
+              Algo acontecendo nos 3 primeiros segundos; grade de aulas só no último quadro.
+            </div>
+            <div className="p7-card wide p7-r">
+              <span className="tag">todo mês, ao vivo</span>
+              <h3>Encontro mensal: a operação aberta</h3>
+              <p>Eu abro o que montei no mês, com número e ferramenta na tela. O que deu dinheiro fica, o que não deu eu conto por quê.</p>
+            </div>
+            <div className="p7-card p7-r">
+              <span className="tag">catálogo completo</span>
+              <h3>Todos os workshops</h3>
+              <p>IA de Vendas no WhatsApp (20 aulas), Oficina Claude Code, Vibecode, IA Fundamentos. O que eu lançar entra sem custo.</p>
+            </div>
+            <div className="p7-card p7-r">
+              <span className="tag">copia e cola</span>
+              <h3>A biblioteca de fluxos</h3>
+              <p>Os JSONs do n8n que rodam a minha operação, os prompts, os templates. Você importa e adapta, não começa do zero.</p>
+            </div>
+            <div className="p7-card p7-r">
+              <span className="tag">24/7 no Telegram</span>
+              <h3>Claudinei, o agente do Club</h3>
+              <p>Travou às 23h? Ele assistiu todas as aulas e te aponta o minuto exato. É também a prova de que funciona: você vai ser atendido por uma IA que eu montei.</p>
+            </div>
+            <div className="p7-card p7-r">
+              <span className="tag">direto comigo</span>
+              <h3>Raio-X do seu negócio</h3>
+              <p>Você conta onde trava, eu digo o que montaria primeiro e te aponto a peça da biblioteca pra começar.</p>
+            </div>
+            <div className="p7-card p7-r">
+              <span className="tag">a turma</span>
+              <h3>O grupo de quem tá montando</h3>
+              <p>Donos de negócio e profissionais construindo as próprias operações. O que travou, o que rodou, o que deu dinheiro.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* seção 7: quem já tá dentro */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <div className="p7-duo rev">
+            <div className="p7-r">
+              <span className="p7-bignum">60%<small>do primeiro workshop entrou no Club no mesmo dia</small></span>
+            </div>
+            <div>
+              <span className="p7-eyebrow p7-r">Quem já tá dentro</span>
+              <h2 className="p7-h2 p7-r">Ninguém assinou por pitch. Assinaram porque viram rodando.</h2>
+              <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
+                30 pessoas assistiram a primeira turma ao vivo. 6 em cada 10 entraram pro
+                Club antes de acabar o dia, vendo o sistema funcionando na tela. Hoje a
+                turma passa de 50 membros ativos.
+              </p>
+            </div>
+          </div>
+          <div className="p7-troop">
+            <div className="p7-slot p7-r">Depoimento 1 (nome + foto + o que a pessoa montou)</div>
+            <div className="p7-slot p7-r">Depoimento 2</div>
+            <div className="p7-slot p7-r">Depoimento 3 · em coleta no grupo</div>
+          </div>
+        </div>
+      </section>
+
+      {/* seção 8: quanto custa */}
+      <section className="p7-sec" id="planos">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">Quanto custa</span>
+          <h2 className="p7-h2 p7-r">O mesmo caminho, por outras portas:</h2>
+          <div className="p7-anchor p7-r">
+            <div className="p7-anchor-row"><span>implementação feita por mim</span><i /><span>R$15.000 + R$3.000/mês</span></div>
+            <div className="p7-anchor-row"><span>mentoria individual</span><i /><span>R$10 a 15 mil por ano</span></div>
+            <div className="p7-anchor-row"><span>cada workshop avulso</span><i /><span>R$200 a R$300</span></div>
+            <div className="p7-anchor-row hot"><span>Push Club, tudo dentro, todo mês</span><i /><span>R$70/mês</span></div>
+          </div>
+
+          <div className="p7-plans">
+            <div className="p7-plan p7-r">
+              <span className="name">mensal</span>
+              <div className="price">R$70<small>/mês</small></div>
+              <span className="eq">sem fidelidade, fica um mês se quiser</span>
+              <ul>
+                <li>Encontro ao vivo todo mês</li>
+                <li>Todos os workshops gravados</li>
+                <li>Claudinei 24/7 + grupo</li>
+                <li>Biblioteca de fluxos</li>
+                <li>Raio-X do seu negócio</li>
+              </ul>
+              <a href={STRIPE_MENSAL} className="p7-pill ghost" data-checkout="mensal">assinar mensal</a>
+            </div>
+            <div className="p7-plan hot p7-r">
+              <span className="p7-badge">mais escolhido · 2 meses grátis</span>
+              <span className="name">anual</span>
+              <div className="price">R$600<small>/ano</small></div>
+              <span className="eq">= R$50/mês · economia de R$240</span>
+              <ul>
+                <li>Tudo do plano mensal</li>
+                <li>Seu preço trava enquanto você ficar</li>
+                <li>Prioridade nas turmas ao vivo</li>
+              </ul>
+              <a href={STRIPE_ANUAL} className="p7-pill" data-checkout="anual">assinar anual</a>
+            </div>
+          </div>
+
+          <p className="p7-fine p7-r" style={{ marginBottom: 6 }}>
+            Ia ser R$150/mês. A primeira turma entrou por R$50, de fundador. Hoje é R$70 e a
+            tabela só anda pra cima. Quem entra trava o preço enquanto ficar.
+          </p>
+          <p className="p7-fine p7-r">
+            Garantia? Não tem. É R$70. Não gostou, cancela em 2 cliques, sem multa e sem
+            ligação de retenção. Pagamento via Stripe, acesso imediato.
+          </p>
+        </div>
+      </section>
+
+      {/* seção 9: FAQ */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">Dúvidas diretas</span>
+          <h2 className="p7-h2 p7-r">Perguntas que chegam na DM</h2>
+          <div className="p7-faq p7-r">
+            <details>
+              <summary>Preciso saber programar?</summary>
+              <p>Não. Eu não sou programador, montei tudo isso conversando com a IA. A maior parte da turma é dono de negócio. O que você precisa é do critério, e é isso que a gente te dá.</p>
+            </details>
+            <details>
+              <summary>Sou iniciante total em IA. É pra mim?</summary>
+              <p>É. O ganho com IA é maior justamente pra quem estava atrás. O que trava iniciante não é a ferramenta, é não saber onde começar. Você entra, me conta onde trava no Raio-X, e sai com uma peça pra montar.</p>
+            </details>
+            <details>
+              <summary>O que exatamente eu recebo ao assinar?</summary>
+              <p>Acesso a tudo que já existe: os quatro workshops gravados, a biblioteca de fluxos do n8n, o Claudinei no Telegram e o grupo. Mais o encontro ao vivo todo mês e o Raio-X do seu negócio comigo. O que eu lançar depois entra sem custo.</p>
+            </details>
+            <details>
+              <summary>Posso cancelar quando quiser?</summary>
+              <p>Sim. 2 cliques, sem multa. O acesso fica até o fim do período pago, e você volta quando quiser, pelo preço da tabela do dia.</p>
+            </details>
+            <details>
+              <summary>Por que &ldquo;Push&rdquo;?</summary>
+              <p>Porque quando eu comecei eu achava que crescer era empurrar mais forte. Não é. O nome ficou, o método mudou: o Club é o ponto de apoio, não o empurrão.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      {/* seção 10: fechamento */}
+      <section className="p7-final">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">O que acontece se você não fizer nada</span>
+          <h2 className="p7-h2 p7-r">Nada. É exatamente esse o problema.</h2>
+          <p className="p7-sub p7-r" style={{ maxWidth: '52ch' }}>
+            Daqui a doze meses a sua operação vai estar do mesmo tamanho, com as mesmas
+            pessoas, fazendo as mesmas coisas na mão. A alavanca continua ali, no chão, do
+            teu lado.
+          </p>
+          <div className="p7-cta-row p7-r">
+            <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
+            <span className="p7-cta-note">R$70/mês · sem fidelidade</span>
+          </div>
+        </div>
+      </section>
 
       <footer className="p7-footer">
         <div className="p7-footer-in">
