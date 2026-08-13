@@ -6,8 +6,9 @@ import { useEffect, useRef } from 'react'
  * Vídeo de seção: a rolagem conduz a cena do primeiro ao último frame.
  *  - modo padrão: respiração perpétua por cima, nunca congela.
  *  - `cauda`: a rolagem DESTRAVA a cena, que aí corre sozinha no ritmo
- *    natural (playback nativo, sem seek) até o fim e fica em loop no trecho
- *    final. Subir a página rebobina; ao parar, ela retoma sozinha.
+ *    natural (playback nativo, sem seek) até o fim. Chegando lá, o trecho
+ *    final entra em vai-e-vem contínuo (nunca corta seco). Subir a página
+ *    rebobina; ao parar, ela retoma sozinha.
  * Exige vídeo ALL-INTRA (keyint=1) pra seek barato.
  */
 export default function SectionScrub({
@@ -44,6 +45,8 @@ export default function SectionScrub({
     const INICIO_CAUDA = 0.8 // onde o loop do fim começa
     let pAnterior = 0
     let rebobinando = 0 // segundos de carência depois de subir a página
+    let emCauda = false // já chegou no fim e está no vai-e-vem
+    let dirCauda = -1
     let antes = performance.now()
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -78,6 +81,7 @@ export default function SectionScrub({
         if (cauda) {
           // rebobina enquanto a pessoa sobe a página
           if (p < pAnterior - 0.001) {
+            emCauda = false
             if (!v.paused) v.pause()
             rebobinando = 0.25
             cur += (p * (dur - 0.05) - cur) * (1 - Math.exp(-9 * dt))
@@ -91,21 +95,44 @@ export default function SectionScrub({
             rebobinando -= dt
             // destrava quando entra na tela e a partir daí corre sozinha
             const terminou = segura && dur && v.currentTime >= dur - 0.08
-            if (rebobinando <= 0 && p > 0.06 && v.paused && !terminou) {
+            if (rebobinando <= 0 && p > 0.06 && v.paused && !terminou && !emCauda) {
               v.play().catch(() => {})
             }
-            // fim da cena: congela no último frame ou roda o loop do fim
-            if (v.currentTime >= dur - 0.06) {
+            // fim da cena: congela no último frame, ou entra no vai-e-vem
+            if (!emCauda && v.currentTime >= dur - 0.06) {
               if (segura) {
                 if (!v.paused) v.pause()
               } else {
-                try {
-                  v.currentTime = INICIO_CAUDA * dur
-                } catch {}
+                emCauda = true
+                if (!v.paused) v.pause()
+                cur = v.currentTime
+                dirCauda = -1
               }
             }
-            cur = v.currentTime
-            escrito = cur
+
+            if (emCauda) {
+              // triângulo entre INICIO_CAUDA e o fim, na velocidade do vídeo
+              const ini = INICIO_CAUDA * dur
+              const fim = dur - 0.05
+              cur += dirCauda * dt * 0.7
+              if (cur <= ini) {
+                cur = ini
+                dirCauda = 1
+              }
+              if (cur >= fim) {
+                cur = fim
+                dirCauda = -1
+              }
+              if (!v.seeking && Math.abs(cur - escrito) >= 1 / 30) {
+                escrito = cur
+                try {
+                  v.currentTime = cur
+                } catch {}
+              }
+            } else {
+              cur = v.currentTime
+              escrito = cur
+            }
           }
           pAnterior = p
           raf = requestAnimationFrame(loop)
