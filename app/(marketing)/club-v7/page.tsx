@@ -416,7 +416,7 @@ export default function ClubV7Page({
       {/* 05 · gente comum com a mão na alavanca — conversas reais do grupo, transcritas */}
       <section className="p7-sec">
         <div className="p7-wrap">
-          <h2 className="p7-h2 p7-r">Gente normal* com a mão na alavanca.</h2>
+          <h2 className="p7-h2 p7-r">Gente normal* usando isso hoje.</h2>
           <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
             <span className="p7-nota">*normal = não dev.</span>
             <br />Conversas reais do grupo do Club, transcritas na íntegra.
@@ -520,7 +520,7 @@ export default function ClubV7Page({
       <section className="p7-sec">
         <div className="p7-wrap">
           <span className="p7-eyebrow p7-r">O que tem dentro</span>
-          <h2 className="p7-h2 p7-r">Cada peça existe pra te mover na mesma direção.</h2>
+          <h2 className="p7-h2 p7-r">Tudo isso entra junto, no mesmo login.</h2>
           <div className="p7-bento">
             <div className="p7-card p7-r">
               <span className="tag">ia de vendas no whatsapp</span>
@@ -887,7 +887,7 @@ export default function ClubV7Page({
             </details>
             <details>
               <summary>O que exatamente eu recebo ao assinar?</summary>
-              <p>Acesso a tudo que já existe: os quatro workshops gravados, a biblioteca de fluxos do n8n, o Claudinei no Telegram e o grupo. Mais o encontro ao vivo todo mês e o Raio-X do seu negócio comigo. O que eu lançar depois entra sem custo.</p>
+              <p>Acesso a tudo que já existe: os workshops gravados, a biblioteca de fluxos do n8n, o Claudinei no Telegram e o grupo. Mais o encontro ao vivo todo mês e o Raio-X do seu negócio comigo. O que eu lançar depois entra sem custo.</p>
             </details>
             <details>
               <summary>Posso cancelar quando quiser?</summary>
