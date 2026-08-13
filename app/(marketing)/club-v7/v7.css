@@ -373,8 +373,24 @@ vsc-controller,
 .p7-footer-in {
   max-width: 1120px; margin: 0 auto; padding: 22px 24px;
   display: flex; justify-content: space-between; font-size: 13px; color: var(--faint);
+  flex-wrap: wrap; gap: 6px 24px;
 }
 .p7-footer a { color: var(--faint); }
+
+/* ── ajustes mobile ── */
+@media (max-width: 600px) {
+  .p7-hero { padding-top: clamp(40px, 7vh, 64px); }
+  .p7-hero-grid { gap: 28px; }
+  .p7-hero-epi { font-size: 12.5px; padding: 0 12px; }
+  .p7-hero-epi .a { display: block; margin: 6px 0 0; }
+  .p7-sec { padding-top: 64px; }
+  .p7-stage { padding-top: 64px; }
+  .p7-pilar { margin-bottom: 4px; }
+  .p7-led-row { padding: 30px 0 22px; }
+  .p7-anchor-row { font-size: 13.5px; }
+  .p7-final { padding-top: 72px; }
+  .p7-final .p7-cta-row { flex-direction: column; gap: 12px; }
+}
 
 /* reveal desativado por ora: o script de classe brigava com a hidratação do
    React e a página ficava intermitentemente invisível. Voltar com animação
