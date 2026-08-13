@@ -462,8 +462,8 @@ export default function ClubV7Page({
           <h2 className="p7-h2 p7-r">IA crua amplifica o critério que você já tem. Inclusive a falta dele.</h2>
           <div className="p7-measure p7-r">
             <p className="p7-dim">
-              O único estudo grande feito com donos de pequeno negócio (640 empreendedores,
-              publicado na Management Science) deu o resultado invertido. Quem já ia bem
+              O único estudo grande feito com donos de pequeno negócio (640 empreendedores no
+              Quênia, publicado na Management Science) deu o resultado invertido. Quem já ia bem
               cresceu 15% usando IA. Quem ia mal piorou 8%.
             </p>
             <p className="p7-dim">
@@ -545,7 +545,7 @@ export default function ClubV7Page({
             <div className="p7-card p7-r">
               <span className="tag">vibecoding</span>
               <h3>O primeiro sistema na primeira semana</h3>
-              <p>No Vibecode você sai construindo, não assistindo. A enquete de quem já construiu foi feita ao vivo.</p>
+              <p>No Vibecode você constrói desde a primeira aula. A enquete de quem já construiu foi feita ao vivo.</p>
             </div>
             <div className="p7-card p7-r">
               <span className="tag">biblioteca viva</span>
@@ -587,43 +587,11 @@ export default function ClubV7Page({
               </div>
             </div>
             <div className="p7-membro">
-              <span className="av">P</span>
-              <div>
-                <strong>Poliana</strong>
-                <em>sócia de agência</em>
-                <p>Montou o sistema central da agência e um agente no Telegram pro especialista que atende.</p>
-              </div>
-            </div>
-            <div className="p7-membro">
-              <span className="av">J</span>
-              <div>
-                <strong>Jhonathan</strong>
-                <em>gestor de tráfego</em>
-                <p>Agente ligado na conta de anúncios: sobe, pausa e dá pitaco nas campanhas.</p>
-              </div>
-            </div>
-            <div className="p7-membro">
-              <span className="av">JL</span>
-              <div>
-                <strong>João Luís</strong>
-                <em>robôs industriais</em>
-                <p>Programa de robô codado por IA: do desenho ao movimento real em 5 minutos.</p>
-              </div>
-            </div>
-            <div className="p7-membro">
               <span className="av">K</span>
               <div>
                 <strong>Kauan</strong>
                 <em>marketing em escala</em>
                 <p>Implementando o ManyChat próprio pra um expert de mais de 1 milhão de seguidores.</p>
-              </div>
-            </div>
-            <div className="p7-membro">
-              <span className="av">M</span>
-              <div>
-                <strong>Marcelo</strong>
-                <em>operação de lançamento</em>
-                <p>Agente no WhatsApp pela API oficial e disparador de avisos no n8n.</p>
               </div>
             </div>
             <div className="p7-membro">
@@ -634,23 +602,7 @@ export default function ClubV7Page({
                 <p>Recuperação de venda e entrega de acesso rodando sozinhas no WhatsApp.</p>
               </div>
             </div>
-            <div className="p7-membro">
-              <span className="av">H</span>
-              <div>
-                <strong>Henrique</strong>
-                <em>coprodutor de lançamentos</em>
-                <p>Chegou sem saber quase nada. Já constrói automações com Claude e MCP no n8n.</p>
-              </div>
             </div>
-            <div className="p7-membro">
-              <span className="av">R</span>
-              <div>
-                <strong>Ritielle</strong>
-                <em>agência + professor universitário</em>
-                <p>Instalou a ferramenta de comentários do club na operação da agência.</p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -685,7 +637,7 @@ export default function ClubV7Page({
               <a href={STRIPE_MENSAL} className="p7-pill ghost" data-checkout="mensal">Quero entrar por R$70</a>
             </div>
             <div className="p7-plan hot p7-r">
-              <span className="p7-badge">mais escolhido · 2 meses grátis</span>
+              <span className="p7-badge">vale mais a pena · 2 meses grátis</span>
               <span className="name">anual</span>
               <div className="price">R$600<small>/ano</small></div>
               <span className="eq">= R$50/mês · economia de R$240</span>
@@ -727,10 +679,6 @@ export default function ClubV7Page({
             <div className="p7-quote">
               <p>&ldquo;achei a didática muito boa, a explicação, a fundamentação das coisas também [&hellip;] inclusive criei um outro fluxo que não tem nada a ver, um disparador no n8n&rdquo;</p>
               <span className="who">Marcelo · áudio no grupo · 08/07</span>
-            </div>
-            <div className="p7-quote">
-              <p>Montou o próprio Claudinei, batizou de Caio, e hoje vende implementação. O Club paga o Club.</p>
-              <span className="who">Matheus · 09/06</span>
             </div>
             <div className="p7-quote">
               <p>&ldquo;Comenta eu Quero, instalado por aqui!!!&rdquo;</p>
