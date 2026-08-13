@@ -72,16 +72,10 @@ vsc-controller,
   border: 1px solid rgba(255, 255, 255, 0.16);
   transition: color 0.15s ease, border-color 0.15s ease;
 }
-.p7-pill.ghost::after {
-  content: '↓'; display: inline-block; margin-left: 8px;
-  font-weight: 300; opacity: 0.65;
-  transition: transform 0.15s ease;
-}
 .p7-pill.ghost:hover {
   background: transparent; color: var(--ink);
   border-color: rgba(255, 255, 255, 0.32);
 }
-.p7-pill.ghost:hover::after { transform: translateY(2px); }
 
 /* ── hero: elemento à esquerda, texto à direita ── */
 .p7-hero { position: relative; overflow: hidden; padding: clamp(64px, 11vh, 130px) 0 clamp(24px, 4vh, 40px); }
