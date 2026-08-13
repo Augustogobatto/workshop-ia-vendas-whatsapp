@@ -432,3 +432,11 @@ vsc-controller,
   margin-top: 4px; font-variant-numeric: tabular-nums;
 }
 
+/* retrato na seção de autoridade: P&B, mesmo mundo da página */
+.p7-retrato {
+  width: 100%; display: block; aspect-ratio: 4 / 5; object-fit: cover;
+  object-position: 50% 20%;
+  filter: grayscale(1) contrast(1.05) brightness(0.92);
+  border-radius: 4px;
+}
+

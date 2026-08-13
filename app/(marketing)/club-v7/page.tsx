@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   description:
     'A IA é uma alavanca: multiplica a força que você já tem. Todo mundo tem a mesma IA; quase ninguém sabe onde apoiar. R$70/mês.',
   robots: { index: false, follow: false }, // preview: liberar indexação só quando assumir a /club
+  openGraph: {
+    title: 'Push Club — uma pessoa, o trabalho de dez',
+    description:
+      'A IA é uma alavanca: multiplica a força que você já tem. Todo mundo tem a mesma IA; quase ninguém sabe onde apoiar. R$70/mês.',
+    images: [{ url: '/club-v7/og.jpg', width: 1200, height: 630 }],
+  },
 }
 
 const STRIPE_MENSAL = 'https://buy.stripe.com/5kQ00k91qeVL2ve9JG9fW0f'
@@ -479,8 +485,8 @@ export default function ClubV7Page({
       {/* seção 5: quem eu sou */}
       <section className="p7-sec">
         <div className="p7-wrap">
-          <div>
-            <div className="p7-measure">
+          <div className="p7-duo">
+            <div>
               <span className="p7-eyebrow p7-r">Por que eu posso falar disso</span>
               <h2 className="p7-h2 p7-r">Eu sou o experimento. Com o faturamento aberto.</h2>
               <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
@@ -502,6 +508,10 @@ export default function ClubV7Page({
                 percorrendo em público, e é ele que o Club te entrega pronto pra copiar.
               </p>
             </div>
+            <div className="p7-r">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/gobatto.jpg" alt="Augusto Gobatto" className="p7-retrato" />
+            </div>
           </div>
         </div>
       </section>
@@ -512,7 +522,7 @@ export default function ClubV7Page({
           <span className="p7-eyebrow p7-r">O que tem dentro</span>
           <h2 className="p7-h2 p7-r">Cada peça existe pra te mover na mesma direção.</h2>
           <div className="p7-bento">
-            <div className="p7-card wide p7-r">
+            <div className="p7-card p7-r">
               <span className="tag">ia de vendas no whatsapp</span>
               <h3>Sai com um vendedor de IA atendendo teu WhatsApp</h3>
               <p>Workshop completo, 20 aulas. A mesma peça que já vendeu R$300 mil nas minhas empresas, atendendo sozinha.</p>
