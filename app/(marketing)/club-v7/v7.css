@@ -472,3 +472,5 @@ vsc-controller,
 }
 .p7-membro p { font-size: 13.5px; color: var(--dim); margin: 0; line-height: 1.55; }
 
+.p7-nota { font-size: 13px; color: var(--faint); font-style: italic; }
+

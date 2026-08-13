@@ -416,9 +416,10 @@ export default function ClubV7Page({
       {/* 05 · gente comum com a mão na alavanca — conversas reais do grupo, transcritas */}
       <section className="p7-sec">
         <div className="p7-wrap">
-          <h2 className="p7-h2 p7-r">Gente comum com a mão na alavanca.</h2>
+          <h2 className="p7-h2 p7-r">Gente normal* com a mão na alavanca.</h2>
           <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
-            Conversas reais do grupo do Club, transcritas na íntegra.
+            <span className="p7-nota">*normal = não dev.</span>
+            <br />Conversas reais do grupo do Club, transcritas na íntegra.
           </p>
           <div className="p7-troop">
             <div className="p7-chat p7-r">
