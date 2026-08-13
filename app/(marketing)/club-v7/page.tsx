@@ -320,11 +320,6 @@ export default function ClubV7Page({
               que te venderam. Funciona. Só levanta um peso ridículo perto do que a
               ferramenta aguenta.
             </p>
-            <p className="p7-dim">
-              Se você usa assim, a culpa não é sua. Te venderam curso de ferramenta, prompt
-              mágico, promessa de renda extra pra semana que vem. Ensinaram a segurar o cabo
-              e chamaram isso de dominar IA.
-            </p>
           </div>
           <SectionScrub
             src="/club-v7/fulcro-loop.mp4" poster="/club-v7/fulcro.jpg"
