@@ -175,6 +175,32 @@ vsc-controller,
 /* na versão centralizada a epígrafe perde o recuo e senta no eixo */
 .p7-stage .p7-epi { padding-left: 0; margin-left: auto; margin-right: auto; }
 
+/* citação no pé do hero: uma linha só, sussurro centralizado */
+.p7-hero-epi {
+  font-family: var(--serif); font-style: italic;
+  font-size: 14px; color: var(--faint); text-align: center;
+  margin: clamp(40px, 6vh, 64px) 0 0;
+}
+.p7-hero-epi .a {
+  font-style: normal; font-family: var(--sans);
+  font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  margin-left: 10px;
+}
+
+/* livro-razão: pilar à esquerda, exemplos com recibo à direita */
+.p7-ledger { margin-top: 40px; border-top: 1px solid var(--line); }
+.p7-led-row { padding: 40px 0 28px; border-bottom: 1px solid var(--line); display: grid; gap: 18px; }
+@media (min-width: 880px) {
+  .p7-led-row { grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr); gap: 64px; padding: 48px 0 36px; }
+}
+.p7-pilar {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 38px); line-height: 1.1;
+  margin: 0; letter-spacing: -0.01em;
+}
+.p7-led-exs p { max-width: 52ch; }
+.p7-led-exs p:last-child { margin-bottom: 0; }
+
 /* números em linha abaixo do texto */
 .p7-stats-row {
   display: grid; gap: 0 56px; text-align: left;

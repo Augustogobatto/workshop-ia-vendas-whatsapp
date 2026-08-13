@@ -293,6 +293,10 @@ export default function ClubV7Page({
               )}
             </div>
           </div>
+          <p className="p7-hero-epi p7-r">
+            &ldquo;Dê-me um ponto de apoio e uma alavanca, e moverei o mundo.&rdquo;{' '}
+            <span className="a">Arquimedes</span>
+          </p>
         </div>
       </section>
 
@@ -310,10 +314,6 @@ export default function ClubV7Page({
       {/* sábado passado */}
       <section className="p7-stage" id="entenda">
         <div className="p7-wrap">
-          <p className="p7-epi p7-r">
-            &ldquo;Dê-me um ponto de apoio e uma alavanca, e moverei o mundo.&rdquo;
-            <span className="a">Arquimedes</span>
-          </p>
           <h2 className="p7-h2 p7-r" style={{ maxWidth: '30ch' }}>
             A alavanca todo mundo ganhou.<br />O ponto de apoio, ninguém deu.
           </h2>
@@ -323,6 +323,58 @@ export default function ClubV7Page({
               que te venderam. Funciona. Só levanta um peso ridículo perto do que a
               ferramenta aguenta.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* onde apoiar — PROVA VISUAL, copy de rascunho pro Augusto reescrever */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">Na prática</span>
+          <h2 className="p7-h2 p7-r">Onde eu apoio a minha.</h2>
+          <div className="p7-ledger p7-r">
+            <div className="p7-led-row">
+              <h3 className="p7-pilar">Traz dinheiro.</h3>
+              <div className="p7-led-exs">
+                <p className="p7-dim">
+                  Uma IA no WhatsApp conduziu as vendas de um lançamento inteiro:{' '}
+                  <strong>R$140 mil</strong>. Noutro, R$300 mil. Ela responde, quebra
+                  objeção e manda o link na hora certa, de madrugada inclusive.
+                </p>
+                <p className="p7-dim">
+                  Outra vigia os comentários do meu Instagram, identifica quem pediu
+                  informação e puxa a conversa pra DM antes do lead esfriar.
+                </p>
+              </div>
+            </div>
+            <div className="p7-led-row">
+              <h3 className="p7-pilar">Tira custo.</h3>
+              <div className="p7-led-exs">
+                <p className="p7-dim">
+                  Minhas aulas são editadas por IA a partir da transcrição:{' '}
+                  <strong>151 minutos de gravação viraram 118 de aula</strong> sem eu
+                  contratar editor.
+                </p>
+                <p className="p7-dim">
+                  Cobrança, conciliação de fatura e suporte rodam numa empresa que eu
+                  montei só pra testar isso. Funcionários: <strong>zero</strong>.
+                </p>
+              </div>
+            </div>
+            <div className="p7-led-row">
+              <h3 className="p7-pilar">Economiza meu tempo.</h3>
+              <div className="p7-led-exs">
+                <p className="p7-dim">
+                  Sábado eu mandei um áudio do carro. A IA testou as automações do meu
+                  curso, corrigiu as quebradas, atualizou os anúncios e mandou o
+                  relatório no grupo. <strong>Dez minutos, eu dirigindo.</strong>
+                </p>
+                <p className="p7-dim">
+                  Todo dia, 43 tarefas acontecem sem eu abrir o computador: relatório,
+                  vigia de erro, backup, aviso no grupo.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
