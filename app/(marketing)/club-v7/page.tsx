@@ -241,7 +241,7 @@ export default function ClubV7Page({
               <h1 className="p7-h1 p7-r">{head.h1}</h1>
               <p className="p7-sub p7-r">{head.sub}</p>
               <div className="p7-cta-row p7-r">
-                <a href="#entenda" className="p7-pill big">Aprenda onde apoiar a sua →</a>
+                <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
               </div>
             </div>
             <div className="p7-hero-el p7-r">
@@ -695,7 +695,7 @@ export default function ClubV7Page({
             teu lado.
           </p>
           <div className="p7-cta-row p7-r">
-            <a href="#planos" className="p7-pill big">Entre pros 53 que já apoiaram a deles</a>
+            <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
             <span className="p7-cta-note">R$70/mês · sem fidelidade</span>
           </div>
         </div>
