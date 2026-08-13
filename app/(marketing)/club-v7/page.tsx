@@ -327,21 +327,6 @@ export default function ClubV7Page({
         </div>
       </section>
 
-      {/* trocador de rascunhos de hero (só existe no preview) */}
-      <div className="p7-switch">
-        <span>hero:</span>
-        {Object.entries(HEADLINES).map(([k, v]) => (
-          <a
-            key={k}
-            href={`?h=${k}${searchParams?.el ? `&el=${searchParams.el}` : ''}`}
-            className={(searchParams?.h ?? '8') === k ? 'on' : ''}
-            title={v.nota}
-          >
-            {k}
-          </a>
-        ))}
-        <b>{head.nota}</b>
-      </div>
 
       <footer className="p7-footer">
         <div className="p7-footer-in">
