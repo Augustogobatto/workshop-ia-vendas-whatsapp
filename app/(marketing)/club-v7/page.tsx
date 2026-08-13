@@ -567,6 +567,7 @@ export default function ClubV7Page({
               alt="Uma peça de aço encaixando no lugar exato"
               className="p7-figura"
               cauda
+              segura
             />
           </div>
           <p className="p7-dim p7-r" style={{ marginTop: 56 }}>

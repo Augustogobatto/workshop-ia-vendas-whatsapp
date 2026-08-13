@@ -17,6 +17,7 @@ export default function SectionScrub({
   className,
   style,
   cauda,
+  segura,
 }: {
   src: string
   poster: string
@@ -24,6 +25,8 @@ export default function SectionScrub({
   className?: string
   style?: React.CSSProperties
   cauda?: boolean
+  /** ao terminar, congela no último frame em vez de rodar o loop do fim */
+  segura?: boolean
 }) {
   const ref = useRef<HTMLVideoElement>(null)
 
@@ -87,14 +90,19 @@ export default function SectionScrub({
           } else {
             rebobinando -= dt
             // destrava quando entra na tela e a partir daí corre sozinha
-            if (rebobinando <= 0 && p > 0.06 && v.paused) {
+            const terminou = segura && dur && v.currentTime >= dur - 0.08
+            if (rebobinando <= 0 && p > 0.06 && v.paused && !terminou) {
               v.play().catch(() => {})
             }
-            // fim da cena: o trecho final roda em loop
+            // fim da cena: congela no último frame ou roda o loop do fim
             if (v.currentTime >= dur - 0.06) {
-              try {
-                v.currentTime = INICIO_CAUDA * dur
-              } catch {}
+              if (segura) {
+                if (!v.paused) v.pause()
+              } else {
+                try {
+                  v.currentTime = INICIO_CAUDA * dur
+                } catch {}
+              }
             }
             cur = v.currentTime
             escrito = cur
