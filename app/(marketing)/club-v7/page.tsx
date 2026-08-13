@@ -914,9 +914,10 @@ export default function ClubV7Page({
             className="p7-figura p7-r" style={{ marginBottom: 8 }}
           />
           <span className="p7-eyebrow p7-r">Se nada mudar</span>
-          <h2 className="p7-h2 p7-r">Sua operação daqui a doze meses é a de hoje.</h2>
+          <h2 className="p7-h2 p7-r">
+            A alavanca pode mover o mundo.<br />Largada no chão, não move nada.
+          </h2>
           <p className="p7-sub p7-r" style={{ maxWidth: '52ch' }}>
-            Do mesmo tamanho, com as mesmas pessoas, fazendo as mesmas coisas na mão.
             As ferramentas estão aí, aprenda a usá-las.
           </p>
           <div className="p7-cta-row p7-r">
