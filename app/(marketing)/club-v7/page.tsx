@@ -913,12 +913,11 @@ export default function ClubV7Page({
             aria-label="Uma alavanca de aço despencando do ponto de apoio e ficando largada no chão"
             className="p7-figura p7-r" style={{ marginBottom: 8 }}
           />
-          <span className="p7-eyebrow p7-r">O que acontece se você não fizer nada</span>
-          <h2 className="p7-h2 p7-r">Nada. É exatamente esse o problema.</h2>
+          <span className="p7-eyebrow p7-r">Se nada mudar</span>
+          <h2 className="p7-h2 p7-r">Sua operação daqui a doze meses é a de hoje.</h2>
           <p className="p7-sub p7-r" style={{ maxWidth: '52ch' }}>
-            Daqui a doze meses a sua operação vai estar do mesmo tamanho, com as mesmas
-            pessoas, fazendo as mesmas coisas na mão. As ferramentas estão aí, aprenda a
-            usá-las.
+            Do mesmo tamanho, com as mesmas pessoas, fazendo as mesmas coisas na mão.
+            As ferramentas estão aí, aprenda a usá-las.
           </p>
           <div className="p7-cta-row p7-r">
             <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
