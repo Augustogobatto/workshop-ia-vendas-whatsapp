@@ -571,6 +571,7 @@ export default function ClubV7Page({
               src="/club-v7/mcp.mp4" poster="/club-v7/mcp-poster.jpg"
               alt="Uma peça de aço encaixando no lugar exato"
               className="p7-figura"
+              cauda
             />
           </div>
           <p className="p7-dim p7-r" style={{ marginTop: 56 }}>
@@ -909,8 +910,9 @@ export default function ClubV7Page({
         <div className="p7-wrap">
           <SectionScrub
             src="/club-v7/alavanca-queda.mp4" poster="/club-v7/alavanca-queda-poster.jpg"
-            alt="Uma alavanca de aço oscilando entre o apoio e o chão"
+            alt="Uma alavanca de aço caindo do apoio e ficando largada no chão"
             className="p7-figura p7-r" style={{ marginBottom: 8 }}
+            cauda
           />
           <span className="p7-eyebrow p7-r">Se nada mudar</span>
           <h2 className="p7-h2 p7-r">
