@@ -328,7 +328,7 @@ export default function ClubV7Page({
           </div>
           <SectionScrub
             src="/club-v7/fulcro-loop.mp4" poster="/club-v7/fulcro.jpg"
-            alt="Um ponto de apoio de aço sob um feixe de luz"
+            alt="Um ponto de apoio de aço despencando sob o feixe de luz"
             className="p7-figura p7-r"
           />
         </div>
@@ -568,7 +568,7 @@ export default function ClubV7Page({
             </div>
             <SectionScrub
               src="/club-v7/mcp.mp4" poster="/club-v7/mcp-poster.jpg"
-              alt="Cubos de aço se conectando num bloco só"
+              alt="Uma peça de aço encaixando no lugar exato"
               className="p7-figura"
             />
           </div>
