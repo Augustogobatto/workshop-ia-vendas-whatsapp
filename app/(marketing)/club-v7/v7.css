@@ -489,3 +489,14 @@ vsc-controller,
 @keyframes p7rolar { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .p7-esteira-fita { animation: none; } }
 
+/* MCP grandão: o chip de aprendizado do Club */
+.p7-mcp { display: grid; gap: 24px; margin-top: 72px; align-items: center; }
+@media (min-width: 880px) { .p7-mcp { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; } }
+.p7-mcp-titulo {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(72px, 12vw, 150px); line-height: 0.95;
+  letter-spacing: -0.02em; margin: 0 0 18px;
+}
+.p7-mcp .p7-dim { max-width: 44ch; font-size: 17px; }
+.p7-mcp .p7-figura { margin: 0; width: min(460px, 80vw); justify-self: center; }
+

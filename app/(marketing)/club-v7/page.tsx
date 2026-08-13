@@ -557,6 +557,22 @@ export default function ClubV7Page({
               <p>Aula ao vivo todo mês, e cada fluxo, prompt e template mostrado fica na biblioteca pra copiar.</p>
             </div>
           </div>
+          <div className="p7-mcp p7-r">
+            <div>
+              <h3 className="p7-mcp-titulo">MCP</h3>
+              <p className="p7-dim">
+                Todo o conhecimento do Club se conecta no seu Claude, como um chip de
+                aprendizado: você pede pra ele te ajudar a fazer, ou manda ele executar
+                por você.
+              </p>
+            </div>
+            <video
+              id="p7mcp" src="/club-v7/mcp.mp4" poster="/club-v7/mcp-poster.jpg"
+              muted playsInline preload="auto"
+              aria-label="Cubos de aço se conectando num bloco só"
+              className="p7-figura"
+            />
+          </div>
           <p className="p7-dim p7-r" style={{ marginTop: 56 }}>
             São 7 cursos e 50 aulas. No fim, isso aqui deixa de ser jargão:
           </p>
@@ -942,14 +958,16 @@ if(q){
 }
 })();
 (function(){
-// a queda da alavanca toca uma vez, quando 60% dela entra na tela
-var v=document.getElementById('p7queda');
-if(v&&'IntersectionObserver'in window){
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){if(e.isIntersecting){v.play().catch(function(){});io.disconnect()}});
-  },{threshold:0.6});
-  io.observe(v);
-}
+// queda da alavanca e montagem do MCP tocam uma vez, quando 60% entram na tela
+['p7queda','p7mcp'].forEach(function(id){
+  var v=document.getElementById(id);
+  if(v&&'IntersectionObserver'in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){v.play().catch(function(){});io.disconnect()}});
+    },{threshold:0.6});
+    io.observe(v);
+  }
+});
 })();
 (function(){
 // rolagem com calma nos anchors (#entenda, #planos): ease-in-out ~1.1s
