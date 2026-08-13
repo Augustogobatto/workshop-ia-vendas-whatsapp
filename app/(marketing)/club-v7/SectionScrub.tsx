@@ -3,9 +3,12 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Vídeo de seção: a rolagem conduz a cena do primeiro ao último frame, e
- * por cima disso corre uma respiração perpétua, então parar de rolar nunca
- * congela a imagem. Exige vídeo ALL-INTRA (keyint=1) pra seek barato.
+ * Vídeo de seção: a rolagem conduz a cena do primeiro ao último frame.
+ *  - modo padrão: respiração perpétua por cima, nunca congela.
+ *  - `cauda`: a cena avança com a rolagem e, ao chegar no fim, fica em loop
+ *    no trecho final (a poeira assentando). Só volta pra trás se a pessoa
+ *    subir a página.
+ * Exige vídeo ALL-INTRA (keyint=1) pra seek barato.
  */
 export default function SectionScrub({
   src,
@@ -13,12 +16,14 @@ export default function SectionScrub({
   alt,
   className,
   style,
+  cauda,
 }: {
   src: string
   poster: string
   alt: string
   className?: string
   style?: React.CSSProperties
+  cauda?: boolean
 }) {
   const ref = useRef<HTMLVideoElement>(null)
 
@@ -33,6 +38,7 @@ export default function SectionScrub({
     let escrito = -1
     let fase = Math.random() * Math.PI * 2 // respiração perpétua, dessincronizada
     const AMP = 0.09 // fração do vídeo que a respiração cobre
+    let voltaCauda = 0 // posição dentro do loop do trecho final
     let antes = performance.now()
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -63,8 +69,24 @@ export default function SectionScrub({
         p = p < 0 ? 0 : p > 1 ? 1 : p
 
         fase += 0.5 * dt
-        // a rolagem escolhe o trecho; a respiração nunca deixa parar
-        let f = AMP + p * (1 - 2 * AMP) + AMP * Math.sin(fase)
+
+        let f: number
+        if (cauda) {
+          // a rolagem destrava a cena até o fim; chegando lá, o trecho final
+          // roda em loop sozinho. Subir a página volta a comandar.
+          const INICIO_CAUDA = 0.82
+          if (p >= 0.995) {
+            voltaCauda += dt / 1.6
+            if (voltaCauda > 1) voltaCauda -= 1
+            f = INICIO_CAUDA + voltaCauda * (1 - INICIO_CAUDA)
+          } else {
+            voltaCauda = 0
+            f = p
+          }
+        } else {
+          // a rolagem escolhe o trecho; a respiração nunca deixa parar
+          f = AMP + p * (1 - 2 * AMP) + AMP * Math.sin(fase)
+        }
         f = f < 0 ? 0 : f > 1 ? 1 : f
         const alvo = f * (dur - 0.05)
         // perseguição rápida: acompanha o dedo/roda sem parecer travado

@@ -330,6 +330,7 @@ export default function ClubV7Page({
             src="/club-v7/fulcro-loop.mp4" poster="/club-v7/fulcro.jpg"
             alt="Um ponto de apoio de aço despencando sob o feixe de luz"
             className="p7-figura p7-r"
+            cauda
           />
         </div>
       </section>
