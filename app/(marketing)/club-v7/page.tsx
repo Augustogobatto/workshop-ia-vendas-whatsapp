@@ -441,11 +441,6 @@ export default function ClubV7Page({
                 pra ela
                 <span className="hora">08/07 · 12:12</span>
               </div>
-              <div className="balao">
-                Vendo o Gobatto fazer é tão fácil né, mas aí quando peguei pra fazer, percebi
-                que a vida realmente não é um morango
-                <span className="hora">08/07 · 12:16</span>
-              </div>
             </div>
           </div>
         </div>
@@ -547,31 +542,6 @@ export default function ClubV7Page({
               <h3>Templates e prompts de tudo que aparece em aula</h3>
               <p>Aula ao vivo todo mês, e cada fluxo, prompt e template mostrado fica na biblioteca pra copiar.</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* seção 7: quem já tá dentro */}
-      <section className="p7-sec">
-        <div className="p7-wrap">
-          <div className="p7-duo rev">
-            <div className="p7-r">
-              <span className="p7-bignum">60%<small>do primeiro workshop entrou no Club no mesmo dia</small></span>
-            </div>
-            <div>
-              <span className="p7-eyebrow p7-r">Quem já tá dentro</span>
-              <h2 className="p7-h2 p7-r">Ninguém assinou por pitch. Assinaram porque viram rodando.</h2>
-              <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
-                30 pessoas assistiram a primeira turma ao vivo. 6 em cada 10 entraram pro
-                Club antes de acabar o dia, vendo o sistema funcionando na tela. Hoje a
-                turma passa de 50 membros ativos.
-              </p>
-            </div>
-          </div>
-          <div className="p7-troop">
-            <div className="p7-slot p7-r">Depoimento 1 (nome + foto + o que a pessoa montou)</div>
-            <div className="p7-slot p7-r">Depoimento 2</div>
-            <div className="p7-slot p7-r">Depoimento 3 · em coleta no grupo</div>
           </div>
         </div>
       </section>
