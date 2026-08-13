@@ -5,9 +5,9 @@ import { useEffect, useRef } from 'react'
 /**
  * Vídeo de seção: a rolagem conduz a cena do primeiro ao último frame.
  *  - modo padrão: respiração perpétua por cima, nunca congela.
- *  - `cauda`: a cena avança com a rolagem e, ao chegar no fim, fica em loop
- *    no trecho final (a poeira assentando). Só volta pra trás se a pessoa
- *    subir a página.
+ *  - `cauda`: a rolagem DESTRAVA a cena, que aí corre sozinha no ritmo
+ *    natural (playback nativo, sem seek) até o fim e fica em loop no trecho
+ *    final. Subir a página rebobina; ao parar, ela retoma sozinha.
  * Exige vídeo ALL-INTRA (keyint=1) pra seek barato.
  */
 export default function SectionScrub({
@@ -38,7 +38,9 @@ export default function SectionScrub({
     let escrito = -1
     let fase = Math.random() * Math.PI * 2 // respiração perpétua, dessincronizada
     const AMP = 0.09 // fração do vídeo que a respiração cobre
-    let voltaCauda = 0 // posição dentro do loop do trecho final
+    const INICIO_CAUDA = 0.8 // onde o loop do fim começa
+    let pAnterior = 0
+    let rebobinando = 0 // segundos de carência depois de subir a página
     let antes = performance.now()
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -70,23 +72,40 @@ export default function SectionScrub({
 
         fase += 0.5 * dt
 
-        let f: number
         if (cauda) {
-          // a rolagem destrava a cena até o fim; chegando lá, o trecho final
-          // roda em loop sozinho. Subir a página volta a comandar.
-          const INICIO_CAUDA = 0.82
-          if (p >= 0.995) {
-            voltaCauda += dt / 1.6
-            if (voltaCauda > 1) voltaCauda -= 1
-            f = INICIO_CAUDA + voltaCauda * (1 - INICIO_CAUDA)
+          // rebobina enquanto a pessoa sobe a página
+          if (p < pAnterior - 0.001) {
+            if (!v.paused) v.pause()
+            rebobinando = 0.25
+            cur += (p * (dur - 0.05) - cur) * (1 - Math.exp(-9 * dt))
+            if (!v.seeking && Math.abs(cur - escrito) >= 1 / 30) {
+              escrito = cur
+              try {
+                v.currentTime = cur
+              } catch {}
+            }
           } else {
-            voltaCauda = 0
-            f = p
+            rebobinando -= dt
+            // destrava quando entra na tela e a partir daí corre sozinha
+            if (rebobinando <= 0 && p > 0.06 && v.paused) {
+              v.play().catch(() => {})
+            }
+            // fim da cena: o trecho final roda em loop
+            if (v.currentTime >= dur - 0.06) {
+              try {
+                v.currentTime = INICIO_CAUDA * dur
+              } catch {}
+            }
+            cur = v.currentTime
+            escrito = cur
           }
-        } else {
-          // a rolagem escolhe o trecho; a respiração nunca deixa parar
-          f = AMP + p * (1 - 2 * AMP) + AMP * Math.sin(fase)
+          pAnterior = p
+          raf = requestAnimationFrame(loop)
+          return
         }
+
+        // a rolagem escolhe o trecho; a respiração nunca deixa parar
+        let f = AMP + p * (1 - 2 * AMP) + AMP * Math.sin(fase)
         f = f < 0 ? 0 : f > 1 ? 1 : f
         const alvo = f * (dur - 0.05)
         // perseguição rápida: acompanha o dedo/roda sem parecer travado
