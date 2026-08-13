@@ -330,85 +330,29 @@ export default function ClubV7Page({
       {/* onde apoiar — PROVA VISUAL, copy de rascunho pro Augusto reescrever */}
       <section className="p7-sec">
         <div className="p7-wrap">
-          <h2 className="p7-h2 p7-r">Na prática, IA que funciona deve:</h2>
+          <h2 className="p7-h2 p7-r">Na prática, IA que funciona:</h2>
           <div className="p7-ledger p7-r">
             <div className="p7-led-row">
-              <h3 className="p7-pilar">Trazer dinheiro.</h3>
+              <h3 className="p7-pilar">Traz dinheiro.</h3>
               <div className="p7-led-exs">
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    IA que vende 24 horas por dia no WhatsApp. Workshop completo no club,
-                    com exemplos reais de vendas feitas por IA nas minhas empresas. IA
-                    vende pra mim todo santo dia.
-                  </p>
-                  <span className="p7-rec">+ de R$300 mil faturado</span>
-                </div>
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    IA que gera produtos novos, coisas que você não era capaz de fazer
-                    sozinho. Transforma seu curso em aplicativo: toda a área de membros do
-                    Push Club foi criada do zero, 100% personalizada e 100% feita com IA.
-                    Curso de como eu criei a minha pra você copiar e colar (em breve).
-                  </p>
-                  <span className="p7-rec">+ de R$30 mil faturado</span>
-                </div>
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    IA que te ajuda a crescer audiência. Analisa perfil de concorrente,
-                    analisa os vídeos dele e traz ideias de conteúdo. Crescer a audiência
-                    é mais venda. Curso de como eu montei uma IA pra me guiar na produção
-                    de conteúdo (ainda esse mês).
-                  </p>
-                </div>
+                <p className="p7-dim"><strong>R$300 mil</strong> · vendidos pela IA que atende meu WhatsApp.</p>
+                <p className="p7-dim"><strong>R$30 mil</strong> · a área de membros do Club virou aplicativo. Feita do zero, com IA.</p>
               </div>
             </div>
             <div className="p7-led-row">
-              <h3 className="p7-pilar">Tirar custo.</h3>
+              <h3 className="p7-pilar">Tira custo.</h3>
               <div className="p7-led-exs">
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    Dentro de um dos meus projetos, trocamos 3 pessoas do time comercial
-                    por uma IA. A performance em vendas se manteve. Curso de IA de Vendas
-                    no Whats.
-                  </p>
-                  <span className="p7-rec">+ de R$12 mil economizados por mês</span>
-                </div>
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    Editei 151 minutos de aulas sem tocar no mouse: botei o Claude pra
-                    editar por mim.
-                  </p>
-                  <span className="p7-rec">R$1.000 por mês sem precisar de editor de vídeo</span>
-                </div>
-                <div className="p7-ex">
-                  <p className="p7-dim">Criei um ManyChat próprio.</p>
-                  <span className="p7-rec">+ de R$20 mil por ano economizados nas operações</span>
-                </div>
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    Criação de páginas sem webdesigner, inclusive essa página, 100% feita
-                    com IA.
-                  </p>
-                  <span className="p7-rec">+ de R$3.500 economizados</span>
-                </div>
+                <p className="p7-dim"><strong>R$12 mil/mês</strong> · três vagas no comercial que não precisaram ser repostas. As vendas continuaram iguais.</p>
+                <p className="p7-dim"><strong>R$20 mil/ano</strong> · montei meu próprio ManyChat. A mensalidade sumiu.</p>
+                <p className="p7-dim"><strong>R$1.000/mês</strong> · 151 minutos de aula editados sem eu tocar no mouse.</p>
               </div>
             </div>
             <div className="p7-led-row">
-              <h3 className="p7-pilar">Economizar tempo.</h3>
+              <h3 className="p7-pilar">Te tira do meio.</h3>
               <div className="p7-led-exs">
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    Entrega de consultoria com uso de IA contra construir tudo sozinho:
-                    antes o prazo era de 3 meses. Agora, 1 mês.
-                  </p>
-                </div>
-                <div className="p7-ex">
-                  <p className="p7-dim">
-                    Criação de proposta, relatório, dashboard, disparo de mensagem,
-                    acompanhamento de processo.
-                  </p>
-                  <span className="p7-rec">3 a 4 horas ganhas por dia</span>
-                </div>
+                <p className="p7-dim"><strong>10 minutos</strong> · testou o site, corrigiu, atualizou os anúncios e mandou o relatório. Eu dirigindo.</p>
+                <p className="p7-dim"><strong>43 tarefas</strong> · rodam todo dia sem eu abrir o computador.</p>
+                <p className="p7-dim"><strong>3 a 4 horas</strong> · por dia, que eu não gasto mais com proposta, relatório e disparo.</p>
               </div>
             </div>
           </div>
