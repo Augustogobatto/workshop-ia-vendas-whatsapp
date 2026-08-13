@@ -228,8 +228,8 @@ vsc-controller,
 
 /* momento centralizado (Vercel closing) */
 .p7-stage { text-align: center; padding-top: clamp(72px, 12vh, 130px); }
-.p7-stage .p7-h2 { margin-left: auto; margin-right: auto; max-width: 20ch; }
-.p7-stage .p7-measure { margin: 22px auto 0; text-align: left; }
+.p7-stage .p7-h2 { margin-left: auto; margin-right: auto; max-width: 24ch; }
+.p7-stage .p7-measure { margin: 22px auto 0; max-width: 52ch; text-align: center; }
 
 /* palco de evidência */
 .p7-proofbox {

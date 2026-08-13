@@ -311,7 +311,7 @@ export default function ClubV7Page({
       {/* seção 2: a demonstração */}
       <section className="p7-stage" id="entenda">
         <div className="p7-wrap">
-          <h2 className="p7-h2 p7-r" style={{ maxWidth: '30ch' }}>
+          <h2 className="p7-h2 p7-r">
             A alavanca todo mundo ganhou.<br />O ponto de apoio, ninguém deu.
           </h2>
           <div className="p7-measure p7-r">
