@@ -698,7 +698,7 @@ export default function ClubV7Page({
             </details>
             <details>
               <summary>Por que &ldquo;Push&rdquo;?</summary>
-              <p>Porque quando eu comecei eu achava que crescer era empurrar mais forte. Não é. O nome ficou, o método mudou: o Club é o ponto de apoio, não o empurrão.</p>
+              <p>Porque quando você publica um sistema, você faz um push. E também vem de empurrar: no Club a gente te dá aquele empurrão que falta pra você avançar.</p>
             </details>
           </div>
         </div>
