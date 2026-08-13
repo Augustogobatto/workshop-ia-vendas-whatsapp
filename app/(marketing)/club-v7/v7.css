@@ -84,7 +84,7 @@ vsc-controller,
 .p7-pill.ghost:hover::after { transform: translateY(2px); }
 
 /* ── hero: elemento à esquerda, texto à direita ── */
-.p7-hero { position: relative; overflow: hidden; padding: clamp(64px, 11vh, 130px) 0 clamp(56px, 9vh, 96px); }
+.p7-hero { position: relative; overflow: hidden; padding: clamp(64px, 11vh, 130px) 0 clamp(24px, 4vh, 40px); }
 /* luz ambiente do hero removida a pedido (12/08): o unico brilho da dobra
    e o flare do eclipse dentro do HeroLuz */
 .p7-hero-grid { display: grid; gap: 44px; align-items: center; }
@@ -178,7 +178,7 @@ vsc-controller,
 /* citação no pé do hero: uma linha só, sussurro centralizado */
 .p7-hero-epi {
   font-family: var(--serif); font-style: italic;
-  font-size: 14px; color: var(--faint); text-align: center;
+  font-size: 14px; color: #3f3f3f; text-align: center;
   margin: clamp(40px, 6vh, 64px) 0 0;
 }
 .p7-hero-epi .a {
