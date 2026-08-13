@@ -380,3 +380,14 @@ vsc-controller,
    React e a página ficava intermitentemente invisível. Voltar com animação
    de entrada via client component quando a página estabilizar. */
 .p7-r { opacity: 1; transform: none; }
+
+/* cascata de prova: quotes cruas do grupo, hairline entre elas */
+.p7-cascata { max-width: 720px; margin-top: 34px; }
+.p7-quote { border-top: 1px solid var(--line); padding: 22px 0 18px; }
+.p7-quote:last-child { border-bottom: 1px solid var(--line); }
+.p7-quote p { color: var(--dim); margin: 0 0 8px; }
+.p7-quote .who {
+  font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--faint);
+}
+

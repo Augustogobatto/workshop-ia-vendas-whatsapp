@@ -313,6 +313,52 @@ export default function ClubV7Page({
               que te venderam. Funciona. Só levanta um peso ridículo perto do que a
               ferramenta aguenta.
             </p>
+            <p className="p7-dim">
+              Se você usa assim, a culpa não é sua. Te venderam curso de ferramenta, prompt
+              mágico, promessa de renda extra pra semana que vem. Ensinaram a segurar o cabo
+              e chamaram isso de dominar IA.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 03 · sábado passado */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <div className="p7-duo">
+            <div>
+              <span className="p7-eyebrow p7-r">Sábado passado</span>
+              <p className="p7-dim p7-r" style={{ marginTop: 6 }}>
+                Sábado eu peguei o celular no carro e mandei um áudio pra minha IA. Enquanto
+                eu dirigia, ela entrou nas páginas do meu curso e testou as automações uma
+                por uma. Corrigiu as que estavam quebradas. Entrou na minha conta de anúncios
+                e atualizou os links. Conferiu se as vendas estavam caindo na Hotmart com o
+                rastreio certo. E mandou o relatório de tudo no grupo.
+              </p>
+              <p className="p7-destaque p7-r">
+                Um testador, um programador, um gestor de tráfego, um analista e um
+                estagiário. Dez minutos. Eu dirigindo.
+              </p>
+              <p className="p7-dim p7-r">
+                É a mesma IA que você tem. A diferença não está na ferramenta. Está em onde
+                ela foi apoiada.
+              </p>
+            </div>
+            <div className="p7-stats p7-r">
+              <div className="p7-stat">
+                <span className="n">15</span>
+                <span className="l">serviços rodando 24 horas por dia na minha operação. Agora, enquanto você lê isso.</span>
+              </div>
+              <div className="p7-stat">
+                <span className="n">43</span>
+                <span className="l">tarefas que acontecem todo dia sem eu abrir o computador. Conciliação, cobrança, relatório, vigia de erro.</span>
+              </div>
+              <div className="p7-stat">
+                {/* legenda do 0 é obrigatória: sem a âncora da empresa separada o número vira alegação contestável */}
+                <span className="n">0</span>
+                <span className="l">funcionários nessa operação. É uma empresa separada que eu montei só pra testar IA: eu e as máquinas.</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -359,6 +405,18 @@ export default function ClubV7Page({
         </div>
       </section>
 
+      {/* 05 · gente comum com a mão na alavanca — prints reais do grupo (slots até o Augusto printar) */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <h2 className="p7-h2 p7-r">Gente comum com a mão na alavanca.</h2>
+          <div className="p7-troop">
+            <div className="p7-slot p7-r">Print Telegram · Jhonathan (tráfego) · 15/07 16:15 · &ldquo;tenho o meu agente rodando lindamente, subindo anuncio, pausando&rdquo; respondendo colega com medo</div>
+            <div className="p7-slot p7-r">Print Telegram · João Luís (robôs industriais) · 24/07 21:35 · &ldquo;do desenho pro real em menos de 5 min&rdquo;</div>
+            <div className="p7-slot p7-r">Print Telegram · Marcelo · 08/07 12:10 · sequência dos 3 balões (agente pronto, 4h da manhã, &ldquo;a vida não é um morango&rdquo;)</div>
+          </div>
+        </div>
+      </section>
+
       {/* seção 4: o que o guru não te conta */}
       <section className="p7-stage">
         <div className="p7-wrap">
@@ -377,6 +435,10 @@ export default function ClubV7Page({
               que soa bonito implementa o que soa bonito. E afunda mais rápido, só que agora
               com assinatura mensal.
             </p>
+            <p className="p7-dim">
+              E na velocidade que isso anda, curso gravado em janeiro morre em julho.
+              Critério não desatualiza.
+            </p>
             <p className="p7-destaque">
               Todo mundo te vende a ferramenta. Ninguém te vende o critério. O Club é o
               critério, com a ferramenta dentro.
@@ -388,8 +450,8 @@ export default function ClubV7Page({
       {/* seção 5: quem eu sou */}
       <section className="p7-sec">
         <div className="p7-wrap">
-          <div className="p7-duo">
-            <div>
+          <div>
+            <div className="p7-measure">
               <span className="p7-eyebrow p7-r">Por que eu posso falar disso</span>
               <h2 className="p7-h2 p7-r">Eu sou o experimento. Com o faturamento aberto.</h2>
               <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
@@ -411,10 +473,6 @@ export default function ClubV7Page({
                 percorrendo em público, e é ele que o Club te entrega pronto pra copiar.
               </p>
             </div>
-            <div>
-              <div className="p7-slot p7-r" style={{ aspectRatio: '4 / 5' }}>Foto do Augusto</div>
-              <div className="p7-slot p7-r" style={{ marginTop: 14 }}>Print do painel de faturamento aberto</div>
-            </div>
           </div>
         </div>
       </section>
@@ -425,39 +483,35 @@ export default function ClubV7Page({
           <span className="p7-eyebrow p7-r">O que tem dentro</span>
           <h2 className="p7-h2 p7-r">Cada peça existe pra te mover na mesma direção.</h2>
           <div className="p7-bento">
-            <div className="p7-slot full p7-r">
-              Loop mudo da plataforma, 8 a 12s (mp4/webm, autoplay, loop, playsinline, pôster JPG).
-              Algo acontecendo nos 3 primeiros segundos; grade de aulas só no último quadro.
-            </div>
             <div className="p7-card wide p7-r">
-              <span className="tag">todo mês, ao vivo</span>
-              <h3>Encontro mensal: a operação aberta</h3>
-              <p>Eu abro o que montei no mês, com número e ferramenta na tela. O que deu dinheiro fica, o que não deu eu conto por quê.</p>
-            </div>
-            <div className="p7-card p7-r">
-              <span className="tag">catálogo completo</span>
-              <h3>Todos os workshops</h3>
-              <p>IA de Vendas no WhatsApp (20 aulas), Oficina Claude Code, Vibecode, IA Fundamentos. O que eu lançar entra sem custo.</p>
-            </div>
-            <div className="p7-card p7-r">
-              <span className="tag">copia e cola</span>
-              <h3>A biblioteca de fluxos</h3>
-              <p>Os JSONs do n8n que rodam a minha operação, os prompts, os templates. Você importa e adapta, não começa do zero.</p>
+              <span className="tag">ia de vendas no whatsapp</span>
+              <h3>Sai com um vendedor de IA atendendo teu WhatsApp</h3>
+              <p>Workshop completo, 20 aulas. A mesma peça que já vendeu R$300 mil nas minhas empresas, atendendo sozinha.</p>
             </div>
             <div className="p7-card p7-r">
               <span className="tag">24/7 no Telegram</span>
-              <h3>Claudinei, o agente do Club</h3>
-              <p>Travou às 23h? Ele assistiu todas as aulas e te aponta o minuto exato. É também a prova de que funciona: você vai ser atendido por uma IA que eu montei.</p>
+              <h3>Claudinei, treinado em tudo que já foi dito aqui</h3>
+              <p>Travou às 23h? Ele te aponta o minuto exato da aula. E ele mesmo é a prova: foi montado com o método.</p>
             </div>
             <div className="p7-card p7-r">
-              <span className="tag">direto comigo</span>
-              <h3>Raio-X do seu negócio</h3>
-              <p>Você conta onde trava, eu digo o que montaria primeiro e te aponto a peça da biblioteca pra começar.</p>
+              <span className="tag">todo mês, ao vivo</span>
+              <h3>Raio-X: um negócio de membro aberto na mesa</h3>
+              <p>Uma vez por mês a gente senta em cima de uma operação real: vamos resolver a vida desse cara. Na próxima pode ser a sua.</p>
             </div>
             <div className="p7-card p7-r">
-              <span className="tag">a turma</span>
-              <h3>O grupo de quem tá montando</h3>
-              <p>Donos de negócio e profissionais construindo as próprias operações. O que travou, o que rodou, o que deu dinheiro.</p>
+              <span className="tag">ferramenta inclusa</span>
+              <h3>O CEQ, seu ManyChat próprio</h3>
+              <p>A ferramenta que substituiu minha assinatura de ManyChat, inclusa. R$20 mil por ano que somem da conta.</p>
+            </div>
+            <div className="p7-card p7-r">
+              <span className="tag">vibecoding</span>
+              <h3>O primeiro sistema na primeira semana</h3>
+              <p>No Vibecode você sai construindo, não assistindo. A enquete de quem já construiu foi feita ao vivo.</p>
+            </div>
+            <div className="p7-card p7-r">
+              <span className="tag">biblioteca viva</span>
+              <h3>Templates e prompts de tudo que aparece em aula</h3>
+              <p>Aula ao vivo todo mês, e cada fluxo, prompt e template mostrado fica na biblioteca pra copiar.</p>
             </div>
           </div>
         </div>
@@ -493,11 +547,15 @@ export default function ClubV7Page({
         <div className="p7-wrap">
           <span className="p7-eyebrow p7-r">Quanto custa</span>
           <h2 className="p7-h2 p7-r">O mesmo caminho, por outras portas:</h2>
+          <p className="p7-dim p7-r" style={{ marginTop: 18, maxWidth: '62ch' }}>
+            Essa semana eu vendi uma implementação de R$20 mil pra alguém que conhecia o
+            Club e pagou assim mesmo: &ldquo;eu quero que você faça&rdquo;.
+          </p>
           <div className="p7-anchor p7-r">
-            <div className="p7-anchor-row"><span>implementação feita por mim</span><i /><span>R$15.000 + R$3.000/mês</span></div>
+            <div className="p7-anchor-row"><span>implementação feita por mim</span><i /><span>R$20.000</span></div>
             <div className="p7-anchor-row"><span>mentoria individual</span><i /><span>R$10 a 15 mil por ano</span></div>
-            <div className="p7-anchor-row"><span>cada workshop avulso</span><i /><span>R$200 a R$300</span></div>
-            <div className="p7-anchor-row hot"><span>Push Club, tudo dentro, todo mês</span><i /><span>R$70/mês</span></div>
+            <div className="p7-anchor-row"><span>tabela cheia do Club</span><i /><span>R$150/mês</span></div>
+            <div className="p7-anchor-row hot"><span>Push Club hoje</span><i /><span>R$70/mês</span></div>
           </div>
 
           <div className="p7-plans">
@@ -512,7 +570,7 @@ export default function ClubV7Page({
                 <li>Biblioteca de fluxos</li>
                 <li>Raio-X do seu negócio</li>
               </ul>
-              <a href={STRIPE_MENSAL} className="p7-pill ghost" data-checkout="mensal">assinar mensal</a>
+              <a href={STRIPE_MENSAL} className="p7-pill ghost" data-checkout="mensal">Quero entrar por R$70</a>
             </div>
             <div className="p7-plan hot p7-r">
               <span className="p7-badge">mais escolhido · 2 meses grátis</span>
@@ -524,18 +582,45 @@ export default function ClubV7Page({
                 <li>Seu preço trava enquanto você ficar</li>
                 <li>Prioridade nas turmas ao vivo</li>
               </ul>
-              <a href={STRIPE_ANUAL} className="p7-pill" data-checkout="anual">assinar anual</a>
+              <a href={STRIPE_ANUAL} className="p7-pill" data-checkout="anual">Quero o anual: R$50/mês</a>
             </div>
           </div>
 
           <p className="p7-fine p7-r" style={{ marginBottom: 6 }}>
-            Ia ser R$150/mês. A primeira turma entrou por R$50, de fundador. Hoje é R$70 e a
-            tabela só anda pra cima. Quem entra trava o preço enquanto ficar.
+            acesso imediato, cancela quando quiser
+          </p>
+          <p className="p7-fine p7-r" style={{ marginBottom: 6 }}>
+            O preço que você entra é o que você paga. Daqui pra frente ele só sobe: a tabela
+            vai pra R$150.
           </p>
           <p className="p7-fine p7-r">
-            Garantia? Não tem. É R$70. Não gostou, cancela em 2 cliques, sem multa e sem
-            ligação de retenção. Pagamento via Stripe, acesso imediato.
+            Sem garantia teatral. R$70 não é risco, e cancelar são dois cliques.
           </p>
+        </div>
+      </section>
+
+      {/* 11 · cascata de prova — quotes verbatim do grupo (prints reais: fila de upgrade) */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">Direto do grupo</span>
+          <div className="p7-cascata p7-r">
+            <div className="p7-quote">
+              <p>&ldquo;Eu to amando isso da gente conseguir puxar pra nós mais o controle das ferramentas&hellip;. Já paguei muito caro em ferramenta que prometia muito e entregava nada&rdquo;</p>
+              <span className="who">Poliana · agência · 22/07</span>
+            </div>
+            <div className="p7-quote">
+              <p>&ldquo;Eu não sabia praticamente nada&hellip; mas só com o pouco que já estou aprendendo, já consegui construir algumas coisas bem legais&rdquo;</p>
+              <span className="who">Henrique · estrategista digital · 27/05</span>
+            </div>
+            <div className="p7-quote">
+              <p>&ldquo;achei a didática muito boa, a explicação, a fundamentação das coisas também [&hellip;] inclusive criei um outro fluxo que não tem nada a ver, um disparador no n8n&rdquo;</p>
+              <span className="who">Marcelo · áudio no grupo · 08/07</span>
+            </div>
+            <div className="p7-quote">
+              <p>Montou o próprio Claudinei, batizou de Caio, e hoje vende implementação. O Club paga o Club.</p>
+              <span className="who">Matheus · 09/06</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -552,6 +637,14 @@ export default function ClubV7Page({
             <details>
               <summary>Sou iniciante total em IA. É pra mim?</summary>
               <p>É. O ganho com IA é maior justamente pra quem estava atrás. O que trava iniciante não é a ferramenta, é não saber onde começar. Você entra, me conta onde trava no Raio-X, e sai com uma peça pra montar.</p>
+            </details>
+            <details>
+              <summary>Não dá pra aprender isso de graça no YouTube?</summary>
+              <p>Se desse, você já teria feito.</p>
+            </details>
+            <details>
+              <summary>Não tenho tempo.</summary>
+              <p>Você acabou de descrever o problema que o Club trata. Quem faz o trabalho de dez é exatamente quem não tem tempo. A assinatura devolve tempo, não consome.</p>
             </details>
             <details>
               <summary>O que exatamente eu recebo ao assinar?</summary>
@@ -580,7 +673,7 @@ export default function ClubV7Page({
             teu lado.
           </p>
           <div className="p7-cta-row p7-r">
-            <a href="#planos" className="p7-pill big">Entrar no Push Club</a>
+            <a href="#planos" className="p7-pill big">Entre pros 53 que já apoiaram a deles</a>
             <span className="p7-cta-note">R$70/mês · sem fidelidade</span>
           </div>
         </div>
@@ -589,6 +682,7 @@ export default function ClubV7Page({
       <footer className="p7-footer">
         <div className="p7-footer-in">
           <span>© {new Date().getFullYear()} Augusto Gobatto</span>
+          <span>cancelamento em 2 cliques · 7 dias de arrependimento (art. 49, CDC)</span>
           <a href="/privacidade">privacidade</a>
         </div>
       </footer>
