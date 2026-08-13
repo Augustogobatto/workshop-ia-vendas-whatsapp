@@ -330,49 +330,85 @@ export default function ClubV7Page({
       {/* onde apoiar — PROVA VISUAL, copy de rascunho pro Augusto reescrever */}
       <section className="p7-sec">
         <div className="p7-wrap">
-          <span className="p7-eyebrow p7-r">Na prática</span>
-          <h2 className="p7-h2 p7-r">Onde eu apoio a minha.</h2>
+          <h2 className="p7-h2 p7-r">Na prática, IA que funciona deve:</h2>
           <div className="p7-ledger p7-r">
             <div className="p7-led-row">
-              <h3 className="p7-pilar">Traz dinheiro.</h3>
+              <h3 className="p7-pilar">Trazer dinheiro.</h3>
               <div className="p7-led-exs">
-                <p className="p7-dim">
-                  Uma IA no WhatsApp conduziu as vendas de um lançamento inteiro:{' '}
-                  <strong>R$140 mil</strong>. Noutro, R$300 mil. Ela responde, quebra
-                  objeção e manda o link na hora certa, de madrugada inclusive.
-                </p>
-                <p className="p7-dim">
-                  Outra vigia os comentários do meu Instagram, identifica quem pediu
-                  informação e puxa a conversa pra DM antes do lead esfriar.
-                </p>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    IA que vende 24 horas por dia no WhatsApp. Workshop completo no club,
+                    com exemplos reais de vendas feitas por IA nas minhas empresas. IA
+                    vende pra mim todo santo dia.
+                  </p>
+                  <span className="p7-rec">+ de R$300 mil faturado</span>
+                </div>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    IA que gera produtos novos, coisas que você não era capaz de fazer
+                    sozinho. Transforma seu curso em aplicativo: toda a área de membros do
+                    Push Club foi criada do zero, 100% personalizada e 100% feita com IA.
+                    Curso de como eu criei a minha pra você copiar e colar (em breve).
+                  </p>
+                  <span className="p7-rec">+ de R$30 mil faturado</span>
+                </div>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    IA que te ajuda a crescer audiência. Analisa perfil de concorrente,
+                    analisa os vídeos dele e traz ideias de conteúdo. Crescer a audiência
+                    é mais venda. Curso de como eu montei uma IA pra me guiar na produção
+                    de conteúdo (ainda esse mês).
+                  </p>
+                </div>
               </div>
             </div>
             <div className="p7-led-row">
-              <h3 className="p7-pilar">Tira custo.</h3>
+              <h3 className="p7-pilar">Tirar custo.</h3>
               <div className="p7-led-exs">
-                <p className="p7-dim">
-                  Minhas aulas são editadas por IA a partir da transcrição:{' '}
-                  <strong>151 minutos de gravação viraram 118 de aula</strong> sem eu
-                  contratar editor.
-                </p>
-                <p className="p7-dim">
-                  Cobrança, conciliação de fatura e suporte rodam numa empresa que eu
-                  montei só pra testar isso. Funcionários: <strong>zero</strong>.
-                </p>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    Dentro de um dos meus projetos, trocamos 3 pessoas do time comercial
+                    por uma IA. A performance em vendas se manteve. Curso de IA de Vendas
+                    no Whats.
+                  </p>
+                  <span className="p7-rec">+ de R$12 mil economizados por mês</span>
+                </div>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    Editei 151 minutos de aulas sem tocar no mouse: botei o Claude pra
+                    editar por mim.
+                  </p>
+                  <span className="p7-rec">R$1.000 por mês sem precisar de editor de vídeo</span>
+                </div>
+                <div className="p7-ex">
+                  <p className="p7-dim">Criei um ManyChat próprio.</p>
+                  <span className="p7-rec">+ de R$20 mil por ano economizados nas operações</span>
+                </div>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    Criação de páginas sem webdesigner, inclusive essa página, 100% feita
+                    com IA.
+                  </p>
+                  <span className="p7-rec">+ de R$3.500 economizados</span>
+                </div>
               </div>
             </div>
             <div className="p7-led-row">
-              <h3 className="p7-pilar">Economiza meu tempo.</h3>
+              <h3 className="p7-pilar">Economizar tempo.</h3>
               <div className="p7-led-exs">
-                <p className="p7-dim">
-                  Sábado eu mandei um áudio do carro. A IA testou as automações do meu
-                  curso, corrigiu as quebradas, atualizou os anúncios e mandou o
-                  relatório no grupo. <strong>Dez minutos, eu dirigindo.</strong>
-                </p>
-                <p className="p7-dim">
-                  Todo dia, 43 tarefas acontecem sem eu abrir o computador: relatório,
-                  vigia de erro, backup, aviso no grupo.
-                </p>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    Entrega de consultoria com uso de IA contra construir tudo sozinho:
+                    antes o prazo era de 3 meses. Agora, 1 mês.
+                  </p>
+                </div>
+                <div className="p7-ex">
+                  <p className="p7-dim">
+                    Criação de proposta, relatório, dashboard, disparo de mensagem,
+                    acompanhamento de processo.
+                  </p>
+                  <span className="p7-rec">3 a 4 horas ganhas por dia</span>
+                </div>
               </div>
             </div>
           </div>

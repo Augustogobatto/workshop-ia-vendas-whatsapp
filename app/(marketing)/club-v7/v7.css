@@ -198,8 +198,13 @@ vsc-controller,
   font-size: clamp(26px, 3.4vw, 38px); line-height: 1.1;
   margin: 0; letter-spacing: -0.01em;
 }
-.p7-led-exs p { max-width: 52ch; }
-.p7-led-exs p:last-child { margin-bottom: 0; }
+.p7-led-exs p { max-width: 52ch; margin-bottom: 8px; }
+.p7-ex { margin-bottom: 26px; }
+.p7-ex:last-child { margin-bottom: 0; }
+.p7-rec {
+  display: block; font-size: 12px; font-weight: 650;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+}
 
 /* números em linha abaixo do texto */
 .p7-stats-row {
