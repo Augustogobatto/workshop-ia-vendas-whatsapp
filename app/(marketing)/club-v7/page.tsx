@@ -405,14 +405,48 @@ export default function ClubV7Page({
         </div>
       </section>
 
-      {/* 05 · gente comum com a mão na alavanca — prints reais do grupo (slots até o Augusto printar) */}
+      {/* 05 · gente comum com a mão na alavanca — conversas reais do grupo, transcritas */}
       <section className="p7-sec">
         <div className="p7-wrap">
           <h2 className="p7-h2 p7-r">Gente comum com a mão na alavanca.</h2>
+          <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
+            Conversas reais do grupo do Club, transcritas na íntegra.
+          </p>
           <div className="p7-troop">
-            <div className="p7-slot p7-r">Print Telegram · Jhonathan (tráfego) · 15/07 16:15 · &ldquo;tenho o meu agente rodando lindamente, subindo anuncio, pausando&rdquo; respondendo colega com medo</div>
-            <div className="p7-slot p7-r">Print Telegram · João Luís (robôs industriais) · 24/07 21:35 · &ldquo;do desenho pro real em menos de 5 min&rdquo;</div>
-            <div className="p7-slot p7-r">Print Telegram · Marcelo · 08/07 12:10 · sequência dos 3 balões (agente pronto, 4h da manhã, &ldquo;a vida não é um morango&rdquo;)</div>
+            <div className="p7-chat p7-r">
+              <span className="nome">Jhonathan <em>tráfego</em></span>
+              <div className="balao">
+                Ta suavão, se fizer do jeito que ele falou vai que vai, tenho o meu agente
+                rodando lindamente, subindo anuncio, pausando, dando pitaco, coisa linda de
+                ver!
+                <span className="hora">15/07 · 16:15</span>
+              </div>
+            </div>
+            <div className="p7-chat p7-r">
+              <span className="nome">João Luís <em>robôs industriais</em></span>
+              <div className="balao">
+                Todo o código foi feito pela ia, em poucos segundos [&hellip;] Do desenho pro
+                real em menos de 5 min, serviço manual que demoraria pelo menos 2 a 3 hrs
+                <span className="hora">24/07 · 21:35</span>
+              </div>
+            </div>
+            <div className="p7-chat p7-r">
+              <span className="nome">Marcelo</span>
+              <div className="balao">
+                Timeee finalmente construí meu agente estou feliz pra caramba
+                <span className="hora">08/07 · 12:10</span>
+              </div>
+              <div className="balao">
+                era 4h00 da manhã tava mandando mensagem pra mim especialista mandando a I.A
+                pra ela
+                <span className="hora">08/07 · 12:12</span>
+              </div>
+              <div className="balao">
+                Vendo o Gobatto fazer é tão fácil né, mas aí quando peguei pra fazer, percebi
+                que a vida realmente não é um morango
+                <span className="hora">08/07 · 12:16</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
