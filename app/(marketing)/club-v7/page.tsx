@@ -129,7 +129,7 @@ const HEADLINES: Record<
     sub: (
       <>
         É uma das 10 que rodam a minha empresa hoje. Todo mês eu abro no ao vivo como
-        cada uma foi montada, com o painel de faturamento aberto do lado. R$70 por mês,
+        cada uma foi montada, com o número na tela. R$70 por mês,
         e você monta a sua.
       </>
     ),
@@ -325,6 +325,8 @@ export default function ClubV7Page({
               e chamaram isso de dominar IA.
             </p>
           </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/club-v7/fulcro.jpg" alt="Um ponto de apoio de aço sob um feixe de luz" className="p7-figura p7-r" />
         </div>
       </section>
 
@@ -488,7 +490,7 @@ export default function ClubV7Page({
           <div className="p7-duo">
             <div>
               <span className="p7-eyebrow p7-r">Por que eu posso falar disso</span>
-              <h2 className="p7-h2 p7-r">Eu sou o experimento. Com o faturamento aberto.</h2>
+              <h2 className="p7-h2 p7-r">Eu sou o experimento.</h2>
               <p className="p7-dim p7-r" style={{ marginTop: 18 }}>
                 10 anos de mercado digital. Mais de 300 lançamentos analisados. Sou sócio de
                 empresas que faturam milhões e que eu não posso virar de cabeça pra baixo pra
@@ -498,9 +500,6 @@ export default function ClubV7Page({
                 Hoje ela tem 15 serviços e 43 tarefas rodando. Um responde meus alunos. Um
                 cuida do dinheiro. Um garimpa leads nos meus comentários. Foi a IA que
                 atendeu os leads de um lançamento de R$140 mil.
-              </p>
-              <p className="p7-dim p7-r">
-                O faturamento fica num painel aberto. Qualquer um confere, a qualquer hora.
               </p>
               <p className="p7-dim p7-r">
                 Onde isso vai dar: 2 milhões de faturamento com 3 pessoas. Empresa enxuta,
@@ -551,6 +550,104 @@ export default function ClubV7Page({
               <span className="tag">biblioteca viva</span>
               <h3>Templates e prompts de tudo que aparece em aula</h3>
               <p>Aula ao vivo todo mês, e cada fluxo, prompt e template mostrado fica na biblioteca pra copiar.</p>
+            </div>
+          </div>
+          <p className="p7-dim p7-r" style={{ marginTop: 56 }}>
+            São 7 cursos e 50 aulas. No fim, isso aqui deixa de ser jargão:
+          </p>
+          <div className="p7-tools p7-r">
+            <div><strong>Claude Code</strong><span>seu operador no terminal: escreve, roda e conserta o código de qualquer sistema seu.</span></div>
+            <div><strong>n8n</strong><span>o fluxo que recebe a mensagem no WhatsApp, passa pela IA e responde sozinho.</span></div>
+            <div><strong>API oficial do WhatsApp</strong><span>o vendedor de IA no seu número, com passagem pra humano quando precisa.</span></div>
+            <div><strong>Supabase</strong><span>o banco e o login de qualquer sistema que você criar.</span></div>
+            <div><strong>VPS</strong><span>o servidor onde seus robôs moram, rodando com o teu computador desligado.</span></div>
+            <div><strong>MCP</strong><span>o Claude plugado nas suas ferramentas: banco, planilha, sistemas.</span></div>
+            <div><strong>GitHub + Vercel</strong><span>o código guardado e o site publicado com URL própria, em minutos.</span></div>
+            <div><strong>Chatwoot</strong><span>todas as conversas dos seus agentes num painel só.</span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* a turma: perfis reais garimpados do grupo (13/08) — fotos entram quando cada membro validar */}
+      <section className="p7-sec">
+        <div className="p7-wrap">
+          <span className="p7-eyebrow p7-r">A turma</span>
+          <h2 className="p7-h2 p7-r">Quem tá montando junto.</h2>
+          <p className="p7-dim p7-r" style={{ marginTop: 18, maxWidth: '62ch' }}>
+            Mais de 50 membros ativos. Alguns deles, e o que já colocaram pra rodar:
+          </p>
+          <div className="p7-membros p7-r">
+            <div className="p7-membro">
+              <span className="av">M</span>
+              <div>
+                <strong>Matheus</strong>
+                <em>implementa IA pra clientes</em>
+                <p>Montou o próprio agente de vendas, o Caio, e hoje vende implementação pra clínicas.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">P</span>
+              <div>
+                <strong>Poliana</strong>
+                <em>sócia de agência</em>
+                <p>Montou o sistema central da agência e um agente no Telegram pro especialista que atende.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">J</span>
+              <div>
+                <strong>Jhonathan</strong>
+                <em>gestor de tráfego</em>
+                <p>Agente ligado na conta de anúncios: sobe, pausa e dá pitaco nas campanhas.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">JL</span>
+              <div>
+                <strong>João Luís</strong>
+                <em>robôs industriais</em>
+                <p>Programa de robô codado por IA: do desenho ao movimento real em 5 minutos.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">K</span>
+              <div>
+                <strong>Kauan</strong>
+                <em>marketing em escala</em>
+                <p>Implementando o ManyChat próprio pra um expert de mais de 1 milhão de seguidores.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">M</span>
+              <div>
+                <strong>Marcelo</strong>
+                <em>operação de lançamento</em>
+                <p>Agente no WhatsApp pela API oficial e disparador de avisos no n8n.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">V</span>
+              <div>
+                <strong>Venicio</strong>
+                <em>produto digital próprio</em>
+                <p>Recuperação de venda e entrega de acesso rodando sozinhas no WhatsApp.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">H</span>
+              <div>
+                <strong>Henrique</strong>
+                <em>coprodutor de lançamentos</em>
+                <p>Chegou sem saber quase nada. Já constrói automações com Claude e MCP no n8n.</p>
+              </div>
+            </div>
+            <div className="p7-membro">
+              <span className="av">R</span>
+              <div>
+                <strong>Ritielle</strong>
+                <em>agência + professor universitário</em>
+                <p>Instalou a ferramenta de comentários do club na operação da agência.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -687,6 +784,8 @@ export default function ClubV7Page({
       {/* seção 10: fechamento */}
       <section className="p7-final">
         <div className="p7-wrap">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/club-v7/alavanca-chao.jpg" alt="Uma alavanca de aço largada no chão, ao lado do ponto de apoio" className="p7-figura p7-r" style={{ marginBottom: 8 }} />
           <span className="p7-eyebrow p7-r">O que acontece se você não fizer nada</span>
           <h2 className="p7-h2 p7-r">Nada. É exatamente esse o problema.</h2>
           <p className="p7-sub p7-r" style={{ maxWidth: '52ch' }}>

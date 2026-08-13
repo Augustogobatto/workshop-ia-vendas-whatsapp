@@ -440,3 +440,35 @@ vsc-controller,
   border-radius: 4px;
 }
 
+/* figuras de seção: mesmo mundo do hero, bordas dissolvidas no preto */
+.p7-figura {
+  display: block; width: min(420px, 70vw); margin: 40px auto 0;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 45%, transparent 82%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 45%, transparent 82%);
+}
+
+/* ferramentas que deixam de ser jargão: lista seca em duas colunas */
+.p7-tools { display: grid; gap: 0 56px; margin-top: 8px; border-top: 1px solid var(--line); }
+@media (min-width: 720px) { .p7-tools { grid-template-columns: 1fr 1fr; } }
+.p7-tools > div { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.p7-tools strong { display: block; font-size: 14px; margin-bottom: 2px; }
+.p7-tools span { color: var(--dim); }
+
+/* a turma: perfis compactos, iniciais no lugar de foto */
+.p7-membros { display: grid; gap: 28px 40px; margin-top: 40px; }
+@media (min-width: 720px) { .p7-membros { grid-template-columns: repeat(3, 1fr); } }
+.p7-membro { display: flex; gap: 14px; align-items: flex-start; }
+.p7-membro .av {
+  flex: 0 0 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--wash);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 17px; color: var(--dim);
+}
+.p7-membro strong { display: block; font-size: 14.5px; }
+.p7-membro em {
+  display: block; font-style: normal; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint);
+  margin: 2px 0 6px;
+}
+.p7-membro p { font-size: 13.5px; color: var(--dim); margin: 0; line-height: 1.55; }
+
