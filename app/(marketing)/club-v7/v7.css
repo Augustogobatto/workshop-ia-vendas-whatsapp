@@ -443,8 +443,9 @@ vsc-controller,
 /* figuras de seção: mesmo mundo do hero, bordas dissolvidas no preto */
 .p7-figura {
   display: block; width: min(420px, 70vw); margin: 40px auto 0;
-  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 45%, transparent 82%);
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 45%, transparent 82%);
+  aspect-ratio: 1 / 1; object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 38%, rgba(0,0,0,0.5) 58%, transparent 76%);
+  mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 38%, rgba(0,0,0,0.5) 58%, transparent 76%);
 }
 
 /* ferramentas que deixam de ser jargão: lista seca em duas colunas */
@@ -473,4 +474,18 @@ vsc-controller,
 .p7-membro p { font-size: 13.5px; color: var(--dim); margin: 0; line-height: 1.55; }
 
 .p7-nota { font-size: 13px; color: var(--faint); font-style: italic; }
+
+/* esteira da turma: rola sozinha, pausa no hover */
+.p7-esteira { overflow: hidden; margin-top: 40px; position: relative;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.p7-esteira-fita {
+  display: flex; gap: 44px; width: max-content;
+  animation: p7rolar 60s linear infinite;
+}
+.p7-esteira:hover .p7-esteira-fita { animation-play-state: paused; }
+.p7-esteira .p7-membro { width: 300px; flex: 0 0 300px; }
+@keyframes p7rolar { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .p7-esteira-fita { animation: none; } }
 
