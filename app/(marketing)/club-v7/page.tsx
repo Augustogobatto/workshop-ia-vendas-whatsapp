@@ -778,7 +778,7 @@ export default function ClubV7Page({
       </section>
 
       {/* seção 8: quanto custa */}
-      <section className="p7-sec" id="planos">
+      <section className="p7-sec p7-centro" id="planos">
         <div className="p7-wrap">
           <span className="p7-eyebrow p7-r">Quanto custa</span>
           <h2 className="p7-h2 p7-r">O mesmo caminho, por outras portas:</h2>
@@ -864,7 +864,7 @@ export default function ClubV7Page({
       </section>
 
       {/* seção 9: FAQ */}
-      <section className="p7-sec">
+      <section className="p7-sec p7-centro">
         <div className="p7-wrap">
           <span className="p7-eyebrow p7-r">Dúvidas diretas</span>
           <h2 className="p7-h2 p7-r">Perguntas que chegam na DM</h2>

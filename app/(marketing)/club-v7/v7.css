@@ -500,3 +500,12 @@ vsc-controller,
 .p7-mcp .p7-dim { max-width: 44ch; font-size: 17px; }
 .p7-mcp .p7-figura { margin: 0; width: min(460px, 80vw); justify-self: center; }
 
+/* seções centradas no mesmo eixo do resto (preço e FAQ) */
+.p7-centro { text-align: center; }
+.p7-centro .p7-h2 { max-width: 24ch; margin-left: auto; margin-right: auto; }
+.p7-centro .p7-dim { margin-left: auto; margin-right: auto; }
+.p7-centro .p7-anchor { margin-left: auto; margin-right: auto; text-align: left; }
+.p7-centro .p7-plans { margin-left: auto; margin-right: auto; text-align: left; }
+.p7-centro .p7-faq { margin-left: auto; margin-right: auto; text-align: left; }
+.p7-centro .p7-fine { max-width: 58ch; margin-left: auto; margin-right: auto; }
+
