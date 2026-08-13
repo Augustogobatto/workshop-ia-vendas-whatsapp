@@ -3,9 +3,9 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Vídeo de seção guiado pelo SCROLL: entra na tela no primeiro frame e
- * avança até o último conforme o elemento sobe pela viewport.
- * Sem mouse, sem pêndulo. Exige vídeo ALL-INTRA (keyint=1) pra seek barato.
+ * Vídeo de seção: a rolagem conduz a cena do primeiro ao último frame, e
+ * por cima disso corre uma respiração perpétua, então parar de rolar nunca
+ * congela a imagem. Exige vídeo ALL-INTRA (keyint=1) pra seek barato.
  */
 export default function SectionScrub({
   src,
@@ -31,6 +31,8 @@ export default function SectionScrub({
     let raf = 0
     let cur = 0
     let escrito = -1
+    let fase = Math.random() * Math.PI * 2 // respiração perpétua, dessincronizada
+    const AMP = 0.09 // fração do vídeo que a respiração cobre
     let antes = performance.now()
 
     const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -60,7 +62,11 @@ export default function SectionScrub({
         let p = (vh - r.top) / (vh + r.height)
         p = p < 0 ? 0 : p > 1 ? 1 : p
 
-        const alvo = p * (dur - 0.05)
+        fase += 0.5 * dt
+        // a rolagem escolhe o trecho; a respiração nunca deixa parar
+        let f = AMP + p * (1 - 2 * AMP) + AMP * Math.sin(fase)
+        f = f < 0 ? 0 : f > 1 ? 1 : f
+        const alvo = f * (dur - 0.05)
         // perseguição rápida: acompanha o dedo/roda sem parecer travado
         cur += (alvo - cur) * (1 - Math.exp(-9 * dt))
 
