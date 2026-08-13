@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import HeroScrub from './HeroScrub'
 import HeroLuz from './HeroLuz'
+import SectionScrub from './SectionScrub'
 import './v7.css'
 
 export const metadata: Metadata = {
@@ -325,10 +326,9 @@ export default function ClubV7Page({
               e chamaram isso de dominar IA.
             </p>
           </div>
-          <video
+          <SectionScrub
             src="/club-v7/fulcro-loop.mp4" poster="/club-v7/fulcro.jpg"
-            autoPlay muted loop playsInline
-            aria-label="Um ponto de apoio de aço sob um feixe de luz"
+            alt="Um ponto de apoio de aço sob um feixe de luz"
             className="p7-figura p7-r"
           />
         </div>
@@ -566,10 +566,9 @@ export default function ClubV7Page({
                 por você.
               </p>
             </div>
-            <video
-              id="p7mcp" src="/club-v7/mcp.mp4" poster="/club-v7/mcp-poster.jpg"
-              muted playsInline preload="auto"
-              aria-label="Cubos de aço se conectando num bloco só"
+            <SectionScrub
+              src="/club-v7/mcp.mp4" poster="/club-v7/mcp-poster.jpg"
+              alt="Cubos de aço se conectando num bloco só"
               className="p7-figura"
             />
           </div>
@@ -907,10 +906,9 @@ export default function ClubV7Page({
       {/* seção 10: fechamento */}
       <section className="p7-final">
         <div className="p7-wrap">
-          <video
-            id="p7queda" src="/club-v7/alavanca-queda.mp4" poster="/club-v7/alavanca-queda-poster.jpg"
-            muted playsInline preload="auto"
-            aria-label="Uma alavanca de aço despencando do ponto de apoio e ficando largada no chão"
+          <SectionScrub
+            src="/club-v7/alavanca-queda.mp4" poster="/club-v7/alavanca-queda-poster.jpg"
+            alt="Uma alavanca de aço oscilando entre o apoio e o chão"
             className="p7-figura p7-r" style={{ marginBottom: 8 }}
           />
           <span className="p7-eyebrow p7-r">Se nada mudar</span>
@@ -956,18 +954,6 @@ if(q){
     });
   }
 }
-})();
-(function(){
-// queda da alavanca e montagem do MCP tocam uma vez, quando 60% entram na tela
-['p7queda','p7mcp'].forEach(function(id){
-  var v=document.getElementById(id);
-  if(v&&'IntersectionObserver'in window){
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){if(e.isIntersecting){v.play().catch(function(){});io.disconnect()}});
-    },{threshold:0.6});
-    io.observe(v);
-  }
-});
 })();
 (function(){
 // rolagem com calma nos anchors (#entenda, #planos): ease-in-out ~1.1s
