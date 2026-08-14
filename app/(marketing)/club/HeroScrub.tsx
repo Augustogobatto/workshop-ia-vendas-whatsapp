@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
  * Hero em vídeo com fluxo perpétuo + scrub suave.
@@ -24,10 +24,22 @@ export default function HeroScrub({
   alt: string
 }) {
   const ref = useRef<HTMLVideoElement>(null)
+  // enquanto false, o poster fica pintado por cima como <img> (ver comentário
+  // no return): é o que impede o buraco preto no primeiro paint do celular.
+  const [temFrame, setTemFrame] = useState(false)
 
   useEffect(() => {
     const v = ref.current
     if (!v) return
+
+    const pintou = () => setTemFrame(true)
+    v.addEventListener('loadeddata', pintou)
+    if (v.readyState >= 2) pintou()
+    // celular adia o fetch do vídeo até um gesto; pedir explicitamente adianta
+    // o que der pra adiantar sem depender do toque.
+    try {
+      v.load()
+    } catch {}
 
     let dur = 0
     let pronto = false
@@ -131,6 +143,7 @@ export default function HeroScrub({
     raf = requestAnimationFrame(loop)
 
     return () => {
+      v.removeEventListener('loadeddata', pintou)
       v.removeEventListener('loadedmetadata', armar)
       v.removeEventListener('canplay', armar)
       window.removeEventListener('pointermove', onMove)
@@ -140,31 +153,58 @@ export default function HeroScrub({
     }
   }, [])
 
+  // geometria e máscara idênticas nos dois: o <img> tem que cair exatamente
+  // em cima do <video>, senão a troca pisca
+  const moldura = {
+    width: '100%',
+    display: 'block',
+    aspectRatio: '1 / 1',
+    objectFit: 'cover' as const,
+    // zoom leve empurra as bordas originais pra fora da zona visível
+    transform: 'scale(1.14)',
+    // fade mais cedo e mais longo: nenhum frame do arco alcança a borda
+    WebkitMaskImage:
+      'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
+    maskImage:
+      'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
+  }
+
   return (
     <div style={{ position: 'relative' }}>
-    <video
-      ref={ref}
-      id="p7scrub"
-      src={src}
-      poster={poster}
-      muted
-      playsInline
-      preload="auto"
-      aria-label={alt}
-      style={{
-        width: '100%',
-        display: 'block',
-        aspectRatio: '1 / 1',
-        objectFit: 'cover',
-        // zoom leve empurra as bordas originais pra fora da zona visível
-        transform: 'scale(1.14)',
-        // fade mais cedo e mais longo: nenhum frame do arco alcança a borda
-        WebkitMaskImage:
-          'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
-        maskImage:
-          'radial-gradient(ellipse 68% 68% at 50% 50%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 86%)',
-      }}
-    />
+      {/*
+        Poster pintado como <img> DE VERDADE, não só no atributo poster do vídeo.
+        No celular o browser adia o fetch do vídeo até o primeiro gesto (aqui o
+        `touchstart` que vira play), e o atributo `poster` de um <video>
+        mascarado + transformado não pinta nesse meio tempo: a página abria com
+        um buraco preto no lugar do hero até a pessoa rolar. O <img> pinta no
+        primeiro paint e sai de cena quando o vídeo tem frame.
+      */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={poster}
+        alt=""
+        aria-hidden="true"
+        style={{
+          ...moldura,
+          position: 'absolute',
+          inset: 0,
+          height: '100%',
+          opacity: temFrame ? 0 : 1,
+          transition: 'opacity 260ms linear',
+          pointerEvents: 'none',
+        }}
+      />
+      <video
+        ref={ref}
+        id="p7scrub"
+        src={src}
+        poster={poster}
+        muted
+        playsInline
+        preload="auto"
+        aria-label={alt}
+        style={moldura}
+      />
     </div>
   )
 }
