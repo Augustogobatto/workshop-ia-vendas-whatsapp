@@ -13,7 +13,7 @@
   --wash:  #0e0e0e;
   --ink:   #ededed;
   --dim:   #a1a1a1;
-  --faint: #6b6b6b;
+  --faint: #7a7a7a; /* 4,8:1 sobre preto — AA. Era #6b6b6b (3,94:1, reprovava) */
   --line:  #232323;
 
   --serif: 'Source Serif 4', Georgia, serif;
@@ -172,7 +172,7 @@ vsc-controller,
 /* citação no pé do hero: uma linha só, sussurro centralizado */
 .p7-hero-epi {
   font-family: var(--serif); font-style: italic;
-  font-size: 14px; color: #3f3f3f; text-align: center;
+  font-size: 14px; color: #757575; text-align: center; /* era #3f3f3f (2,0:1, quase invisível) */
   margin: clamp(40px, 6vh, 64px) 0 0;
 }
 .p7-hero-epi .a {
