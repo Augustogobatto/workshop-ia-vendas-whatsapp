@@ -36,7 +36,8 @@ const HERO_ELEMENTS: Record<
     aspect?: string
   }
 > = {
-  default: {
+  // Hero antigo (12/08), imagem parada. Continua acessível em ?el=bloco.
+  bloco: {
     src: '/club-v7/bloco.jpg',
     alt: 'Bloco de pedra: metade bruta e fosca, metade esculpida em cunha polida',
   },
@@ -224,7 +225,10 @@ export default function ClubV7Page({
 }: {
   searchParams?: { el?: string; h?: string }
 }) {
-  const hero = HERO_ELEMENTS[searchParams?.el ?? 'default'] ?? HERO_ELEMENTS.default
+  // O hero PADRÃO é o vídeo da alavanca. Era variante ?el=note e a URL limpa
+  // servia o bloco parado — que é justamente a URL que vai pro anúncio, pra bio
+  // e pro celular. Ao trocar de hero, trocar AQUI, não só no ?el.
+  const hero = HERO_ELEMENTS[searchParams?.el ?? 'note'] ?? HERO_ELEMENTS.note
   const head = HEADLINES[searchParams?.h ?? '8'] ?? HEADLINES['8']
   return (
     <div className="p7">
