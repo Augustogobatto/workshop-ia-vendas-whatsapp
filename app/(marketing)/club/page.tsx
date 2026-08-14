@@ -193,13 +193,11 @@ const HEADLINES: Record<
         <em>O trabalho de dez.</em>
       </>
     ),
-    sub: (
-      <>
-        A IA é uma alavanca: multiplica a força que você já tem.
-        <br />
-        Todo mundo tem a mesma IA. Quase ninguém sabe onde apoiar.
-      </>
-    ),
+    // Sub fechada por ele em 12/08 19h59 ("essa é a frase correta abaixo do
+    // hero") e restaurada em 14/08. A versão de duas linhas do
+    // club-copy-final.md entrou por engano na montagem da madrugada: as duas
+    // são copy dele, escritas em sessões paralelas que não se enxergavam.
+    sub: <>Aprenda a utilizar IA como uma alavanca para multiplicar seu potencial.</>,
   },
   '7': {
     nota: 'variação sem "paga" (pra quem usa a versão grátis)',

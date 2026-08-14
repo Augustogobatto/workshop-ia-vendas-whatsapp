@@ -17,12 +17,20 @@ Copy pronta pra diagramar. **Usar exatamente como está.** Não reescrever, não
 **Uma pessoa.**
 **O trabalho de dez.**
 
-A IA é uma alavanca: multiplica a força que você já tem.
-Todo mundo tem a mesma IA. Quase ninguém sabe onde apoiar.
+Aprenda a utilizar IA como uma alavanca para multiplicar seu potencial.
 
-`[ Aprenda onde apoiar a sua → ]`
+`[ Entrar no Push Club ]`
 
-> ⚠️ Isto substitui a sub atual ("Aprenda a utilizar IA como uma alavanca para multiplicar seu potencial"), que é versão antiga.
+> ⚠️ **REVERTIDO em 14/08/2026, por decisão dele.** Este doc pedia a sub de duas
+> linhas ("A IA é uma alavanca: multiplica a força que você já tem. / Todo mundo
+> tem a mesma IA. Quase ninguém sabe onde apoiar.") e tratava a de uma linha como
+> "versão antiga" — mas a de uma linha é a que ELE fechou em 12/08 às 19h59
+> ("essa é a frase correta abaixo do hero"). As duas são copy dele, escritas com
+> horas de diferença em sessões paralelas que não se enxergavam; a montagem da
+> madrugada aplicou a errada. **Vale a de uma linha. Não "corrigir" de volta.**
+>
+> O CTA "Aprenda onde apoiar a sua →" também foi rejeitado por ele em 13/08
+> ("apoie a seu não ficou legal") e virou "Entrar no Push Club".
 
 ---
 
