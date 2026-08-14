@@ -8,13 +8,15 @@ const nextConfig = {
       { hostname: 'edbhhijnpwgmksxnjzrr.supabase.co' },
     ],
   },
-  // /club precisa ser redirect HTTP de verdade: o redirect() dentro de
-  // app/club/page.tsx vira navegação client-side, e o <script> inline de
-  // reveal das páginas club-v* não executa nesse caminho (React não roda
-  // script inserido no client) — a página fica preta abaixo do hero.
+  // Redirect HTTP de verdade, nunca redirect() dentro de page.tsx: o redirect()
+  // vira navegação client-side, e o <script> inline de reveal das páginas club-v*
+  // não executa nesse caminho (React não roda script inserido no client) — a
+  // página fica preta abaixo do hero.
+  // 14/08/2026: a página nova assumiu a /club; a /club-v7 (link de preview que
+  // já circulou) passa a apontar pra ela.
   async redirects() {
     return [
-      { source: '/club', destination: '/club-v2', permanent: false },
+      { source: '/club-v7', destination: '/club', permanent: false },
     ]
   },
 }
