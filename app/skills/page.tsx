@@ -61,7 +61,7 @@ const GRUPOS = [
         nome: 'voz',
         linha: 'Faz a IA escrever com a sua voz, porque a sua voz está escrita.',
         cicatriz:
-          'Humanizar texto de IA quase sempre troca uma voz genérica por outra voz genérica. O objetivo não é soar humano, é soar como você.',
+          'Humanizar texto de IA quase sempre troca uma voz genérica por outra voz genérica. O alvo é mais estreito do que soar humano: é soar como você.',
       },
     ],
   },
@@ -168,7 +168,7 @@ export default function SkillsPage() {
             Baixar o pack
             <span style={{ opacity: 0.5, fontWeight: 400 }}>·  24 KB</span>
           </a>
-          <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
+          <span style={{ fontSize: 13, color: '#7A7A7A' }}>
             .zip com 8 pastas · MIT · sem cadastro
           </span>
         </div>
@@ -208,7 +208,7 @@ export default function SkillsPage() {
           <div key={g.titulo} style={{ marginBottom: 52 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, flexWrap: 'wrap', marginBottom: 22 }}>
               <h2 style={{ ...S.h2, fontSize: 'clamp(22px, 3.6vw, 28px)' }}>{g.titulo}</h2>
-              <span style={{ fontSize: 14, color: 'var(--text-dim)' }}>{g.nota}</span>
+              <span style={{ fontSize: 14, color: '#7A7A7A' }}>{g.nota}</span>
             </div>
 
             <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
@@ -285,7 +285,7 @@ export default function SkillsPage() {
             alignItems: 'center',
           }}
         >
-          <p style={{ fontSize: 13.5, color: 'var(--text-dim)' }}>
+          <p style={{ fontSize: 13.5, color: '#6E6E6E' }}>
             v1 · 24 de agosto de 2026 · licença MIT · o pack muda, a página fica no mesmo endereço
           </p>
           <a
