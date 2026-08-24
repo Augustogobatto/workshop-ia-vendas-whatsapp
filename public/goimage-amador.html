@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Amador ou Profissional — Go Image</title>
+<style>
+  :root{
+    --ground:#EEF1EF; --surface:#FFFFFF; --surface-2:#F6F8F6;
+    --ink:#151A18; --ink-2:#3D4744; --muted:#6C7873; --line:#D8DEDA;
+    --accent:#0C6B52; --accent-soft:#DCEBE4;
+    --pro:#1F5C8B; --pro-soft:#DCE9F3;
+    --am:#8A4B1E; --am-soft:#F5E4D6;
+    --warn:#9A6510; --warn-soft:#F5E9D2;
+    --crit:#9E3A2C; --crit-soft:#F6E1DC;
+    --display:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1211; --surface:#161C1A; --surface-2:#1C2321;
+      --ink:#E7EDEA; --ink-2:#B7C2BE; --muted:#869791; --line:#2A3330;
+      --accent:#3FC79B; --accent-soft:#17352C;
+      --pro:#6BAEE0; --pro-soft:#16293A;
+      --am:#D79A63; --am-soft:#33220F;
+      --warn:#D9A249; --warn-soft:#33280F;
+      --crit:#E2796A; --crit-soft:#3A1F1A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1211; --surface:#161C1A; --surface-2:#1C2321;
+    --ink:#E7EDEA; --ink-2:#B7C2BE; --muted:#869791; --line:#2A3330;
+    --accent:#3FC79B; --accent-soft:#17352C;
+    --pro:#6BAEE0; --pro-soft:#16293A;
+    --am:#D79A63; --am-soft:#33220F;
+    --warn:#D9A249; --warn-soft:#33280F;
+    --crit:#E2796A; --crit-soft:#3A1F1A;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground); color:var(--ink); font-family:var(--body);
+       font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1100px; margin:0 auto; padding:clamp(28px,5vw,60px) clamp(18px,4vw,40px) 96px;}
+
+  header.mast{display:flex; flex-direction:column; gap:16px; padding-bottom:30px; border-bottom:2px solid var(--ink);}
+  .eyebrow{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);}
+  h1{font-family:var(--display); font-weight:400; font-size:clamp(32px,5.6vw,56px); line-height:1.05;
+     margin:0; text-wrap:balance; letter-spacing:-.015em;}
+  h1 em{font-style:normal; color:var(--accent);}
+  .dek{font-size:clamp(16.5px,2.2vw,19px); color:var(--ink-2); max-width:64ch; margin:0; text-wrap:pretty;}
+
+  .resp{margin-top:34px; display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line);}
+  .r{background:var(--surface); padding:22px 24px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start;}
+  .r .num{font-family:var(--mono); font-size:12px; color:var(--surface); background:var(--accent);
+          width:26px; height:26px; display:grid; place-items:center; border-radius:50%; margin-top:2px;}
+  .r h3{margin:0 0 6px; font-size:17px; font-weight:650; text-wrap:balance;}
+  .r p{margin:0; font-size:15px; color:var(--ink-2); max-width:72ch;}
+  .r .verdito{font-family:var(--display); font-size:17px; color:var(--ink); margin-bottom:7px;}
+
+  section{margin-top:58px; display:flex; flex-direction:column; gap:18px;}
+  .shead{display:flex; flex-direction:column; gap:6px; border-bottom:1px solid var(--line); padding-bottom:11px;}
+  h2.st{font-family:var(--display); font-weight:400; font-size:clamp(23px,3.2vw,32px); margin:0; letter-spacing:-.01em; text-wrap:balance;}
+  .sub{color:var(--muted); font-size:14.5px; margin:0; max-width:68ch;}
+  p{margin:0; max-width:72ch; text-wrap:pretty;}
+  .prose{display:flex; flex-direction:column; gap:13px;}
+  strong{font-weight:650;}
+  .hl{background:var(--accent-soft); padding:0 .22em; border-radius:2px;}
+
+  .kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .kpi{background:var(--surface); padding:18px 17px; display:flex; flex-direction:column; gap:4px;}
+  .kpi .n{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:clamp(24px,3.6vw,31px); line-height:1; letter-spacing:-.02em;}
+  .kpi .l{font-size:13px; color:var(--muted); line-height:1.35;}
+  .kpi.pro .n{color:var(--pro)} .kpi.am .n{color:var(--am)} .kpi.ok .n{color:var(--accent)} .kpi.bad .n{color:var(--crit)}
+
+  .tw{overflow-x:auto; border:1px solid var(--line); background:var(--surface);}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px;}
+  th,td{text-align:left; padding:10px 15px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:500; background:var(--surface-2);}
+  td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap;}
+  tbody tr:last-child td{border-bottom:none;}
+  tr.destaque td{background:var(--accent-soft);}
+  code{font-family:var(--mono); font-size:.86em; background:var(--surface-2); padding:1px 5px; border-radius:3px; border:1px solid var(--line);}
+
+  .bars{display:flex; flex-direction:column; gap:8px;}
+  .bar-row{display:grid; grid-template-columns:minmax(120px,1.1fr) 3fr auto; gap:12px; align-items:center;}
+  .bar-row .lab{font-size:14px;}
+  .bl{height:22px; background:var(--surface-2); border:1px solid var(--line); position:relative; overflow:hidden;}
+  .bl i{position:absolute; inset:0 auto 0 0; display:block; opacity:.85;}
+  .bl i.p{background:var(--pro)} .bl i.a{background:var(--am)} .bl i.g{background:var(--accent)}
+  .bar-row .v{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:13.5px; white-space:nowrap; color:var(--ink-2);}
+  @media(max-width:600px){ .bar-row{grid-template-columns:1fr auto} .bar-row .bl{grid-column:1/3} }
+
+  .quote{font-family:var(--display); font-style:italic; font-size:15.5px; border-left:3px solid var(--accent);
+         padding-left:13px; line-height:1.45; color:var(--ink);}
+  .cx{background:var(--crit-soft); border-left:3px solid var(--crit); padding:13px 16px; font-size:14.5px;}
+  .cx b{color:var(--crit)}
+  .nota{background:var(--surface-2); border:1px solid var(--line); padding:14px 17px; font-size:14.5px; color:var(--ink-2);}
+
+  .pill{display:inline-block; font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+        padding:3px 8px; border-radius:2px; vertical-align:2px;}
+  .pill.p{background:var(--pro-soft); color:var(--pro)}
+  .pill.a{background:var(--am-soft); color:var(--am)}
+  .pill.w{background:var(--warn-soft); color:var(--warn)}
+
+  footer{margin-top:62px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px; display:flex; flex-direction:column; gap:9px;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">Go Image · estudo de segmentação de leads</div>
+    <h1>Amador ou profissional,<br><em>e em que momento dá pra saber</em></h1>
+    <p class="dek">Resposta aos três pedidos do Rafa. Base: 1.771 conversas em que o cliente falou alguma coisa, lidas e classificadas uma a uma, com o áudio transcrito incluído. Não é amostra nem estimativa.</p>
+  </header>
+
+  <div class="resp">
+    <div class="r">
+      <span class="num">1</span>
+      <div>
+        <h3>Tag automática amador × profissional</h3>
+        <p class="verdito"><strong>Dá, com 99% de precisão. Mas ela nasce na segunda mensagem do cliente, não na entrada do lead.</strong></p>
+        <p>E cobre 58% de quem é classificável, o que equivale a 21% de todos os atendimentos. O resto da base nunca dá sinal nenhum porque a conversa morre antes.</p>
+      </div>
+    </div>
+    <div class="r">
+      <span class="num">2</span>
+      <div>
+        <h3>Análise dos leads que responderam "uso pessoal"</h3>
+        <p class="verdito"><strong>São 234 leads. 78% vêm de anúncio pago e praticamente nenhum vem de indicação de fotógrafo.</strong></p>
+        <p>Ocasião, produto e origem estão medidos abaixo. O que <em>não</em> dá pra responder é qual produto compraram, porque o CRM não registra venda: não existe uma única venda de álbum de ponta a ponta em toda a base.</p>
+      </div>
+    </div>
+    <div class="r">
+      <span class="num">3</span>
+      <div>
+        <h3>Quem é o público amador</h3>
+        <p class="verdito"><strong>É a mãe. Depois a noiva, e depois a avó.</strong></p>
+        <p>Ela chega com as fotos na mão, sem repertório do setor, e a barreira dela não é preço: é não saber que precisa diagramar o álbum sozinha. Faixa etária não sai da conversa e precisa vir do gerenciador da Meta.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MÉTODO ===================== -->
+  <section>
+    <div class="shead">
+      <h2 class="st">Como isso foi apurado</h2>
+      <p class="sub">Importa porque muda o peso do que vem depois.</p>
+    </div>
+    <div class="prose">
+      <p>Foram lidas as 1.771 conversas em que o cliente chegou a falar. Dez analistas independentes classificaram cada uma delas individualmente, com uma regra dura: <strong>sem citação literal do cliente, o perfil vira "indefinido"</strong>. Nenhum lead foi classificado como profissional só por perguntar preço de álbum.</p>
+      <p>Depois disso, as regras candidatas de tag foram <span class="hl">medidas contra essa classificação</span>, em três janelas: só a primeira mensagem do cliente, até a segunda, e a conversa inteira. É daí que saem os números de precisão e cobertura, e não de impressão de leitura.</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span class="n">1.771</span><span class="l">conversas lidas e classificadas uma a uma</span></div>
+      <div class="kpi pro"><span class="n">546</span><span class="l">profissionais identificados</span></div>
+      <div class="kpi am"><span class="n">234</span><span class="l">amadores identificados</span></div>
+      <div class="kpi"><span class="n">976</span><span class="l">sem sinal nenhum de perfil</span></div>
+    </div>
+
+    <div class="nota">Os 976 sem sinal não são gente ambígua: na maioria são conversas que morreram na saudação, antes de qualquer troca real. Isso é um problema de tempo de resposta, não de classificação, e volta no fim deste documento.</div>
+  </section>
+
+  <!-- ===================== ITEM 1: TAG ===================== -->
+  <section>
+    <div class="shead">
+      <h2 class="st">1. A tag automática</h2>
+      <p class="sub">Entre os 785 leads classificáveis, a divisão real é de quase 70% profissional para 30% amador.</p>
+    </div>
+
+    <div class="bars">
+      <div class="bar-row"><span class="lab">Profissional</span><span class="bl"><i class="p" style="width:69.6%"></i></span><span class="v">546 · 69,6%</span></div>
+      <div class="bar-row"><span class="lab">Amador</span><span class="bl"><i class="a" style="width:29.8%"></i></span><span class="v">234 · 29,8%</span></div>
+      <div class="bar-row"><span class="lab">Revenda / lojista</span><span class="bl"><i class="g" style="width:0.6%"></i></span><span class="v">5 · 0,6%</span></div>
+    </div>
+
+    <h3 style="font-family:var(--display); font-weight:400; font-size:22px; margin:26px 0 0">Quando a tag pode ser aplicada</h3>
+    <p>Essa é a pergunta que decide o desenho dos dois funis. Medindo quantas mensagens do cliente foram necessárias até o perfil ficar identificável:</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Mensagens do cliente</th><th class="num">Leads</th><th class="num">Acumulado</th><th>O que isso significa</th></tr></thead>
+        <tbody>
+          <tr><td>1 mensagem</td><td class="num">185</td><td class="num">24%</td><td>Quase sempre autoresposta comercial do próprio lead, ou declaração espontânea</td></tr>
+          <tr class="destaque"><td><strong>2 mensagens</strong></td><td class="num">374</td><td class="num"><strong>71%</strong></td><td>É aqui que a resposta à pergunta de qualificação chega. O ponto natural da tag</td></tr>
+          <tr><td>3 mensagens</td><td class="num">143</td><td class="num">90%</td><td>Últimos casos relevantes</td></tr>
+          <tr><td>4 ou mais</td><td class="num">82</td><td class="num">100%</td><td>Cauda longa. Se não saiu até a terceira, praticamente não sai mais</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Conclusão prática:</strong> uma tag aplicada na entrada do lead classificaria 24% dos casos. Aplicada depois da segunda mensagem do cliente, chega a 71%. Depois da terceira, 90%. <span class="hl">O ganho de esperar da segunda para a terceira mensagem é pequeno e custa uma rodada de conversa</span>, então o ponto de corte recomendado é a segunda.</p>
+
+    <h3 style="font-family:var(--display); font-weight:400; font-size:22px; margin:26px 0 0">As regras, medidas</h3>
+    <p>Precisão é quanto a regra acerta quando dispara. Recall é quanto do total ela alcança. Medido sobre a conversa inteira:</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Regra</th><th>Aponta</th><th class="num">Precisão</th><th class="num">Recall</th></tr></thead>
+        <tbody>
+          <tr><td>Diz "uso pessoal" / "pessoal mesmo"</td><td><span class="pill a">amador</span></td><td class="num">98%</td><td class="num">56%</td></tr>
+          <tr><td>Diz "sou fotógrafo" / "trabalho com fotografia" <em>(tratando negação)</em></td><td><span class="pill p">profissional</span></td><td class="num">98%</td><td class="num">35%</td></tr>
+          <tr class="destaque"><td>Autoresposta comercial do próprio lead <em>(custo zero, chega na msg 1)</em></td><td><span class="pill p">profissional</span></td><td class="num">93%</td><td class="num">5%</td></tr>
+          <tr><td>Fala de cliente como posse: "meus clientes", "a cliente aprovar"</td><td><span class="pill p">profissional</span></td><td class="num">100%</td><td class="num">9%</td></tr>
+          <tr><td>Possessivo familiar: "minha filha", "meu casamento"</td><td><span class="pill a">amador</span></td><td class="num">100%</td><td class="num">7%</td></tr>
+          <tr><td>Assinatura de estúdio no nome ou e-mail</td><td><span class="pill p">profissional</span></td><td class="num">93%</td><td class="num">5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Regra combinada</th><th class="num">Cobertura</th><th class="num">Precisão</th></tr></thead>
+        <tbody>
+          <tr><td>Aplicada até a 2ª mensagem do cliente</td><td class="num">36%</td><td class="num">99%</td></tr>
+          <tr class="destaque"><td>Aplicada sobre a conversa inteira</td><td class="num">58%</td><td class="num">99%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cx">
+      <b>Três armadilhas que só apareceram porque as conversas foram lidas.</b>
+      <p style="margin-top:9px"><strong>A negação.</strong> A regra "sou fotógrafo" casa com <em>"não sou fotógrafo"</em>, que é a declaração mais explícita possível de consumidor final. Tratar a negação leva a precisão de 97,0% para 98,4% e corrige três casos.</p>
+      <p style="margin-top:9px"><strong>O "mas".</strong> Existe o fotógrafo comprando para si: <em>"Sim trabalho com fotografia sim. Mas gostaria de um orçamento pessoal"</em> e <em>"Trabalho com fotografia mas tenho dois álbuns para minha família"</em>. A regra precisa ler a frase inteira, não a primeira metade.</p>
+      <p style="margin-top:9px"><strong>"Uso pessoal" mente às vezes.</strong> Um lead respondeu "uso pessoal" e duas mensagens depois revelou que o álbum era mostruário do próprio trabalho: <em>"para poder mostrar o meu trabalho fotográfico para os clientes"</em>. São 3 casos em 546, raro, mas existe.</p>
+    </div>
+
+    <div class="nota">
+      <strong>Um ganho de cobertura de graça:</strong> 261 pessoas aparecem em mais de um atendimento no CRM, somando 627 registros. Se o perfil for guardado <em>na pessoa</em> e não no atendimento, <strong>211 atendimentos hoje indefinidos herdam o perfil</strong> de outra conversa da mesma pessoa. A cobertura sobe de 44,3% para 56,2% sem fazer uma única pergunta a mais.
+    </div>
+  </section>
+
+  <!-- ===================== ITEM 2: USO PESSOAL ===================== -->
+  <section>
+    <div class="shead">
+      <h2 class="st">2. Os leads de "uso pessoal"</h2>
+      <p class="sub">234 leads identificados. Ocasião declarada por 136 deles.</p>
+    </div>
+
+    <h3 style="font-family:var(--display); font-weight:400; font-size:22px; margin:0">Origem: a diferença que orienta o criativo</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Origem</th><th class="num">Amador</th><th class="num">Profissional</th></tr></thead>
+        <tbody>
+          <tr class="destaque"><td>Anúncio (tráfego pago)</td><td class="num">78%</td><td class="num">51%</td></tr>
+          <tr><td>Congresso FOTOIN</td><td class="num">0%</td><td class="num">11%</td></tr>
+          <tr><td>Grupo de parceira</td><td class="num">0%</td><td class="num">6%</td></tr>
+          <tr><td>Prospecção ativa</td><td class="num">5%</td><td class="num">11%</td></tr>
+          <tr><td>Indicação</td><td class="num">2%</td><td class="num">0%</td></tr>
+          <tr><td>Orgânico</td><td class="num">6%</td><td class="num">3%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>O amador só entra por uma porta.</strong> Nenhum dos 234 veio do FOTOIN ou de grupo de parceira, e apenas 2% vieram de indicação de fotógrafo. Todo o público de consumidor final é comprado no tráfego. Ou seja, o volume de amador é uma variável que a Go Image controla diretamente pela verba de anúncio.</p>
+
+    <h3 style="font-family:var(--display); font-weight:400; font-size:22px; margin:26px 0 0">Ocasião</h3>
+    <p class="sub" style="margin-bottom:4px">Entre os 136 que declararam. Os outros 98 nunca disseram.</p>
+    <div class="bars">
+      <div class="bar-row"><span class="lab">Casamento</span><span class="bl"><i class="a" style="width:100%"></i></span><span class="v">31 · 23%</span></div>
+      <div class="bar-row"><span class="lab">15 anos</span><span class="bl"><i class="a" style="width:77%"></i></span><span class="v">24 · 18%</span></div>
+      <div class="bar-row"><span class="lab">Outro</span><span class="bl"><i class="a" style="width:65%"></i></span><span class="v">20 · 15%</span></div>
+      <div class="bar-row"><span class="lab">Aniversário infantil</span><span class="bl"><i class="a" style="width:55%"></i></span><span class="v">17 · 12%</span></div>
+      <div class="bar-row"><span class="lab">Família / retrospectiva</span><span class="bl"><i class="a" style="width:52%"></i></span><span class="v">16 · 12%</span></div>
+      <div class="bar-row"><span class="lab">Bebê / newborn</span><span class="bl"><i class="a" style="width:26%"></i></span><span class="v">8 · 6%</span></div>
+      <div class="bar-row"><span class="lab">Formatura</span><span class="bl"><i class="a" style="width:19%"></i></span><span class="v">6 · 4%</span></div>
+      <div class="bar-row"><span class="lab">Viagem</span><span class="bl"><i class="a" style="width:16%"></i></span><span class="v">5 · 4%</span></div>
+      <div class="bar-row"><span class="lab">Ensaio / book</span><span class="bl"><i class="a" style="width:16%"></i></span><span class="v">5 · 4%</span></div>
+    </div>
+    <p>Casamento e 15 anos, juntos, são <strong>41% das ocasiões declaradas</strong>. Se o objetivo é orientar criativo, são esses dois que pagam a conta.</p>
+
+    <h3 style="font-family:var(--display); font-weight:400; font-size:22px; margin:26px 0 0">Produto e tamanho</h3>
+    <p>O Fastbook domina, com 132 dos 234 citando capa fotográfica. Mas o amador <strong>não é público de produto barato</strong>: suede aparece em 47 conversas, linho em 47, Shine em 43 e Signature em 26. Os tamanhos mais pedidos são 20x20, 15x20, 30x30 e 25x25, praticamente os mesmos do profissional.</p>
+
+    <div class="cx">
+      <b>O que não dá para responder, e por quê.</b>
+      <p style="margin-top:9px">O pedido do Rafa inclui <em>"qual produto compraram"</em>. Isso não é apurável: o CRM não registra venda. Não existe uma única conversa em etapa "Vendido" na base inteira, e a varredura por sinal concreto de pedido (link de pagamento, carrinho, comprovante, nota fiscal, rastreio) encontrou nove casos em 3.773. <strong>Só dá para dizer o que pediram e discutiram, não o que levaram.</strong> Cruzar com o Sankhya resolve isso, e é a mesma dependência que a métrica de sucesso do projeto tem.</p>
+    </div>
+  </section>
+
+  <!-- ===================== ITEM 3: QUEM É ===================== -->
+  <section>
+    <div class="shead">
+      <h2 class="st">3. Quem é o público amador</h2>
+      <p class="sub">Sintetizado das descrições feitas conversa a conversa, em 196 dos 234 casos.</p>
+    </div>
+
+    <div class="prose">
+      <p><strong>É predominantemente a mãe.</strong> "Mãe" ou "pai" aparece em 59 das descrições e "filha" ou "filho" em 46, quase sempre juntos: a mãe montando o álbum dos 15 anos da filha, do primeiro ano do bebê, da formatura. Em seguida vem <strong>a noiva</strong>, em 24 descrições, quase sempre com o álbum do próprio casamento e as fotos já na mão. E aparece <strong>a avó</strong>, em 7, com fotos da neta.</p>
+
+      <p><strong>Ela não fala a língua do setor.</strong> Raciocina por quantidade de fotos e não por páginas, pergunta o preço "de 50 fotos", descreve tamanho como "de caderno de desenho". Uma delas disse literalmente <em>"Eu não entendo muito bem dessas coisas"</em>. Outra achava que o produto era exclusivo para fotógrafos.</p>
+
+      <div class="quote">"Avó com 30 fotos profissionais do aniversário de 6 anos da neta; quer álbum ou algo tipo revista e não entende o vocabulário do setor."</div>
+
+      <p><strong>A barreira dela é a diagramação, não o preço.</strong> Esse foi o achado mais repetido entre os analistas. Ela chega achando que manda as fotos e recebe o álbum pronto: <em>"Eu achei que vcs montavam kkkk"</em>. Descobrir que precisa montar sozinha, no computador, é o que trava a compra. Os números confirmam: <span class="hl">preço é objeção em apenas 4% dos amadores</span>, e 80% deles não levantam objeção nenhuma.</p>
+
+      <p><strong>E muitas vezes ela chega porque um fotógrafo falhou.</strong> Aparecem casos de mãe cuja fotógrafa engravidou e parou de atender, de álbum entregue com qualidade ruim, e de vítima de golpe de outro fornecedor refazendo o álbum da filha. Ela não é um lead que se perdeu no funil errado: é demanda real, com arquivo em mãos e motivo emocional.</p>
+    </div>
+
+    <h3 style="font-family:var(--display); font-weight:400; font-size:22px; margin:26px 0 0">O amador engaja mais que o profissional</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Até onde a conversa chegou</th><th class="num">Amador</th><th class="num">Profissional</th></tr></thead>
+        <tbody>
+          <tr class="destaque"><td>Morreu na saudação, sem nada</td><td class="num">0%</td><td class="num">18%</td></tr>
+          <tr><td>Parou na qualificação</td><td class="num">35%</td><td class="num">32%</td></tr>
+          <tr><td>Explorou produto</td><td class="num">45%</td><td class="num">28%</td></tr>
+          <tr><td>Recebeu orçamento</td><td class="num">12%</td><td class="num">8%</td></tr>
+          <tr><td>Negociou</td><td class="num">3%</td><td class="num">6%</td></tr>
+          <tr><td>Deu sinal de compra</td><td class="num">6,0%</td><td class="num">8,8%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>O amador <strong>nunca morre na saudação</strong>, enquanto quase um em cada cinco profissionais some sem dizer nada. Ele explora produto muito mais (45% contra 28%) e chega a receber orçamento com mais frequência. Só perde no fim do funil, com 6,0% de sinal de compra contra 8,8%. <span class="hl">A diferença de qualidade entre os dois públicos é bem menor do que a intuição sugere</span>, e o amador é mais barato de engajar.</p>
+
+    <div class="nota">
+      <strong>Faixa etária não sai daqui.</strong> Ninguém informa idade numa conversa de WhatsApp. Como 78% desse público vem de tráfego pago, o lugar certo para buscar isso é o gerenciador de anúncios da Meta, nos dados demográficos de quem clicou nos criativos de click-to-WhatsApp. É acesso que a Go Image tem.
+    </div>
+  </section>
+
+  <!-- ===================== IMPLICAÇÃO ===================== -->
+  <section>
+    <div class="shead">
+      <h2 class="st">O que isso implica para os dois funis</h2>
+    </div>
+    <div class="prose">
+      <p><strong>A separação é viável e faz sentido, mas ela não pode acontecer na entrada.</strong> Só 24% dos leads dão sinal na primeira mensagem. Se o funil bifurcar antes da segunda troca, três de cada quatro leads entram no balde errado ou num limbo.</p>
+      <p>O desenho que os dados sustentam é: <strong>um funil único de entrada</strong>, com a bifurcação disparando depois da segunda mensagem do cliente, quando 71% já estão identificados. E o perfil guardado na pessoa, não no atendimento, para aproveitar os 211 casos que herdam classificação de conversa anterior.</p>
+      <p><strong>A pergunta de qualificação atual precisa mudar de forma.</strong> Hoje ela é "você trabalha com fotografia ou seria para uso pessoal mesmo?", uma pergunta com "ou" que produz respostas truncadas como "Sim" e "Trabalho", que não desambiguam nada. Uma versão que separa melhor, sugerida pela leitura, é <span class="hl">"esse álbum é para você ou para entregar a um cliente?"</span>, porque a posse do destinatário é o discriminador que mais aparece nos dados.</p>
+    </div>
+
+    <div class="cx">
+      <b>E o alerta que atravessa os três pedidos.</b>
+      <p style="margin-top:9px">Dos 1.771 leads que falaram, <strong>976 não deram sinal nenhum de perfil</strong>. E isso quase nunca é ambiguidade: é conversa que morreu antes de existir. Vários analistas chegaram nisso separadamente, contando 41% a 46% dos atendimentos parando na saudação, leads de sexta à noite respondidos só na segunda de manhã, e profissionais identificados já na primeira mensagem que nunca receberam resposta.</p>
+      <p style="margin-top:9px"><strong>Nenhuma tag automática recupera esses leads.</strong> A segmentação melhora o que já é conversa; ela não cria conversa. O ganho maior continua sendo responder rápido.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div><strong>Método.</strong> Base extraída via API do PipeRun em 15/08/2026: 3.773 atendimentos e 21.810 mensagens entre 05/06 e 15/08. Os 818 áudios foram transcritos e reinseridos na posição correta de cada conversa antes da leitura. Das 3.773, foram classificadas as 1.771 em que o cliente falou alguma coisa; nas demais só houve disparo sem resposta.</div>
+    <div>Cada conversa foi classificada individualmente por analistas independentes, com citação literal obrigatória. As regras de tag foram medidas contra essa classificação, não estimadas. Percentuais de perfil são sobre os 785 leads classificáveis; onde a base é outra, está dito na própria linha.</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
