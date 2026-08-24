@@ -25,7 +25,7 @@ const GRUPOS = [
         nome: 'vigia',
         linha: 'Constrói o alarme que dispara quando a venda quebra.',
         cicatriz:
-          'Escrevi um vigia que ficou verde por mais de um dia inteiro enquanto o checkout tinha parado de converter pro tráfego pago. Ele agregava o total. O total nunca zerou.',
+          'Escrevi um vigia que ficou verde por 34 horas seguidas enquanto o checkout tinha parado de converter pro tráfego pago. Ele agregava o total, e o total nunca zerou.',
       },
       {
         nome: 'rastreio',
@@ -71,9 +71,9 @@ const GRUPOS = [
     skills: [
       {
         nome: 'gloop',
-        linha: 'Crítica adversarial em rodadas, até parar de sangrar.',
+        linha: 'Crítica adversarial em rodadas, com regra de parada nomeada.',
         cicatriz:
-          'Quatro rodadas de crítica cega numa API minha. Nenhuma veio limpa. O defeito mais grave era invisível no build e só apareceu executando.',
+          'Quatro rodadas de crítica cega numa API minha. Nenhuma veio limpa, nem a última. Ela fecha por teto de rodadas e entrega a lista do que ficou aberto.',
       },
       {
         nome: 'fim',
@@ -99,12 +99,22 @@ const S = {
     lineHeight: 1.15,
     color: 'var(--text)',
   } as React.CSSProperties,
+  h3: {
+    fontFamily: 'var(--font-display)',
+    fontWeight: 600,
+    fontSize: 17,
+    letterSpacing: '-0.01em',
+    color: '#D6D6D6',
+    marginTop: 26,
+  } as React.CSSProperties,
   p: {
     fontSize: 'clamp(15px, 2.6vw, 17px)',
     color: '#9A9A9A',
     lineHeight: 1.65,
   } as React.CSSProperties,
 }
+
+const AVULSOS = ['vigia', 'rastreio', 'recorrencia', 'vespera', 'filtro', 'voz', 'gloop', 'fim']
 
 export default function SkillsPage() {
   return (
@@ -252,22 +262,63 @@ export default function SkillsPage() {
         ))}
       </section>
 
-      {/* ── INSTALAÇÃO ──────────────────────────────────── */}
+      {/* ── INSTALAÇÃO ──────────────────────────────── */}
       <section style={{ ...S.wrap, marginTop: 'clamp(40px, 8vw, 72px)' }}>
         <div style={{ borderTop: '1px solid var(--border-2)', paddingTop: 34 }}>
           <h2 style={S.h2}>Instalar</h2>
-          <p style={{ ...S.p, marginTop: 14, maxWidth: 620 }}>
-            Descompacte na pasta de skills do Claude Code. Depois abra o Claude e peça alguma coisa que o gatilho
-            reconheça, por exemplo <em style={{ color: '#C8C8C8' }}>“revisa isso antes de eu publicar”</em>: a{' '}
-            <code style={{ color: '#DADADA' }}>gloop</code> tem que carregar sozinha.
+
+          <h3 style={S.h3}>Claude Code, no projeto</h3>
+          <p style={{ ...S.p, marginTop: 10, maxWidth: 640 }}>
+            É esta que fica no git e que a próxima pessoa do time herda.
+          </p>
+          <CopiarComando comando={'unzip -n skills-infoprodutor-v1.zip && cp -rn skills-infoprodutor-v1/skills/* .claude/skills/'} />
+
+          <h3 style={{ ...S.h3, marginTop: 34 }}>Claude Code, só para você</h3>
+          <CopiarComando comando={'cp -rn skills-infoprodutor-v1/skills/* ~/.claude/skills/'} />
+
+          <p style={{ ...S.p, fontSize: 14.5, marginTop: 18, maxWidth: 640 }}>
+            O <code style={{ color: '#DADADA' }}>-n</code> não sobrescreve. Se você já tem uma skill com um desses nomes
+            (<code style={{ color: '#DADADA' }}>fim</code>, <code style={{ color: '#DADADA' }}>voz</code>,{' '}
+            <code style={{ color: '#DADADA' }}>filtro</code> e <code style={{ color: '#DADADA' }}>gloop</code> são
+            genéricos, então é provável), a sua fica de pé e a minha não entra. Renomeie a minha antes de copiar.
           </p>
 
-          <CopiarComando comando="unzip ~/Downloads/skills-infoprodutor-v1.zip -d ~/.claude/skills/" />
+          <h3 style={{ ...S.h3, marginTop: 34 }}>claude.ai</h3>
+          <p style={{ ...S.p, marginTop: 10, maxWidth: 640 }}>
+            Configurações &gt; Recursos &gt; Skills, e sobe o zip. Precisa de plano pago com execução de código ligada.
+            Lá é <strong style={{ color: '#C8C8C8', fontWeight: 500 }}>um zip por skill</strong>, então use os avulsos:
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 16 }}>
+            {AVULSOS.map((n) => (
+              <a
+                key={n}
+                href={`/downloads/skills/${n}.zip`}
+                download
+                style={{
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                  fontSize: 13,
+                  color: '#C8C8C8',
+                  background: 'var(--bg-2)',
+                  border: '1px solid var(--border-2)',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '8px 13px',
+                }}
+              >
+                {n}.zip
+              </a>
+            ))}
+          </div>
 
-          <p style={{ ...S.p, fontSize: 14.5, marginTop: 22, maxWidth: 620 }}>
-            <strong style={{ color: '#C8C8C8', fontWeight: 500 }}>Se você não usa Claude Code:</strong> é markdown puro,
-            então cola num Project do ChatGPT ou numa Gem do Gemini e funciona. Você perde a única coisa que a skill tem
-            de especial, que é carregar sozinha na hora certa, e volta a depender de lembrar.
+          <h3 style={{ ...S.h3, marginTop: 34 }}>Conferir que instalou</h3>
+          <p style={{ ...S.p, marginTop: 10, maxWidth: 640 }}>
+            Digite <code style={{ color: '#DADADA' }}>/gloop</code>. Se autocompletar, entrou. Depois peça{' '}
+            <em style={{ color: '#C8C8C8' }}>“revisa isso antes de eu publicar”</em> e veja se ela carrega sozinha.
+          </p>
+
+          <h3 style={{ ...S.h3, marginTop: 34 }}>ChatGPT e Gemini</h3>
+          <p style={{ ...S.p, marginTop: 10, maxWidth: 640 }}>
+            É markdown puro, então cola num Project ou numa Gem e funciona. Só que aí quem escolhe o que entra na
+            conversa é você, e não a IA.
           </p>
         </div>
       </section>
