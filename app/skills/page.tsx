@@ -271,10 +271,10 @@ export default function SkillsPage() {
           <p style={{ ...S.p, marginTop: 10, maxWidth: 640 }}>
             É esta que fica no git e que a próxima pessoa do time herda.
           </p>
-          <CopiarComando comando={'unzip -n skills-infoprodutor-v1.zip && cp -rn skills-infoprodutor-v1/skills/* .claude/skills/'} />
+          <CopiarComando comando={'unzip -n skills-infoprodutor-v1.zip && mkdir -p .claude/skills && cp -rn skills-infoprodutor-v1/skills/* .claude/skills/'} />
 
           <h3 style={{ ...S.h3, marginTop: 34 }}>Claude Code, só para você</h3>
-          <CopiarComando comando={'cp -rn skills-infoprodutor-v1/skills/* ~/.claude/skills/'} />
+          <CopiarComando comando={'mkdir -p ~/.claude/skills && cp -rn skills-infoprodutor-v1/skills/* ~/.claude/skills/'} />
 
           <p style={{ ...S.p, fontSize: 14.5, marginTop: 18, maxWidth: 640 }}>
             O <code style={{ color: '#DADADA' }}>-n</code> não sobrescreve. Se você já tem uma skill com um desses nomes
