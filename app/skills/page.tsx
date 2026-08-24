@@ -154,8 +154,8 @@ export default function SkillsPage() {
         </p>
 
         <p style={{ ...S.p, maxWidth: 620, marginTop: 16 }}>
-          Eu abri para você copiar <strong style={{ color: 'var(--text)', fontWeight: 500 }}>a forma</strong>, não o
-          conteúdo. A cicatriz de cada uma é minha. Trocada pela sua, vira a skill mais útil que você tem.
+          Eu abri para você copiar <strong style={{ color: 'var(--text)', fontWeight: 500 }}>a forma</strong>. A cicatriz
+          de cada uma é minha. Trocada pela sua, vira a skill mais útil que você tem.
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'center', marginTop: 38 }}>
@@ -203,7 +203,7 @@ export default function SkillsPage() {
             </p>
           </div>
           <div>
-            <h2 style={{ ...S.h2, fontSize: 'clamp(20px, 3.4vw, 26px)' }}>Por que não é um prompt salvo</h2>
+            <h2 style={{ ...S.h2, fontSize: 'clamp(20px, 3.4vw, 26px)' }}>O que muda em relação a um prompt salvo</h2>
             <p style={{ ...S.p, marginTop: 14 }}>
               A diferença está em onde ele mora. Prompt mora no seu bloco de notas e depende de você lembrar de colar.
               Skill mora no lugar onde a IA procura, é versionada junto com o projeto, e quem entrar depois herda.
@@ -318,7 +318,7 @@ export default function SkillsPage() {
           <h3 style={{ ...S.h3, marginTop: 34 }}>ChatGPT e Gemini</h3>
           <p style={{ ...S.p, marginTop: 10, maxWidth: 640 }}>
             É markdown puro, então cola num Project ou numa Gem e funciona. Só que aí quem escolhe o que entra na
-            conversa é você, e não a IA.
+            conversa é você.
           </p>
         </div>
       </section>
