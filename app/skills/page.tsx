@@ -34,16 +34,10 @@ const GRUPOS = [
           'Auditei uma conta pra saber se a IA tinha vendido. Não deu pra responder: a tag de origem estava vazia em todas as compras da conta, desde a primeira.',
       },
       {
-        nome: 'recorrencia',
-        linha: 'Acha a assinatura que está morrendo em silêncio.',
+        nome: 'decisao',
+        linha: 'Passa a aposta pelo checklist antes do dinheiro sair.',
         cicatriz:
-          'Fui olhar a cobrança de uma empresa minha: R$18.700 em aberto e zero webhooks configurados. Quando falhava, ninguém ficava sabendo.',
-      },
-      {
-        nome: 'vespera',
-        linha: 'Responde “estamos prontos?” com o que foi rodado.',
-        cicatriz:
-          'Véspera de lançamento, três achados: a compra nunca tinha rodado com dinheiro real, o e-mail estava limitado a 30 por hora, e o checkout mostrava a marca de outra empresa.',
+          'O produto ficou pronto em três dias. A burocracia do terceiro consumiu quinze, com cinco pedidos idênticos falhando igual. A regra de saída escrita antes de entrar foi o que salvou a aposta de ficar viva-morta.',
       },
     ],
   },
@@ -69,6 +63,12 @@ const GRUPOS = [
     titulo: 'Método',
     nota: 'como eu decido que uma coisa está pronta',
     skills: [
+      {
+        nome: 'docs-first',
+        linha: 'Abre a documentação oficial antes de você supor.',
+        cicatriz:
+          'Perdi horas hipotetizando por que a DM automática não chegava. A resposta estava na doc da Meta: quem não te segue recebe na pasta Solicitações, sem notificação. Dois minutos de busca.',
+      },
       {
         nome: 'gloop',
         linha: 'Crítica adversarial em rodadas, com regra de parada nomeada.',
@@ -114,7 +114,7 @@ const S = {
   } as React.CSSProperties,
 }
 
-const AVULSOS = ['vigia', 'rastreio', 'recorrencia', 'vespera', 'filtro', 'voz', 'gloop', 'fim']
+const AVULSOS = ['vigia', 'rastreio', 'decisao', 'filtro', 'voz', 'docs-first', 'gloop', 'fim']
 
 export default function SkillsPage() {
   return (
