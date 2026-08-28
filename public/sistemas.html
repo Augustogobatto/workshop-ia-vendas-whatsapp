@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Meta Pixel -->
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2685766708197733');fbq('track','PageView');</script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2685766708197733&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10 Sistemas com Claude — Augusto Gobatto</title>
+  <meta name="description" content="10 sistemas que você pode criar com Claude num fim de semana e vender pra negócios da sua cidade. Passo a passo, ferramentas e quanto cobrar." />
+  <meta property="og:title" content="10 Sistemas com Claude" />
+  <meta property="og:description" content="Pra quem tá começando do zero e quer a primeira graninha com IA. Passo a passo, ferramentas e quanto cobrar." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#0A0A0A;
+      --panel:#121412;
+      --panel-2:#181B18;
+      --line:#242824;
+      --ink:#EDEFEA;
+      --ink-2:#A8ADA4;
+      --ink-3:#6E736A;
+      --green:#37C978;
+      --green-dim:#1E5C3A;
+      --amber:#E8A33C;
+      --radius:14px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);color:var(--ink);
+      font-family:'Inter',system-ui,sans-serif;
+      font-size:16px;line-height:1.65;
+      -webkit-font-smoothing:antialiased;
+    }
+    .container{max-width:880px;margin:0 auto;padding:0 20px}
+    .display{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;line-height:1.12;text-wrap:balance}
+    .label{
+      display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;
+      letter-spacing:0.14em;text-transform:uppercase;color:var(--green);
+      border:1px solid var(--green-dim);border-radius:999px;padding:6px 14px;
+    }
+    a{color:var(--green)}
+
+    /* HERO */
+    #hero{padding:88px 0 56px;border-bottom:1px solid var(--line)}
+    #hero h1{font-size:clamp(34px,6vw,58px);margin:22px 0 18px}
+    #hero h1 em{font-style:normal;color:var(--green)}
+    #hero p.sub{font-size:clamp(17px,2.4vw,20px);color:var(--ink-2);max-width:640px}
+    .hero-facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+    .fact{
+      font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-2);
+      background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;
+    }
+    .fact strong{color:var(--ink);font-weight:500}
+
+    /* SECTIONS */
+    section{padding:56px 0}
+    .sec-head{margin-bottom:28px}
+    .sec-head h2{font-size:clamp(24px,4vw,34px)}
+    .sec-head p{color:var(--ink-2);margin-top:8px;max-width:620px}
+    .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+
+    /* KIT */
+    .kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .kit-item{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+    .kit-item b{display:block;font-weight:600;margin-bottom:4px}
+    .kit-item span{font-size:14px;color:var(--ink-2)}
+    .kit-item .preco{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);display:block;margin-top:8px}
+
+    /* SISTEMA CARD */
+    .sistema{
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+      padding:28px;margin-bottom:22px;
+    }
+    .sis-top{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+    .sis-num{
+      font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--bg);
+      background:var(--green);border-radius:8px;min-width:34px;height:34px;
+      display:inline-flex;align-items:center;justify-content:center;align-self:center;
+    }
+    .sistema h3{font-family:'Space Grotesk',sans-serif;font-size:clamp(19px,3vw,24px);font-weight:600;letter-spacing:-0.01em;flex:1;min-width:200px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+    .badge{font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:6px;padding:4px 10px;border:1px solid var(--line);color:var(--ink-2)}
+    .badge.facil{color:var(--green);border-color:var(--green-dim)}
+    .badge.medio{color:var(--amber);border-color:#5C471E}
+    .badge.avancado{color:#E86A5C;border-color:#5C2A24}
+    .badge.preco{color:var(--ink);background:var(--panel-2);font-weight:500}
+    .sis-quem{color:var(--ink-2);margin:12px 0 18px}
+    .sis-quem b{color:var(--ink);font-weight:600}
+
+    .passos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+    @media(max-width:640px){.passos{grid-template-columns:1fr}}
+    .passo{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+    .passo .dia{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+    .passo p{font-size:14.5px;color:var(--ink-2)}
+
+    .ferramentas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+    .ferramentas .chip{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-2);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+
+    .prompt-box{background:#0D120E;border:1px solid var(--green-dim);border-radius:10px;overflow:hidden}
+    .prompt-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--green-dim)}
+    .prompt-head span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green)}
+    .copy-btn{
+      font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:var(--bg);
+      background:var(--green);border:none;border-radius:6px;padding:6px 14px;cursor:pointer;
+    }
+    .copy-btn:hover{filter:brightness(1.1)}
+    .prompt-box pre{
+      padding:16px 18px;white-space:pre-wrap;word-break:break-word;
+      font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:var(--ink-2);
+    }
+
+    /* LISTAS */
+    .steps{counter-reset:s;display:grid;gap:14px}
+    .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px 20px 64px;position:relative}
+    .step::before{
+      counter-increment:s;content:counter(s);
+      position:absolute;left:20px;top:20px;
+      font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
+      color:var(--bg);background:var(--green);border-radius:8px;
+      width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+    }
+    .step b{display:block;margin-bottom:4px}
+    .step p{font-size:15px;color:var(--ink-2)}
+
+    .regras{display:grid;gap:10px}
+    .regra{display:flex;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+    .regra .tick{color:var(--green);font-weight:700;flex-shrink:0}
+    .regra p{font-size:15px;color:var(--ink-2)}
+    .regra p b{color:var(--ink)}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--line);padding:48px 0 64px;text-align:center}
+    footer p{color:var(--ink-3);font-size:14px}
+    footer .handle{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:var(--ink);display:block;margin-bottom:6px}
+
+    .divider{border:none;border-top:1px solid var(--line)}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <span class="label">Material do vídeo · @augustogobatto</span>
+    <h1 class="display">10 sistemas que você pode criar com Claude <em>esse fim de semana</em></h1>
+    <p class="sub">Pra quem tá começando do zero e quer a primeira graninha com IA. Cada sistema aqui resolve um problema real de um negócio que existe na sua cidade, e cabe num sábado e domingo de trabalho.</p>
+    <div class="hero-facts">
+      <div class="fact">Investimento pra começar: <strong>uma assinatura do Claude</strong></div>
+      <div class="fact">Precisa saber programar: <strong>não</strong></div>
+      <div class="fact">Regra: <strong>escolhe UM, não dez</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- KIT -->
+<section id="kit">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">Antes de começar</div>
+      <h2 class="display">O kit</h2>
+      <p>Essas ferramentas aparecem em quase todos os sistemas. Resolve isso primeiro e nunca mais pensa nelas.</p>
+    </div>
+    <div class="kit">
+      <div class="kit-item"><b>Claude</b><span>O plano pago dá acesso ao Claude Code, que escreve e publica o código por você. É a única assinatura obrigatória.</span><span class="preco">claude.ai · ~US$20/mês</span></div>
+      <div class="kit-item"><b>Vercel</b><span>Onde os sites e sistemas ficam no ar. O Claude Code publica com um comando.</span><span class="preco">vercel.com · grátis</span></div>
+      <div class="kit-item"><b>WhatsApp Business</b><span>O canal de venda de todo negócio local. Vários sistemas terminam num botão que abre conversa.</span><span class="preco">grátis</span></div>
+      <div class="kit-item"><b>Google Sheets</b><span>O "banco de dados" que todo dono de negócio já sabe mexer. Serve de fonte pra painéis e cobranças.</span><span class="preco">grátis</span></div>
+      <div class="kit-item"><b>VPS (só pros sistemas 8 e 10)</b><span>Um servidor barato pra rodar robô de WhatsApp. O Claude te guia na instalação comando por comando.</span><span class="preco">Hostinger/Hetzner · ~R$30/mês</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SISTEMAS -->
+<section id="sistemas">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">A lista</div>
+      <h2 class="display">Os 10 sistemas</h2>
+      <p>Do mais fácil pro mais avançado. Preço é referência de mercado pra quem tá começando: cobra menos no primeiro cliente e sobe conforme acumula prova.</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">1</span><h3>Página de vendas pra negócio local</h3></div>
+      <div class="badges"><span class="badge facil">Fácil</span><span class="badge preco">R$500 a R$1.500 por página</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> dentista, personal, arquiteto, buffet, qualquer negócio que vive de indicação e não tem uma página que venda por ele.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Escolhe um negócio real que você conhece. Junta o material: fotos, lista de serviços, preços, número de WhatsApp e os depoimentos que ele já tem no Google. Cola tudo no Claude e pede a página.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Revisa no celular (é onde o cliente do cliente vai abrir), publica na Vercel e grava um vídeo de 1 minuto navegando na página pra mandar pro dono.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Vercel</span><span class="chip">WhatsApp</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie uma página de vendas em um único arquivo HTML pra [NOME DO NEGÓCIO], que atende [PÚBLICO] em [CIDADE]. O objetivo da página é um só: fazer a pessoa clicar no botão de WhatsApp [NÚMERO]. Serviços e preços: [COLA AQUI]. Depoimentos reais: [COLA AQUI]. Mobile primeiro, visual sóbrio e profissional, botão de WhatsApp fixo na tela.</pre>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">2</span><h3>Cardápio digital com pedido no WhatsApp</h3></div>
+      <div class="badges"><span class="badge facil">Fácil</span><span class="badge preco">R$400 a R$900 + R$100/mês pra manter</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> lanchonete, pizzaria, marmitaria, açaí. Todo lugar que ainda manda cardápio em foto borrada e monta pedido no gogó.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Pega o cardápio (foto serve) e monta a página: itens, preços e um carrinho simples onde o cliente marca o que quer. O botão final abre o WhatsApp do negócio com o pedido escrito e somado.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Faz um pedido de verdade pra testar, publica e apresenta pro dono no horário de movimento fraco. A demo com o cardápio dele já pronto é o que fecha a venda.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Vercel</span><span class="chip">WhatsApp Business</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie um cardápio digital em um único arquivo HTML pra [NOME DA LANCHONETE]. Itens e preços: [COLA O CARDÁPIO]. O cliente marca os itens e a quantidade, vê o total, e o botão "Fazer pedido" abre o WhatsApp [NÚMERO] com a mensagem do pedido pronta (itens, quantidades, total e campo de endereço). Mobile primeiro, fotos opcionais, funciona sem internet rápida.</pre>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">3</span><h3>Página de agendamento pra barbearia ou salão</h3></div>
+      <div class="badges"><span class="badge facil">Fácil</span><span class="badge preco">R$600 a R$1.200</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> barbearia, salão, estética, tatuador. Todo mundo que marca horário respondendo direct um por um e esquece cliente no vácuo.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Monta a página com serviços, preços e os horários que o profissional atende. O cliente escolhe serviço, dia e horário, e a solicitação cai no WhatsApp do dono já formatada pra ele só confirmar.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Se o dono usa Google Agenda, pede pro Claude conectar pra bloquear horário ocupado. Publica, testa com 3 agendamentos falsos e entrega com o link pronto pra colocar na bio do Instagram.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Vercel</span><span class="chip">Google Agenda (opcional)</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie uma página de agendamento em HTML pra [NOME DA BARBEARIA]. Serviços e preços: [LISTA]. Horários de atendimento: [DIAS E HORAS]. O cliente escolhe serviço, dia e horário num formulário simples, e o botão final abre o WhatsApp [NÚMERO] com a mensagem "Quero agendar [serviço] no dia [data] às [hora], meu nome é [nome]". Mobile primeiro, link pronto pra bio do Instagram.</pre>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">4</span><h3>Catálogo online com Pix</h3></div>
+      <div class="badges"><span class="badge facil">Fácil</span><span class="badge preco">R$500 a R$1.000</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> quem vende roupa, semijoia, importado ou doce por encomenda pelo status do WhatsApp e perde venda porque o cliente não vê tudo que tem.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Junta as fotos dos produtos com nome e preço. Monta o catálogo navegável por categoria, com botão de compra que abre o WhatsApp ou um link de pagamento do Mercado Pago.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Publica, coloca os primeiros 20 produtos e ensina a dona a divulgar: o link vai no status, na bio e em toda conversa. Atualização de produto pode virar mensalidade.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Vercel</span><span class="chip">Mercado Pago</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie um catálogo online em HTML pra [NOME DA LOJA], que vende [TIPO DE PRODUTO]. Produtos com foto, nome e preço, organizados por categoria: [LISTA]. Cada produto tem botão "Quero esse" que abre o WhatsApp [NÚMERO] com o nome do produto na mensagem. Visual limpo, carrega rápido no 4G, mobile primeiro.</pre>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">5</span><h3>Orçamentista automático</h3></div>
+      <div class="badges"><span class="badge medio">Médio</span><span class="badge preco">R$800 a R$1.500</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> marceneiro, serralheiro, vidraceiro, instalador. Profissional que demora 3 dias pra mandar orçamento e perde o serviço pra quem respondeu primeiro.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Senta com o profissional (ou pega a tabela dele) e transforma a regra de preço em conta: metro quadrado, material, mão de obra. O Claude monta um formulário que calcula o valor na hora.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Adiciona a geração de PDF com o logo e os dados do profissional. Testa com 3 orçamentos reais que ele já fez (o valor tem que bater) e entrega.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Vercel</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie um sistema de orçamento em HTML pra [PROFISSÃO]. Regras de preço: [EXPLICA COMO ELE CALCULA HOJE, EX: R$X o metro quadrado do material Y, mais Z de mão de obra]. O cliente ou o próprio profissional preenche as medidas e opções, o sistema calcula o total na hora e gera um PDF de orçamento com logo, dados da empresa, validade de 7 dias e forma de pagamento.</pre>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">6</span><h3>Painel de vendas do dono de loja</h3></div>
+      <div class="badges"><span class="badge medio">Médio</span><span class="badge preco">R$500 de instalação + R$150 a R$300/mês</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> dono de loja que anota venda em caderno ou numa planilha bagunçada e não sabe responder quanto faturou esse mês.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Organiza a planilha no Google Sheets: uma linha por venda, com data, produto e valor. O Claude monta um painel que lê essa planilha e mostra o dia, a semana, o mês e o produto que mais sai.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Publica e abre no celular do dono. O momento em que ele vê o faturamento do mês num número grande é a venda da mensalidade: o painel só continua vivo se alguém cuidar dele.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Google Sheets</span><span class="chip">Vercel</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie um painel de vendas em HTML que lê uma planilha do Google Sheets publicada como CSV [LINK DA PLANILHA]. Colunas: data, produto, valor. O painel mostra: faturamento de hoje, da semana, do mês, comparação com o mês passado e os 5 produtos que mais vendem. Números grandes e legíveis no celular, atualiza sozinho ao abrir.</pre>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">7</span><h3>Fábrica de conteúdo com a voz do cliente</h3></div>
+      <div class="badges"><span class="badge facil">Fácil</span><span class="badge preco">R$400 a R$1.000/mês</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> nutricionista, advogado, corretor, dentista. Profissional que sabe que precisa postar, não posta, e se sente culpado toda semana por isso.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Grava 30 minutos de conversa com o cliente sobre o que ele mais responde no consultório. Transcreve e monta um Projeto no Claude com o jeito de falar dele e os 10 melhores posts do nicho como referência.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Gera os 30 posts do mês de uma vez, o cliente aprova em bloco em 20 minutos, e você agenda tudo no Meta Business Suite. Trabalho de um domingo, receita o mês inteiro.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude (Projects)</span><span class="chip">Canva</span><span class="chip">Meta Business Suite</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Você vai escrever posts de Instagram pra [NOME], [PROFISSÃO] em [CIDADE]. Abaixo está a transcrição de uma conversa com ele, pra você aprender o jeito que ele fala: [COLA A TRANSCRIÇÃO]. Escreva 30 posts pro mês: 10 respondendo as dúvidas mais comuns dos clientes dele, 10 quebrando mitos da área, 10 com histórias reais (sem expor nomes). Cada post com legenda pronta e sugestão de imagem. Use as palavras dele, não as suas.</pre>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">8</span><h3>Robô de cobrança educado</h3></div>
+      <div class="badges"><span class="badge medio">Médio</span><span class="badge preco">R$500 de instalação + R$200 a R$400/mês</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> academia, escolinha de futebol, curso, qualquer negócio de mensalidade. O dono tem vergonha de cobrar e o caixa sente.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Monta a planilha de alunos com valor e dia de vencimento. O Claude escreve o script que confere quem tá pra vencer ou venceu, e monta 3 mensagens de tom diferente: lembrete amigável 3 dias antes, aviso no dia, cobrança educada 5 dias depois.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Versão simples: o dono roda e as mensagens saem prontas pra revisar e enviar. Versão completa: conecta na Evolution API pra enviar sozinho. Começa pela simples, a completa vira upgrade.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Google Sheets</span><span class="chip">Evolution API + VPS</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie um script em Python que lê uma planilha de mensalidades (colunas: nome, telefone, valor, dia do vencimento, status) e gera as mensagens de cobrança do dia: lembrete amigável 3 dias antes do vencimento, aviso no dia, e cobrança educada 5 dias após. Tom leve, sem constranger, sempre com a chave Pix [CHAVE] e a opção "se já pagou, ignora". Saída: lista pronta com telefone e mensagem de cada pessoa.</pre>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">9</span><h3>CRM de WhatsApp</h3></div>
+      <div class="badges"><span class="badge medio">Médio</span><span class="badge preco">R$800 a R$1.500 + mensalidade</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> negócio que recebe 30 conversas por dia no WhatsApp e perde venda porque ninguém anota quem ficou de responder o quê.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Monta um kanban simples com as colunas do funil real do negócio: chegou, conversando, orçamento enviado, fechou, perdeu. Cada card tem nome, telefone, valor e a anotação da última conversa.</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Publica com senha, senta com o dono e migra os leads da semana pra dentro. Define o ritual: 10 minutos por dia arrastando cards. Sistema que o dono não abre todo dia morre, então o ritual faz parte da entrega.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude Code</span><span class="chip">Supabase (grátis)</span><span class="chip">Vercel</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Crie um CRM kanban simples pra um negócio local que vende pelo WhatsApp. Colunas: Chegou, Conversando, Orçamento enviado, Fechou, Perdeu. Cada card: nome, telefone (com botão que abre a conversa no WhatsApp), valor estimado e anotação livre. Arrastar e soltar entre colunas, dados salvos no Supabase, acesso com senha simples. Tem que funcionar bem no celular.</pre>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="sistema">
+      <div class="sis-top"><span class="sis-num">10</span><h3>Atendente de IA no WhatsApp</h3></div>
+      <div class="badges"><span class="badge avancado">Avançado</span><span class="badge preco">R$1.000 a R$2.500 + R$300 a R$800/mês</span></div>
+      <p class="sis-quem"><b>Quem paga:</b> negócio que perde cliente fora do horário comercial. É o sistema mais valioso da lista, o que sustenta as maiores mensalidades, e o único que pede infraestrutura de verdade.</p>
+      <div class="passos">
+        <div class="passo"><div class="dia">Sábado</div><p>Contrata a VPS e instala Evolution API + n8n com o Claude te guiando comando por comando. Conecta um número de WhatsApp dedicado do negócio (nunca o número pessoal do dono).</p></div>
+        <div class="passo"><div class="dia">Domingo</div><p>Escreve o prompt do atendente com as 20 perguntas mais comuns do negócio, preços e horários. Testa com 10 conversas simuladas. Entrega respondendo dúvidas e chamando o dono quando o assunto é fechar. Importante: o robô só responde quem chama primeiro, nunca dispara pra lista fria.</p></div>
+      </div>
+      <div class="ferramentas"><span class="chip">Claude (API)</span><span class="chip">Evolution API</span><span class="chip">n8n</span><span class="chip">VPS ~R$30/mês</span></div>
+      <div class="prompt-box">
+        <div class="prompt-head"><span>Prompt de partida</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+        <pre>Me guie passo a passo, comando por comando, pra montar um atendente de IA no WhatsApp: contratar uma VPS barata, instalar Evolution API e n8n com Docker, conectar um número de WhatsApp e criar o fluxo no n8n que recebe a mensagem, consulta a API do Claude com o contexto do negócio e responde. Sou iniciante: explica o que cada comando faz antes de eu rodar, e me avisa dos erros mais comuns.</pre>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PRIMEIRO CLIENTE -->
+<section id="primeiro-cliente">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">O sistema não se vende sozinho</div>
+      <h2 class="display">Como conseguir o primeiro cliente</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><b>Lista 20 negócios onde você conhece o dono pelo nome.</b><p>Onde você corta o cabelo, almoça, treina, compra. Cliente frequente tem crédito de confiança que nenhum estranho tem. Seu primeiro cliente tá nessa lista, não no tráfego pago.</p></div>
+      <div class="step"><b>Monta a demo ANTES de oferecer.</b><p>Escolhe um sistema, um negócio da lista, e constrói no fim de semana com os dados reais dele: o cardápio dele, os serviços dele, as fotos dele. Demo pronta com o nome do negócio fecha 10 vezes mais que proposta em PDF.</p></div>
+      <div class="step"><b>Manda a mensagem mais simples do mundo.</b><p>"Fiz uma coisa pro seu negócio esse fim de semana, posso te mostrar em 5 minutos?" E mostra pessoalmente ou num vídeo curto navegando no sistema. Sem apresentação, sem slide, sem papo de IA.</p></div>
+      <div class="step"><b>Cobra metade na entrada, metade na entrega.</b><p>O primeiro cliente pode pagar menos que a tabela. O print do depoimento dele vale mais que a diferença: é ele que faz o segundo e o terceiro pagarem o preço cheio.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REGRAS -->
+<section id="regras">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">Pra não se perder</div>
+      <h2 class="display">Regras de ouro</h2>
+    </div>
+    <div class="regras">
+      <div class="regra"><span class="tick">→</span><p><b>Escolhe UM sistema e repete 10 vezes.</b> Quem faz o mesmo sistema pra 10 clientes vira especialista e cobra mais. Quem faz 10 sistemas diferentes recomeça do zero toda semana.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>Sempre que der, instalação + mensalidade.</b> A instalação paga o fim de semana. A mensalidade é o que vira renda de verdade: manutenção, atualização, relatório mensal.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>Feio funcionando cobra. Bonito no rascunho, não.</b> Entrega a versão simples essa semana e melhora com o cliente usando. Perfeccionismo é o imposto que o iniciante paga sem precisar.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>Não promete o que o sistema não faz.</b> Um robô que promete demais devolve o dinheiro com juros de reputação. Combina por escrito o que tá incluso e o que é upgrade.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>O Claude escreve o código. Seu diferencial é conhecer o dono da padaria.</b> A tecnologia todo mundo vai ter. A relação com os negócios da sua cidade, não. É ela que você tá monetizando.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span class="handle">@augustogobatto</span>
+    <p>Material de apoio do vídeo "10 sistemas que você pode criar com Claude esse final de semana".</p>
+  </div>
+</footer>
+
+<script>
+function copiar(btn){
+  var texto = btn.closest('.prompt-box').querySelector('pre').innerText;
+  navigator.clipboard.writeText(texto).then(function(){
+    var original = btn.textContent;
+    btn.textContent = 'Copiado!';
+    setTimeout(function(){ btn.textContent = original; }, 1600);
+  });
+}
+</script>
+
+</body>
+</html>
