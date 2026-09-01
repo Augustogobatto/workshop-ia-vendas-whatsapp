@@ -159,6 +159,19 @@ export function Sidebar({ userName, userEmail, ownedProducts = [], open = true, 
           )
         })}
 
+        {/* Skills */}
+        {(() => {
+          const href = '/members/skills'
+          const active = pathname.startsWith(href)
+          return (
+            <NavLink key="skills" href={href} label="Skills" active={active} open={open}>
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
+                <path d="M8.8 1.5 3 9h4l-.8 5.5L12 7H8l.8-5.5Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+              </svg>
+            </NavLink>
+          )
+        })()}
+
         {/* Conectar seu Claude */}
         {(() => {
           const href = '/members/conectar-claude'
