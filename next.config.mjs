@@ -24,6 +24,16 @@ const nextConfig = {
       (source) => ({ source, destination: '/club', permanent: false })
     )
   },
+  // Material de aula servido de public/ (slides e anatomias): link direto pros
+  // membros a partir da description da lesson, mas fora do índice do Google.
+  async headers() {
+    return [
+      {
+        source: '/aula-ia-conteudo/:path*',
+        headers: [{ key: 'x-robots-tag', value: 'noindex, nofollow' }],
+      },
+    ]
+  },
 }
 
 export default nextConfig

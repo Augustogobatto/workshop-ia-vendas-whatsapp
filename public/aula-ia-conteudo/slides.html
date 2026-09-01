@@ -1,0 +1,789 @@
+<title>Máquina de Conteúdo</title>
+<style>
+  :root{
+    --paper:#FAFAF7; --ink:#1C1B18; --muted:#6E6A60; --line:#DDD9CF;
+    --card:#F1EEE6; --demo:#2F7A4D; --demo-bg:#EBF3EC; --garimpo:#A66A1E; --garimpo-bg:#F7EEDF;
+    --alert:#9E3B26; --alert-bg:#F7E8E3;
+    --chip-bg:#1C1B18; --chip-ink:#FAFAF7;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#161513; --ink:#E8E6E0; --muted:#9A958A; --line:#33312C;
+      --card:#1F1E1A; --demo:#7CC397; --demo-bg:#1B2A20; --garimpo:#D79A4A; --garimpo-bg:#2B2115;
+      --alert:#E0917B; --alert-bg:#2C1914;
+      --chip-bg:#E8E6E0; --chip-ink:#161513;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#161513; --ink:#E8E6E0; --muted:#9A958A; --line:#33312C;
+    --card:#1F1E1A; --demo:#7CC397; --demo-bg:#1B2A20; --garimpo:#D79A4A; --garimpo-bg:#2B2115;
+    --alert:#E0917B; --alert-bg:#2C1914;
+    --chip-bg:#E8E6E0; --chip-ink:#161513;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%; overflow:hidden;}
+  body{
+    background:var(--paper); color:var(--ink); margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:clamp(15px,2vmin,20px); line-height:1.45;
+  }
+
+  #deck{position:fixed; inset:0; overflow:hidden;}
+  #rail{
+    display:flex; height:100%; width:100%;
+    transition:transform .42s cubic-bezier(.4,.05,.2,1); will-change:transform;
+  }
+  .slide{
+    flex:0 0 100%; height:100%; padding:8vmin 9vmin 11vmin;
+    display:flex; flex-direction:column; justify-content:center;
+    overflow-y:auto; overscroll-behavior:contain;
+  }
+  .slide > *{max-width:960px; width:100%; margin-inline:auto;}
+
+  /* ── Revelação por etapa ── */
+  .step{opacity:0; transform:translateY(8px); transition:opacity .3s ease, transform .3s ease;}
+  .step.on{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: reduce){
+    #rail{transition:none;}
+    .step{transition:none; transform:none;}
+  }
+
+  .eyebrow{
+    font-size:.68em; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+    display:flex; gap:1.2em; flex-wrap:wrap; margin-bottom:1.6em;
+  }
+  .eyebrow .mode{color:var(--ink); font-weight:600;}
+  .eyebrow .bastidor{color:var(--alert); font-weight:600;}
+
+  h1,h2{
+    font-family:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    font-weight:600; text-wrap:balance; margin:0;
+  }
+  h1{font-size:clamp(34px,7.5vmin,74px); line-height:1.04; letter-spacing:-.015em;}
+  h2{font-size:clamp(24px,4.8vmin,46px); line-height:1.1; margin-bottom:.9em;}
+
+  /* A linha-frase: o elemento principal deste deck */
+  .frase{
+    font-family:"Iowan Old Style",Georgia,serif;
+    font-size:clamp(22px,4.2vmin,40px); line-height:1.22; font-weight:600;
+    margin:0 0 .62em; max-width:22ch; text-wrap:balance;
+  }
+  .frase.dim{color:var(--muted); font-weight:400;}
+  .frase:last-child{margin-bottom:0;}
+  p.sub{font-size:1em; color:var(--muted); max-width:44ch; margin:.2em 0 1.4em;}
+
+  ol.passos{list-style:none; padding:0; margin:0; counter-reset:p;}
+  ol.passos li{
+    counter-increment:p; margin-bottom:.75em; padding-left:2.2em; position:relative;
+    font-size:clamp(18px,3vmin,28px); font-family:"Iowan Old Style",Georgia,serif; max-width:26ch;
+  }
+  ol.passos li::before{
+    content:counter(p); position:absolute; left:0; top:.15em;
+    font-family:ui-monospace,Menlo,monospace; font-size:.55em; color:var(--muted);
+    font-variant-numeric:tabular-nums;
+  }
+
+  .demo,.garimpo,.alert{padding:.8em 1em; margin:0 0 1em; border-radius:0 5px 5px 0; max-width:52ch;}
+  .demo{border-left:3px solid var(--demo); background:var(--demo-bg);}
+  .garimpo{border-left:3px solid var(--garimpo); background:var(--garimpo-bg);}
+  .alert{border-left:3px solid var(--alert); background:var(--alert-bg);}
+  .demo .tag,.garimpo .tag,.alert .tag{
+    font-size:.68em; letter-spacing:.13em; text-transform:uppercase; font-weight:700;
+    display:block; margin-bottom:.3em;
+  }
+  .demo .tag{color:var(--demo);} .garimpo .tag{color:var(--garimpo);} .alert .tag{color:var(--alert);}
+  .demo p,.garimpo p,.alert p{margin:0; font-size:.9em;}
+  .demo code{background:transparent; padding:0; display:block; margin-top:.3em;}
+
+  code{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.85em;
+    background:var(--card); padding:.1em .4em; border-radius:3px;
+  }
+
+  table{border-collapse:collapse; width:100%; margin:0; font-size:.86em;}
+  th,td{text-align:left; padding:.55em .7em; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-size:.72em; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+  td.n{font-family:ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  tr.win td{font-weight:700;}
+  .tablewrap{overflow-x:auto; max-width:100%; margin-bottom:1.2em;}
+
+  .stats{display:flex; flex-wrap:wrap; gap:clamp(28px,6vmin,80px); margin:.4em 0 1.2em;}
+  .stat .v{
+    font-family:"Iowan Old Style",Georgia,serif; font-weight:600;
+    font-size:clamp(38px,9vmin,92px); line-height:1; font-variant-numeric:tabular-nums;
+    display:block; letter-spacing:-.025em;
+  }
+  .stat .k{font-size:.8em; color:var(--muted); display:block; margin-top:.55em; max-width:15ch;}
+  .stat.up .v{color:var(--demo);}
+
+  .curva{display:flex; align-items:flex-end; gap:2px; height:24vmin; margin:0 0 .5em;}
+  .curva span{flex:1; background:var(--line); border-radius:1px 1px 0 0; min-height:2px;}
+  .curva span.hit{background:var(--garimpo);}
+  .curva span.fab{background:var(--demo);}
+  .curva-eixo{
+    display:flex; justify-content:space-between; font-size:.7em; color:var(--muted);
+    font-family:ui-monospace,Menlo,monospace; margin-bottom:1.4em;
+  }
+
+  #bar{position:fixed; left:0; top:0; height:2px; background:var(--ink); opacity:.45; z-index:6; transition:width .42s ease;}
+  #hud{
+    position:fixed; bottom:2.2vmin; right:2.6vmin; z-index:6;
+    display:flex; align-items:center; gap:.9em;
+    font-family:ui-monospace,Menlo,monospace; font-size:12px; color:var(--muted);
+  }
+  #hud button{
+    font:inherit; color:var(--muted); background:var(--paper);
+    border:1px solid var(--line); border-radius:999px; padding:.3em .8em; cursor:pointer;
+  }
+  #hud button:hover{color:var(--ink); border-color:var(--muted);}
+  #count{font-variant-numeric:tabular-nums;}
+  .edge{position:fixed; top:0; bottom:0; width:12vw; z-index:4; cursor:pointer; border:0; background:transparent; opacity:0;}
+  .edge.prev{left:0;} .edge.next{right:0;}
+
+  #notes{
+    position:fixed; left:0; right:0; bottom:0; z-index:7;
+    background:var(--card); border-top:1px solid var(--line);
+    padding:2vmin 7vmin 3vmin; max-height:46vh; overflow-y:auto;
+    font-size:14px; line-height:1.6;
+    transform:translateY(101%); transition:transform .3s ease;
+  }
+  #notes.open{transform:translateY(0);}
+  #notes h4{margin:0 0 .6em; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+  #notes ul{padding-left:1.2em; margin:0;}
+  #notes li{margin-bottom:.45em;}
+  .notes-src{display:none;}
+  :focus-visible{outline:2px solid var(--demo); outline-offset:3px;}
+</style>
+
+<div id="bar"></div>
+<div id="deck"><div id="rail">
+
+<!-- 1 · CAPA -->
+<section class="slide">
+  <h1>Como eu uso IA<br>pra produzir<br>meu conteúdo</h1>
+  <p class="sub step" style="margin-top:1.2em">Push Club · 31/08</p>
+  <div class="notes-src"><ul>
+    <li><strong>Navegação:</strong> seta direita revela a próxima frase; quando acabam, passa de slide. <strong>N</strong> abre estas notas. <strong>F</strong> tela cheia.</li>
+    <li>Cores: verde = demo ao vivo · âmbar = falta a tua fala · vermelho = bastidor, não projetar.</li>
+    <li>Números conferidos no Supabase em 31/08, 10h15.</li>
+  </ul></div>
+</section>
+
+<!-- 2 · A CURVA -->
+<section class="slide">
+  <div class="curva step" role="img" aria-label="Saldo diário de seguidores de 13 de julho a 31 de agosto: quase plano até 6 de agosto, salto após o carrossel, e três picos finais.">
+    <span style="height:2%"></span><span style="height:4%"></span><span style="height:4%"></span><span style="height:1%"></span><span style="height:1%"></span><span style="height:5%"></span><span style="height:1%"></span><span style="height:1%"></span><span style="height:9%"></span><span style="height:3%"></span><span style="height:1%"></span><span style="height:1%"></span><span style="height:3%"></span><span style="height:7%"></span><span style="height:1%"></span><span style="height:3%"></span><span style="height:4%"></span><span style="height:4%"></span><span style="height:1%"></span><span style="height:4%"></span><span style="height:1%"></span><span style="height:1%"></span><span style="height:1%"></span><span style="height:3%"></span><span style="height:1%"></span><span class="hit" style="height:48%"></span><span class="hit" style="height:60%"></span><span class="hit" style="height:14%"></span><span class="hit" style="height:55%"></span><span class="hit" style="height:37%"></span><span class="hit" style="height:41%"></span><span class="hit" style="height:16%"></span><span class="hit" style="height:44%"></span><span class="hit" style="height:32%"></span><span style="height:4%"></span><span style="height:18%"></span><span style="height:1%"></span><span style="height:15%"></span><span style="height:19%"></span><span style="height:17%"></span><span style="height:14%"></span><span style="height:4%"></span><span style="height:13%"></span><span style="height:3%"></span><span style="height:2%"></span><span style="height:4%"></span><span class="fab" style="height:85%"></span><span class="fab" style="height:73%"></span><span class="fab" style="height:100%"></span>
+  </div>
+  <div class="curva-eixo step"><span>13/07</span><span>06/08</span><span>28/08</span><span>31/08</span></div>
+  <div class="stats">
+    <div class="stat step"><span class="v">+17</span><span class="k">nos primeiros 25 dias</span></div>
+    <div class="stat up step"><span class="v">+252</span><span class="k">nos últimos 3</span></div>
+  </div>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 1 · Câmera</em></li>
+    <li><strong>A frase:</strong> "Nos primeiros 25 dias eu fiz 17 seguidores. Nos últimos 3, fiz 252."</li>
+    <li>5.422 → 5.439 em 25 dias. Depois do carrossel de 06/08: +47, +59, +13, +54, +36, +40. Depois da fábrica de 28/08: +83, +71, <strong>+98 hoje</strong> (recorde). Hoje: <strong>6.131</strong>, +709 na temporada.</li>
+    <li>Views: 155.000 na temporada em 66 posts. O carrossel sozinho = 48.471 (31%). Os dias 28+29+30 = 36.844 (24% da temporada em 3 dias).</li>
+    <li><strong>Demo 1:</strong> abrir o Placar e clicar "Atualizar dados". O número sobe ao vivo, e isso planta o bloco 3 sem explicar nada.</li>
+  </ul></div>
+</section>
+
+<!-- 3 · DISCLAIMERS -->
+<section class="slide">
+  <p class="frase step">Não é maquininha de fazer conteúdo automático.</p>
+  <p class="frase step">Piorou meu tempo de tela.</p>
+  <p class="frase step">Veja o curso de vibecode.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 1 · Câmera</em></li>
+    <li>Falar isso <strong>antes</strong> de qualquer coisa técnica. É o que impede a aula de virar promessa de maquininha.</li>
+    <li><strong>1 ·</strong> Não dá pra automatizar um processo que ainda não existe. Comecei do zero, sem saber o que eu gostava de fazer nem o que dava certo pra mim. Tive que testar.</li>
+    <li><strong>2 ·</strong> Muito. Tive que consumir muito conteúdo pra entender o jogo. E fico ansioso olhando número. Eu estava off de rede social e, pra qualidade de vida, era melhor antes. Aceitei essa conta de olho no longo prazo.</li>
+    <li><strong>3 ·</strong> É onde está o setup inicial. Sem ele, metade dessa aula vira mágica.</li>
+  </ul></div>
+</section>
+
+<!-- 4 · O DESENHO -->
+<section class="slide">
+  <p class="frase step">Desafio público.</p>
+  <p class="frase step">Eu faço. Não terceirizo.</p>
+  <p class="frase step">Só o que me empolga.</p>
+  <p class="frase dim step">A primeira coisa que construí foi o painel. Não o conteúdo.</p>
+  <div class="garimpo step"><span class="tag">Falta a tua fala · 60s</span>
+    <p>Por que você começou o desafio 100k.</p></div>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 2 · Câmera</em></li>
+    <li><strong>Desafio público:</strong> a trava é emocional. Depois que você anuncia, fica feio desistir, e isso não tem uma linha de código.</li>
+    <li><strong>Não terceirizo:</strong> nem agência, nem editor. <strong>Só o que me empolga:</strong> senão morre na semana 3.</li>
+    <li><strong>O painel primeiro:</strong> antes de qualquer post, métrica na tela e sensação de crescimento. Sem isso eu não teria passado dos 25 dias de +17.</li>
+    <li>A fala do "por que começou" é a única coisa da aula que não dá pra reconstruir do banco.</li>
+  </ul></div>
+</section>
+
+<!-- 5 · A STACK -->
+<section class="slide">
+  <h2 class="step">O dash nas entranhas</h2>
+  <p class="frase step">Next.js na Vercel. Supabase. Uma VPS.</p>
+  <p class="frase dim step">Todo dado tem dois caminhos: um cron e um botão.</p>
+  <div class="demo step"><span class="tag">Demo 2</span>
+    <code>ssh vps-claude 'crontab -l'</code>
+    <code>tail -40 analyze_own.log</code></div>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 3 · Tela</em></li>
+    <li>Next.js com deploy automático no push. Supabase guarda posts, snapshots e referências. A VPS roda os crons e os scripts pesados em Python.</li>
+    <li><strong>Os dois caminhos gêmeos</strong> são o que faz a Demo 1 funcionar na frente deles: o botão dispara a mesma lógica do cron, ao vivo.</li>
+    <li><strong>A auto-crítica diária</strong>, a demo que mais convence de que o sistema roda sem mim: cron das 9h50 (<code>analyze_own.py --max 3</code>). Baixa o reel, transcreve, extrai frames e devolve nota de 0 a 10 + 1 acerto + 1 melhoria. <strong>Quem avalia é o Fable</strong>, o modelo mais barato. O caro não faz falta aqui. Em 64 avaliações as notas foram de <strong>3,9 a 8,6</strong>.</li>
+  </ul></div>
+</section>
+
+<!-- 6 · GRAPH API -->
+<section class="slide">
+  <h2 class="step">A conexão com a Meta</h2>
+  <ol class="passos">
+    <li class="step">Conta Business, vinculada a uma Página.</li>
+    <li class="step">Business Manager onde eu sou admin.</li>
+    <li class="step">App com o produto Instagram.</li>
+    <li class="step">Token de System User.</li>
+  </ol>
+  <p class="frase dim step" style="margin-top:1em">Esse token não expira.</p>
+  <p class="frase step">Dois apps: um lê, o outro publica.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 3 · o miolo · Tela</em></li>
+    <li>Conta <strong>Business</strong>, não Creator nem pessoal. App criado no developers.facebook.com.</li>
+    <li><strong>A sacada é o passo 4:</strong> token de usuário comum vence em 60 dias e te obriga a renovar pra sempre. O de System User tem <code>expires_at: 0</code>.</li>
+    <li><strong>App de leitura, "Raiz - Metrics"</strong> (<code>792069043336933</code>): instagram_basic, instagram_manage_insights, pages_show_list, pages_read_engagement, business_management. É o que alimenta o painel: todos os meus posts, insights por post (views, reach, saves, shares, comentários) e seguidores diários, que é a curva do primeiro slide. <strong>260 posts</strong> no banco (o histórico inteiro, desde 2018), <strong>66 na temporada</strong>. Snapshot diário desde <strong>12/06</strong>, e só o dia 14/08 ficou sem.</li>
+    <li><strong>App de escrita, "Content Maker"</strong> (<code>2259356291552328</code>): instagram_content_publish, instagram_manage_comments, instagram_manage_messages, instagram_manage_contents. <strong>É este que publica de verdade</strong>: o <code>publicar_carrossel.py</code> chama <code>/media</code> e depois <code>/media_publish</code> com o token dele. E é o mesmo app que sustenta o CEQ do bloco 7, porque comentário e DM moram nessas permissões.</li>
+    <li><strong>Sobre aprovação:</strong> essa parte é tua. Vale contar o que o app de leitura exigiu contra o que o Content Maker exigiu pra liberar publicação e mensagens, porque é aí que trava quem tenta repetir em casa.</li>
+    <li>O app que só lê nunca pode postar no teu nome. Se o token de leitura vazar, o estrago para em ver número.</li>
+    <li><strong>Demo 3:</strong> rodar o coletor de métricas e mostrar a linha entrando no Supabase.</li>
+  </ul></div>
+</section>
+
+<!-- 8 · APIFY -->
+<section class="slide">
+  <p class="frase step">A Graph API só mostra a minha conta.</p>
+  <p class="frase step">Pra ver os outros: Apify.</p>
+  <p class="frase dim step">Post avulso. Nunca perfil inteiro.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 3 · Tela</em></li>
+    <li>Actor <code>apify~instagram-scraper</code>: plays, likes, comentários, caption, duração e a <strong>URL do vídeo</strong>, que é o que me deixa baixar e analisar de verdade.</li>
+    <li><strong>19 perfis</strong> em monitoramento ativo (o banco tem 158 no total; os outros entraram como donos de reels salvos, sem virar monitoramento). Entre os ativos: Daniel Dalen, Dan Koe, Theo Braga, Bruno Okamoto, Akelly Souza.</li>
+    <li>A regra do post avulso é decisão de custo: perfil inteiro é caro e traz lixo. A conta é por resultado raspado, e no pipeline de referências entram dezenas por semana.</li>
+  </ul></div>
+</section>
+
+<!-- 9 · O RADAR -->
+<section class="slide">
+  <h2 class="step">De onde vem a pauta boa</h2>
+  <p class="frase step">Encaminho o reel pro meu próprio direct.</p>
+  <p class="frase step">O direct vira banco.</p>
+  <p class="frase dim step">Outlier = plays ÷ mediana do perfil.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 3 · o radar · Tela</em></li>
+    <li>Vem do que já viralizou.</li>
+    <li><strong>O caminho:</strong> o direct cai numa inbox do Chatwoot → um script pagina a conversa, acha os anexos tipo <code>ig_reel</code>, extrai o shortcode e deduplica → o que é novo é raspado no Apify → ffmpeg tira 8 frames, Whisper transcreve, o Claude escreve o hook e a tese de viralização.</li>
+    <li><strong>Por que relativo:</strong> um reel de 30 mil num perfil que faz 2 mil vale mais que 100 mil num perfil de 1 milhão. Outlier = ≥2,5x.</li>
+    <li>Hoje: <strong>1.638</strong> referências · <strong>182</strong> salvas por mim via DM · <strong>222</strong> analisadas · maior outlier <strong>73,8x</strong>, um reel de 13,5 milhões de plays num perfil cuja mediana é 183 mil.</li>
+  </ul></div>
+</section>
+
+<!-- 10 · DEMOS DO RADAR -->
+<section class="slide">
+  <div class="demo step"><span class="tag">Demo 4 · ao vivo</span>
+    <p>Encaminhar um reel pro próprio direct <strong>agora</strong> e rodar o script na tela.</p>
+    <code>python3 chatwoot_refs.py</code></div>
+  <div class="demo step"><span class="tag">Demo 5</span>
+    <p>Abrir o top 5 de outliers e uma análise pronta, com o hook e a tese já escritos.</p></div>
+  <div class="alert step"><span class="tag">Honestidade que melhora a demo</span>
+    <p>Roda sob demanda, não por cron. Rodar ao vivo é mais honesto <em>e</em> mais didático.</p></div>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 3 · fecho · Tela</em></li>
+    <li>Testar antes: mandar um reel de teste pro DM com antecedência, senão a conversa do Chatwoot pode não ter sincronizado na hora.</li>
+  </ul></div>
+</section>
+
+<!-- 11 · AGENDA -->
+<section class="slide">
+  <p class="frase step">Ninguém produz conteúdo sem ter tempo.</p>
+  <div class="tablewrap step"><table>
+    <tr><td>Domingo</td><td class="n">9h30</td><td>Planejar, escrever 3 roteiros, gravar</td></tr>
+    <tr><td>Segunda</td><td class="n">9h</td><td>Editar · postar reel 1 · programar reel 2</td></tr>
+    <tr><td>Terça</td><td class="n">9h15</td><td>Carrossel: criar e programar</td></tr>
+    <tr><td>Quarta</td><td class="n">12h</td><td>Reel 2 sai sozinho</td></tr>
+    <tr><td>Quinta</td><td class="n">12h</td><td>Carrossel sai · placar às 18h</td></tr>
+  </table></div>
+  <p class="frase dim step">Depois que começa, a cabeça caça ideia sozinha.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · Tela</em></li>
+    <li><strong>2 reels + 1 carrossel por semana</strong>, com horário marcado na agenda.</li>
+    <li>Essa agenda está <strong>codificada no sistema</strong>, no mesmo lugar que dispara o lembrete, e o bot me cobra.</li>
+    <li><strong>Captura de ideia:</strong> falo por áudio no Telegram, o bot transcreve e grava com hook, pilar e formato → cai na aba Ideias. <strong>155 ideias</strong> hoje. Regra: não deixar ideia morrer no transporte. Se depender de eu abrir o notebook, morre. <strong>Demo 6:</strong> mandar um áudio ao vivo.</li>
+    <li>As primeiras semanas doem. Da terceira em diante você vê pauta em conversa de bar. É aí que o jogo fica mais fácil, e não foi ferramenta nenhuma que fez isso.</li>
+  </ul></div>
+</section>
+
+<!-- 12 · LAPIDAÇÃO -->
+<section class="slide">
+  <p class="frase step">A ideia é minha. A lapidação é com IA.</p>
+  <p class="frase dim step">Dói? Volta sempre? Quanta gente sente?</p>
+  <p class="frase dim step">Eu falaria isso num áudio de WhatsApp?</p>
+  <div class="garimpo step"><span class="tag">Falta a tua fala · 90s</span>
+    <p>O dia em que você vetou o primeiro roteiro "bonito demais" da IA.</p></div>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · Tela</em></li>
+    <li><strong>O filtro de pauta</strong> é o Schwartz: nota 1-5 em cada pergunta, corte em 12/15. "10 sistemas" tirou 13/15 → produzido. "Ganho 35 mil da Anthropic" tirou 7/15 → vetada, nichada demais. <strong>Demo 7:</strong> rodar numa pauta ao vivo. Pedir uma pauta no grupo antes de gravar.</li>
+    <li><strong>A régua de voz</strong> mora num VOZ.md com os padrões de IA proibidos (o "não é X, é Y", a tríade, a frase de outdoor, o fecho motivacional), cada um com um exemplo real reprovado e datado.</li>
+    <li><strong>Frase na minha voz se garimpa nos meus próprios reels transcritos. Não se inventa.</strong></li>
+    <li><strong>Demo 8:</strong> <code>/deslop</code> em modo detect numa legenda com cara de IA.</li>
+  </ul></div>
+</section>
+
+<!-- 13 · FORMATOS -->
+<section class="slide">
+  <h2 class="step">Descoberta de formato</h2>
+  <div class="tablewrap step"><table>
+    <tr><td>Carrossel de tese</td><td>Cresce por semanas, não por pico.</td></tr>
+    <tr><td>Reel teste × feed</td><td>Públicos diferentes. Reach 236 contra 879.</td></tr>
+    <tr class="win"><td>Demo de tela</td><td>Maior save+share da conta: 8,2%.</td></tr>
+    <tr><td>Reel mudo com texto</td><td>É o que está rodando agora.</td></tr>
+  </table></div>
+  <p class="frase dim step">Mais de 800 views no frio em 48h: vai pro feed.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li>A demo de tela (post 11568, 21/08) ficou <strong>acima do próprio hit</strong> em save+share sobre alcance: <strong>8,2% contra 7,1%</strong>, conferido hoje. E foi descoberta e abandonada duas vezes.</li>
+    <li>Comparar reel de teste com reel de feed mistura audiência e produz relatório errado. Par A/B só vale teste contra teste.</li>
+    <li><strong>MCPs:</strong> Higgsfield pra gerar imagem e vídeo direto da conversa. Regra dura: <strong>tipografia nunca na IA de imagem</strong>. O texto entra depois via Python, senão sai torto. Antes de gerar ao vivo, rodar <code>select_workspace</code>.</li>
+    <li>A auditoria de 28/08 (12 agentes) foi o que me disse quais formatos parar: o gargalo era view, não conversão, e 55% da produção era motivacional.</li>
+  </ul></div>
+</section>
+
+<!-- 14 · O HIT -->
+<section class="slide">
+  <div class="stats">
+    <div class="stat step"><span class="v">48.471</span><span class="k">views</span></div>
+    <div class="stat step"><span class="v">1.211</span><span class="k">saves</span></div>
+    <div class="stat step"><span class="v">1.047</span><span class="k">shares</span></div>
+  </div>
+  <p class="frase step">A IA não acertou de primeira.</p>
+  <p class="frase step">Eu supervisionei até acertar.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 5 · Tela</em></li>
+    <li>Abrir a conversa inteira de 06/08 e comentar linha por linha.</li>
+    <li><strong>1.</strong> Pauta aberta, sem tese pronta: "vamos criar um carrossel pra eu postar hoje?"</li>
+    <li><strong>2. As primeiras versões foram reprovadas por MIM:</strong> "não tá viralizável", "vc só ficou agressivo, não pensou mais", "as imagens ficaram meio genericão". <em>Mostrar as mensagens reais.</em></li>
+    <li><strong>3.</strong> A virada foi um áudio torto meu: o curso plugado no Claude via MCP + o print da chavinha "MEU CURSO". E a decisão: "esse tem que viralizar".</li>
+    <li><strong>4.</strong> A headline nasceu no meio da conversa.</li>
+    <li><strong>5.</strong> Prova com dado próprio: 67 aulas concluídas vs 225 consultas via IA, com a ressalva honesta dentro do post ("são 7 alunos, não é lei"). A primeira leitura estava enviesada e foi corrigida antes de publicar.</li>
+    <li><strong>6.</strong> Gravuras no Higgsfield, estética Doré, várias rodadas. Mostrar as artes cruas ao lado das lâminas finais.</li>
+    <li><strong>7.</strong> Eu peguei um "não é X, é Y" no slide 2 e mandei reescrever.</li>
+    <li><strong>8.</strong> Publicado. No mesmo dia: "esse trampo vai ter que ser salvo" → virou skill. <strong>Processo bom vira sistema, não memória.</strong></li>
+  </ul></div>
+</section>
+
+<!-- 15 · POR QUE EXPLODIU -->
+<section class="slide">
+  <h2 class="step">Por que explodiu</h2>
+  <p class="frase step">Ameaça o formato. Nunca a pessoa.</p>
+  <p class="frase step">Número próprio, com ressalva honesta.</p>
+  <p class="frase step">Enumeração concreta, sem adjetivo.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 5 · Tela</em></li>
+    <li><strong>Ameaçar o formato</strong> (o curso) faz o compartilhar virar "chegar primeiro com a resposta". Ameaçar a pessoa fecha.</li>
+    <li><strong>O save</strong> vem de mecanismo com nome pesquisável + print real + número próprio com ressalva.</li>
+    <li><strong>A capa:</strong> "livro, curso por correspondência, fascículo de banca, fita cassete, CD-ROM, ebook em PDF, videoaula em plataforma". O leitor conclui sozinho. Repetir a figura, não o assunto.</li>
+  </ul></div>
+</section>
+
+<!-- 16 · AS DUAS LEITURAS -->
+<section class="slide">
+  <div class="tablewrap step"><table>
+    <tr><th>Post</th><th>Em 24h</th><th>Hoje</th></tr>
+    <tr><td>O hit · 06/08</td><td class="n">3.110 views</td><td class="n">48.471 views</td></tr>
+    <tr class="win"><td>Dâmocles · 27/08</td><td class="n">858 reach</td><td class="n">4.541 reach</td></tr>
+  </table></div>
+  <p class="frase step">Nunca julgue formato em 24 horas.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 5 · a lição · Tela</em></li>
+    <li>No hit, a recomendação de 24h era abandonar o formato. Discordei e estava certo: 3.110 → 44.676 em 15 dias → 48.471 hoje.</li>
+    <li><strong>E aconteceu de novo essa semana:</strong> o Dâmocles foi lido como flop e hoje é o segundo maior carrossel da temporada, com 7.939 views e 263 shares.</li>
+    <li>Carrossel de tese circula por save e DM, não por pico de feed. Por isso a cauda é longa.</li>
+    <li><strong>Cuidado:</strong> numa versão anterior deste deck o Dâmocles estava listado como "clone que flopou". Não usar o slide antigo.</li>
+  </ul></div>
+</section>
+
+<!-- 17 · FERMAT: O FLOP -->
+<section class="slide">
+  <h2 class="step">Um reel, do roteiro ao fim</h2>
+  <div class="stats">
+    <div class="stat step"><span class="v">14/15</span><span class="k">a pauta no filtro</span></div>
+    <div class="stat step"><span class="v">123</span><span class="k">views na estreia</span></div>
+    <div class="stat step"><span class="v">0</span><span class="k">comentário · 0 save</span></div>
+  </div>
+  <p class="frase step">O problema eram os 4 primeiros segundos.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 6 · Tela</em></li>
+    <li>Escolhi essa peça porque ela <strong>flopou primeiro</strong>. O conserto é o método inteiro em 48 horas.</li>
+    <li>Pauta: a pilha de ideia parada na gaveta (dor) + o sistema de decisão que montei depois de ler no Munger "estude Fermat e Pascal" (prova).</li>
+    <li><strong>O roteiro</strong> foi escrito bloco a bloco com marcação de câmera: de frente / pega o livro / corta pra tela / zoom no veredito. Regra anotada nele: máximo 2 takes por bloco, bullets pra falar por cima, não decorar.</li>
+    <li><strong>O clímax</strong> é o veredito que me contrariou: "ele aprovou, mas com teto de 99 dólares e uma data de morte marcada". É o que faz o reel não virar propaganda do próprio sistema.</li>
+    <li><strong>O diagnóstico:</strong> abertura sem prova visual (plano parado no escuro, promessa só aos 6-12s), vídeo longo demais pra público frio, gordura do take não cortada. Post 6229, 03/08, 2m16, retenção média 3,3s.</li>
+  </ul></div>
+</section>
+
+<!-- 18 · FERMAT: O CONSERTO -->
+<section class="slide">
+  <h2 class="step">48 horas depois, o mesmo vídeo</h2>
+  <div class="tablewrap step"><table>
+    <tr><th>Abertura</th><th>Views</th><th>Comentários</th></tr>
+    <tr class="win"><td>Cold open no número + legenda pela dor</td><td class="n">681</td><td class="n">16</td></tr>
+    <tr><td>Hook original</td><td class="n">124</td><td class="n">1</td></tr>
+    <tr><td>Terceira variante</td><td class="n">125</td><td class="n">0</td></tr>
+  </table></div>
+  <p class="frase step">Pauta boa não salva abertura ruim.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 6 · Tela</em></li>
+    <li>Mesmo corpo, mesma gravação, mesmo CTA. Só a abertura e a legenda mudaram: <strong>5,5x as views e 16 comentários contra zero.</strong></li>
+    <li><strong>O corte cirúrgico:</strong> cinco cortes nomeados por timecode no vídeo já postado (explicação que a demo já mostrava, comentário genérico, redundância), e o CTA remontado de três pedaços separados do take. 2m16 → 1m45.</li>
+    <li>Posts 6452 (vencedor), 6451, 6453, todos em 04/08. Legenda vencedora: "Uma pilha de ideia parada e tu não sabe qual vale teu tempo".</li>
+    <li><strong>É a mesma lição do bloco 7:</strong> a frase da abertura decide sozinha. Dois casos independentes.</li>
+  </ul></div>
+</section>
+
+<!-- 19 · O RANKING -->
+<section class="slide">
+  <h2 class="step">Só a frase mudando</h2>
+  <div class="tablewrap step"><table>
+    <tr><th>Copy</th><th>Views</th><th>Coment.</th></tr>
+    <tr class="win"><td>"Em vez de maratonar <strong>Netflix</strong>… um desses 10 sistemas"</td><td class="n">6.270</td><td class="n">223</td></tr>
+    <tr><td>idem, com "rolar feed"</td><td class="n">3.570</td><td class="n">77</td></tr>
+    <tr><td>mesma copy, fundo diferente</td><td class="n">3.048</td><td class="n">88</td></tr>
+    <tr><td>listicle "10 Sistemas que você pode construir"</td><td class="n">2.332</td><td class="n">37</td></tr>
+    <tr><td>"<strong>Troque</strong> rolar o feed <strong>por</strong> construir sistema"</td><td class="n">2.181</td><td class="n">15</td></tr>
+  </table></div>
+  <p class="frase step">Copy vence fundo.</p>
+  <p class="frase step">"Troque X por Y" mata o comentário.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 7 · Tela</em></li>
+    <li>Lote de 28/08, o responsável pelos +252 seguidores do bloco 1. Fecha o círculo: a aula começou mostrando o resultado e termina mostrando como ele foi feito.</li>
+    <li><strong>Copy vence fundo:</strong> a copy campeã num fundo novo, no mesmo dia, ficou 50% abaixo: canibalizou o irmão.</li>
+    <li><strong>"Troque X por Y":</strong> sem "um desses 10", some o gap de curiosidade e o comentário despenca de 223 pra 15. Mesmo vídeo, mesma legenda, mesmo CTA.</li>
+    <li><strong>A gramática do formato</strong>, decodificada de 2 referências que salvei (63 mil e 41 mil views): fundo simples e real (o de 63 mil tem 7 segundos); texto na tela = objeção entre aspas ou "Em vez de X hoje"; mudo + música em alta; CTA de palavra-chave; legenda longa entrega o passo a passo.</li>
+  </ul></div>
+</section>
+
+<!-- 20 · O CEQ -->
+<section class="slide">
+  <p class="frase step">Comentário não abre a janela.</p>
+  <p class="frase step">O clique abre.</p>
+  <div class="stats">
+    <div class="stat step"><span class="v">184</span><span class="k">comentaristas</span></div>
+    <div class="stat step"><span class="v">42%</span><span class="k">clicaram</span></div>
+    <div class="stat step"><span class="v">67</span><span class="k">chegaram no link</span></div>
+  </div>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 7 · Tela</em></li>
+    <li>A API só devolve se a pessoa te segue <strong>depois</strong> que ela já interagiu na DM. Comentário não conta e dá erro <strong>230, "User consent is required"</strong>. É o clique no primeiro botão que cria o consentimento. Sem entender isso, o fluxo inteiro quebra.</li>
+    <li><strong>O fluxo:</strong> comentário na palavra "sistema" → DM neutra ("esse robô fiz num fim de semana… toca no botão que eu te envio") → o check roda no clique → segue: entrega direto; não segue: convite + botão "Segui, libera" com re-check. Confirmado não-seguidor: insiste uma vez e entrega. Nunca loop.</li>
+    <li><strong>Os buracos:</strong> o monitor só ligou às 22:41 e perdi os comentários anteriores; 38 sessões ficaram órfãs porque eu <em>editei o fluxo ao vivo</em>; o redisparo "deu certo?" entregou 45 de 130, porque a janela de 24h só abre no clique.</li>
+    <li>100% dos 184 receberam a 1ª DM. Entrega em ia.augustogobatto.com/sistemas.</li>
+  </ul></div>
+</section>
+
+<!-- SKILLS · ABERTURA -->
+<section class="slide">
+  <h2 class="step">As skills que fazem isso rodar</h2>
+  <p class="frase step">Skill é uma instrução salva.</p>
+  <p class="frase step">A IA carrega sozinha quando o assunto aparece.</p>
+  <p class="frase dim step">É o que transforma correção em método.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li>Sem skill, você repete a mesma explicação toda vez que abre uma conversa nova. Com skill, a regra fica escrita e passa a valer sempre.</li>
+    <li><strong>Quase todas nasceram de um erro meu.</strong> A <code>carrossel-gravura</code> nasceu no dia do hit ("esse trampo vai ter que ser salvo"). A <code>/laele</code> nasceu do deck que eu aprovei e travei no dia seguinte.</li>
+    <li>Vem uma por slide agora. São seis, na ordem em que eu uso: pauta, semana, produção, e três camadas de revisão.</li>
+  </ul></div>
+</section>
+
+<!-- SKILL 1a · FILTRO SCHWARTZ, A ORIGEM -->
+<section class="slide">
+  <h2 class="step">/filtro-schwartz</h2>
+  <p class="frase step">Vi um reel sobre por que vídeo não pega.</p>
+  <p class="frase step">Puxei, transcrevi, virou skill.</p>
+  <p class="frase dim step">O livro que ele citava é de 1966.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela · esta é a skill pra explicar com calma</em></li>
+    <li><strong>A história inteira é a aula em miniatura:</strong> uma referência de fora entrou pelo radar, virou texto, virou regra, e agora roda em toda pauta que eu escrevo. Não foi ideia minha, foi garimpo.</li>
+    <li>O livro é o <em>Breakthrough Advertising</em>, do Eugene Schwartz, copywriter. A ideia que interessa se chama <strong>mass desire</strong>.</li>
+    <li>[CONFERIR NA TUA MEMÓRIA: o arquivo da skill registra "achado num prompt de feed em 27/07/2026". Se foi reel mesmo, vale citar o perfil, porque dá crédito e mostra o radar funcionando.]</li>
+    <li>Mostrar na tela: o <code>SCHWARTZ.md</code> com o prompt original inteiro em inglês, e o <code>SKILL.md</code> com a minha calibração por cima. São dois arquivos separados de propósito, e o próximo slide explica por quê.</li>
+  </ul></div>
+</section>
+
+<!-- SKILL 1b · O MECANISMO -->
+<section class="slide">
+  <h2 class="step">Três perguntas, nota 1 a 5</h2>
+  <ol class="passos">
+    <li class="step">Quanto dói?</li>
+    <li class="step">Volta sempre?</li>
+    <li class="step">Quanta gente sente?</li>
+  </ol>
+  <p class="frase step" style="margin-top:1em">Abaixo de 12, eu não escrevo.</p>
+  <p class="frase dim step">O tema define o teto. O hook decide quanto do teto você alcança.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li><strong>A frase que sustenta tudo:</strong> você não faz alguém querer uma coisa. Você acha o que já querem e fica na frente. Esses desejos levam anos pra se formar, ninguém cria um sozinho com uma câmera na mão.</li>
+    <li><strong>Por isso hook bom não salva pauta ruim.</strong> Se o desejo não está lá, a primeira frase esperta só te dá uma fatia maior de nada. É exatamente o que o bloco 6 mostra ao contrário: pauta 14/15 e abertura ruim deu 123 views.</li>
+    <li><strong>Os exemplos do próprio Schwartz, pra calibrar a nota:</strong> dor de artrite constante contra dor de cabeça ocasional (quanto dói). Fome contra vontade de um jantar chique, porque a fome volta todo dia e a vontade se resolve uma vez (volta sempre). Economizar gasolina hoje contra evitar um conserto algum dia (quanta gente sente).</li>
+    <li><strong>Notas reais da semana 1:</strong> "perfeccionismo é medo" 13 · "anúncio do desafio" 12 · "grava 2 min de áudio" 10 · "olha meu sistema" 8. Repara que a pauta sobre mim mesmo foi a pior.</li>
+    <li><strong>A calibração que eu botei por cima do prompt original:</strong> a dor-mestre do meu público, escrita nas palavras dele, e a regra de que pauta lidera pela dor e o sistema entra como prova. E uma exceção honesta: post de marca com nota baixa não é vetado, porque ele tem outro trabalho.</li>
+    <li><strong>Demo 7:</strong> rodar numa pauta ao vivo. Pedir uma pauta no grupo antes de gravar.</li>
+  </ul></div>
+</section>
+
+<!-- SKILL 2 · PLANEJAR CONTEÚDO -->
+<section class="slide">
+  <h2 class="step">/planejar-conteudo</h2>
+  <p class="frase step">Abre a semana com os números na mesa.</p>
+  <p class="frase step">Puxa as referências que viralizaram.</p>
+  <p class="frase dim step">E escreve os roteiros comigo, não por mim.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li>É a skill do bloco de domingo às 9h30. Ela junta três coisas antes de qualquer roteiro: o que eu quero atingir, o cardápio de referências ordenado por outlier, e como foi a performance da semana passada.</li>
+    <li><strong>O "comigo" é o ponto.</strong> Ela não cospe três roteiros prontos. Ela traz o material e conduz a conversa, e eu decido cada corte. Sem isso o texto sai sem voz.</li>
+  </ul></div>
+</section>
+
+<!-- SKILL 3 · REELS TESTE -->
+<section class="slide">
+  <h2 class="step">/reels-teste</h2>
+  <p class="frase step">Produz o lote do dia sozinha.</p>
+  <p class="frase step">Fundo, texto na tela, render.</p>
+  <p class="frase dim step">Eu só escolho a música e posto.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li>Formato mudo, texto queimado no vídeo, fundo do meu banco de b-roll. Cerca de 30 segundos do meu tempo por peça.</li>
+    <li>A skill também lê o placar depois: acima de 800 views no frio em 48h, a peça vira candidata a feed.</li>
+    <li>Foi esse lote que fez os +252 seguidores em 3 dias do primeiro slide.</li>
+  </ul></div>
+</section>
+
+<!-- SKILL 4 · DESLOP -->
+<section class="slide">
+  <h2 class="step">/deslop</h2>
+  <p class="frase step">Tira a cara de IA do texto.</p>
+  <p class="frase step">Sem trocar a minha voz por outra genérica.</p>
+  <p class="frase dim step">É a que eu mais uso.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li><strong>Ela nomeia o padrão em vez de "melhorar o texto".</strong> O "não é X, é Y". O travessão. A tríade. A frase que só anuncia que algo é importante. O "especialistas afirmam" sem fonte. O fecho motivacional. Cada um com o conserto do lado.</li>
+    <li><strong>Dois modos:</strong> edit reescreve, detect só aponta e cita a linha. O detect é melhor pra aprender, porque você vê o padrão e conserta com a sua mão.</li>
+    <li><strong>Recibo honesto pra contar na aula:</strong> passei o deslop neste próprio deck hoje e ele achou 37 travessões e cinco "não é X, é Y" que eu tinha escrito sem perceber. A skill acha no meu texto também.</li>
+    <li><strong>Demo 8:</strong> rodar em modo detect numa legenda com cara de IA.</li>
+  </ul></div>
+</section>
+
+<!-- SKILL 5 · LAELE -->
+<section class="slide">
+  <h2 class="step">/laele</h2>
+  <p class="frase step">Caça duplo sentido antes de publicar.</p>
+  <p class="frase step">Achou 8 onde eu tinha visto 1.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li><strong>Como ela nasceu:</strong> aprovei o deck do carrossel do Dâmocles, gostei, e no dia seguinte travei a publicação porque uma linha soava torta. Passei a varredura e ela achou oito. Virou skill no mesmo dia.</li>
+    <li>Ela olha só como a frase <em>soa</em>, não se o argumento está certo. É diferente do deslop e diferente do gloop.</li>
+    <li><strong>A lição que fica:</strong> aprovado não é publicado. O custo de achar depois de postar é alto e o de varrer antes é zero.</li>
+  </ul></div>
+</section>
+
+<!-- SKILL 6 · GLOOP -->
+<section class="slide">
+  <h2 class="step">/gloop</h2>
+  <p class="frase step">Um crítico novo e cego por rodada.</p>
+  <p class="frase step">A tarefa dele é provar que está quebrado.</p>
+  <p class="frase dim step">Roda até parar de sangrar.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Tela</em></li>
+    <li>Cada rodada é um crítico que não viu as anteriores, e que precisa <em>olhar ou rodar</em> a peça, não reler o que disseram dela. Cego de propósito: quem já leu a defesa tende a comprar a defesa.</li>
+    <li>Uso antes de qualquer coisa que custa caro se sair errada: página de vendas, disparo pra lista, relatório com número, código em produção.</li>
+    <li><strong>O contra-exemplo honesto, e ele importa:</strong> o carrossel do gestor de tráfego passou por quatro rodadas de gloop, achou e corrigiu erro factual de verdade, e mesmo assim flopou. <strong>O sistema não garante acerto. Garante que o erro não se repete.</strong></li>
+  </ul></div>
+</section>
+
+<!-- SKILLS · A PROMESSA -->
+<section class="slide">
+  <h2 class="step">E eu vou te dar todas elas</h2>
+  <p class="frase step">Prontas, na plataforma.</p>
+  <p class="frase dim step">Você instala e usa. Não precisa escrever do zero.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 4 · fecho · Câmera</em></li>
+    <li>[DECIDIR ANTES DE FALAR: quais entram na primeira leva e em que prazo. <strong>Não prometer data sem ter certeza</strong>, porque essa é a promessa que o pessoal vai cobrar.]</li>
+    <li>Vale dizer que elas vêm calibradas pra mim e que a parte de calibrar pro próprio negócio é trabalho de cada um. O <code>/filtro-schwartz</code> é o melhor exemplo: o prompt original é universal, a camada de cima é minha.</li>
+  </ul></div>
+</section>
+
+<!-- 21 · A ESCADA -->
+<section class="slide">
+  <h2 class="step">Pra quem não tem VPS</h2>
+  <ol class="passos">
+    <li class="step">Salve referência num lugar só.</li>
+    <li class="step">Passe toda pauta por um filtro.</li>
+    <li class="step">Escreva teu documento de voz.</li>
+    <li class="step">Revise em camadas antes de publicar.</li>
+    <li class="step">Toda correção vira regra escrita.</li>
+    <li class="step">Depois, a regra vira skill.</li>
+  </ol>
+  <div class="garimpo step" style="margin-top:1.2em"><span class="tag">Falta a tua fala + o CTA</span>
+    <p>O fecho, sem fecho motivacional de IA.</p></div>
+  <div class="notes-src"><ul>
+    <li><em>Bloco 8 · Câmera</em></li>
+    <li><strong>1.</strong> E analise o porquê de cada uma. Dá pra fazer com pasta de salvos do IG + qualquer chat de IA. Não precisa de nada do que mostrei.</li>
+    <li><strong>2.</strong> As três perguntas: dói, volta sempre, quanta gente sente. Qualquer IA roda.</li>
+    <li><strong>3.</strong> Grave 5 áudios seus, transcreva, extraia teus padrões proibidos e permitidos.</li>
+    <li><strong>4.</strong> Cara de IA → duplo sentido → argumento. E análise fria semanal: a IA lê os números, você decide.</li>
+    <li><strong>5.</strong> É o degrau que faz o sistema melhorar em vez de repetir erro.</li>
+    <li><strong>6.</strong> Quando a regra já provou que funciona, ela vira skill e passa a rodar sozinha. É pra onde eu quero levar o pessoal do Club com as skills prontas.</li>
+    <li><strong>Sugestão de CTA:</strong> "roda o filtro na tua próxima pauta e posta a nota no grupo."</li>
+    <li>Este bloco é proposta: tu não citou fechamento no esboço.</li>
+  </ul></div>
+</section>
+
+<!-- 22 · BÔNUS -->
+<section class="slide">
+  <div class="stats">
+    <div class="stat step"><span class="v">16min35</span><span class="k">de palestra</span></div>
+    <div class="stat up step"><span class="v">70s</span><span class="k">de corte, zero Premiere</span></div>
+  </div>
+  <p class="frase step">A IA corta. O humano audita o corte.</p>
+  <div class="notes-src"><ul>
+    <li><em>Bônus · se sobrar tempo · Tela</em></li>
+    <li>É o pipeline de edição. Como eu nunca publiquei essa peça, ela entra como bônus.</li>
+    <li><strong>O caminho:</strong> yt-dlp baixa → Whisper transcreve palavra por palavra com timestamp → um script casa as frases escolhidas com os timestamps → ffmpeg monta.</li>
+    <li><strong>Fecho re-transcrevendo o corte final.</strong> Foi assim que peguei 2 sílabas comidas numa emenda.</li>
+    <li>Mesmo pipeline nas aulas do Club: 151 → 118 min, 504 emendas, e 21 retakes corretamente rejeitados porque ênfase não é erro.</li>
+  </ul></div>
+</section>
+
+<!-- 23 · BASTIDOR: CHECKLIST -->
+<section class="slide">
+  <div class="eyebrow"><span class="bastidor">Bastidor · não projetar</span></div>
+  <h2 class="step">Antes de gravar</h2>
+  <ol class="passos">
+    <li class="step">Testar as 8 demos.</li>
+    <li class="step">Abrir as abas.</li>
+  </ol>
+  <div class="alert step" style="margin-top:1.2em"><span class="tag">Nunca na tela</span>
+    <p><code>.env</code> · <code>.env.local</code> do painel · conversa do Chatwoot com nome de cliente.</p></div>
+  <div class="notes-src"><ul>
+    <li><strong>Demos frágeis:</strong> o script das referências (mandar um reel pro DM antes), o Higgsfield (<code>select_workspace</code>) e o áudio do Telegram.</li>
+    <li><strong>Abas:</strong> painel logado · conversa de 06/08 · artes cruas e lâminas do hit · VOZ.md · top de outliers · os 4 posts do teste Fermat (6229, 6451, 6452, 6453) e o arquivo de timecodes.</li>
+    <li>Gravar já pensando na edição por transcrição: a própria aula vira case do bônus.</li>
+  </ul></div>
+</section>
+
+<!-- 24 · BASTIDOR: CALIBRAÇÕES -->
+<section class="slide">
+  <div class="eyebrow"><span class="bastidor">Bastidor · não projetar</span></div>
+  <h2 class="step">Não escorregar na câmera</h2>
+  <div class="tablewrap step"><table>
+    <tr><th>Não dizer</th><th>Dizer</th></tr>
+    <tr><td>"O radar roda sozinho."</td><td>Roda sob demanda. Rodar ao vivo.</td></tr>
+    <tr><td>"O Dâmocles flopou."</td><td>7.939 views hoje.</td></tr>
+    <tr><td>"O Elias Maman está no radar."</td><td>Foi estudo à parte.</td></tr>
+  </table></div>
+  <div class="notes-src"><ul>
+    <li>Mais uma: o diário do desafio tem 2-3 registros. Ou não citar, ou citar como recibo honesto de que nem todo ritual sobrevive.</li>
+    <li>Todos os números foram conferidos no Supabase do desafio em 31/08, 10h15. Se gravar outro dia, puxar de novo.</li>
+  </ul></div>
+</section>
+
+</div></div>
+
+<button class="edge prev" id="prev" aria-label="Voltar"></button>
+<button class="edge next" id="next" aria-label="Avançar"></button>
+
+<div id="hud">
+  <button id="btnNotes" aria-pressed="false">notas · N</button>
+  <span id="count">1 / 24</span>
+</div>
+
+<div id="notes" aria-live="polite"><h4>Notas do apresentador</h4><div id="notesBody"></div></div>
+
+<script>
+(function(){
+  var rail  = document.getElementById('rail');
+  var slides= Array.prototype.slice.call(rail.querySelectorAll('.slide'));
+  var bar   = document.getElementById('bar');
+  var count = document.getElementById('count');
+  var notes = document.getElementById('notes');
+  var body  = document.getElementById('notesBody');
+  var btn   = document.getElementById('btnNotes');
+  var i = 0, s = 0;
+
+  function steps(n){ return slides[n].querySelectorAll('.step'); }
+
+  function paint(){
+    rail.style.transform = 'translateX(' + (-i * 100) + '%)';
+    var st = steps(i);
+    for (var k = 0; k < st.length; k++) st[k].classList.toggle('on', k < s);
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    var src = slides[i].querySelector('.notes-src');
+    body.innerHTML = src ? src.innerHTML : '<p>—</p>';
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  function next(){
+    if (s < steps(i).length) { s++; paint(); return; }
+    if (i < slides.length - 1) { i++; s = 0; slides[i].scrollTop = 0; paint(); }
+  }
+  function prev(){
+    if (s > 0) { s--; paint(); return; }
+    if (i > 0) { i--; s = steps(i).length; slides[i].scrollTop = 0; paint(); }
+  }
+  function jump(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    s = steps(i).length; paint();
+  }
+  function toggleNotes(force){
+    var open = force !== undefined ? force : !notes.classList.contains('open');
+    notes.classList.toggle('open', open);
+    btn.setAttribute('aria-pressed', String(open));
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch(e.key){
+      case 'ArrowRight': case 'PageDown': case ' ': e.preventDefault(); next(); break;
+      case 'ArrowLeft':  case 'PageUp':            e.preventDefault(); prev(); break;
+      case 'ArrowDown': e.preventDefault(); jump(i + 1); break;
+      case 'ArrowUp':   e.preventDefault(); jump(i - 1); break;
+      case 'Home': e.preventDefault(); i = 0; s = 0; paint(); break;
+      case 'End':  e.preventDefault(); jump(slides.length - 1); break;
+      case 'n': case 'N': toggleNotes(); break;
+      case 'Escape': toggleNotes(false); break;
+      case 'f': case 'F':
+        if (document.fullscreenElement) document.exitFullscreen();
+        else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+        break;
+    }
+  });
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+  btn.addEventListener('click', function(){ toggleNotes(); });
+
+  var x0 = null, y0 = null;
+  document.addEventListener('touchstart', function(e){
+    x0 = e.changedTouches[0].clientX; y0 = e.changedTouches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? next() : prev(); }
+    x0 = null; y0 = null;
+  }, {passive:true});
+
+  var start = parseInt((location.hash || '').slice(1), 10);
+  if (start >= 1 && start <= slides.length) i = start - 1;
+  paint();
+})();
+</script>

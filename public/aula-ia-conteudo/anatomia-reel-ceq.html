@@ -1,0 +1,567 @@
+<title>Anatomia do reel que está trazendo seguidor</title>
+<style>:root{
+  --paper:#FAFAF7; --ink:#1C1B18; --muted:#6E6A60; --line:#DDD9CF; --card:#F1EEE6;
+  --bolha-ele:#FFFFFF; --bolha-eu:#1C1B18; --bolha-eu-ink:#FAFAF7;
+  --nota:#A66A1E; --nota-bg:#F7EEDF; --ok:#2F7A4D;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#161513; --ink:#E8E6E0; --muted:#9A958A; --line:#33312C; --card:#1F1E1A;
+    --bolha-ele:#211F1B; --bolha-eu:#E8E6E0; --bolha-eu-ink:#161513;
+    --nota:#D79A4A; --nota-bg:#2B2115; --ok:#7CC397;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#161513; --ink:#E8E6E0; --muted:#9A958A; --line:#33312C; --card:#1F1E1A;
+  --bolha-ele:#211F1B; --bolha-eu:#E8E6E0; --bolha-eu-ink:#161513;
+  --nota:#D79A4A; --nota-bg:#2B2115; --ok:#7CC397;
+}
+*{box-sizing:border-box;}
+body{background:var(--paper); color:var(--ink); margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; font-size:16px; line-height:1.55;}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px 100px;}
+header{padding:14vmin 0 5vmin; border-bottom:1px solid var(--line); margin-bottom:40px;}
+h1{font-family:"Iowan Old Style",Georgia,"Times New Roman",serif; font-size:clamp(32px,6vw,62px);
+  line-height:1.05; font-weight:600; margin:0 0 18px; letter-spacing:-.015em; text-wrap:balance; max-width:17ch;}
+.dek{font-size:19px; color:var(--muted); max-width:54ch; margin:0;}
+.placar{display:flex; flex-wrap:wrap; gap:clamp(22px,5vw,60px); margin-top:40px;}
+.placar .v{font-family:"Iowan Old Style",Georgia,serif; font-weight:600; font-size:clamp(26px,4.2vw,42px);
+  line-height:1; font-variant-numeric:tabular-nums; display:block; letter-spacing:-.02em;}
+.placar .k{font-size:13px; color:var(--muted); margin-top:8px; display:block;}
+.aviso{font-size:13px; color:var(--muted); margin-top:28px;}
+.ato{border-top:1px solid var(--line); padding-top:22px; margin:52px 0 26px;}
+.ato-num{font-family:ui-monospace,Menlo,monospace; font-size:12px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px;}
+h2{font-family:"Iowan Old Style",Georgia,serif; font-size:clamp(22px,3.1vw,31px); font-weight:600;
+  margin:0 0 8px; line-height:1.15; text-wrap:balance;}
+.ato-sub{margin:0; color:var(--muted); max-width:58ch;}
+.linha{display:grid; grid-template-columns:1fr 250px; gap:30px; align-items:start;}
+@media (max-width:860px){ .linha{grid-template-columns:1fr; gap:10px;} }
+.fala{display:flex; flex-direction:column; gap:5px; margin-bottom:16px;}
+.fala.eu{align-items:flex-end;}
+.quem{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+.audio{font-family:ui-monospace,Menlo,monospace; letter-spacing:0; text-transform:none;
+  background:var(--card); border-radius:999px; padding:2px 7px; margin-left:6px; font-weight:400;}
+.bolha{padding:14px 17px; border-radius:16px; max-width:90%; white-space:pre-wrap; overflow-wrap:break-word;}
+.fala.ele .bolha{background:var(--bolha-ele); border:1px solid var(--line); border-bottom-left-radius:5px;}
+.fala.eu .bolha{background:var(--bolha-eu); color:var(--bolha-eu-ink); border-bottom-right-radius:5px;}
+.bolha pre{background:var(--card); color:var(--ink); padding:12px 14px; border-radius:8px;
+  overflow-x:auto; font-size:13px; white-space:pre; margin:10px 0;}
+.fala.eu .bolha pre{background:rgba(255,255,255,.12); color:inherit;}
+.bolha code{font-family:ui-monospace,Menlo,monospace; font-size:.88em;
+  background:var(--card); padding:.1em .35em; border-radius:3px;}
+.fala.eu .bolha code{background:rgba(255,255,255,.15);}
+.bolha details{margin-top:8px;}
+.bolha summary{cursor:pointer; font-size:13px; color:var(--muted); font-weight:600;}
+.fala.eu .bolha summary{color:inherit; opacity:.7;}
+.anexo{font-family:ui-monospace,Menlo,monospace; font-size:12px; background:var(--card);
+  border-radius:5px; padding:2px 8px; color:var(--muted);}
+.corte{font-size:12px; color:var(--muted); font-style:italic; text-align:center;
+  margin:16px 0; letter-spacing:.02em;}
+.nota{border-left:2px solid var(--nota); padding-left:14px; font-size:14px; line-height:1.5; margin-top:24px;}
+@media (max-width:860px){ .nota{background:var(--nota-bg); border-left-width:3px; padding:12px 14px;
+  border-radius:0 5px 5px 0; margin:0 0 18px;} }
+.nota b{display:block; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--nota); margin-bottom:6px; font-weight:700;}
+.fecho{border-top:1px solid var(--line); padding-top:40px; margin-top:56px;}
+.fecho ol{padding-left:22px; max-width:64ch;}
+.fecho li{margin-bottom:14px;}
+.selo{display:inline-block; font-family:ui-monospace,Menlo,monospace; font-size:12px;
+  border:1px solid var(--line); border-radius:999px; padding:5px 12px; color:var(--muted); margin:26px 8px 0 0;}
+a{color:inherit;} :focus-visible{outline:2px solid var(--ok); outline-offset:3px;}
+</style>
+<div class="wrap">
+<header><h1>Anatomia do reel que está trazendo seguidor</h1><p class="dek">A conversa inteira que montou a página dos 10 sistemas, o fluxo do CEQ e as cinco versões do reel. O desenho final do funil é dele, não da IA.</p><div class="placar"><div><span class="v">28/08</span><span class="k">a sessão</span></div><div><span class="v">14</span><span class="k">o fluxo no CEQ</span></div><div><span class="v">5</span><span class="k">versões do reel</span></div><div><span class="v">+252</span><span class="k">seguidores em 3 dias</span></div></div><p class="aviso">Conversa completa, sem cortes. As mensagens longas abrem em "continuar lendo".</p></header>
+<section class="ato"><span class="ato-num">Ato 1 · a pauta</span><h2>10 sistemas num fim de semana</h2><p class="ato-sub">Ele chega com o vídeo na cabeça e pede a página de apoio.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Vou fazer um vídeo assim: 10 sistemas que você pode criar com claude esse final de semana. 
+
+
+Preciso que me ajude a preparar uma página com esses 10 sistemas e uma ideia de passo a passo, ferramentas que o cara vai usar. Coisa pra quem tá começando e quer ganhar uma graninha.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Vou preparar essa página pra você. Antes, como é pauta nova de conteúdo, passo ela no filtro Schwartz rapidinho — depois monto a página com os 10 sistemas.</div></div></div><div class="nota"><b>Toda pauta passa pelo filtro</b>Antes de escrever uma linha da página, a ideia passa pelo Schwartz. Tirou 13/15.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Página aprovada no filtro. Agora vou escrever o HTML e publicar como artifact.</div></div></div><div></div></div>
+<div class="corte">interrompido por ele</div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">publica logo no ia.augusto</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">O ia.augustogobatto.com é o repo <code>club-site</code> local em <code>~/VPS OK/club-site</code>, e o deploy tem que ser disparado à mão via API da Vercel. Vou olhar a estrutura pra encaixar a página no padrão.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Padrão da casa: HTML estático em <code>public/</code> + <code>route.ts</code> que serve. Vou espiar uma página existente pra seguir o estilo e depois escrever a nova.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">O cofre é via <code>cerebro.py</code> na VPS. Estratégia: escrevo a página local no repo, commit + push, e disparo o deploy de dentro da VPS (o token nem passa por aqui). Agora a página.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Agora a rota e o commit.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Push feito. Agora disparo o deploy pela API da Vercel de dentro da VPS, com o token direto do cofre.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Deploy READY. Testando o link ao vivo antes de te entregar.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">No ar e respondendo 200. Antes de fechar, vou olhar a página renderizada (regra da casa: olhar antes de entregar).</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Visual conferido, tudo renderizando certo. Fechando a aba.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha"><b>No ar: https://ia.augustogobatto.com/sistemas</b> — publicada, deployada e conferida no browser.
+
+O que tem na página:
+
+- <b>Hero</b> com a promessa do vídeo e 3 fatos rápidos (investimento = só a assinatura do Claude, não precisa programar, escolhe UM sistema)
+- <b>O kit</b>: Claude, Vercel, WhatsApp Business, Google Sheets, e VPS só pros sistemas de robô
+- <b>Os 10 sistemas</b>, do fácil pro avançado, cada um com dificuldade, faixa de preço, quem paga, passo a passo de sábado/domingo, ferramentas e um <b>prompt de partida com botão de copiar</b>: página de vendas local, cardápio digital, agendamento de barbearia, catálogo com Pix, orçamentista automático, painel de vendas, fábrica de conteúdo, robô de cobrança, CRM de WhatsApp e atendente de IA no WhatsApp
+- <b>Como conseguir o primeiro cliente</b> (lista de 20 conhecidos, demo antes da oferta, mensagem simples, 50/50)
+- <b>Regras de ouro</b> (repetir 1<details><summary>continuar lendo</summary> sistema, instalação + mensalidade, feio funcionando cobra, etc.)
+
+Ela segue o padrão da casa: dark, Space Grotesk, pixel Meta incluso, mesmo esquema <code>public/sistemas.html</code> + rota. Commit <code>b69c417</code> pushado e deploy disparado via API (que nesse projeto não é automático).
+
+Detalhe do filtro Schwartz que vale pro roteiro: a pauta fez <b>13/15</b>. O que carrega o vídeo não é a lista, é a promessa &quot;do zero num fim de semana&quot;. Abre por aí, não pelo sistema 1.
+
+Se quiser, num próximo passo eu crio um alias <code>/10-sistemas</code> apontando pra mesma página, ou adapto o rodapé pra capturar e-mail/WhatsApp em vez de só assinar.</details></div></div></div><div></div></div>
+<section class="ato"><span class="ato-num">Ato 2 · o pedido de uma linha</span><h2>"Monta no CEQ a automação"</h2><p class="ato-sub">Uma frase define o funil inteiro: comentou, DM, confere se segue, entrega.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Tá monta no ceq a automação sistema = mandei dm = confere se tá seguindo = envia isca</div></div></div><div class="nota"><b>O escopo cabe numa frase</b>"sistema = mandei dm = confere se tá seguindo = envia isca". A IA traduz isso em fluxo, gatilhos e gate.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Vou montar. Primeiro carrego a skill do CEQ pra trabalhar em cima da infra que já existe.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Vou olhar como o CEQ tá estruturado hoje (regras, DM automática, checagem de follower) pra encaixar a regra &quot;sistema&quot; no padrão que já existe.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">O gate de seguidor já existe validado. Agora vou ver como um fluxo disparado por comentário é montado (o do skills) e a lição sobre palavra-chave.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Lição anotada: o casamento é por palavra inteira, então cadastro &quot;sistema&quot; E &quot;sistemas&quot;. Antes de criar, confiro se a palavra não colide com gatilho existente.</div></div></div><div class="nota"><b>A lição que já estava salva</b>O casamento é por palavra inteira, então precisa cadastrar "sistema" E "sistemas". Isso estava escrito de um erro anterior.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Palavra livre, sem colisão. Vou criar o fluxo no padrão validado do SKILLS (gate de seguidor + gatilho por comentário, DM e story), com a copy que já rodou.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Fluxo 14 no ar. Só confiro uma desconfiança: o <code>troca_placeholder.py</code> existe, quero garantir que <code>{primeiro_nome}</code> é o token certo e não algo que precisou de conserto.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha"><code>{primeiro_nome}</code> confirmado como token certo (o runtime resolve; a migração de <code>{username}</code> já rodou). Atualizo a memória e fecho.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha"><b>Automação no ar: fluxo 14 &quot;SISTEMAS&quot; criado e ativo no CEQ</b>, no mesmo desenho do fluxo SKILLS que já rodou validado.
+
+Como funciona:
+
+1. <b>Comentou <code>sistema</code> ou <code>sistemas</code></b> (no post, em DM ou respondendo story) → resposta pública variada (&quot;te mandei no direct 🤝&quot; / &quot;olha o direct 👀&quot; / &quot;chegou ai no teu direct!&quot;) e DM disparada
+2. <b>Confere se segue</b> (check <code>e_seguidor</code>)
+3. <b>Já segue</b> → entrega na hora: &quot;Aqui os 10, {primeiro_nome} 🤝 Cada um com passo a passo, ferramentas e o prompt pronto&quot; + botão <b>VER OS 10 SISTEMAS</b>
+4. <b>Não segue</b> → &quot;me segue lá no @augustogobatto, é o combinado&quot; + botão &quot;Já tô seguindo ✅&quot; que faz o <b>re-check</b> no clique; só libera o link depois de confirmar
+
+O link vai com rastreio: <code>ia.augustogobatto.com/sistemas?utm_source=ig&amp;utm_medium=ceq&amp;utm_campaign=video_10_sistemas</code>.
+
+Dois avisos práticos:
+
+- <b>O CTA do vídeo/legenda tem que pedir a palavra exata.</b> O CEQ casa palavra inteira: &quot;sistema&quot; e &quot;sistemas&quot; pegam, mas &quot;sisteminha&quot; ou &quot;sistema10&quot; não. Fala &quot;comenta SISTEMA&quot; e pronto.
+- <b>Teste de 30 segundos antes de postar</b>: manda uma DM &quot;sistema&quot; pro @augustogobatto de outra conta (a da Karina serve) e vê se o fluxo responde com o gate. Fluxo escrito não é fluxo rodando; esse é igual ao SKILLS que funcionou dia 24, mas o teste real custa nada.</div></div></div><div></div></div>
+<section class="ato"><span class="ato-num">Ato 3 · a referência do gringo</span><h2>O print que mudou o desenho</h2><p class="ato-sub">Ele cola o fluxo de um criador estrangeiro e a conversa vira engenharia reversa.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Comment “WEEKEND” and I’ll send you the build guide 🔗
+
+Morning brief agent
+Wakes up before you, checks your calendar, inbox and the news, then gives you one page to start your day.
+Setup: Project + calendar + mail connectors
+
+Meeting prep system
+Before every call, it researches the company, contacts and latest news, then gives you 3 talking points + 1 risk to watch.
+Setup: Project + web search + saved prep prompt
+
+Inbox triage
+Sorts what needs your attention, what needs a reply and what can be ignored — then drafts the replies for you.
+Setup: Mail connector + rules in Project instructions
+
+Prospect research pipeline
+Give it a name and get a full brief: company, role, angle and opener — ready to send.
+Setup: Project + web search + fixed output template
+
+The decision council
+Four sub-agents argue your decision from different angles, then give you the verdict.
+Setup: One Project + four role<details><summary>continuar lendo</summary> prompts
+
+Your second brain
+Keep your notes, docs and screenshots in one place and ask questions in plain English.
+Setup: Project + uploaded files
+
+Content repurposing engine
+Give it one long piece and get a week of posts written in your voice.
+Setup: Project + voice samples + format rules
+
+The money system
+Give it your income, spending and goals and get a monthly plan that updates with you.
+Setup: Project + your numbers + monthly review prompt
+
+Weekly review loop
+Every Friday, it tells you what moved, what stalled and what next week looks like.
+Setup: Saved prompt + recurring calendar block
+
+Your voice clone
+Feed it 5 things you’ve written and it learns to sound like you, not a chatbot.
+Setup: Custom Style + writing samples
+
+Pick one and build it this weekend ✴️
+
+(Follow first so the DM actually reaches you.)
+ Talvez podemos usar as ideias do gringo para nossos sistemas, tipo alguns ser os pro cara ganhar dinheiro outros ser para otimização da vida -</details></div></div></div><div class="nota"><b>Ele traz a referência de fora</b>O fluxo do criador estrangeiro é colado inteiro no chat. É assim que uma boa mecânica entra na casa.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Dá pra usar, mas não misturando na página que acabou de ir pro ar. O argumento:
+
+<b>A força do teu vídeo é a promessa única: &quot;graninha no fim de semana&quot;.</b> Foi isso que deu 13/15 no Schwartz. A lista do gringo responde outra dor (&quot;minha vida tá caótica e eu sei que a IA resolvia&quot;), que também é forte, mas é outra. Misturar as duas na mesma página dilui as duas: o cara que veio pela grana rola por &quot;clone da tua voz&quot; e sente que o material não é pra ele, e vice-versa.
+
+<b>O jeito de aproveitar é virar série, não salada.</b> Vídeo 1 (já pronto): &quot;10 sistemas pra ganhar dinheiro&quot;. Vídeo 2, semana que vem: &quot;10 sistemas pra rodar tua vida com Claude&quot;, com página própria e keyword própria no CEQ. Dois ganchos, dois posts, duas iscas, mesmo funil. E tem um bônus estratégico: a lista do gringo é toda &quot;Projeto no claude.ai + conector&quot;, zero código, zero VPS. É um vídeo AINDA mais acessível que o prime<details><summary>continuar lendo</summary>iro, pega quem nem quer vender nada.
+
+A adaptação que eu faria (abrasileirada, não traduzida):
+
+1. <b>Briefing da manhã</b> — agenda + inbox + notícias numa página antes de você acordar direito
+2. <b>Preparador de reunião</b> — pesquisa a empresa e a pessoa, devolve 3 pontos de conversa + 1 risco
+3. <b>Triagem de WhatsApp/e-mail</b> — aqui o gringo fala de inbox, no Brasil a dor de verdade é o WhatsApp afogado
+4. <b>Conselho de decisão</b> — 4 papéis discutindo tua decisão antes de você tomar (o cético, o financeiro, o otimista, o advogado do diabo)
+5. <b>Segundo cérebro</b> — notas, docs e prints num Projeto, pergunta em português
+6. <b>Motor de repurposing</b> — 1 conteúdo longo vira a semana de posts na tua voz
+7. <b>Sistema do dinheiro</b> — renda, gastos e metas com revisão mensal
+8. <b>Revisão de sexta</b> — o que andou, o que travou, como fica a semana que vem
+9. <b>Clone da tua escrita</b> — 5 textos teus e ele para de soar chatbot
+10. <b>Pesquisador de cliente</b> — nome → dossiê com ângulo e abordagem pronta (esse é a ponte pro público do vídeo 1)
+
+No Schwartz esse segundo dá na casa de 12: recorrência 5 (caos reseta todo dia), multidão 5, dor um degrau abaixo da grana. Passa do corte.
+
+Se topar, eu monto a página <code>/vida</code> no mesmo padrão da <code>/sistemas</code> (com prompt de partida copiável pra cada um, que na lista do gringo não tem e é o que transforma post em isca) e crio o fluxo no CEQ com a keyword que você escolher (sugiro <b>VIDA</b>, palavra inteira, sem colisão com os gatilhos atuais). Só não faço já porque a ordem de postagem é tua: se o vídeo 1 ainda não foi gravado, o 2 não tem pressa.</details></div></div></div><div class="nota"><b>A IA discorda, com argumento</b>Ela recusa misturar as duas listas e explica: são duas dores diferentes, e a promessa única é o que deu 13/15.</div></div>
+<section class="ato"><span class="ato-num">Ato 4 · a curadoria</span><h2>10 sistemas viram 5 de grana e 5 de vida</h2><p class="ato-sub">Ele reprova 5 dos 10 da lista importada, um por um.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">1 - ok é legal
+2 - ok
+3 -ruim
+4 - ruim
+5 - ok
+6 - ok
+7 - sim esse todo mundo faz
+8 - ruim
+9 - ruim
+10 - ruim
+
+Faz um bem bolado com essesque falei ok e os que a gente boto ali, dá uma olhada nas coisas que eu já criei também. E aí no na página bota um gráfico com nível de dificuldade, ferramentas envolvidas, e potencial de ganho e potencial de economia de tempo/ produtividade.</div></div></div><div class="nota"><b>A curadoria é dele</b>Cinco dos dez importados são reprovados um a um. O que entra no lugar são sistemas que ele já roda de verdade, e isso vira a prova de cada card.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Fechado: fica um bem bolado de 10 (5 pra ganhar dinheiro, 5 pra rodar a vida), ancorado nas coisas que você já roda de verdade (Brain, dashboards, CRM da Maísa, atendentes de IA, fábrica de reels) — isso vira a prova de cada card. Antes de mexer no gráfico, carrego a régua de dataviz.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Página atualizada. Vou publicar e depois escrevo as legendas (5 variações pra teste).</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Página nova no ar e conferida: mapa comparativo renderizando certinho com os 3 medidores. Agora as legendas — e antes de te entregar, passo no /laele (regra da casa pra tudo que vai publicado).</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Tudo no ar. Fechando a entrega:
+
+<b>Página atualizada e deployada</b> em ia.augustogobatto.com/sistemas: agora são 5 sistemas de grana + 5 de vida (os que você aprovou: briefing da manhã, preparador de reunião, segundo cérebro, motor de conteúdo e sistema do dinheiro), com o <b>mapa comparativo</b> no topo (dificuldade, potencial de ganho em âmbar, tempo de volta em verde, ferramentas) e selo &quot;Rodando de verdade&quot; nos 6 que são coisa tua de verdade (painel, CRM, atendente, briefing, segundo cérebro, motor de conteúdo). Conferi renderizado no browser. O fluxo do CEQ não muda: mesma keyword, mesmo link.
+
+<b>Laele nas legendas:</b> varri as 5, acendeu só uma linha fraca (&quot;guia com tudo mastigado&quot; na versão 5, troquei por &quot;tudo pronto&quot;). Nenhum CTA condicional, nenhuma geometria torta.
+
+As 5 legendas pra teste, prontas pra copiar:
+
+---
+
+<b>1. Espelho do gringo (lista completa)</b>
+
+Comenta SISTEMA e eu t<details><summary>continuar lendo</summary>e mando o guia completo no direct 🔗
+
+10 sistemas que você pode construir com Claude esse final de semana:
+
+1. Página de vendas local. O dentista da tua rua paga R$800 nisso.
+2. Painel de vendas. O dono da loja vê o faturamento do mês no celular.
+3. CRM de WhatsApp. Nenhum lead esquecido no vácuo.
+4. Robô de cobrança educado. Cobra os atrasados sem constranger ninguém.
+5. Atendente de IA no WhatsApp. Responde de madrugada e chama o dono na hora de fechar.
+6. Briefing da manhã. Agenda, e-mails e pendências numa página antes do café.
+7. Preparador de reunião. Você entra em toda call sabendo mais que todo mundo.
+8. Segundo cérebro. Nunca mais &quot;onde eu guardei isso?&quot;.
+9. Motor de conteúdo. 10 minutos de áudio viram a semana de posts.
+10. Sistema do dinheiro. Plano mensal que se ajusta com a tua vida real.
+
+Os 5 primeiros são pra ganhar dinheiro. Os 5 últimos são pra rodar tua vida. Todos cabem num sábado e domingo.
+
+No guia tem passo a passo, ferramentas e o prompt pronto de cada um.
+
+Comenta SISTEMA 👇
+(me segue primeiro, senão o direct não chega)
+
+---
+
+<b>2. Dor da graninha (curta, direto na ferida)</b>
+
+Enquanto você assiste esse vídeo, tem gente cobrando R$800 por uma página que o Claude escreve numa tarde.
+
+Não é hype, é serviço: negócio local tem problema, você monta o sistema, o Claude faz a parte técnica.
+
+No vídeo eu mostro 10 sistemas que cabem num fim de semana: 5 pra ganhar uma graninha, 5 pra organizar tua vida de vez.
+
+O guia com passo a passo, ferramentas e prompt pronto de cada um vai por DM.
+
+Comenta SISTEMA que eu te mando 👇
+(segue o perfil antes, senão a mensagem cai no limbo dos pedidos)
+
+---
+
+<b>3. Prova (autoridade sem se gabar)</b>
+
+Desses 10 sistemas, 6 eu uso todo dia ou entrego pra cliente pagante.
+
+O briefing da manhã me acorda com o dia já montado. O segundo cérebro guarda meses de decisões. E atendente de IA no WhatsApp é o que eu mais construo: já passou de R$140 mil vendidos em conta de cliente.
+
+O vídeo mostra os 10. O guia no direct mostra como construir cada um: dificuldade, ferramentas, quanto cobrar e o prompt de partida.
+
+Você não precisa saber programar. Precisa de um fim de semana.
+
+Comenta SISTEMA 👇
+(me segue primeiro pra DM chegar)
+
+---
+
+<b>4. Contraste das 48 horas</b>
+
+Um fim de semana tem 48 horas.
+
+Dá pra maratonar duas temporadas de série. Ou dá pra montar UM sistema desses e chegar na segunda com algo trabalhando por você.
+
+Página de vendas que o dentista paga R$800. Painel que mostra o faturamento pro dono da loja. Briefing que monta teu dia antes do café. Atendente que responde teu cliente de madrugada.
+
+10 opções no vídeo. O passo a passo completo de cada uma tá no guia.
+
+Comenta SISTEMA que chega no teu direct 👇
+(segue o perfil primeiro, combinado?)
+
+---
+
+<b>5. Anti-curso (mata a objeção)</b>
+
+Você não precisa de um curso de 12 módulos pra começar com IA.
+
+Precisa de UM sistema pronto e rodando. O resto você aprende com ele no ar.
+
+Por isso esse vídeo não tem teoria: são 10 sistemas com começo, meio e fim. Escolhe um, monta no sábado, termina no domingo. Tem opção pra ganhar dinheiro com negócio local e opção pra organizar tua própria vida.
+
+Quem já sabe o que é um prompt consegue. Quem nunca abriu o Claude também.
+
+O guia com tudo pronto (ferramentas, dificuldade e o prompt de cada sistema) vai por DM.
+
+Comenta SISTEMA 👇
+(me segue antes, senão a mensagem não te encontra)
+
+---
+
+Lembrete pro teste: a palavra do CTA tem que ser exatamente <b>SISTEMA</b> (ou SISTEMAS), porque o CEQ casa palavra inteira. &quot;Sisteminha&quot;, &quot;sistema10&quot; ou a palavra colada em outra não disparam. E se for rodar as 5 como teste de anúncio/post, muda só a legenda e mantém o mesmo vídeo, senão o teste não isola nada.</details></div></div></div><div></div></div>
+<section class="ato"><span class="ato-num">Ato 5 · a frase da tela</span><h2>Cinco versões do mesmo reel</h2><p class="ato-sub">Só o gancho muda. Legenda e CTA ficam idênticos pra isolar a variável.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Tá mas eu preciso de 5 frases vou fazer 5 verses dieferentes de reels com o mesmo conteúdo mas mudando a frase do vídeo. 
+
+A atual - espelo do gringo é - 10 sistemas que você pode construir com claude esse final de semana.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">5 frases pra tela do reel, cada uma testando um ângulo diferente contra a atual (que fica como controle):
+
+1. <b>Constrói isso no sábado, cobra R$800 na segunda</b>
+Testa o dinheiro concreto com prazo. É a mais agressiva na promessa e a que mais filtra curioso de comprador.
+
+2. <b>10 jeitos de ganhar uma graninha com Claude sem saber programar</b>
+Testa liderar pela grana em vez do &quot;sistema&quot;, e mata a objeção número 1 na própria frase.
+
+3. <b>O dentista da tua cidade pagaria R$800 num desses</b>
+Testa curiosidade + especificidade. Não diz o que é, obriga a assistir pra descobrir, e planta a ideia de cliente local.
+
+4. <b>48 horas e uma assinatura de IA: 10 sistemas do zero</b>
+Testa a acessibilidade como gancho: o custo de entrada ridículo contra o resultado numerado.
+
+5. <b>IA não é curso, é serviço. 10 sistemas pra vender esse fim de semana</b>
+Testa o contrarian anti-curso. Quem tá cansado de guru de IA para nessa; é a de maior risco e maior teto de comentário.
+
+Duas notas de teste: mantém o <b>mesmo vídeo, mesma legenda e mesmo CTA &quot;comenta SISTEMA&quot;</b> nas 5 versões, senão você não sabe o que causou a diferença. E a frase 3 casa especialmente bem com a legenda 4 (contraste das 48 horas) se um dia quiser cruzar, mas no teste inicial não cruza.
+
+Passei as 5 no pente do laele: a versão original tinha &quot;monta isso no sábado&quot;, troquei por &quot;constrói&quot; porque &quot;montar&quot; acende o teste da quinta série; o resto tá limpo.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">pensei em algum assim - Ao invés de rolar o feed crie um desses 10 sistemas e comece a ganhar dinheiro com I.A.</div></div></div><div class="nota"><b>A frase vencedora nasce dele</b>"Ao invés de rolar o feed…" fala com o comportamento exato da pessoa no momento em que ela vê o vídeo.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Boa, e ela tem uma vantagem que nenhuma das minhas 5 tem: fala com o comportamento exato da pessoa no momento em que ela vê o vídeo. Ela TÁ rolando o feed. Esse espelho é interrupção de padrão de verdade.
+
+Dois reparos antes de cravar:
+
+1. <b>O final é o pedaço mais fraco.</b> &quot;Comece a ganhar dinheiro com I.A.&quot; é a frase que todo guru usa; ela dilui a especificidade que o &quot;10 sistemas&quot; te dá. Troca por algo mais concreto e alcançável.
+2. <b>Tá comprida pra tela.</b> Na tela do reel cada palavra a menos é retenção a mais.
+
+Três apertos, do mais fiel ao mais enxuto:
+
+1. Ao invés de rolar o feed, cria um desses 10 sistemas e faz teu primeiro dinheiro com IA
+2. Para de rolar o feed: um desses 10 sistemas paga teu fim de semana
+3. Você ia rolar o feed. Podia estar construindo um desses 10
+
+A número 1 é a tua com o final consertado (&quot;primeiro dinheiro&quot; é promessa que iniciante acredita, &quot;ganhar dinheiro com IA&quot; é promessa que ele já viu 400 vezes). A 2 é a mais forte pra tela na minha leitura: curta, imperativa e com o dinheiro amarrado no fim de semana. A 3 é a mais provocativa, meio culpa boa, funciona se a tua cara no vídeo segurar o deboche.
+
+No teste, ela entra no lugar da minha número 4 (a das 48 horas), que é a que cobre ângulo parecido com menos força. Laele: as três limpas.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Tinha um do hunof que era troque netflix algo assim, lembra?</div></div></div><div class="nota"><b>Memória de referência</b>Ele lembra de um reel salvo semanas antes. A IA acha no banco: 63 mil views, 7 segundos, do @matheushunoff. É de lá que sai o frame da Netflix.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Achei. É o reel de 63 mil views do @matheushunoff. Puxando a legenda inteira pra ver a estrutura completa:</div></div></div><div></div></div>
+<div class="corte">interrompido por ele</div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Só queria o frame...</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">É esse: <b>&quot;Em vez de maratonar séries na Netflix hoje à noite, crie algo.&quot;</b> (reel de 63k views, 7 segundos, do @matheushunoff)
+
+Vestido no teu vídeo:
+
+1. Em vez de maratonar Netflix esse fim de semana, constrói um desses 10 sistemas
+2. Em vez de Netflix hoje à noite, cria um sistema que te paga
+3. Netflix ou um sistema rodando até domingo? Os 10 tão aqui
+
+A 1 é a mais fiel ao frame dele e já entra no teu teste no lugar que quiser. A tua do feed (&quot;ao invés de rolar o feed...&quot;) é irmã dessa; as duas no mesmo teste medem qual vício dói mais nomear: o feed ou a Netflix.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Boa mandei vários vamos ver se algum traciona</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Fechou. Deixei registrado na memória o estado do teste: vídeo no ar em múltiplas versões (28/08), keyword SISTEMA no CEQ (fluxo 14 com gate de seguidor), página em ia.augustogobatto.com/sistemas com o mapa dos 10.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Registrado. Resumo do que ficou armado hoje:
+
+- <b>Página</b>: ia.augustogobatto.com/sistemas com os 10 (5 grana + 5 vida), mapa comparativo e prompts copiáveis
+- <b>CEQ</b>: fluxo 14 ativo, palavras <code>sistema</code>/<code>sistemas</code> em comentário, DM e story, com gate de seguidor e re-check no botão
+- <b>Teste</b>: várias versões do reel no ar mudando só o gancho, legenda e CTA idênticos
+
+Amanhã me pede o placar que eu puxo as views por versão no coletor do desafio e cruzo com os comentários &quot;sistema&quot; que caíram no CEQ. Aí a gente vê não só qual gancho tracionou em view, mas qual encheu o direct, que é a métrica que paga.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Queria fazer um assim hoje pra feed, frase foda. talvez algo a ver com o que a gente já fala, ou com os conteúdos que eu já fiz - https://www.instagram.com/p/DcexGv7MUiU/ - alguma boa ideia? não vem com ideia frouxa, tem que ser boa</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Deixa eu ver primeiro o post que você mandou de referência. Começo pelo banco de refs (pode já estar capturado) e senão abro no browser.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Três frases, ranqueadas. Só levei as que sobrevivem ao critério &quot;a repetição no quadro tem que somar sentido&quot;:
+
+<b>1. ENQUANTO VOCÊ DECIDIA SE POSTAVA, EU POSTEI DE NOVO</b>
+Legenda: &quot;De novo.&quot;
+É a mais forte porque cada linha repetida no quadro É literalmente o &quot;de novo&quot;: o quadro inteiro vira a prova visual de que enquanto o cara lia, você postou 40 vezes. Conversa direto com o desafio, com a fábrica de 3 reels por dia, e cutuca a dor-mestre do teu público (ficando pra trás enquanto gente pior aparece). E tem o meta: quem tá lendo o post tá exatamente na posição do &quot;você&quot; da frase.
+
+<b>2. O FEIO PUBLICADO GANHA DO PERFEITO NO RASCUNHO</b>
+Legenda: &quot;Publica.&quot;
+Herdeira direta do teu melhor tema (perfeccionismo é medo, teu 13/15). A repetição aqui lê como martelo: a frase que a pessoa precisa ouvir 40 vezes porque uma não adianta. Menos meta que a 1, mais compartilhável pra quem trava antes de <details><summary>continuar lendo</summary>postar.
+
+<b>3. VOCÊ FICA EXCEPCIONAL FAZENDO O CHATO COM CONSTÂNCIA EXCEPCIONAL</b>
+Legenda: &quot;De novo. E de novo.&quot;
+A adaptação fiel do gringo. Tá aqui porque a original provou que funciona, mas é a mais fraca das três pra ti: é frase dele com sotaque, não frase tua. Usa só se quiser testar o formato com risco zero de errar a mensagem.
+
+Minha escolha é a 1. É a única que ninguém pode repostar sem estar repostando VOCÊ, porque ela só faz sentido vindo de quem tá postando todo dia de verdade, e teu perfil é a prova.
+
+Escolhe que eu te entrego o PNG 1080x1350 no formato exato da referência (preto, mono, quadro cheio) em poucos minutos. Laele: as três limpas.</details></div></div></div><div></div></div>
+<section class="ato"><span class="ato-num">Ato 6 · a auditoria ao vivo</span><h2>"Será que tá certo?"</h2><p class="ato-sub">Ele vê um lead receber o link sem passar pelo pedágio e manda conferir.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Olha acabei de ver aqui esse mano comento no ceq e o direct foi o link direto ao invés de pedir pra seguir antes de liberar. Será tá certo?</div></div></div><div class="nota"><b>Auditar a linha antes do agregado</b>Ele viu UM caso estranho e mandou conferir. A resposta não foi supor: foi abrir a sessão daquele lead no banco.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Pode estar certo: o fluxo tem dois caminhos e quem <b>já te segue</b> recebe o link direto, sem pedágio. Mas em vez de supor, vou olhar a sessão desse cara no banco do CEQ e conferir qual caminho rodou e se a checagem de seguidor voltou &quot;sim&quot; de verdade.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Tá certo, e é decisão de projeto documentada no código, não acidente. O que aconteceu com o @prolucascamargo:
+
+1. Ele comentou &quot;Sistema&quot; e o fluxo disparou.
+2. Antes do gate, o CEQ <b>reconsultou a API do Instagram</b> pra saber se ele segue. A API escondeu o perfil dele (acontece com parte dos comentaristas; o <code>is_follower</code> ficou <code>None</code> mesmo depois do refresh).
+3. O runtime tem essa regra escrita, com o comentário no código: *&quot;None = a API nunca deixou ver o perfil desse lead. Na dúvida, libera: travar um seguidor real custa mais caro que liberar um não-seguidor.&quot;* Então ele caiu no ramo do link direto.
+
+Ou seja: o gate trava quem a API <b>confirma</b> que não segue. Quem a API não deixa ver, passa. O mesmo comportamento vale pro fluxo SKILLS desde o dia 24.
+
+E tem um motivo pra não apertar isso: se a gente invertesse pra &quot;na dúvida, pede pra seguir&quot;, o cara que JÁ te segue mas tem perfil oc<details><summary>continuar lendo</summary>ulto pra API cairia num beco sem saída: ele clica &quot;Já tô seguindo&quot;, o re-check consulta a API de novo, a API continua escondendo, e ele toma o &quot;ainda não te achei nos seguidores&quot; em loop infinito. Seguidor real preso numa porta girando é pior que não-seguidor levando link de graça.
+
+Minha leitura: deixa como tá. O custo do vazamento é um link gratuito indo pra alguém que talvez não siga; o custo da versão estrita é humilhar seguidor de verdade. Se quiser medir o tamanho do vazamento, daqui uns dias eu conto quantas sessões do fluxo 14 caíram em cada ramo (<code>n_ja</code> direto vs <code>n_pede</code>) e quantos eram <code>None</code>; se o furo for grande demais, a alternativa boa não é apertar o gate, é o pedido de follow ir junto na mensagem do link (&quot;te entreguei, agora me segue lá&quot;), que converte sem trancar ninguém.</details></div></div></div><div class="nota"><b>O achado técnico do dia</b>A API escondeu o perfil do comentarista e o gate liberou. Isso não é bug, é decisão de projeto: nunca travar quem a API não deixa verificar.</div></div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Tá mas tudo isso tá falando de conteúdo... Pensei em algo mais meu, sei lá...</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Justo. Então sai do pilar conteúdo e vai pro que é só teu: você é o cara cujos sistemas vendem enquanto você não tá olhando. Isso nenhum poster de motivação pode repostar sem mentir.
+
+<b>1. ENQUANTO EU DORMIA, A IA VENDEU DE NOVO</b>
+Legenda: &quot;De novo.&quot;
+Cada linha repetida no quadro é mais uma noite, mais uma venda. E no teu caso é literal: tem venda de madrugada registrada em conta de cliente, você tem o print. A repetição vira extrato.
+
+<b>2. A VENDA CAIU ÀS 3 DA MANHÃ. EU TAVA DORMINDO</b>
+Legenda: &quot;Acordei rico não. Acordei pago.&quot;
+Mais concreta, lê como diário. Repetida 40 vezes, parece o log de um mês. É a mais &quot;só eu posso postar isso&quot; das três.
+
+<b>3. EU CONSTRUO UMA VEZ. O SISTEMA TRABALHA TODO DIA</b>
+Legenda: &quot;Uma vez.&quot;
+A mais filosófica, formato espelha de novo o sentido: a frase construída uma vez, repetida pelo quadro inteiro trabalhando sozinha.
+
+Minha escolha é a 1: é a tua tese inteira (sistemas &gt; esforço) numa linha, é verificável na tua vida, e quem lê às 23h da cama sente exatamente a diferença entre ele e você naquele momento. A 2 é a melhor se você quiser colar um print de venda real no segundo card ou nos stories como prova.
+
+Laele nas três: limpas. Escolhe que eu monto o PNG no formato da referência.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Muito fraco, acho que tem que ser algo mais pronfundo, mais filosófico sabe? Vc tá cavocando superficial. não vai achar nada superficial</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Agora sim tem chão. Cavei o teu material e o filão não tá em frase nova: tá no que você já cunhou e ainda não espremeu. O agente de linhagem filosófica ainda tá rodando, mas o achado interno já decide isso:
+
+<b>1. LUCRO NÃO É PRÊMIO. É O ALUGUEL DO RISCO.</b>
+Legenda: &quot;Vence todo mês.&quot;
+É a tua linha mais afiada (do Dâmocles) e é a única candidata onde a repetição não é estética, é o próprio conceito: aluguel é o que se paga DE NOVO, todo mês, pra sempre. O quadro repetido 40 vezes é o boleto recorrente do risco. Filosofia de verdade, tua, com prova de vida (o carrossel de ontem). E quem viu o carrossel reconhece; quem não viu, para.
+
+<b>2. TODO MUNDO QUER O RESULTADO. NINGUÉM QUER O RISCO.</b>
+Legenda: &quot;Olha pra cima.&quot;
+Também tua, do mesmo poço. A repetição encena o &quot;todo mundo&quot;: uma multidão de linhas idênticas querendo a mesma coisa. Mais universal que a 1, menos cirúrgica.
+
+**3. DINHEIRO NU<details><summary>continuar lendo</summary>NCA FOI O PROBLEMA. CONVICÇÃO É.**
+Legenda: &quot;iPhone novo por R$1.900 você dava um jeito.&quot;
+Da tua doutrina de vendas. É a mais provocativa e a que mais gera comentário raivoso (que é alcance). A repetição lê como a desculpa que a pessoa repete pra si mesma há anos.
+
+Minha escolha é a 1, sem dúvida. &quot;Aluguel do risco&quot; é conceito com dono, e o dono é você. O gringo repetiu uma frase sobre consistência; você repete uma sobre recorrência, e a forma paga o dobro.
+
+O agente de pesquisa vai voltar com a linhagem (Sêneca, Nietzsche, Arendt) e se trouxer algo que supere essas eu te falo, mas meu palpite é que não supera: frase de filósofo repetida é pôster, frase TUA repetida é assinatura. Escolhe que eu monto o PNG.</details></div></div></div><div></div></div>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Tudo ruim ainda. kkk Lucro não é premio até é boa. Mas não sei, parece que não é eu falando</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">&quot;Não é eu falando&quot; é o diagnóstico certo, e resolve de um jeito só: parar de escrever frase PRA você e garimpar frase que você JÁ falou. Teus reels têm transcrição no banco do desafio. Vou puxar a tua fala real e ver o que já saiu da tua boca que aguenta o formato.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Achei o problema e a solução no mesmo lugar: teus próprios reels transcritos. E o agente de linhagem voltou com material pesado. Cruzando os dois:
+
+<b>O que a tua boca já disse</b> (transcrição dos teus reels no banco do desafio): teu reel de 405 plays é você falando *&quot;Não tem como você ser mais bem sucedido do que o seu chefe. Então de duas uma: ou escolhe um chefe que a tua ambição caiba dentro do potencial daquele cara, ou levanta e começa o teu próprio corre.&quot;* E teu MELHOR reel (507 plays) é você lendo uma frase densa do livro do Munger e reagindo &quot;cara, essa frase é bizarra&quot;. Ou seja: tua voz validada tem dois modos: o papo reto de corre, e o cara que traz frase pesada de livro e fica genuinamente impressionado.
+
+As três finais, uma pra cada modo:
+
+<b>1. NÃO TEM COMO SER MAIS BEM SUCEDIDO QUE O TEU CHEFE</b>
+Legenda: &quot;Ou escolhe um chefe onde a tua ambição caiba. Ou levanta.&quot;
+É literalme<details><summary>continuar lendo</summary>nte você falando, palavra tua, de reel teu. E no formato a repetição vira o próprio teto: a mesma linha, na mesma altura, 40 vezes, uma parede que não deixa nada passar por cima. Quem tá empregado e ambicioso leva um soco por linha.
+
+<b>2. VOCÊ QUER ESTE DIA DE NOVO, INFINITAS VEZES?</b>
+Legenda: &quot;Nietzsche chamou isso de o maior dos pesos.&quot;
+É o eterno retorno (Gaia Ciência, §341): o teste do demônio que pergunta se você viveria esse exato dia infinitas vezes. E aqui o formato não ilustra a frase, ele EXECUTA o experimento: o cara lê a mesma pergunta 40 vezes e no meio do quadro ela para de ser sobre o post e vira sobre o dia dele. É o modo Munger teu: frase de gente grande + você impressionado. Profundidade máxima possível no formato.
+
+<b>3. A GENTE VIRA CONSTRUTOR CONSTRUINDO</b>
+Legenda: &quot;Aristóteles, 2.300 anos atrás. Ninguém vira construindo uma vez.&quot;
+Aristóteles de verdade (Ética a Nicômaco, &quot;we become builders by building&quot;, não a frase falsa do &quot;we are what we repeatedly do&quot;, que é de Will Durant). Cada linha repetida é um tijolo; o quadro cheio é a parede construída pela própria tese. É a mais &quot;teu nicho&quot; das três.
+
+Se fosse meu post: a 2. É a única que transforma o leitor em cobaia do experimento em vez de plateia da frase. Mas se o critério é &quot;tem que ser eu falando&quot;, é a 1, sem discussão: dá até pra cortar o áudio do teu reel antigo por cima.</details></div></div></div><div></div></div>
+<section class="ato"><span class="ato-num">Ato 7 · o redesenho</span><h2>"É isso que o CEQ deveria fazer"</h2><p class="ato-sub">O desenho final do fluxo é dele, não da IA.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">É isso que o ceq deveria fazer</div></div></div><div class="nota"><b>O desenho final é dele</b>Ele olha o fluxo do gringo e decide o mecanismo: travar todo mundo na porta, com o clique criando o compromisso.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Entendi o desenho: o do gringo trava TODO MUNDO na porta (até quem já segue clica primeiro), manda o botão de seguir com o perfil linkado, e a entrega só vem depois do clique &quot;já tô seguindo&quot;. A malícia é que o clique extra cria compromisso e o gate funciona por pressão social, não por verificação (por isso ele nunca trava ninguém em loop). Vou remontar o fluxo 14 nesse formato, com uma melhoria: quem o CEQ <b>confirmar</b> que não segue leva um empurrão a mais antes de liberar. Primeiro confiro os nomes exatos dos nós no runtime.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha"><b>Fluxo 14 reformado e no ar</b>, no desenho exato do print:
+
+1. Comentou <code>sistema</code> → DM: &quot;Opa! 👋 Valeu pelo comentário. Esse link eu só compartilho com quem me segue!&quot; + botão <b>&quot;Me manda o link! ➡️&quot;</b>
+2. Clicou → &quot;Me segue aqui ➡️ @augustogobatto... Já tá seguindo? Toca no botão&quot; + dois botões: <b>&quot;Seguir @augustogobatto&quot;</b> (abre teu perfil) e <b>&quot;✅ Me manda o link&quot;</b>
+3. Clicou no ✅ → <b>verificação de verdade</b>: o CEQ reconsulta a API na hora e lê o campo <code>is_user_follow_business</code>
+
+E respondendo a tua pergunta do &quot;sem ser fake&quot;: <b>agora verifica de verdade, e o motivo é sutil.</b> O teste que rodei mostrou que a API devolve erro 230 (&quot;User consent is required&quot;) pra quem só comentou e nunca mandou mensagem — era por isso que o fluxo antigo não enxergava o cara de hoje e liberava na dúvida. No desenho novo, o clique no primeiro botão é uma interação de DM, o que cria o consentimento que a API <details><summary>continuar lendo</summary>exige. Quando chega no &quot;✅ Já tô seguindo&quot;, a consulta funciona. O gate do gringo não é teatro: a sequência de botões é o que torna a checagem possível.
+
+Última proteção: se mesmo assim a API confirmar que o cara NÃO segue, ele leva um &quot;ainda não te achei nos seguidores, confere aí&quot; uma única vez; na segunda insistência entrega mesmo assim, pra nunca prender seguidor real que a API não enxerga.
+
+Teste de 1 minuto antes de confiar: comenta &quot;sistema&quot; de outra conta (que não te segue), clica os dois botões e vê se toma o &quot;ainda não te achei&quot;. Depois segue e clica de novo. Se os dois caminhos rodarem, tá blindado. Os gatilhos e o link com rastreio não mudaram.</details></div></div></div><div></div></div>
+<section class="ato"><span class="ato-num">Ato 8 · a voz</span><h2>O robô que fala como ele</h2><p class="ato-sub">O detalhe que virou argumento de venda.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">Inclusive esse sistema de responder dm eu fiz em um final de semana… kkk bota algum tom de voz aí. Pra não ficar um papo aleatório</div></div></div><div class="nota"><b>O detalhe que virou venda</b>"Esse sistema de responder DM eu fiz num fim de semana" deixa de ser curiosidade e vira argumento: o cara está conversando com a prova da tese.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">O detalhe de que o próprio robô foi feito num fim de semana não é tom de voz, é argumento de venda: o cara tá literalmente conversando com a prova da tese. Vou botar isso na abertura e reescrever tudo na tua voz de fluxo (&quot;tu me segue, eu te entrego&quot;, &quot;combinado é combinado&quot;).</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">No ar com a tua voz, acentuação certa e o argumento embutido. A conversa que o cara vai viver:
+
+<b>1ª DM</b> (comentou &quot;sistema&quot;):
+Opa! Chegou 🤝
+Aliás: esse robô que tá te respondendo agora? Fiz num fim de semana. Igual os 10 que eu quero te mostrar.
+O link eu só entrego pra quem me segue. Combinado é combinado 👇
+[ Fechado, me manda ➡️ ]
+
+<b>2ª</b> (clicou):
+Me segue lá ➡️ @augustogobatto
+É o pedágio: tu me segue, eu te entrego. E o robô confere, então não tenta me enganar kkk
+Seguiu? Toca aqui 👇
+[ Seguir @augustogobatto ] [ ✅ Já segui, me manda ]
+
+<b>Se o robô confirmar que não segue:</b>
+Opa, o robô olhou aqui e não te achou nos seguidores 👀
+Confere se seguiu mesmo o @augustogobatto e toca de novo. Ele é chato, mas é justo kkk 👇
+
+<b>Entrega:</b>
+Boa, {nome} 🤝 Combinado é combinado.
+Os 10 sistemas, com passo a passo, ferramentas e prompt pronto 👇
+[ VER OS 10 SISTEMAS ]
+
+O &quot;fiz num fim de semana&quot; na primeira mensagem faz o robô virar a demo do próprio produto: o cara tá dentro da prova antes de abrir o link. E o &quot;o robô confere, não tenta me enganar&quot; prepara o &quot;não te achei&quot; pra soar como piada combinada em vez de bronca. Laele: varrido, limpo.
+
+Vale o mesmo teste de outra conta quando puder: comentar, clicar os dois botões e ver as duas pontas (com e sem follow).</div></div></div><div></div></div>
+<section class="ato"><span class="ato-num">Ato 9 · a melhoria</span><h2>Ele melhora o desenho do gringo</h2><p class="ato-sub">Quem já segue não leva sermão. E o robô mostra que olhou o perfil.</p></section>
+<div class="linha"><div><div class="fala eu"><span class="quem">Augusto </span><div class="bolha">O gringo fala isso só libero pra quem segue? Pq poderia ser toca no botão pra eu te enviar.
+
+ Aí po vi aqui que vc ainda não me segue me segue antes pra eu poder liberar o material pra vc… aí seguiu já libera? Como tá agora?</div></div></div><div class="nota"><b>Ele melhora a referência</b>Em vez de anunciar a regra pra todo mundo, o robô confere primeiro. Quem já segue não leva sermão, e quem não segue ouve que o robô olhou o perfil dele.</div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Dá pra fazer exatamente assim, e o teu desenho é melhor que o do gringo em dois pontos: quem já segue não leva sermão nenhum (fricção zero), e o &quot;vi aqui que tu ainda não me segue&quot; é flex de verdade, mostra que o robô olhou o perfil DELE em vez de anunciar regra genérica. Hoje tá no desenho do gringo (anuncia a regra pra todo mundo antes). Vou trocar pro teu:</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Dois assuntos: aplico o v3 e olho o placeholder do nome — se a API não deixou ver o perfil, o lead fica sem <code>name</code> e o <code>{primeiro_nome}</code> sai vazio. Deixa eu ver como o render trata isso.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Trocado pro teu desenho. Como tá agora, na prática:
+
+<b>1ª DM</b> (comentou &quot;sistema&quot;):
+Opa! Chegou 🤝
+Aliás: esse robô que tá te respondendo agora? Fiz num fim de semana. Igual os 10 que eu quero te mostrar.
+Toca no botão que eu te envio 👇
+[ Me manda ➡️ ]
+
+<b>Clicou → o robô confere na hora, sem anunciar regra:</b>
+
+- <b>Se segue</b> (ou a API não deixa ver): entrega direto → &quot;Boa! 🤝 Tá na mão. Os 10 sistemas, com passo a passo, ferramentas e prompt pronto 👇&quot; [ VER OS 10 SISTEMAS ]
+- <b>Se NÃO segue</b> (confirmado): &quot;Pô, olhei aqui e vi que tu ainda não me segue 👀 Me segue lá ➡️ @augustogobatto que eu libero o material pra ti. Combinado é combinado 👇&quot; [ Seguir @augustogobatto ] [ ✅ Segui, libera ]
+- <b>Seguiu e clicou de novo</b>: o robô confere de novo → &quot;Boa, agora sim 🔥 Combinado é combinado...&quot; + link. Se ainda não achou, insiste UMA vez (&quot;ele é chato, mas é justo kkk&quot;) e na segunda libera de qualquer jeito, pra não prender ninguém.
+
+E sobre o nome: tirei o <code>{primeiro_nome}</code> da entrega. Tava saindo vazio porque é o mesmo problema do consent — quando a API esconde o perfil, não vem nome, e o fallback (username) fica pior que nada no meio da frase. A copy agora não depende de nome pra nenhum lead.
+
+O check do &quot;já sigo&quot; é verificação real (consulta ao vivo no clique, que é quando a API deixa olhar). Teste das duas pontas com uma conta que não te segue quando quiser cravar.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Fechando a sessão. Recapitulando e registrando em ordem: correções → Brain → skill do CEQ → memória local → resumo.</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Agora a skill do CEQ na VPS, com o que a sessão descobriu:</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Skill atualizada. Agora o Brain:</div></div></div><div></div></div>
+<div class="linha"><div><div class="fala ele"><span class="quem">Elo </span><div class="bolha">Sessão fechada. Resumo:
+
+<b>Entregas</b>
+
+- <b>Página no ar</b>: ia.augustogobatto.com/sistemas, versão final com 5 sistemas de grana + 5 de vida, mapa comparativo (dificuldade, ganho, tempo de volta, ferramentas), selos &quot;Rodando de verdade&quot; e prompt copiável em cada card. Commits b69c417 e 69ebd1c no club-site, deploy validado no browser.
+- <b>CEQ fluxo 14</b> no teu desenho final: DM neutra com botão, verificação de seguidor DE VERDADE no clique (o clique cria o consentimento que a API exige, erro 230 foi a descoberta), entrega direta pra quem segue, pedido de follow com re-check pra quem não segue, sem loop infinito. Copy na tua voz com o &quot;esse robô fiz num fim de semana&quot;.
+- <b>Conteúdo</b>: pauta aprovada no Schwartz (13/15), 5 legendas prontas, 5 frases de tela, frame Netflix do hunoff recuperado do banco de refs, e você postou as versões do reel.
+
+<b>Decisões suas registradas</b>: página mista gr<details><summary>continuar lendo</summary>ana+vida em vez de série; gate por clique sem anunciar regra; robô sem placeholder de nome.
+
+<b>Pendências (bola sua)</b>
+
+- Escolher a frase do post de feed: chefe (fala tua), Nietzsche (infinitas vezes) ou Aristóteles (construtor construindo). Escolheu, eu monto o PNG.
+- Quando quiser, teste de ponta a ponta do fluxo 14 com uma conta que não te segue.
+- Amanhã me pede o placar: views por versão do reel + comentários &quot;sistema&quot; caindo no CEQ.
+
+<b>Documentado em</b>: Brain (episódio de fechamento, gravado inteiro), skill <code>ceq</code> da VPS (seção nova sobre o erro 230 e o desenho do gate), memória local <code>conteudo-video-10-sistemas</code> e feedback novo <code>frase-na-voz-do-augusto</code> (&quot;parece que não é eu falando&quot; virou regra: frase se garimpa da tua fala real antes de inventar).
+
+Boa noite, e amanhã a gente vê qual gancho tracionou.</details></div></div></div><div></div></div>
+<section class="fecho"><h2>O que essa conversa ensina</h2><ol>
+<li><b>O escopo coube numa frase.</b> "sistema = mandei dm = confere se tá seguindo = envia isca". A IA traduziu em fluxo, gatilhos e gate.</li>
+<li><b>A referência veio de fora e foi melhorada.</b> O fluxo do gringo anuncia a regra pra todo mundo. O dele confere antes, e quem já segue não leva sermão.</li>
+<li><b>A curadoria é humana.</b> Cinco dos dez sistemas importados foram reprovados. Os que entraram são os que ele roda de verdade.</li>
+<li><b>Ele auditou a linha, não o agregado.</b> Viu um lead receber o link sem pedágio e mandou conferir aquele caso específico. Saiu de lá a descoberta do consentimento.</li>
+<li><b>A frase da tela decide sozinha.</b> Cinco versões do mesmo vídeo, legenda e CTA idênticos, e a diferença entre 6.270 e 2.181 views está só no gancho.</li>
+</ol><div>
+<span class="selo">184 comentaristas</span><span class="selo">42% clicaram</span>
+<span class="selo">67 chegaram no link</span><span class="selo">+252 seguidores em 3 dias</span></div>
+<p style="color:var(--muted);font-size:14px;margin-top:24px;max-width:60ch">
+Sessão de 28/08/2026. Números do funil conferidos na auditoria de 29/08; seguidores conferidos em 31/08.</p></section>
+</div>
