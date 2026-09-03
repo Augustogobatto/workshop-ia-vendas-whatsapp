@@ -2,7 +2,11 @@
 
 import { useState } from 'react'
 
-export function N8nDownload({ url = '/downloads/n8n-workshop.json' }: { url?: string }) {
+export function N8nDownload({
+  url = '/downloads/n8n-workshop.json',
+  title = 'Workflow completo — n8n',
+  description = 'Importe esse JSON direto no seu n8n. Todas as automações do workshop já configuradas.',
+}: { url?: string; title?: string; description?: string }) {
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
@@ -32,10 +36,10 @@ export function N8nDownload({ url = '/downloads/n8n-workshop.json' }: { url?: st
             margin: '0 0 6px',
           }}
         >
-          Workflow completo — n8n
+          {title}
         </p>
         <p style={{ fontSize: 13, color: 'var(--text-muted)', margin: 0, lineHeight: 1.5 }}>
-          Importe esse JSON direto no seu n8n. Todas as automações do workshop já configuradas.
+          {description}
         </p>
       </div>
 
