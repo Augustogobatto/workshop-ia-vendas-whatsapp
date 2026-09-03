@@ -1,0 +1,284 @@
+{
+  "name": "Follow-up automático - Régua de 90 dias",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Como funciona\n\nA lógica é a da aula \"Exemplo Prático IA Aline\": quem marca o follow-up é o seu AGENTE (ou o fim do fluxo principal), gravando uma linha na tabela `followups` do Supabase. Este workflow roda de 5 em 5 minutos, pega o que venceu, aplica as travas e dispara.\n\n### 1. Crie a tabela no Supabase (SQL Editor):\n\ncreate table followups (\n  id uuid primary key default gen_random_uuid(),\n  conversation_id int not null,\n  nome_lead text,\n  passo int not null default 1,\n  mensagem text not null,\n  enviar_em timestamptz not null,\n  status text not null default 'pendente',\n  motivo text,\n  criado_em timestamptz not null default now(),\n  enviado_em timestamptz\n);\n\n### 2. Quem agenda o PRIMEIRO follow-up?\nSeu agente. Dê a ele uma tool (Call n8n Workflow Tool ou a tool de Supabase) com a instrução: \"quando a conversa esfriar sem fechamento, agende follow-up\" → insere na tabela: conversation_id, nome_lead, passo 1, a mensagem, enviar_em = agora + 5 minutos, status pendente. Os passos seguintes este workflow agenda sozinho.\n\n### 3. Troque os placeholders:\n- SEU-PROJETO.supabase.co + SUA_SERVICE_ROLE_KEY (Supabase → Settings → API)\n- SEU-CHATWOOT.com + SEU_TOKEN_CHATWOOT",
+        "height": 780,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-1200, -560],
+      "id": "b2000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note - Como funciona"
+    },
+    {
+      "parameters": {
+        "content": "## As regras que salvam seu número\n\n**Janela de 24h da Meta:** a janela fecha 24 horas depois da ÚLTIMA mensagem do lead. Dentro dela, texto livre (este workflow). Fora dela, só TEMPLATE aprovado entrega — dispare pelo recurso de template da API oficial. Toque agendado que venceu fora da janela sem template: deixa morrer, não força.\n\n**Trava 1 — lead respondeu:** se o lead mandou mensagem depois que o follow-up foi agendado, o toque é cancelado. A conversa está viva, quem conduz é a IA.\n\n**Trava 2 — máx. 3 sem resposta:** 3 mensagens suas seguidas sem resposta e a régua para. Do 4º toque em diante a taxa de resposta despenca pra ~2% — é queimar número por nada.\n\n**Trava 3 (no seu agente) — link novo cancela corrente:** se a IA mandar um link de checkout novo, cancele os follow-ups pendentes daquela conversa e comece régua nova.",
+        "height": 500,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-700, -560],
+      "id": "b2000000-0000-4000-8000-000000000002",
+      "name": "Sticky Note - Regras"
+    },
+    {
+      "parameters": {
+        "content": "## A régua (edite no node \"Agendar próximo da régua\")\n\n5 min → 30 min → 3 h → 1 dia → 4 dias → 7 dias → 15 dias → 30 dias → 60 dias → 90 dias\n\nCada passo só é agendado depois que o anterior foi ENVIADO — se uma trava cancelar, a régua morre ali. As mensagens de cada passo estão no mesmo node, com placeholder: escreva as suas.",
+        "height": 240,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-240, -560],
+      "id": "b2000000-0000-4000-8000-000000000003",
+      "name": "Sticky Note - Régua"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "minutes", "minutesInterval": 5 }]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-1120, 0],
+      "id": "b2000000-0000-4000-8000-000000000010",
+      "name": "A cada 5 minutos"
+    },
+    {
+      "parameters": {
+        "url": "=https://SEU-PROJETO.supabase.co/rest/v1/followups?status=eq.pendente&enviar_em=lte.{{ $now.toISO() }}&select=*",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "SUA_SERVICE_ROLE_KEY" },
+            { "name": "Authorization", "value": "Bearer SUA_SERVICE_ROLE_KEY" }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [-896, 0],
+      "id": "b2000000-0000-4000-8000-000000000011",
+      "name": "Buscar follow-ups vencidos"
+    },
+    {
+      "parameters": {
+        "url": "=https://SEU-CHATWOOT.com/api/v1/accounts/1/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "api_access_token", "value": "SEU_TOKEN_CHATWOOT" }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [-672, 0],
+      "id": "b2000000-0000-4000-8000-000000000012",
+      "name": "Buscar mensagens da conversa"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const fu = $('Buscar follow-ups vencidos').item.json;\nconst msgs = ($json.payload || []).filter(m => m.message_type === 0 || m.message_type === 1);\n\n// TRAVA 1: o lead respondeu depois que este follow-up foi agendado? Cancela — a conversa está viva.\nconst agendadoEm = Math.floor(new Date(fu.criado_em).getTime() / 1000);\nconst ultimaDoLead = [...msgs].reverse().find(m => m.message_type === 0);\nif (ultimaDoLead && ultimaDoLead.created_at > agendadoEm) {\n  return { json: { ...fu, acao: 'cancelar', motivo: 'lead-respondeu' } };\n}\n\n// TRAVA 2: já mandamos 3+ mensagens seguidas sem UMA resposta? Para de bater.\nlet seguidasSemResposta = 0;\nfor (let i = msgs.length - 1; i >= 0; i--) {\n  if (msgs[i].message_type === 1) seguidasSemResposta++;\n  else break;\n}\nif (seguidasSemResposta >= 3) {\n  return { json: { ...fu, acao: 'cancelar', motivo: 'sem-resposta-3x' } };\n}\n\nreturn { json: { ...fu, acao: 'enviar' } };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-448, 0],
+      "id": "b2000000-0000-4000-8000-000000000013",
+      "name": "Travas anti-chatice"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.acao }}",
+              "rightValue": "enviar",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-224, 0],
+      "id": "b2000000-0000-4000-8000-000000000014",
+      "name": "Pode enviar?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SEU-CHATWOOT.com/api/v1/accounts/1/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "api_access_token", "value": "SEU_TOKEN_CHATWOOT" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.mensagem }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [16, -96],
+      "id": "b2000000-0000-4000-8000-000000000015",
+      "name": "Enviar mensagem"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://SEU-PROJETO.supabase.co/rest/v1/followups?id=eq.{{ $('Travas anti-chatice').item.json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "SUA_SERVICE_ROLE_KEY" },
+            { "name": "Authorization", "value": "Bearer SUA_SERVICE_ROLE_KEY" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ status: 'enviado', enviado_em: $now.toISO() }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [240, -96],
+      "id": "b2000000-0000-4000-8000-000000000016",
+      "name": "Marcar como enviado"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const fu = $('Travas anti-chatice').item.json;\n\n// A RÉGUA DE 90 DIAS — espera contada a partir do envio ANTERIOR.\n// ⚠️ ESCREVA AS SUAS MENSAGENS. Do momento em que a janela de 24h fechar em diante,\n// mensagem livre não entrega: os passos longos precisam virar TEMPLATE aprovado na Meta.\nconst REGUA = [\n  { passo: 1,  espera_min: 5,      mensagem: '[SUA MENSAGEM - toque rápido, ex: ficou alguma dúvida?]' },\n  { passo: 2,  espera_min: 30,     mensagem: '[SUA MENSAGEM - retomar o ponto onde a conversa parou]' },\n  { passo: 3,  espera_min: 180,    mensagem: '[SUA MENSAGEM - agregar valor: prova, caso, benefício]' },\n  { passo: 4,  espera_min: 1440,   mensagem: '[TEMPLATE - 1 dia depois]' },\n  { passo: 5,  espera_min: 5760,   mensagem: '[TEMPLATE - 4 dias depois]' },\n  { passo: 6,  espera_min: 10080,  mensagem: '[TEMPLATE - 7 dias depois]' },\n  { passo: 7,  espera_min: 21600,  mensagem: '[TEMPLATE - 15 dias depois]' },\n  { passo: 8,  espera_min: 43200,  mensagem: '[TEMPLATE - 30 dias depois]' },\n  { passo: 9,  espera_min: 43200,  mensagem: '[TEMPLATE - 60 dias depois]' },\n  { passo: 10, espera_min: 43200,  mensagem: '[TEMPLATE - 90 dias depois]' }\n];\n\nconst prox = REGUA.find(r => r.passo === (Number(fu.passo) + 1));\nif (!prox) {\n  return { json: { tem_proximo: false } };\n}\n\nreturn { json: {\n  tem_proximo: true,\n  conversation_id: fu.conversation_id,\n  nome_lead: fu.nome_lead,\n  passo: prox.passo,\n  mensagem: prox.mensagem,\n  enviar_em: new Date(Date.now() + prox.espera_min * 60000).toISOString(),\n  status: 'pendente'\n} };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [464, -96],
+      "id": "b2000000-0000-4000-8000-000000000017",
+      "name": "Agendar próximo da régua"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.tem_proximo }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [688, -96],
+      "id": "b2000000-0000-4000-8000-000000000018",
+      "name": "Tem próximo passo?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://SEU-PROJETO.supabase.co/rest/v1/followups",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "SUA_SERVICE_ROLE_KEY" },
+            { "name": "Authorization", "value": "Bearer SUA_SERVICE_ROLE_KEY" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ conversation_id: $json.conversation_id, nome_lead: $json.nome_lead, passo: $json.passo, mensagem: $json.mensagem, enviar_em: $json.enviar_em, status: $json.status }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [912, -96],
+      "id": "b2000000-0000-4000-8000-000000000019",
+      "name": "Criar próximo follow-up"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://SEU-PROJETO.supabase.co/rest/v1/followups?id=eq.{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "SUA_SERVICE_ROLE_KEY" },
+            { "name": "Authorization", "value": "Bearer SUA_SERVICE_ROLE_KEY" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ status: 'cancelado', motivo: $json.motivo }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [16, 112],
+      "id": "b2000000-0000-4000-8000-000000000020",
+      "name": "Marcar como cancelado"
+    }
+  ],
+  "connections": {
+    "A cada 5 minutos": {
+      "main": [[{ "node": "Buscar follow-ups vencidos", "type": "main", "index": 0 }]]
+    },
+    "Buscar follow-ups vencidos": {
+      "main": [[{ "node": "Buscar mensagens da conversa", "type": "main", "index": 0 }]]
+    },
+    "Buscar mensagens da conversa": {
+      "main": [[{ "node": "Travas anti-chatice", "type": "main", "index": 0 }]]
+    },
+    "Travas anti-chatice": {
+      "main": [[{ "node": "Pode enviar?", "type": "main", "index": 0 }]]
+    },
+    "Pode enviar?": {
+      "main": [
+        [{ "node": "Enviar mensagem", "type": "main", "index": 0 }],
+        [{ "node": "Marcar como cancelado", "type": "main", "index": 0 }]
+      ]
+    },
+    "Enviar mensagem": {
+      "main": [[{ "node": "Marcar como enviado", "type": "main", "index": 0 }]]
+    },
+    "Marcar como enviado": {
+      "main": [[{ "node": "Agendar próximo da régua", "type": "main", "index": 0 }]]
+    },
+    "Agendar próximo da régua": {
+      "main": [[{ "node": "Tem próximo passo?", "type": "main", "index": 0 }]]
+    },
+    "Tem próximo passo?": {
+      "main": [[{ "node": "Criar próximo follow-up", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

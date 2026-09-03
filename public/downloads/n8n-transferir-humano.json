@@ -1,0 +1,132 @@
+{
+  "name": "SUB - Transferir para Humano",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Como usar este workflow\n\n1. Importe este JSON como um workflow NOVO no seu n8n (ele roda como sub-workflow, chamado pela sua IA).\n\n2. No workflow do seu agente, adicione uma tool do tipo **Call n8n Workflow Tool** apontando para este workflow, com a descrição:\n\n\"Transfere a conversa para um atendente humano. Use quando o lead pedir para falar com uma pessoa, quando você não souber responder, ou quando a negociação precisar de um humano. Envie: conversation_id, nome_lead, resumo (2-3 frases do que rolou na conversa) e urgencia (alta, media ou baixa).\"\n\n3. Troque os placeholders:\n- SEU-CHATWOOT.com → URL do seu Chatwoot\n- SEU_TOKEN_CHATWOOT → token de acesso do perfil da IA (Perfil → Token de acesso)\n- assignee_id: 2 → ID do agente HUMANO no seu Chatwoot (na aula, o segundo usuário criado tem ID 2)\n- SUA-EVOLUTION.com / SUA_INSTANCIA / SUA_APIKEY_EVOLUTION → sua Evolution API (o alerta no WhatsApp do vendedor)\n- 5500999999999 → número (ou grupo @g.us) que recebe o alerta\n\nA aula \"Como transferir conversas para humano\" mostra tudo isso na tela.",
+        "height": 620,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-820, -400],
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Sticky Note - Instruções"
+    },
+    {
+      "parameters": {
+        "content": "## Por que funciona\n\nA IA só responde conversas atribuídas a NINGUÉM ou ao agente de ID 1 (a própria IA).\n\nQuando este workflow atribui a conversa ao humano (assignee_id 2), a IA para de responder sozinha — sem gambiarra, é o filtro de entrada do fluxo principal que faz o trabalho.",
+        "height": 240,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-160, -420],
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Sticky Note - Por que funciona"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            { "name": "conversation_id" },
+            { "name": "nome_lead" },
+            { "name": "resumo" },
+            { "name": "urgencia" }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-384, -160],
+      "id": "b1d28116-e51a-4b96-b64f-c6bf07d493e0",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SEU-CHATWOOT.com/api/v1/accounts/1/conversations/{{ $json.conversation_id }}/assignments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "api_access_token", "value": "SEU_TOKEN_CHATWOOT" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ assignee_id: 2 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [-160, -160],
+      "id": "33338a20-354c-4cd6-a45c-4191f9d726ff",
+      "name": "Atribuir ao Humano"
+    },
+    {
+      "parameters": {
+        "jsCode": "const trigger = $('When Executed by Another Workflow').first().json;\nconst urgencia = (trigger.urgencia || 'media').toLowerCase();\n\nlet emoji;\nswitch (urgencia) {\n  case 'alta':\n    emoji = '🚨🚨🚨';\n    break;\n  case 'media':\n    emoji = '⚠️';\n    break;\n  case 'baixa':\n    emoji = 'ℹ️';\n    break;\n  default:\n    emoji = '⚠️';\n}\n\n// Link direto pra conversa no Chatwoot — troque a URL pela do seu Chatwoot\nconst link = `https://SEU-CHATWOOT.com/app/accounts/1/conversations/${trigger.conversation_id}`;\n\nconst texto = `${emoji} Lead pediu atendimento humano\\n\\n` +\n  `👤 ${trigger.nome_lead}\\n` +\n  `📋 ${trigger.resumo}\\n\\n` +\n  `🔗 ${link}`;\n\nreturn [{ json: { texto } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [64, -160],
+      "id": "8c4fc93e-5d1b-4786-9bb4-4e78be106f98",
+      "name": "Montar Alerta WhatsApp"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://SUA-EVOLUTION.com/message/sendText/SUA_INSTANCIA",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "SUA_APIKEY_EVOLUTION" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "number", "value": "5500999999999" },
+            { "name": "text", "value": "={{ $json.texto }}" }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [288, -160],
+      "id": "6717f941-3112-47ef-a5ac-44b01076b4bf",
+      "name": "Enviar Alerta WhatsApp"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { sucesso: true, mensagem: 'Conversa transferida para atendimento humano com sucesso.' } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [496, -160],
+      "id": "ad6a34ee-92fb-4483-900d-38da01aaf12a",
+      "name": "Formatar Resposta"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [[{ "node": "Atribuir ao Humano", "type": "main", "index": 0 }]]
+    },
+    "Atribuir ao Humano": {
+      "main": [[{ "node": "Montar Alerta WhatsApp", "type": "main", "index": 0 }]]
+    },
+    "Montar Alerta WhatsApp": {
+      "main": [[{ "node": "Enviar Alerta WhatsApp", "type": "main", "index": 0 }]]
+    },
+    "Enviar Alerta WhatsApp": {
+      "main": [[{ "node": "Formatar Resposta", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {}
+}

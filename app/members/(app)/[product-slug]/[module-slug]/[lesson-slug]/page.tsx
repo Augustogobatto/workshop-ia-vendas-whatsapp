@@ -383,7 +383,11 @@ export default function LessonPage({ params }: PageProps) {
           {/* Download */}
           {lesson.content_type === 'download' && lesson.content_url && (
             <div style={{ marginBottom: 32 }}>
-              <N8nDownload url={lesson.content_url} />
+              <N8nDownload
+                url={lesson.content_url}
+                title={lesson.lesson_name}
+                description="Importe esse JSON direto no seu n8n. As instruções de configuração estão nos sticky notes dentro do próprio workflow."
+              />
             </div>
           )}
 

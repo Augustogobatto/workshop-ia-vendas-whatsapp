@@ -1,0 +1,512 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;650&display=swap');
+
+/* ═══════════════════════════════════════════════════════
+   PUSH CLUB — V7 · carta editorial dark
+   Guidelines: Resend (serif display sobre preto, luz como
+   ornamento, cor zero) + Vercel (contraste extremo de escala,
+   afirmação à esquerda / evidência à direita, hairlines).
+   Display: Instrument Serif · Body: Inter · P&B estrito.
+   ═══════════════════════════════════════════════════════ */
+
+.p7 {
+  --bg:    #000000;
+  --wash:  #0e0e0e;
+  --ink:   #ededed;
+  --dim:   #a1a1a1;
+  --faint: #7a7a7a; /* 4,8:1 sobre preto — AA. Era #6b6b6b (3,94:1, reprovava) */
+  --line:  #232323;
+
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16.5px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.p7 * { box-sizing: border-box; }
+.p7 ::selection { background: var(--ink); color: var(--bg); }
+
+.p7-wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.p7-measure { max-width: 62ch; }
+
+/* ── topbar ── */
+.p7-bar {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.p7-bar-in {
+  max-width: 1120px; margin: 0 auto; padding: 14px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.p7-mark {
+  font-family: var(--serif); font-size: 21px; letter-spacing: 0.01em;
+  color: var(--ink); text-decoration: none;
+}
+.p7-mark em { font-style: italic; color: var(--dim); }
+
+/* extensão Video Speed Controller: ela injeta <vsc-controller> como irmão do
+   vídeo; escondemos o host pra não aparecer o "1.00" sobre o hero */
+vsc-controller,
+.vsc-controller {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.p7-pill {
+  display: inline-block; background: var(--ink); color: var(--bg);
+  text-decoration: none; font-weight: 650; font-size: 14px;
+  padding: 9px 18px; border-radius: 999px; letter-spacing: 0.01em;
+  transition: background 0.15s ease;
+}
+.p7-pill:hover { background: #ffffff; }
+.p7-pill.big { font-size: 16px; padding: 14px 28px; }
+.p7-pill.ghost {
+  background: transparent; color: var(--dim); font-weight: 400;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.p7-pill.ghost:hover {
+  background: transparent; color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+/* ── hero: elemento à esquerda, texto à direita ── */
+.p7-hero { position: relative; overflow: hidden; padding: clamp(64px, 11vh, 130px) 0 clamp(24px, 4vh, 40px); }
+/* luz ambiente do hero removida a pedido (12/08): o unico brilho da dobra
+   e o flare do eclipse dentro do HeroLuz */
+.p7-hero-grid { display: grid; gap: 44px; align-items: center; }
+@media (min-width: 880px) {
+  .p7-hero-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 40px; }
+}
+.p7-hero-txt { order: 1; }
+.p7-hero-el { order: 2; }
+.p7-hero-el .p7-slot { aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; }
+.p7-hero-img {
+  width: 100%; display: block; aspect-ratio: 4 / 5; object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 88%);
+  mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 40%, transparent 88%);
+  transform: scale(1.35);
+  transform-origin: center;
+}
+.p7-kicker {
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--faint); margin: 0 0 26px;
+}
+.p7-h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(40px, 5.6vw, 66px);
+  line-height: 1.08; letter-spacing: -0.005em;
+  margin: 0 0 22px; text-wrap: balance;
+}
+.p7-h1 em { font-style: italic; }
+.p7-sub { font-size: 18px; color: var(--dim); margin: 0 0 32px; max-width: 44ch; }
+.p7-sub strong { color: var(--ink); font-weight: 650; }
+.p7-cta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.p7-cta-note { font-size: 13px; color: var(--faint); line-height: 1.55; }
+
+/* linha-tese sob o hero */
+.p7-tagline {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.6vw, 27px);
+  line-height: 1.4;
+  color: var(--dim);
+  text-align: center;
+  max-width: 34ch;
+  margin: 0 auto clamp(48px, 8vh, 80px);
+  text-wrap: balance;
+}
+.p7-tagline em { color: var(--ink); }
+
+/* ── faixa de fatos ── */
+.p7-facts { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.p7-facts-in {
+  max-width: 1120px; margin: 0 auto; padding: 18px 24px;
+  display: flex; gap: 12px 40px; flex-wrap: wrap; justify-content: center;
+  font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint);
+}
+
+/* ── seções ── */
+.p7-sec { padding: clamp(72px, 12vh, 130px) 0 0; }
+.p7-eyebrow {
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--faint); display: block; margin-bottom: 16px;
+}
+.p7-h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.06; letter-spacing: -0.01em;
+  margin: 0 0 8px; text-wrap: balance;
+}
+.p7 p { margin: 0 0 17px; }
+.p7-dim { color: var(--dim); }
+.p7 strong { font-weight: 650; color: var(--ink); }
+
+/* epígrafe: sussurro acima do título, nunca compete com ele */
+.p7-epi {
+  font-family: var(--serif); font-style: italic;
+  font-size: 15.5px; line-height: 1.5; color: var(--faint);
+  padding-left: 20px; margin: 0 0 26px;
+}
+.p7-epi .a {
+  display: block; margin-top: 6px;
+  font-style: normal; font-family: var(--sans, inherit);
+  font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+/* clímax do texto corrido: peso maior e respiro, sem virar card */
+.p7-destaque {
+  font-weight: 650; color: var(--ink);
+  margin: 34px 0 !important;
+}
+
+/* na versão centralizada a epígrafe perde o recuo e senta no eixo */
+.p7-stage .p7-epi { padding-left: 0; margin-left: auto; margin-right: auto; }
+
+/* citação no pé do hero: uma linha só, sussurro centralizado */
+.p7-hero-epi {
+  font-family: var(--serif); font-style: italic;
+  font-size: 14px; color: #757575; text-align: center; /* era #3f3f3f (2,0:1, quase invisível) */
+  margin: clamp(40px, 6vh, 64px) 0 0;
+}
+.p7-hero-epi .a {
+  font-style: normal; font-family: var(--sans);
+  font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  margin-left: 10px;
+}
+
+/* livro-razão: pilar à esquerda, exemplos com recibo à direita */
+.p7-ledger { margin-top: 40px; border-top: 1px solid var(--line); }
+.p7-led-row { padding: 40px 0 28px; border-bottom: 1px solid var(--line); display: grid; gap: 18px; }
+@media (min-width: 880px) {
+  .p7-led-row { grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr); gap: 64px; padding: 48px 0 36px; }
+}
+.p7-pilar {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 38px); line-height: 1.1;
+  margin: 0; letter-spacing: -0.01em;
+}
+.p7-led-exs p { max-width: 52ch; margin-bottom: 8px; }
+.p7-ex { margin-bottom: 26px; }
+.p7-ex:last-child { margin-bottom: 0; }
+.p7-rec {
+  display: block; font-size: 12px; font-weight: 650;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+}
+
+/* números em linha abaixo do texto */
+.p7-stats-row {
+  display: grid; gap: 0 56px; text-align: left;
+  margin-top: clamp(44px, 7vh, 64px); border-top: 1px solid var(--line);
+}
+@media (min-width: 880px) {
+  .p7-stats-row { grid-template-columns: repeat(3, 1fr); }
+  .p7-stats-row .p7-stat { border-bottom: none; padding-bottom: 0; }
+}
+
+/* afirmação à esquerda / evidência à direita (Vercel) */
+.p7-duo { display: grid; gap: 40px; margin-top: 28px; }
+@media (min-width: 880px) {
+  .p7-duo { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 64px; align-items: start; }
+  .p7-duo.rev { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
+}
+
+/* stats empilhados com hairline */
+.p7-stats { border-top: 1px solid var(--line); }
+.p7-stat { padding: 26px 0 22px; border-bottom: 1px solid var(--line); }
+.p7-stat .n {
+  font-family: var(--serif); font-size: clamp(44px, 5vw, 60px); line-height: 1;
+  display: block; margin-bottom: 8px; font-variant-numeric: tabular-nums;
+}
+.p7-stat .l { font-size: 13.5px; color: var(--dim); line-height: 1.55; display: block; max-width: 40ch; }
+
+/* momento centralizado (Vercel closing) */
+.p7-stage { text-align: center; padding-top: clamp(72px, 12vh, 130px); }
+.p7-stage .p7-h2 { margin-left: auto; margin-right: auto; max-width: 24ch; }
+.p7-stage .p7-measure { margin: 22px auto 0; max-width: 52ch; text-align: center; }
+
+/* palco de evidência */
+.p7-proofbox {
+  border: 1px solid var(--line); background: var(--wash);
+  padding: 8px; display: grid; gap: 8px;
+}
+
+/* slots de material pendente */
+.p7-slot {
+  border: 1px dashed var(--faint); padding: 34px 24px;
+  text-align: center; color: var(--faint); font-size: 12px;
+  letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.8;
+}
+
+/* bento (o que tem dentro) */
+.p7-bento { display: grid; gap: 14px; margin-top: 40px; }
+@media (min-width: 720px) { .p7-bento { grid-template-columns: repeat(3, 1fr); } .p7-card.wide { grid-column: span 2; } .p7-slot.full { grid-column: 1 / -1; } }
+.p7-card { border: 1px solid var(--line); padding: 24px 26px; background: transparent; }
+.p7-card .tag {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--faint); display: block; margin-bottom: 10px;
+}
+.p7-card h3 { font-size: 17.5px; font-weight: 650; margin: 0 0 8px; }
+.p7-card p { font-size: 14.5px; color: var(--dim); margin: 0; }
+.p7-card p strong { color: var(--ink); }
+
+/* a turma */
+.p7-bignum {
+  font-family: var(--serif); font-size: clamp(96px, 16vw, 190px);
+  line-height: 0.9; letter-spacing: -0.02em;
+}
+.p7-bignum small { font-size: 14px; color: var(--dim); font-family: var(--sans); display: block; margin-top: 14px; max-width: 26ch; letter-spacing: 0; line-height: 1.5; }
+.p7-troop { display: grid; gap: 14px; margin-top: 40px; }
+@media (min-width: 720px) { .p7-troop { grid-template-columns: repeat(3, 1fr); } }
+
+/* preço */
+.p7-anchor { margin: 34px 0 0; max-width: 640px; }
+.p7-anchor-row {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--line);
+  font-size: 15.5px; color: var(--dim);
+}
+.p7-anchor-row i { flex: 1; border-bottom: 1px dotted var(--line); min-width: 20px; }
+.p7-anchor-row.hot { color: var(--ink); font-weight: 650; border-bottom: 1px solid var(--ink); }
+
+.p7-plans { display: grid; gap: 16px; margin: 44px 0 18px; }
+@media (min-width: 720px) { .p7-plans { grid-template-columns: 1fr 1fr; max-width: 760px; } }
+.p7-plan { border: 1px solid var(--line); padding: 30px 30px 26px; }
+.p7-plan.hot { border-color: var(--ink); }
+.p7-plan .name { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); display: block; margin-bottom: 14px; }
+.p7-plan .price { font-family: var(--serif); font-size: 52px; line-height: 1; }
+.p7-plan .price small { font-size: 17px; color: var(--dim); font-family: var(--sans); }
+.p7-plan .eq { font-size: 13px; color: var(--dim); display: block; margin: 6px 0 18px; }
+.p7-plan ul { padding-left: 18px; font-size: 14.5px; color: var(--dim); margin: 0 0 22px; }
+.p7-plan li { margin-bottom: 8px; }
+.p7-plan .p7-pill { display: block; text-align: center; }
+.p7-badge {
+  display: inline-block; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid var(--ink); padding: 4px 10px; margin-bottom: 16px;
+}
+.p7-fine { font-size: 13px; color: var(--faint); line-height: 1.6; max-width: 62ch; }
+.p7-fine b { color: var(--dim); font-weight: 650; }
+
+/* FAQ */
+.p7-faq { max-width: 720px; margin-top: 30px; }
+.p7-faq details { border-top: 1px solid var(--line); padding: 18px 0; }
+.p7-faq details:last-of-type { border-bottom: 1px solid var(--line); }
+.p7-faq summary { font-weight: 650; cursor: pointer; font-size: 16px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.p7-faq summary::after { content: '+'; color: var(--faint); font-family: var(--serif); font-size: 22px; line-height: 1; }
+.p7-faq details[open] summary::after { content: '−'; }
+.p7-faq p { margin: 14px 0 0; color: var(--dim); font-size: 15.5px; max-width: 58ch; }
+
+/* final */
+.p7-final { text-align: center; padding: clamp(90px, 15vh, 170px) 0 40px; position: relative; overflow: hidden; }
+.p7-final::before {
+  content: ''; position: absolute; inset: auto -40vw -180px; height: 420px; pointer-events: none;
+  background: radial-gradient(ellipse 55% 70% at 50% 100%, rgba(237, 237, 237, 0.06), transparent 70%);
+}
+.p7-final .p7-h2 { max-width: 17ch; margin: 0 auto 18px; font-size: clamp(38px, 6.5vw, 64px); }
+.p7-final .p7-sub { margin: 0 auto 34px; }
+.p7-final .p7-cta-row { justify-content: center; }
+
+/* eclipse Vercel: recorte opaco tapando o nucleo de um flare forte atras;
+   a luz so vaza pelas bordas da silhueta. Sem overflow, sem borda possivel. */
+.p7-luz { position: relative; aspect-ratio: 1 / 1; }
+.p7-luz-flare {
+  /* nucleo do flare atras do BLOCO: dois gradientes sobrepostos e
+     assimetricos pra fugir da "bola" perfeita */
+  position: absolute; inset: -40%; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 24% 21% at 57% 41%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.5) 40%,
+      rgba(255, 255, 255, 0.14) 64%,
+      transparent 88%),
+    radial-gradient(ellipse 34% 18% at 52% 46%,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.10) 46%,
+      rgba(255, 255, 255, 0.03) 68%,
+      transparent 90%);
+  filter: blur(10px);
+  will-change: transform;
+}
+/* grao de filme: so existe onde tem luz (mascarado no mesmo centro do flare) */
+.p7-luz-grain {
+  position: absolute; inset: -40%; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  mix-blend-mode: overlay;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse 30% 26% at 56% 42%, #000 8%, rgba(0,0,0,0.5) 46%, transparent 74%);
+  mask-image: radial-gradient(ellipse 30% 26% at 56% 42%, #000 8%, rgba(0,0,0,0.5) 46%, transparent 74%);
+}
+.p7-luz-img {
+  position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%; object-fit: contain;
+  will-change: transform;
+}
+
+/* trocador de rascunhos (preview) */
+.p7-switch {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 20; display: flex; align-items: center; gap: 8px;
+  background: rgba(20,20,20,0.92); backdrop-filter: blur(10px);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 16px; font-size: 12px; color: var(--faint);
+  letter-spacing: 0.06em;
+}
+.p7-switch a {
+  color: var(--dim); text-decoration: none; padding: 3px 9px;
+  border-radius: 999px; border: 1px solid transparent;
+}
+.p7-switch a:hover { color: var(--ink); border-color: var(--line); }
+.p7-switch a.on { background: var(--ink); color: var(--bg); font-weight: 650; }
+.p7-switch b { color: var(--dim); font-weight: 400; font-style: italic; margin-left: 4px; }
+@media (max-width: 620px) { .p7-switch b { display: none } }
+
+.p7-footer {
+  margin-top: 80px; border-top: 1px solid var(--line);
+}
+.p7-footer-in {
+  max-width: 1120px; margin: 0 auto; padding: 22px 24px;
+  display: flex; justify-content: space-between; font-size: 13px; color: var(--faint);
+  flex-wrap: wrap; gap: 6px 24px;
+}
+.p7-footer a { color: var(--faint); }
+
+/* ── ajustes mobile ── */
+@media (max-width: 600px) {
+  .p7-hero { padding-top: clamp(40px, 7vh, 64px); }
+  .p7-hero-grid { gap: 28px; }
+  .p7-hero-epi { font-size: 12.5px; padding: 0 12px; }
+  .p7-hero-epi .a { display: block; margin: 6px 0 0; }
+  .p7-sec { padding-top: 64px; }
+  .p7-stage { padding-top: 64px; }
+  .p7-pilar { margin-bottom: 4px; }
+  .p7-led-row { padding: 30px 0 22px; }
+  .p7-anchor-row { font-size: 13.5px; }
+  .p7-final { padding-top: 72px; }
+  .p7-final .p7-cta-row { flex-direction: column; gap: 12px; }
+}
+
+/* reveal desativado por ora: o script de classe brigava com a hidratação do
+   React e a página ficava intermitentemente invisível. Voltar com animação
+   de entrada via client component quando a página estabilizar. */
+.p7-r { opacity: 1; transform: none; }
+
+/* cascata de prova: quotes cruas do grupo, hairline entre elas */
+.p7-cascata { max-width: 720px; margin-top: 34px; }
+.p7-quote { border-top: 1px solid var(--line); padding: 22px 0 18px; }
+.p7-quote:last-child { border-bottom: 1px solid var(--line); }
+.p7-quote p { color: var(--dim); margin: 0 0 8px; }
+.p7-quote .who {
+  font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* conversas reais transcritas: balões de chat em P&B */
+.p7-chat {
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 18px 18px 14px; background: var(--wash);
+}
+.p7-chat .nome {
+  display: block; font-size: 13px; font-weight: 650; color: var(--ink);
+  margin-bottom: 10px;
+}
+.p7-chat .nome em {
+  font-style: normal; font-weight: 400; color: var(--faint);
+  font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  margin-left: 8px;
+}
+.p7-chat .balao {
+  background: #181818; border-radius: 4px 12px 12px 12px;
+  padding: 10px 12px 8px; font-size: 14px; line-height: 1.55;
+  color: var(--dim); margin-bottom: 8px;
+}
+.p7-chat .balao:last-child { margin-bottom: 0; }
+.p7-chat .hora {
+  display: block; text-align: right; font-size: 10.5px; color: var(--faint);
+  margin-top: 4px; font-variant-numeric: tabular-nums;
+}
+
+/* retrato na seção de autoridade: P&B, mesmo mundo da página */
+.p7-retrato {
+  width: 100%; display: block; aspect-ratio: 4 / 5; object-fit: cover;
+  object-position: 50% 20%;
+  filter: grayscale(1) contrast(1.05) brightness(0.92);
+  border-radius: 4px;
+}
+
+/* figuras de seção: mesmo mundo do hero, bordas dissolvidas no preto */
+.p7-figura {
+  display: block; width: min(420px, 70vw); margin: 40px auto 0;
+  aspect-ratio: 1 / 1; object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 38%, rgba(0,0,0,0.5) 58%, transparent 76%);
+  mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 38%, rgba(0,0,0,0.5) 58%, transparent 76%);
+}
+
+/* ferramentas que deixam de ser jargão: lista seca em duas colunas */
+.p7-tools { display: grid; gap: 0 56px; margin-top: 8px; border-top: 1px solid var(--line); }
+@media (min-width: 720px) { .p7-tools { grid-template-columns: 1fr 1fr; } }
+.p7-tools > div { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.p7-tools strong { display: block; font-size: 14px; margin-bottom: 2px; }
+.p7-tools span { color: var(--dim); }
+
+/* a turma: perfis compactos, iniciais no lugar de foto */
+.p7-membros { display: grid; gap: 28px 40px; margin-top: 40px; }
+@media (min-width: 720px) { .p7-membros { grid-template-columns: repeat(3, 1fr); } }
+.p7-membro { display: flex; gap: 14px; align-items: flex-start; }
+.p7-membro .av {
+  flex: 0 0 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--wash);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 17px; color: var(--dim);
+}
+.p7-membro strong { display: block; font-size: 14.5px; }
+.p7-membro em {
+  display: block; font-style: normal; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint);
+  margin: 2px 0 6px;
+}
+.p7-membro p { font-size: 13.5px; color: var(--dim); margin: 0; line-height: 1.55; }
+
+.p7-nota { font-size: 13px; color: var(--faint); font-style: italic; }
+
+/* esteira da turma: rola sozinha, pausa no hover */
+.p7-esteira { overflow: hidden; margin-top: 40px; position: relative;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.p7-esteira-fita {
+  display: flex; gap: 44px; width: max-content;
+  animation: p7rolar 60s linear infinite;
+}
+.p7-esteira:hover .p7-esteira-fita { animation-play-state: paused; }
+.p7-esteira .p7-membro { width: 300px; flex: 0 0 300px; }
+@keyframes p7rolar { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .p7-esteira-fita { animation: none; } }
+
+/* MCP grandão: o chip de aprendizado do Club */
+.p7-mcp { display: grid; gap: 24px; margin-top: 72px; align-items: center; }
+@media (min-width: 880px) { .p7-mcp { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; } }
+.p7-mcp-titulo {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(72px, 12vw, 150px); line-height: 0.95;
+  letter-spacing: -0.02em; margin: 0 0 18px;
+}
+.p7-mcp .p7-dim { max-width: 44ch; font-size: 17px; }
+.p7-mcp .p7-figura { margin: 0; width: min(460px, 80vw); justify-self: center; }
+
+/* seções centradas no mesmo eixo do resto (preço e FAQ) */
+.p7-centro { text-align: center; }
+.p7-centro .p7-h2 { max-width: 24ch; margin-left: auto; margin-right: auto; }
+.p7-centro .p7-dim { margin-left: auto; margin-right: auto; }
+.p7-centro .p7-anchor { margin-left: auto; margin-right: auto; text-align: left; }
+.p7-centro .p7-plans { margin-left: auto; margin-right: auto; text-align: left; }
+.p7-centro .p7-faq { margin-left: auto; margin-right: auto; text-align: left; }
+.p7-centro .p7-fine { max-width: 58ch; margin-left: auto; margin-right: auto; }
+.p7-centro .p7-cascata { margin-left: auto; margin-right: auto; text-align: left; }
+
