@@ -172,6 +172,20 @@ export function Sidebar({ userName, userEmail, ownedProducts = [], open = true, 
           )
         })()}
 
+        {/* Prompts */}
+        {(() => {
+          const href = '/members/prompts'
+          const active = pathname.startsWith(href)
+          return (
+            <NavLink key="prompts" href={href} label="Prompts" active={active} open={open}>
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
+                <path d="M1.5 3.5A1.5 1.5 0 0 1 3 2h10a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 13 12H6l-3.2 2.6c-.5.4-1.3.05-1.3-.6V3.5Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+                <path d="M4.5 6h7M4.5 8.5h4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </NavLink>
+          )
+        })()}
+
         {/* Conectar seu Claude */}
         {(() => {
           const href = '/members/conectar-claude'
