@@ -410,7 +410,7 @@ kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-b
     maps = local.maps;
     openMap(local.maps[local.currentId] ? local.currentId : Object.keys(maps)[0]);
   } else {
-    createMap('Negócios do Augusto', seedData());
+    createMap(PUBLIC_BUILD ? 'Meu negócio' : 'Negócios do Augusto', seedData());
   }
   setStatus('local', 'salvo neste navegador');
 
