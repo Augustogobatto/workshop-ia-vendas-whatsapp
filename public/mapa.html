@@ -200,67 +200,18 @@ kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-b
   };
 
   /* ---------- Seed: the businesses as of Sept 2026 (drawn from the working notes; edit freely) ---------- */
+  var PUBLIC_BUILD = true;
   function seedData(){
-    return {
-      nodeData: node('Negócios do Augusto', [
-        node('Push Club', [
-          node('Norte: R$50k/mês recorrente (3 motores)'),
-          node('Aula semanal + plataforma (RAG, aba Skills, aba Prompts)'),
-          node('Régua de recuperação armada (05/09)'),
-          node('Anual 12x no Asaas — decidir desenho'),
-          node('Mini curso MCP avulso')
-        ]),
-        node('Evento IA Imersão', [
-          node('Live paga quinta 20h — edição 1 em 01/10'),
-          node('Big idea 08–10/09 · vendas 25/09'),
-          node('CPA frio real R$44,72'),
-          node('Mentoria Peixe Assado R$10k — fecho por call')
-        ]),
-        node('Traz Pra Cá (Felipe)', [
-          node('Maísa IA — vende à noite de live'),
-          node('WABA2 1125 no ar · 131042 sem pagamento'),
-          node('Escada: 1.947 → 1.470 → 297/mês'),
-          node('CRM da Maísa · dash maisa.gobatto.app')
-        ]),
-        node('GoImage', [
-          node('Maria IA no ar desde 04/09'),
-          node('ETL Sankhya · PipeRun · Chatwoot'),
-          node('Pendente: leitura de preço TGFTAB/TGFEXC')
-        ]),
-        node('Edital (Renata)', [
-          node('Renata via Anthropic direto — US$0,064/resposta'),
-          node('Dash edital.gobatto.app · aba Hotmart'),
-          node('ManyChat da Dani reformado 04/09')
-        ]),
-        node('ELA (Aline)', [
-          node('Camila IA — fechamento reformado 27/08'),
-          node('CAPI / CTWA — plano de retomada'),
-          node('Chatwoot 4.17.1 · dash da Aline')
-        ]),
-        node('Raiz Agro', [
-          node('Black RS10 v3.4 — webinário 24/09'),
-          node('Composer multicanal no ar 05/09'),
-          node('Templates de carrinho · token BM2 vence ~01/11'),
-          node('Campanha fake Leandro — pendente revelação')
-        ]),
-        node('Produtos próprios', [
-          node('Mini app: Caixa Novo R$27 · auditoria WhatsApp R$197'),
-          node('Minerador — bônus FHT, API pública'),
-          node('CEQ (Comenta Eu Quero) v1.6.5')
-        ]),
-        node('Conteúdo / desafio 100k', [
-          node('Reels teste (formato hunnoff)'),
-          node('Carrossel peixe assado — pronto, falta postar'),
-          node('Auditoria IG 30 dias')
-        ]),
-        node('Pessoal', [
-          node('Casamento — civil 20/11/26'),
-          node('Apple Developer — ligar (caso aberto)')
-        ])
+    if (PUBLIC_BUILD) return {
+      nodeData: node('Meu negócio', [
+        node('Oferta', [node('Produto principal'), node('Preço e formato')]),
+        node('Aquisição', [node('Canais'), node('Métricas')]),
+        node('Entrega', [node('Processo'), node('Ferramentas')]),
+        node('Time', [node('Quem faz o quê')])
       ], { root: true, expanded: true }),
-      arrows: [],
-      summaries: []
+      arrows: [], summaries: []
     };
+    return null;
   }
 
   /* ---------- Theme ---------- */
