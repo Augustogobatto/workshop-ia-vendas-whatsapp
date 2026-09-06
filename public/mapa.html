@@ -134,6 +134,10 @@ kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-b
         <button class="btn icon" id="zoomIn" title="Aumentar zoom" aria-label="Aumentar zoom"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
       </span>
       <span class="group">
+        <button class="btn" id="expandAll" title="Abrir tudo (Alt+A)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        <button class="btn" id="collapseAll" title="Fechar tudo (Alt+F)"><svg viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
+      </span>
+      <span class="group">
         <button class="btn" id="undo" title="Desfazer (Ctrl+Z)"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg></button>
         <button class="btn" id="redo" title="Refazer (Ctrl+Y)"><svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg></button>
       </span>
@@ -159,6 +163,7 @@ kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-b
         <dt><kbd>Delete</kbd></dt><dd>apagar nó</dd>
         <dt><kbd>Ctrl</kbd>+<kbd>Z</kbd></dt><dd>desfazer</dd>
         <dt><kbd>Ctrl</kbd>+<kbd>C</kbd>/<kbd>V</kbd></dt><dd>copiar / colar ramo</dd>
+        <dt><kbd>Alt</kbd>+<kbd>A</kbd>/<kbd>F</kbd></dt><dd>abrir tudo / fechar tudo</dd>
         <dt>arrastar</dt><dd>mover nó ou o mapa</dd>
         <dt>roda</dt><dd>zoom · botão direito: menu</dd>
       </dl>
@@ -498,6 +503,26 @@ kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-b
     toast('Mapa criado — dê dois cliques no centro para renomear');
   });
   $('center').addEventListener('click', function(){ mind.toCenter(); });
+  function setAllExpanded(open){
+    var d = mind.getData();
+    (function walk(n, isRoot){
+      if (!isRoot && n.children && n.children.length) n.expanded = open;
+      (n.children || []).forEach(function(c){ walk(c, false); });
+    })(d.nodeData, true);
+    d.direction = layoutPref();
+    mind.refresh(d);
+    mind.toCenter();
+    scheduleSave();
+    toast(open ? 'Tudo aberto' : 'Tudo fechado');
+  }
+  $('expandAll').addEventListener('click', function(){ setAllExpanded(true); });
+  $('collapseAll').addEventListener('click', function(){ setAllExpanded(false); });
+  document.addEventListener('keydown', function(e){
+    if (!e.altKey || e.ctrlKey || e.metaKey) return;
+    var t = e.target; if (t && (t.tagName === 'INPUT' || t.isContentEditable)) return;
+    if (e.code === 'KeyA') { e.preventDefault(); setAllExpanded(true); }
+    else if (e.code === 'KeyF') { e.preventDefault(); setAllExpanded(false); }
+  });
   function paintLayoutBtn(){ $('layout').textContent = layoutPref() === ME.RIGHT ? 'Lista' : 'Espalhado'; }
   paintLayoutBtn();
   $('layout').addEventListener('click', function(){
