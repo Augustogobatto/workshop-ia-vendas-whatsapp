@@ -88,6 +88,9 @@ kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-b
 #map{position:absolute !important;inset:0;width:100%;height:100%}
 #map .map-container{background-color:transparent !important;font-family:var(--sans);position:relative;overflow:clip;contain:layout paint;isolation:isolate}
 #map .map-container:focus-visible{outline:none}
+/* Bigger hit area for the tiny expand/collapse toggle */
+#map me-epd{position:absolute;cursor:pointer}
+#map me-epd::before{content:"";position:absolute;inset:-7px}
 #map me-tpc{font-weight:500;line-height:1.3}
 #map me-root me-tpc{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em;padding:12px 26px}
 #map me-main>me-wrapper>me-parent>me-tpc{font-weight:600}
@@ -608,6 +611,16 @@ kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-b
   })();
   mind.bus.addListener('selectNodes', function(){ $('colorbar').hidden = selectedEls().length === 0; });
   mind.bus.addListener('unselectNodes', function(){ setTimeout(function(){ $('colorbar').hidden = selectedEls().length === 0; }, 0); });
+  /* Mind Elixir drops a click if the pointer moved at all between press and release (no threshold).
+     On a trackpad that means several clicks to open/close a node. Treat < 6px as a click. */
+  (function(){
+    var sx = 0, sy = 0, c = mind.container;
+    c.addEventListener('pointerdown', function(e){ sx = e.clientX; sy = e.clientY; }, true);
+    c.addEventListener('pointerup', function(e){
+      var d = Math.hypot(e.clientX - sx, e.clientY - sy);
+      if (d < 6 && mind.panHelper && mind.panHelper.moved) mind.panHelper.moved = false;
+    }, true);
+  })();
   window.__mind = mind;
 
   /* Theme follows the viewer */
