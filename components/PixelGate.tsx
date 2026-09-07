@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 // Rotas que NAO devem alimentar o pixel: trafego frio de conteudo gratuito
 // envenena o publico parecido das campanhas pagas.
-const SEM_PIXEL = ['/skills']
+const SEM_PIXEL = ['/skills', '/votacao']
 
 export default function PixelGate() {
   const pathname = usePathname()

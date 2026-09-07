@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import Votacao from './Votacao'
 
 export const metadata: Metadata = {
@@ -17,9 +16,5 @@ export const metadata: Metadata = {
 }
 
 export default function VotacaoPage() {
-  return (
-    <Suspense fallback={null}>
-      <Votacao />
-    </Suspense>
-  )
+  return <Votacao />
 }

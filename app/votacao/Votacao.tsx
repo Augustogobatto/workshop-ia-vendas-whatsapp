@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { LogoWhatsApp, LogoTelegram } from './Logos'
 
@@ -18,7 +17,6 @@ type Resultado = {
 }
 
 const LS_VOTO = 'club-votacao-grupo-2026-09'
-const LS_DEVICE = 'club-votacao-device'
 
 const OPCOES: { id: Opcao; titulo: string; linha: string; cor: string }[] = [
   { id: 'whatsapp', titulo: 'Migrar pro WhatsApp', linha: 'Grupo novo no app que todo mundo já abre todo dia.', cor: '#25D366' },
@@ -27,29 +25,16 @@ const OPCOES: { id: Opcao; titulo: string; linha: string; cor: string }[] = [
 
 const ERROS: Record<string, string> = {
   opcao: 'Escolhe uma das duas opções.',
-  device: 'Seu navegador bloqueou o registro. Tenta em outra aba ou sem modo anônimo.',
+  device: 'Seu navegador bloqueou o cookie que identifica o aparelho. Libera cookies pra este site e tenta de novo.',
+  limite_ip: 'Muitos votos saíram desta mesma rede. Tenta pelo 4G ou me chama no direct.',
+  config: 'A votação está fora do ar por um instante. Tenta de novo em um minuto.',
   encerrada: 'A votação encerrou dia 10. Obrigado a quem votou.',
   rede: 'Não consegui registrar. Dá uma olhada na conexão e tenta de novo.',
 }
 
-function deviceId(): string {
-  try {
-    const salvo = localStorage.getItem(LS_DEVICE)
-    if (salvo && /^[a-z0-9-]{16,64}$/.test(salvo)) return salvo
-    const novo =
-      typeof crypto !== 'undefined' && 'randomUUID' in crypto
-        ? crypto.randomUUID()
-        : Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('')
-    localStorage.setItem(LS_DEVICE, novo)
-    return novo
-  } catch {
-    return ''
-  }
-}
-
 export default function Votacao() {
-  const params = useSearchParams()
-  const chave = params.get('chave')
+  const [chave, setChave] = useState<string | null>(null)
+  const [pronto, setPronto] = useState(false)
 
   const [enviando, setEnviando] = useState<Opcao | null>(null)
   const [erro, setErro] = useState<string | null>(null)
@@ -58,6 +43,16 @@ export default function Votacao() {
   const [resultado, setResultado] = useState<Resultado | null>(null)
 
   useEffect(() => {
+    let c: string | null = null
+    try {
+      c = new URLSearchParams(window.location.search).get('chave')
+    } catch {}
+    setChave(c)
+    setPronto(true)
+  }, [])
+
+  useEffect(() => {
+    if (!pronto) return
     try {
       const salvo = localStorage.getItem(LS_VOTO)
       if (salvo) {
@@ -73,18 +68,17 @@ export default function Votacao() {
         if (data) setResultado(data as Resultado)
       } catch {}
     })()
-  }, [chave])
+  }, [pronto, chave])
 
   async function votar(opcao: Opcao) {
     setErro(null)
     setEnviando(opcao)
     try {
-      const device = deviceId()
-      if (!device) return setErro(ERROS.device)
       const r = await fetch('/api/votacao', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ opcao, device }),
+        credentials: 'same-origin',
+        body: JSON.stringify({ opcao }),
       })
       const data = await r.json().catch(() => null)
       if (!data) throw new Error('rede')
