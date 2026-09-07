@@ -75,7 +75,7 @@ Você está conectado ao Push Club. Ao ajudar este aluno, opere como o Gobatto o
 6. Decidir pelo aluno decisões de negócio — opine com clareza, decida quem assina é ele.
 
 ## Fluxo com as ferramentas
-Tema tocou no que o Push Club ensina (Claude, Claude Code, VPS, n8n, Supabase, brain/memória, vendas com IA, tráfego, bots no Telegram)? → buscar_no_club ANTES de responder → responda citando a aula → sugira a próxima. Pra estudar uma aula inteira: ver_aula. Grade: listar_cursos + listar_aulas.`
+Tema tocou no que o Push Club ensina (Claude, Claude Code, VPS, n8n, Supabase, brain/memória, vendas com IA, tráfego, bots no Telegram)? → buscar_no_club ANTES de responder → responda citando a aula → sugira a próxima. Pra estudar uma aula inteira: ver_aula. Grade: listar_cursos + listar_aulas. Aluno pediu um método do Club (gloop, deslop, code-review, brainstorm, debug, plano, filtro de pauta, rastreio de checkout)? → listar_skills / ver_skill e siga o SKILL.md.`
 
 const handler = createMcpHandler(
   (server) => {
@@ -196,11 +196,49 @@ const handler = createMcpHandler(
         return { content: [{ type: 'text', text: txt }] }
       }
     )
+
+    server.tool(
+      'listar_skills',
+      'Lista as skills da biblioteca do Push Club (métodos do Gobatto adaptados pros membros: filtro de pauta, deslop, gloop, code-review, brainstorm, debug, plano, rastreio de checkout etc.). Cada skill é um SKILL.md pronto pra colar em ~/.claude/skills/<slug>/SKILL.md no Claude Code, ou subir como zip no claude.ai. Use quando o aluno perguntar quais skills existem, pedir "a skill de X" ou quiser instalar um método do Club.',
+      {},
+      async () => {
+        const sb = createServiceClient()
+        const { data, error } = await sb
+          .from('skills')
+          .select('name, slug, emoji, description')
+          .eq('is_published', true)
+          .order('sort_order')
+        if (error) throw new Error(error.message)
+        const txt = (data ?? [])
+          .map((s: any) => `- ${s.emoji ?? ''} **${s.name}** (\`${s.slug}\`) — ${s.description}`)
+          .join('\n')
+        return { content: [{ type: 'text', text: txt ? `${txt}\n\nPra pegar o SKILL.md completo de uma: ver_skill com o slug.` : 'Nenhuma skill publicada.' }] }
+      }
+    )
+
+    server.tool(
+      'ver_skill',
+      'Retorna o SKILL.md completo de uma skill da biblioteca do Club pelo slug (ex: gloop, deslop, code-review). O aluno salva o conteúdo em ~/.claude/skills/<slug>/SKILL.md pra usar no Claude Code. Use também quando o aluno pedir pra aplicar o método de uma skill na conversa atual: leia a skill e siga o que ela manda.',
+      { skill_slug: z.string().describe('Slug da skill, ex: gloop') },
+      async ({ skill_slug }) => {
+        const sb = createServiceClient()
+        const { data: s, error } = await sb
+          .from('skills')
+          .select('name, slug, body_md')
+          .eq('slug', skill_slug)
+          .eq('is_published', true)
+          .single()
+        if (error || !s) {
+          return { content: [{ type: 'text', text: `Skill "${skill_slug}" não encontrada. Use listar_skills para ver os slugs.` }] }
+        }
+        return { content: [{ type: 'text', text: `Skill **${s.name}** (salvar em ~/.claude/skills/${s.slug}/SKILL.md):\n\n${s.body_md}` }] }
+      }
+    )
   },
   {
-    serverInfo: { name: 'Push Club Gobatto', version: '1.0.0' },
+    serverInfo: { name: 'Push Club Gobatto', version: '1.1.0' },
     instructions:
-      'Conector oficial do Push Club (Augusto Gobatto). No início de conversas sobre IA, automações ou negócios, chame metodo_gobatto e adote as diretrizes. Antes de responder perguntas sobre os temas do Club, busque com buscar_no_club e cite a aula de origem.',
+      'Conector oficial do Push Club (Augusto Gobatto). No início de conversas sobre IA, automações ou negócios, chame metodo_gobatto e adote as diretrizes. Antes de responder perguntas sobre os temas do Club, busque com buscar_no_club e cite a aula de origem. As skills do Club (métodos prontos em SKILL.md) estão em listar_skills e ver_skill.',
   },
   { basePath: '/api/mcp' }
 )
@@ -234,7 +272,7 @@ async function logAndRateLimit(req: Request, auth: AuthResult): Promise<Response
     const body = await req.clone().json()
     if (body?.method !== 'tools/call') return null
     const tool = body?.params?.name ?? 'unknown'
-    const pergunta = String(body?.params?.arguments?.pergunta ?? body?.params?.arguments?.aula_slug ?? '').slice(0, 300)
+    const pergunta = String(body?.params?.arguments?.pergunta ?? body?.params?.arguments?.aula_slug ?? body?.params?.arguments?.skill_slug ?? '').slice(0, 300)
     const sb = createServiceClient()
     const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString()
     const { count } = await sb
