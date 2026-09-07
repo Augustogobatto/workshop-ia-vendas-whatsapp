@@ -17,7 +17,6 @@ type Resultado = {
   votos?: { ip: string; device: string; ua: string | null; opcao: Opcao; quando: string }[] | null
 }
 
-const PRAZO_TXT = 'quinta, 10/09, até 23h59'
 const LS_VOTO = 'club-votacao-grupo-2026-09'
 const LS_DEVICE = 'club-votacao-device'
 
@@ -109,22 +108,13 @@ export default function Votacao() {
   return (
     <main style={S.main}>
       <section style={{ ...S.wrap, paddingTop: 'clamp(56px, 12vw, 112px)' }}>
-        <p style={S.eyebrow}>Push Club · votação · {encerrada ? 'encerrada' : `aberta ${PRAZO_TXT}`}</p>
-
-        <h1 style={S.h1}>
-          WhatsApp
-          <br />
-          ou Telegram?
-        </h1>
+        <h1 style={S.h1}>Nós deveríamos migrar o grupo do Club do Telegram para o WhatsApp?</h1>
 
         <div style={S.texto}>
           <p style={S.p}>
-            Sinto que o nosso grupo no Telegram fica subutilizado. Muita gente não usa o Telegram no dia a dia, e
-            eu quero estar mais perto de vocês.
-          </p>
-          <p style={S.p}>
-            Então quero decidir isso junto:{' '}
-            <strong style={S.forte}>a gente migra o grupo pro WhatsApp ou mantém no Telegram?</strong>
+            Algumas pessoas comentaram que não estão acostumadas a usar o Telegram no dia a dia, e isso diminui a
+            nossa interação no grupo. Mas gostaria de saber da maioria…{' '}
+            <strong style={S.forte}>Devemos migrar?</strong>
           </p>
         </div>
       </section>
@@ -163,9 +153,6 @@ export default function Votacao() {
             </p>
           )}
 
-          <p style={{ fontSize: 13, color: '#7A7A7A', marginTop: 18 }}>
-            Um clique, um voto. Vale até {PRAZO_TXT}. Resultado sai aqui e no grupo depois do dia 10.
-          </p>
         </section>
       )}
 
@@ -312,11 +299,10 @@ const S = {
   h1: {
     fontFamily: 'var(--font-display)',
     fontWeight: 800,
-    fontSize: 'clamp(40px, 9vw, 76px)',
-    letterSpacing: '-0.04em',
-    lineHeight: 0.98,
+    fontSize: 'clamp(30px, 6vw, 52px)',
+    letterSpacing: '-0.035em',
+    lineHeight: 1.04,
     color: 'var(--text)',
-    marginTop: 22,
     textWrap: 'balance',
   } as React.CSSProperties,
   texto: { display: 'grid', gap: 14, marginTop: 30, maxWidth: 600 } as React.CSSProperties,
