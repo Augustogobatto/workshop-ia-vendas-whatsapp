@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { LogoWhatsApp, LogoTelegram } from './Logos'
 
@@ -16,7 +16,7 @@ type Resultado = {
   votos?: { ip: string; device: string; ua: string | null; opcao: Opcao; quando: string }[] | null
 }
 
-const LS_VOTO = 'club-votacao-grupo-2026-09'
+const LS_VOTO = 'club-votacao-grupo-2026-09-v2'
 
 const OPCOES: { id: Opcao; titulo: string; linha: string; cor: string }[] = [
   { id: 'whatsapp', titulo: 'Migrar pro WhatsApp', linha: 'Grupo novo no app que todo mundo já abre todo dia.', cor: '#25D366' },
@@ -25,11 +25,11 @@ const OPCOES: { id: Opcao; titulo: string; linha: string; cor: string }[] = [
 
 const ERROS: Record<string, string> = {
   opcao: 'Escolhe uma das duas opções.',
-  device: 'Seu navegador bloqueou o cookie que identifica o aparelho. Libera cookies pra este site e tenta de novo.',
+  device: 'Deu erro do nosso lado ao identificar seu aparelho. Tenta de novo em instantes.',
   limite_ip: 'Muitos votos saíram desta mesma rede. Tenta pelo 4G ou me chama no direct.',
   config: 'A votação está fora do ar por um instante. Tenta de novo em um minuto.',
   encerrada: 'A votação encerrou dia 10. Obrigado a quem votou.',
-  rede: 'Não consegui registrar. Dá uma olhada na conexão e tenta de novo.',
+  rede: 'Deu erro do nosso lado ao registrar. Tenta de novo em instantes.',
 }
 
 export default function Votacao() {
@@ -41,6 +41,7 @@ export default function Votacao() {
   const [votoFeito, setVotoFeito] = useState<{ opcao: Opcao; trocou: boolean } | null>(null)
   const [trocando, setTrocando] = useState(false)
   const [resultado, setResultado] = useState<Resultado | null>(null)
+  const emVoo = useRef(false)
 
   useEffect(() => {
     let c: string | null = null
@@ -71,6 +72,8 @@ export default function Votacao() {
   }, [pronto, chave])
 
   async function votar(opcao: Opcao) {
+    if (emVoo.current) return
+    emVoo.current = true
     setErro(null)
     setEnviando(opcao)
     try {
@@ -91,6 +94,7 @@ export default function Votacao() {
     } catch {
       setErro(ERROS.rede)
     } finally {
+      emVoo.current = false
       setEnviando(null)
     }
   }
@@ -191,7 +195,8 @@ function Placar({ r }: { r: Resultado }) {
   const w = r.whatsapp ?? 0
   const t = r.telegram ?? 0
   const total = w + t
-  const pct = (n: number) => (total ? Math.round((n / total) * 100) : 0)
+  const pctW = total ? Math.round((w / total) * 100) : 0
+  const pct = (n: number) => (total ? (n === w ? pctW : 100 - pctW) : 0)
   const vence = w === t ? null : w > t ? 'whatsapp' : 'telegram'
 
   return (
