@@ -47,6 +47,7 @@ type Config = {
   publicada: boolean
   variantes: Variante[]
   fixos?: Fixos
+  whatsapp?: { numero?: string; rotulo?: string; mensagem?: string }
 }
 
 type Sync = { versao_id: number | null; t: number; pitch_visto: boolean }
@@ -581,6 +582,16 @@ export default function AulaPlayer({ config }: { config: Config }) {
     return () => obs.disconnect()
   }, [evento])
 
+  /* O botão de WhatsApp só existe se houver número no config: um link pra
+     lugar nenhum é pior que link nenhum. A mensagem já vem escrita com a
+     origem, que é o que permite saber depois que o lead veio da /aula. */
+  const zap = config.whatsapp
+  const linkZap =
+    zap?.numero && zap.numero.replace(/\D/g, '').length >= 12
+      ? 'https://wa.me/' + zap.numero.replace(/\D/g, '') +
+        '?text=' + encodeURIComponent(zap.mensagem || 'Oi!')
+      : null
+
   const fx = config.fixos || {}
   const tarja = fx.tarja
   const semHeadline = fx.headline?.sem_headline
@@ -759,6 +770,29 @@ export default function AulaPlayer({ config }: { config: Config }) {
       {/* nada de texto na dobra fechada: pagina de trafego e o video. A nota
           so existe depois que a pagina abre, pra apontar pra oferta. */}
       {ctaNoVideo && <p className="au-nota">A oferta está logo abaixo.</p>}
+
+      {linkZap && (
+        <a
+          className="au-zap"
+          href={linkZap}
+          target="_blank"
+          rel="noopener"
+          onClick={() =>
+            evento('clicou_whats', {
+              segundo: Math.floor(videoRef.current?.currentTime || 0),
+              rotulo: abertaRef.current ? 'aberta' : 'fechada',
+            })
+          }
+        >
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden focusable="false">
+            <path
+              fill="currentColor"
+              d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.4-.5.2-.4v-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.2.7 3 .6.5 0 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.4-.2Z"
+            />
+          </svg>
+          {zap?.rotulo || 'Falar com a IA de vendas'}
+        </a>
+      )}
     </section>
   )
 }

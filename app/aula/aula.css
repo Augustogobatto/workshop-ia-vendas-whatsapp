@@ -149,6 +149,17 @@
 .au-pill.bloco { display: flex; width: 100%; }
 .au-nota { color: var(--faint); font-size: 13.5px; }
 
+/* link discreto pro WhatsApp: texto pequeno, sem balão flutuante verde.
+   Fica na dobra fechada de propósito — é a saída de quem não vai assistir
+   16 minutos e prefere perguntar. */
+.au-zap {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 44px; padding: 0 4px;
+  color: var(--faint); font-size: 13.5px; text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.au-zap:hover { color: var(--ink); border-bottom-color: var(--line); }
+
 /* ── as dobras: não existem até o pitch ── */
 #au-dobras { display: none; }
 .au-aberta #au-dobras { display: block; animation: au-entra .5s ease both; }
@@ -222,8 +233,14 @@
 .au-fecho .au-h2 { margin-inline: auto; }
 .au-fecho p { margin-inline: auto; }
 .au-botoes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
-.au-rodape { padding: 44px 0 calc(96px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); color: var(--faint); font-size: 13px; line-height: 1.85; text-align: center; }
-.au-rodape a { color: var(--faint); }
+/* rodapé propositalmente apagado: é texto que protege, não texto que vende.
+   #636363 dá ~3,7:1 sobre preto — abaixo do AA de 4,5:1, que é por que o
+   design system do site usa #7a7a7a. Decisão do Augusto em 08/09, com o
+   trade-off na mesa. Os 13px ficam: o disclaimer não pode ser o menor
+   texto da página. */
+.au-rodape { padding: 44px 0 calc(96px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); color: #636363; font-size: 13px; line-height: 1.85; text-align: center; }
+.au-rodape a { color: #636363; }
+.au-rodape a:hover { color: var(--dim); }
 .au-rodape .legal { max-width: 70ch; margin: 0 auto 18px; }
 
 /* barra fixa mobile: só depois que a página abre, e SEM preço */

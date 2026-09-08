@@ -74,5 +74,11 @@
       "label": "B — sem tarja (controle do teste)",
       "texto": null
     }
-  ]
+  ],
+  "whatsapp": {
+    "_nota": "numero em formato internacional so digitos (ex 5551999999999). VAZIO = o botao nao renderiza. So preencher com numero cuja IA comprovadamente responde quem chega do nada.",
+    "numero": "",
+    "rotulo": "Falar com a IA de vendas",
+    "mensagem": "Oi! Vim da aula do Push Club e queria falar com a IA de vendas."
+  }
 }
