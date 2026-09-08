@@ -5,7 +5,8 @@
     "A pressão fica no upsell pós-compra, nunca na página. Ver dossiê 2026-09-06-funil-abraham-protocolo-viral.",
     "TROCAR AO FECHAR A VSL: mp4, hls, duration_s e principalmente pitch_s (segundo em que a oferta é falada).",
     "Enquanto publicada=false a página só abre com ?qa=1 — ninguém cai numa VSL com vídeo placeholder.",
-    "Pitch 760s = 12:40 do corte 4, o segundo em que o preco e falado (conferido na transcricao). Bunny guid ff6bb282-2d7c-4825-ac42-fda03942daad."
+    "Pitch 760s = 12:40 do corte 4, o segundo em que o preco e falado (conferido na transcricao). Bunny guid ff6bb282-2d7c-4825-ac42-fda03942daad.",
+    "Heroi roda SEM headline, como o funil de origem: pagina de trafego e eyebrow + video e mais nada. As headlines vivem em qa[], desligadas, ate serem promovidas para fixos.headline."
   ],
   "video_id": "club-trafego",
   "publicada": true,
@@ -27,7 +28,7 @@
     "headline": {
       "h1": "",
       "sub": "",
-      "sem_headline": false
+      "sem_headline": true
     },
     "overlay": {
       "eyebrow": "ATIVE O SOM",
@@ -40,5 +41,27 @@
     },
     "tarja": null
   },
-  "qa": []
+  "qa": [
+    {
+      "tipo": "headline",
+      "id": 5,
+      "label": "A — big idea (era a que estava no ar até 08/09)",
+      "h1": "Uma pessoa. O trabalho de dez.",
+      "sub": ""
+    },
+    {
+      "tipo": "headline",
+      "id": 6,
+      "label": "B — o inimigo",
+      "h1": "Todo mundo já tem a mesma IA. Quase ninguém sabe onde colocar.",
+      "sub": ""
+    },
+    {
+      "tipo": "headline",
+      "id": 7,
+      "label": "C — prova (exige o print do JP visível na página)",
+      "h1": "O dono da Hotmart me pediu os slides da IA que vendeu no WhatsApp.",
+      "sub": ""
+    }
+  ]
 }

@@ -539,12 +539,11 @@ export default function AulaPlayer({ config }: { config: Config }) {
 
   return (
     <section className="au-hero">
-      {!semHeadline && (
-        <>
-          <span className="au-eyebrow">Push Club</span>
-          <h1 className="au-h1">{h1}</h1>
-        </>
-      )}
+      {/* o eyebrow fica mesmo sem headline: no funil de origem a dobra de
+          trafego e uma linha de posicionamento + o video. O que sai e a
+          headline e o subtitulo, que comem a dobra e empurram o player. */}
+      <span className="au-eyebrow">Push Club</span>
+      {!semHeadline && <h1 className="au-h1">{h1}</h1>}
 
       <div
         className="au-player"
@@ -663,11 +662,9 @@ export default function AulaPlayer({ config }: { config: Config }) {
 
       {!semHeadline && <p className="au-sub">{sub}</p>}
 
-      <p className="au-nota">
-        {ctaNoVideo
-          ? 'A oferta está logo abaixo.'
-          : 'Ative o som e assista até o final. O botão aparece quando eu chegar na parte que importa.'}
-      </p>
+      {/* nada de texto na dobra fechada: pagina de trafego e o video. A nota
+          so existe depois que a pagina abre, pra apontar pra oferta. */}
+      {ctaNoVideo && <p className="au-nota">A oferta está logo abaixo.</p>}
     </section>
   )
 }
