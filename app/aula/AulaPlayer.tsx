@@ -39,7 +39,7 @@ type Fixos = {
   headline?: { h1?: string; sub?: string; sem_headline?: boolean }
   overlay?: { eyebrow?: string; sub?: string; estilo?: string }
   thumb?: { thumb_id?: number | null; arquivo_url?: string | null }
-  tarja?: unknown
+  tarja?: { texto?: string | null; cor?: string; icone?: string; pulsa?: boolean } | null
 }
 
 type Config = {
@@ -93,6 +93,8 @@ function sortear(variantes: Variante[], chave: string): Variante {
 export default function AulaPlayer({ config }: { config: Config }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const thumbRef = useRef<HTMLVideoElement | null>(null)
+  const barraRef = useRef<HTMLElement | null>(null)
+  const rafRef = useRef<number | null>(null)
 
   const [variante, setVariante] = useState<Variante | null>(null)
   const [cartao, setCartao] = useState<'som' | 'retomada' | 'pausa' | null>('som')
@@ -100,7 +102,6 @@ export default function AulaPlayer({ config }: { config: Config }) {
   const [semAutoplay, setSemAutoplay] = useState(false)
   const [anel, setAnel] = useState(false)
   const [ctaNoVideo, setCtaNoVideo] = useState(false)
-  const [progresso, setProgresso] = useState(0)
 
   /* refs de lógica: o player é imperativo, o React só desenha o estado */
   const fonteAnexada = useRef(false)
@@ -140,6 +141,37 @@ export default function AulaPlayer({ config }: { config: Config }) {
     },
     [config.video_id]
   )
+
+  /**
+   * Barra de progresso com a curva do funil de origem: na primeira metade
+   * ela corre MUITO na frente do relógio (raiz quarta), passando a impressão
+   * de vídeo curto — com 10% do tempo já mostra 28%. Da metade em diante é
+   * linear, então o final anda no ritmo verdadeiro e a barra não "trava"
+   * perto do fim, que é o que denunciaria o truque.
+   *
+   * Escrita direta no DOM via rAF: 60 setState por segundo re-renderizariam
+   * o player inteiro à toa.
+   */
+  const pintarBarra = useCallback(() => {
+    const video = videoRef.current
+    const barra = barraRef.current
+    if (!video || !barra) return
+    const d = video.duration
+    if (d > 0) {
+      const s = video.currentTime
+      const meio = d / 2
+      const eased =
+        s <= meio
+          ? 0.5 * Math.pow(s / meio, 0.25)
+          : 0.5 + 0.5 * ((s - meio) / (d - meio))
+      barra.style.width = (Math.min(1, Math.max(0, eased)) * 100).toFixed(2) + '%'
+    }
+    if (!video.ended) {
+      rafRef.current = requestAnimationFrame(pintarBarra)
+    } else {
+      barra.style.width = '100%'
+    }
+  }, [])
 
   const salvarSync = useCallback(
     (p: Partial<Sync>) => {
@@ -374,6 +406,8 @@ export default function AulaPlayer({ config }: { config: Config }) {
     video.addEventListener('loadedmetadata', reseek, { once: true })
     video.addEventListener('canplay', reseek, { once: true })
 
+    if (rafRef.current === null) rafRef.current = requestAnimationFrame(pintarBarra)
+
     video
       .play()
       .then(() => evento(retomar > 0 ? 'retomou' : 'tocou_som', { segundo: Math.floor(retomar) }))
@@ -384,7 +418,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
         setCartao('som')
         video.play().catch(() => {})
       })
-  }, [evento])
+  }, [evento, pintarBarra])
 
   /* ── listeners do vídeo ── */
   useEffect(() => {
@@ -409,7 +443,6 @@ export default function AulaPlayer({ config }: { config: Config }) {
 
       const dur = video.duration || variante.duration_s || 0
       if (dur > 0) {
-        setProgresso(Math.min(100, (t / dur) * 100))
         for (const q of [25, 50, 75]) {
           if (!quartis.has(q) && t >= (dur * q) / 100) {
             quartis.add(q)
@@ -430,7 +463,11 @@ export default function AulaPlayer({ config }: { config: Config }) {
     }
     const onPlay = () => setCartao((c) => (c === 'pausa' ? null : c))
     const onEnded = () => {
-      setProgresso(100)
+      if (barraRef.current) barraRef.current.style.width = '100%'
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = null
+      }
       evento('fim', { segundo: Math.floor(video.currentTime) })
     }
     /* menu de contexto no vídeo entrega "salvar vídeo" */
@@ -475,6 +512,10 @@ export default function AulaPlayer({ config }: { config: Config }) {
       window.removeEventListener('pagehide', onSaida)
       window.clearInterval(rede)
       window.clearTimeout(relogioCopy)
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = null
+      }
     }
   }, [variante, abrir, evento, marcarPitchVisto, salvarSync, tocarMudo])
 
@@ -531,6 +572,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
   }, [evento])
 
   const fx = config.fixos || {}
+  const tarja = fx.tarja
   const semHeadline = fx.headline?.sem_headline
   const h1 = fx.headline?.h1 || 'Uma pessoa. O trabalho de dez.'
   const sub =
@@ -544,6 +586,25 @@ export default function AulaPlayer({ config }: { config: Config }) {
           headline e o subtitulo, que comem a dobra e empurram o player. */}
       <span className="au-eyebrow">Push Club</span>
       {!semHeadline && <h1 className="au-h1">{h1}</h1>}
+
+      {/* Tarja no FLUXO, nunca fixed nem sobreposta ao vídeo: a auditoria do
+          funil de origem mediu que 99% da decisão acontece nos 2-3 primeiros
+          segundos de imagem, e empurrar o player custaria justamente ali.
+          Altura fixa entre os braços, senão parte da diferença medida seria
+          layout e não mensagem. */}
+      {tarja?.texto && (
+        <div className={'au-tarja' + (tarja.cor === 'vermelho' ? ' vermelha' : '')}>
+          {tarja.icone === 'alerta' && (
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden focusable="false">
+              <path
+                fill="currentColor"
+                d="M12 2 1 21h22L12 2Zm0 5 7.5 12.9h-15L12 7Zm-1 4v5h2v-5h-2Zm0 6v2h2v-2h-2Z"
+              />
+            </svg>
+          )}
+          <span className={tarja.pulsa ? 'pulso' : undefined}>{tarja.texto}</span>
+        </div>
+      )}
 
       <div
         className="au-player"
@@ -656,7 +717,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
         )}
 
         <div className="au-progresso" aria-hidden>
-          <i style={{ width: `${progresso}%` }} />
+          <i ref={barraRef as React.RefObject<HTMLElement>} />
         </div>
       </div>
 

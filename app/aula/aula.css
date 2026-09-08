@@ -61,6 +61,23 @@
   max-width: 60ch; margin: 0 auto; text-wrap: pretty;
 }
 
+/* ── tarja de urgência ──
+   No fluxo, nunca fixed: sobreposta ela roubaria área do vídeo, e a decisão
+   acontece nos primeiros segundos de imagem. Altura fixa (linha única a
+   375px) pra que a diferença medida entre braços seja mensagem, não layout. */
+.au-tarja {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; max-width: 420px; margin: 0 auto; box-sizing: border-box;
+  height: 34px; padding: 0 12px; border-radius: 8px;
+  font-size: .72rem; font-weight: 650; letter-spacing: .09em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden;
+  border: 1px solid var(--line); color: var(--dim); background: var(--wash);
+}
+.au-tarja.vermelha {
+  background: #2a0f0c; border-color: #61221a; color: #ff8a75;
+}
+.au-tarja .pulso { animation: au-pulsa 1.9s ease-in-out infinite; }
+
 /* ── player vertical ── */
 .au-player {
   position: relative; width: 100%; max-width: 420px; margin: 0 auto;
@@ -78,7 +95,7 @@
   position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
   background: rgba(255,255,255,.14); z-index: 4;
 }
-.au-player .au-progresso i { display: block; height: 100%; width: 0; background: var(--ink); transition: width .25s linear; }
+.au-player .au-progresso i { display: block; height: 100%; width: 0; background: var(--ink); }
 
 /* anel de carga: fica ABAIXO do cartão, os dois centralizados se cobrem */
 .au-anel {
@@ -208,6 +225,7 @@
 @media (max-width: 767px) { .au-aberta .au-fixo { display: block; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .au-cartao .pulso, .au-anel { animation: none; }
+  /* quem pediu menos movimento no sistema não leva animação nenhuma */
+  .au-cartao .pulso, .au-tarja .pulso, .au-anel { animation: none; }
   .au-aberta #au-dobras { animation: none; }
 }

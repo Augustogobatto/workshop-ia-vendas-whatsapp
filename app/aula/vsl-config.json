@@ -39,7 +39,12 @@
       "thumb_id": null,
       "arquivo_url": null
     },
-    "tarja": null
+    "tarja": {
+      "texto": "ASSISTA ENQUANTO AINDA ESTÁ NO AR",
+      "cor": "vermelho",
+      "icone": "alerta",
+      "pulsa": true
+    }
   },
   "qa": [
     {
@@ -62,6 +67,12 @@
       "label": "C — prova (exige o print do JP visível na página)",
       "h1": "O dono da Hotmart me pediu os slides da IA que vendeu no WhatsApp.",
       "sub": ""
+    },
+    {
+      "tipo": "tarja",
+      "id": 23,
+      "label": "B — sem tarja (controle do teste)",
+      "texto": null
     }
   ]
 }
