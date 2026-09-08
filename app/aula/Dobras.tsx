@@ -247,15 +247,15 @@ export default function Dobras() {
       <section className="au-sec" id="planos">
         <div className="au-wrap">
           <span className="au-eyebrow">A oferta</span>
-          <h2 className="au-h2">Você não vai pagar vinte mil, nem dez.</h2>
+          <h2 className="au-h2">Você não vai pagar vinte mil.</h2>
           <p>
-            Uma implementação dessas eu vendo por vinte mil. A mentoria que eu estou montando agora,
-            pra quem quer fazer junto comigo, vai custar dez.
+            Esse sistema eu costumo cobrar vinte mil reais pra implementar pra outra pessoa. E eu
+            mesmo pago dez mil por mês num sistema que eu queria ter feito por dentro.
           </p>
 
           <div className="au-anchor">
-            <div className="au-anchor-row"><span>implementação feita por mim</span><i /><span>R$20.000</span></div>
-            <div className="au-anchor-row"><span>mentoria individual</span><i /><span>R$10.000</span></div>
+            <div className="au-anchor-row"><span>esse sistema, implementado por mim</span><i /><span>R$20.000</span></div>
+            <div className="au-anchor-row"><span>o sistema que eu alugo hoje</span><i /><span>R$10.000/mês</span></div>
             <div className="au-anchor-row hot"><span>Push Club</span><i /><span>R$600 por ano</span></div>
           </div>
 

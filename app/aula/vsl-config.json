@@ -4,22 +4,23 @@
     "REGRA DURA: nenhuma variante pode carregar escassez (contador, vaga limitada, data de encerramento).",
     "A pressão fica no upsell pós-compra, nunca na página. Ver dossiê 2026-09-06-funil-abraham-protocolo-viral.",
     "TROCAR AO FECHAR A VSL: mp4, hls, duration_s e principalmente pitch_s (segundo em que a oferta é falada).",
-    "Enquanto publicada=false a página só abre com ?qa=1 — ninguém cai numa VSL com vídeo placeholder."
+    "Enquanto publicada=false a página só abre com ?qa=1 — ninguém cai numa VSL com vídeo placeholder.",
+    "Pitch 760s = 12:40 do corte 4, o segundo em que o preco e falado (conferido na transcricao). Bunny guid ff6bb282-2d7c-4825-ac42-fda03942daad."
   ],
   "video_id": "club-trafego",
-  "publicada": false,
+  "publicada": true,
   "variantes": [
     {
       "versao_id": 1,
       "versao": 1,
-      "rotulo": "v1 — corte 3 (08/09), placeholder",
-      "mp4": "",
-      "hls": "",
-      "poster": null,
-      "pitch_s": 900,
-      "duration_s": 1170,
+      "rotulo": "v1 — corte 4 (08/09), 16:19",
+      "mp4": "https://vz-8fc1742b-5ed.b-cdn.net/ff6bb282-2d7c-4825-ac42-fda03942daad/play_720p.mp4",
+      "hls": "https://vz-8fc1742b-5ed.b-cdn.net/ff6bb282-2d7c-4825-ac42-fda03942daad/playlist.m3u8",
+      "poster": "https://vz-8fc1742b-5ed.b-cdn.net/ff6bb282-2d7c-4825-ac42-fda03942daad/thumbnail.jpg",
+      "pitch_s": 760,
+      "duration_s": 979,
       "peso": 100,
-      "fase": "rascunho"
+      "fase": "campea"
     }
   ],
   "fixos": {
