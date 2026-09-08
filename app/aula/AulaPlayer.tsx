@@ -102,6 +102,8 @@ export default function AulaPlayer({ config }: { config: Config }) {
   const [semAutoplay, setSemAutoplay] = useState(false)
   const [anel, setAnel] = useState(false)
   const [ctaNoVideo, setCtaNoVideo] = useState(false)
+  const [velocidade, setVelocidade] = useState(1)
+  const [mostraControles, setMostraControles] = useState(false)
 
   /* refs de lógica: o player é imperativo, o React só desenha o estado */
   const fonteAnexada = useRef(false)
@@ -265,6 +267,13 @@ export default function AulaPlayer({ config }: { config: Config }) {
     if (s?.pitch_visto) marcarPitchVisto('retomada')
     if (s && s.t > 10) setCartao('retomada')
 
+    /* velocidade preferida entre sessoes: quem assiste em 2x quer 2x sempre */
+    const salva = parseFloat(lerLS('vsl_velocidade') || '1')
+    if ([1, 1.5, 2].includes(salva) && salva !== 1) {
+      setVelocidade(salva)
+      video.playbackRate = salva
+    }
+
     evento('carregou')
 
     /* ── anexar a fonte ──
@@ -387,6 +396,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
     setCarregando(false)
     setCartao(null)
     comecou.current = true
+    setMostraControles(true)
     video.muted = false
 
     const s = syncRef.current
@@ -645,6 +655,29 @@ export default function AulaPlayer({ config }: { config: Config }) {
           controlsList="nodownload nofullscreen noremoteplayback"
           disablePictureInPicture
         />
+
+        {/* velocidade: só depois que o som liga, junto com os outros controles.
+            O clique não pode borbulhar pro player, senão pausa o vídeo. */}
+        {mostraControles && (
+          <button
+            type="button"
+            className="au-vel"
+            aria-label={'Velocidade do vídeo: ' + velocidade + 'x. Tocar para mudar.'}
+            onClick={(e) => {
+              e.stopPropagation()
+              const proxima = velocidade === 1 ? 1.5 : velocidade === 1.5 ? 2 : 1
+              setVelocidade(proxima)
+              if (videoRef.current) videoRef.current.playbackRate = proxima
+              gravarLS('vsl_velocidade', String(proxima))
+              evento('quartil', {
+                segundo: Math.floor(videoRef.current?.currentTime || 0),
+                rotulo: 'velocidade ' + proxima + 'x',
+              })
+            }}
+          >
+            {velocidade}x
+          </button>
+        )}
 
         {anel && <span className="au-anel" aria-hidden />}
 
