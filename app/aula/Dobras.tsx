@@ -271,7 +271,7 @@ export default function Dobras() {
                 <li>Encontro ao vivo todo mês</li>
                 <li>Claudinei 24 horas e o grupo</li>
               </ul>
-              <a href={STRIPE_ANUAL} className="au-pill bloco" data-checkout="anual">
+              <a target="_blank" rel="noopener" href={STRIPE_ANUAL} className="au-pill bloco" data-checkout="anual">
                 Quero o anual: R$600
               </a>
             </div>
@@ -285,7 +285,7 @@ export default function Dobras() {
                 <li>Encontro ao vivo todo mês</li>
                 <li>Claudinei 24 horas e o grupo</li>
               </ul>
-              <a href={STRIPE_MENSAL} className="au-pill ghost bloco" data-checkout="mensal">
+              <a target="_blank" rel="noopener" href={STRIPE_MENSAL} className="au-pill ghost bloco" data-checkout="mensal">
                 Quero entrar por R$70
               </a>
             </div>
@@ -417,10 +417,10 @@ export default function Dobras() {
             Entra, manda o primeiro áudio hoje, e essa semana a sua IA acorda sabendo quem você é.
           </p>
           <div className="au-botoes">
-            <a href={STRIPE_ANUAL} className="au-pill" data-checkout="anual">
+            <a target="_blank" rel="noopener" href={STRIPE_ANUAL} className="au-pill" data-checkout="anual">
               Quero o anual: R$600
             </a>
-            <a href={STRIPE_MENSAL} className="au-pill ghost" data-checkout="mensal">
+            <a target="_blank" rel="noopener" href={STRIPE_MENSAL} className="au-pill ghost" data-checkout="mensal">
               Quero o mensal: R$70
             </a>
           </div>
