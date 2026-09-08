@@ -1,0 +1,43 @@
+{
+  "_leia": [
+    "Config da VSL de tráfego do Club. Espelha o pv-trafego-config.json do funil analisado em 06/09.",
+    "REGRA DURA: nenhuma variante pode carregar escassez (contador, vaga limitada, data de encerramento).",
+    "A pressão fica no upsell pós-compra, nunca na página. Ver dossiê 2026-09-06-funil-abraham-protocolo-viral.",
+    "TROCAR AO FECHAR A VSL: mp4, hls, duration_s e principalmente pitch_s (segundo em que a oferta é falada).",
+    "Enquanto publicada=false a página só abre com ?qa=1 — ninguém cai numa VSL com vídeo placeholder."
+  ],
+  "video_id": "club-trafego",
+  "publicada": false,
+  "variantes": [
+    {
+      "versao_id": 1,
+      "versao": 1,
+      "rotulo": "v1 — corte 3 (08/09), placeholder",
+      "mp4": "",
+      "hls": "",
+      "poster": null,
+      "pitch_s": 900,
+      "duration_s": 1170,
+      "peso": 100,
+      "fase": "rascunho"
+    }
+  ],
+  "fixos": {
+    "headline": {
+      "h1": "",
+      "sub": "",
+      "sem_headline": false
+    },
+    "overlay": {
+      "eyebrow": "ATIVE O SOM",
+      "sub": "▶ TOQUE PARA OUVIR",
+      "estilo": "pulso"
+    },
+    "thumb": {
+      "thumb_id": null,
+      "arquivo_url": null
+    },
+    "tarja": null
+  },
+  "qa": []
+}
