@@ -18,7 +18,7 @@ import './painel.css'
 const CHAVE = 'cd2dbb919854c591'
 
 export const metadata: Metadata = {
-  title: 'Funil /aula',
+  title: 'Funil VSL',
   robots: { index: false, follow: false },
 }
 export const dynamic = 'force-dynamic'
@@ -109,7 +109,7 @@ export default async function Painel({
       <div className="pn-wrap">
         <header className="pn-topo">
           <div>
-            <h1>Funil /aula</h1>
+            <h1>Funil VSL</h1>
             <p className="pn-sub">
               {dia.split('-').reverse().join('/')} · só gente (robô da Meta e visita interna ficam
               de fora)
