@@ -80,3 +80,13 @@
   background: rgba(232,112,91,.09); border: 1px solid var(--alerta); border-radius: 8px;
   padding: 12px 14px; color: var(--ink); font-size: 13px; margin: 0 0 22px;
 }
+
+/* estados do recarregar: sem isso o clique é um placebo */
+.pn-btn:disabled { cursor: progress; opacity: .85; }
+.pn-btn.rodando .giro { animation: pn-gira .8s linear infinite; color: var(--ink); }
+.pn-btn.ok { border-color: var(--ok); }
+.pn-btn.ok .giro { color: var(--ok); }
+.pn-btn.ok small { color: var(--ok); }
+@keyframes pn-gira { to { transform: rotate(360deg); } }
+.pn-btn .giro { display: inline-block; }
+@media (prefers-reduced-motion: reduce) { .pn-btn.rodando .giro { animation: none; } }

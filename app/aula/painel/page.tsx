@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import BotaoRecarregar from './BotaoRecarregar'
 import './painel.css'
 
 /**
@@ -114,21 +115,7 @@ export default async function Painel({
               de fora)
             </p>
           </div>
-          <form>
-            <input type="hidden" name="chave" value={CHAVE} />
-            {sp.dia && <input type="hidden" name="dia" value={sp.dia} />}
-            <button type="submit" className={'pn-btn' + (dadoVelho ? ' alerta' : '')}>
-              <span className="giro" aria-hidden>↻</span>
-              Recarregar
-              <small>
-                {idadeMin === null
-                  ? 'sem mídia'
-                  : idadeMin <= 1
-                    ? 'Meta agora há pouco'
-                    : `Meta há ${idadeMin} min`}
-              </small>
-            </button>
-          </form>
+          <BotaoRecarregar idadeMin={idadeMin} velho={dadoVelho} />
         </header>
 
         {dadoVelho && (
