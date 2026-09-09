@@ -201,6 +201,21 @@ export function Sidebar({ userName, userEmail, ownedProducts = [], open = true, 
           )
         })()}
 
+        {/* Minha assinatura */}
+        {(() => {
+          const href = '/members/assinatura'
+          const active = pathname.startsWith(href)
+          return (
+            <NavLink key="assinatura" href={href} label="Minha assinatura" active={active} open={open}>
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
+                <rect x="1" y="3" width="14" height="10" rx="1.8" stroke="currentColor" strokeWidth="1.4"/>
+                <path d="M1 6.5h14" stroke="currentColor" strokeWidth="1.4"/>
+                <path d="M3.8 10.2h2.6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </NavLink>
+          )
+        })()}
+
         {/* Expandir — só aparece no modo compacto desktop */}
         {!open && !isMobile && onToggle && (
           <button
