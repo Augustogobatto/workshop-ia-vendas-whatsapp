@@ -1,0 +1,60 @@
+/* Painel do funil da /aula. Mesma família tipográfica da /aula (Source Serif +
+   Inter), mas layout de leitura rápida: número grande primeiro, tabela densa
+   depois. Não é página de venda, é instrumento. */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;650&display=swap');
+
+.pn {
+  --bg: #0b0c0e; --card: #131518; --ink: #ededed; --dim: #9aa0a8; --faint: #6f757d;
+  --line: #23262b; --alerta: #e8705b; --ok: #6fbf9a;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg); color: var(--ink); font-family: var(--sans);
+  min-height: 100dvh; font-size: 15px; -webkit-font-smoothing: antialiased;
+}
+.pn * { box-sizing: border-box; }
+.pn-wrap { max-width: 1180px; margin: 0 auto; padding: 30px 18px 70px; }
+
+.pn-topo { border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 26px; }
+.pn h1 { font-family: var(--serif); font-weight: 600; font-size: 30px; margin: 0 0 6px; letter-spacing: -.01em; }
+.pn-sub { color: var(--faint); font-size: 13px; margin: 0; }
+.pn h2 { font-size: 11.5px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase;
+         color: var(--dim); margin: 34px 0 14px; }
+
+.pn-cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 1px;
+             background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.pn-cifras .c { background: var(--card); padding: 15px 14px; }
+.pn-cifras b { display: block; font-family: var(--serif); font-size: 25px; line-height: 1.1;
+               font-variant-numeric: tabular-nums; }
+.pn-cifras span { display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase;
+                  color: var(--faint); margin-top: 5px; }
+.pn-cifras .dest b { color: var(--ok); }
+
+.pn-taxas { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.pn-taxas .tx { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+.pn-taxas .tx b { display: block; font-family: var(--serif); font-size: 27px; font-variant-numeric: tabular-nums; }
+.pn-taxas .tx span { display: block; font-size: 12.5px; color: var(--dim); margin-top: 3px; }
+.pn-taxas .tx i { display: block; font-style: normal; font-size: 10.5px; color: var(--faint); margin-top: 5px; }
+.pn-taxas .tx.abaixo { border-color: var(--alerta); }
+.pn-taxas .tx.abaixo b { color: var(--alerta); }
+
+.pn-nota { color: var(--faint); font-size: 12.5px; margin: 12px 0 0; }
+
+.pn-rolagem { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+.pn table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.pn th, .pn td { padding: 9px 11px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+.pn thead th { background: var(--card); font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+               color: var(--faint); font-weight: 650; }
+.pn tbody th { font-weight: 600; }
+.pn td.n, .pn th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.pn td small { color: var(--faint); font-size: 11px; margin-left: 3px; }
+.pn td.abaixo { color: var(--alerta); }
+.pn td.abaixo small { color: var(--alerta); }
+.pn td.forte { font-weight: 650; }
+.pn tbody tr:last-child th, .pn tbody tr:last-child td { border-bottom: 0; }
+.pn tbody tr:hover td, .pn tbody tr:hover th { background: rgba(255,255,255,.02); }
+
+.pn-nada { color: var(--faint); text-align: center; padding: 30px 0; }
+.pn-rodape { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line);
+             color: var(--faint); font-size: 11.5px; line-height: 1.9; }
+.pn code { background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+           padding: 1px 5px; font-size: 11px; }
