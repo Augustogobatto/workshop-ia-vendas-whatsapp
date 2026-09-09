@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import HeroScrub from './HeroScrub'
 import HeroLuz from './HeroLuz'
 import SectionScrub from './SectionScrub'
+import RastreioClub from './RastreioClub'
 import './v7.css'
 
 export const metadata: Metadata = {
@@ -937,29 +938,14 @@ export default function ClubV7Page({
         </div>
       </footer>
 
-      {/* rastreio (fonte única) + reveal */}
+      {/* rastreio: contrato único com a /aula (lib/rastreio.ts) — visitante_id
+          no client_reference_id, atribuição no servidor */}
+      <RastreioClub />
+
+      {/* rolagem suave nos anchors */}
       <script
         dangerouslySetInnerHTML={{
           __html: `(function(){
-var MAXLEN=120,KEY='club_primeiro_toque',TTL=2592e6;
-function norm(v){return String(v||'').trim().replace(/\\s+/g,'-').replace(/^\\|+|\\|+$/g,'')}
-var q;try{q=new URLSearchParams(location.search)}catch(e){q=null}
-if(q){
-  var sck=norm(q.get('sck'));
-  if(!sck)sck=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].map(function(k){return norm(q.get(k))}).filter(Boolean).join('|');
-  sck=sck.slice(0,MAXLEN).replace(/\\|+$/,'');
-  try{
-    if(sck){localStorage.setItem(KEY,JSON.stringify({v:sck,t:Date.now()}))}
-    else{var s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.v&&Date.now()-s.t<TTL)sck=s.v}
-  }catch(e){}
-  if(sck){
-    [].forEach.call(document.querySelectorAll('a[href*="buy.stripe.com"]'),function(a){
-      try{var u=new URL(a.getAttribute('href'));u.searchParams.set('client_reference_id',sck.slice(0,200).replace(/[^a-zA-Z0-9|_-]/g,'-'));a.href=u.toString()}catch(e){}
-    });
-  }
-}
-})();
-(function(){
 // rolagem com calma nos anchors (#entenda, #planos): ease-in-out ~1.1s
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}

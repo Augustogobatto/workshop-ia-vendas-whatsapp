@@ -16,8 +16,31 @@ com o som ligado**. Quem não ouve o preço não vê botão.
 - `/api/vsl/evento` → tabela `vsl_eventos` + view `vsl_funil` no Supabase do Club.
 - `pixel.ts` — espelho no Pixel da Meta (`2685766708197733`): tocou_som → ViewContent,
   pitch → Pitch, abriu_oferta → AbriuOferta, clicou_cta → **InitiateCheckout** (o evento
-  que a campanha otimiza). A BASE do pixel vem do `components/PixelGate.tsx` no layout
-  global — **não carregar `fbevents.js` aqui**, dobraria o PageView.
+  que a campanha otimiza), compra → **Purchase** (na `/obrigado`). A BASE do pixel vem do
+  `components/PixelGate.tsx` no layout global — **não carregar `fbevents.js` aqui**,
+  dobraria o PageView.
+- `../../lib/rastreio.ts` — o rastreio de compra (abaixo), compartilhado com a `/club`.
+- `obrigado/` — destino do Stripe depois da compra: dispara o Purchase deduplicado.
+
+## Rastreio de compra
+
+**O contrato:** `visitante_id` (`v_` + 20 chars, localStorage `club_visitante`, sem
+expirar) → `client_reference_id` em toda âncora do Stripe → o webhook na VPS recebe a
+compra com esse id → lê `rastreio_visitantes` no Supabase do Club (sck, UTMs, fbclid,
+`_fbp`/`_fbc`, IP, user-agent) → manda o Purchase pra CAPI com `event_id = session_id`.
+A `/aula/obrigado` dispara o mesmo Purchase no pixel com o mesmo `eventID`, e a Meta
+conta um só.
+
+**Por quê:** o Payment Link do Stripe só aceita `[A-Za-z0-9_-]` no `client_reference_id`
+e descarta o resto **em silêncio**. O `sck` usa `|` como separador — 0 de 62 compras
+chegaram com referência (conferido no Stripe em 08/09/2026). O `sck` continua sendo
+calculado e salvo em `club_primeiro_toque` (mesmo formato: outros lugares leem); ele só
+não vai mais no link. A página manda a atribuição pro `/api/rastreio` (upsert: só a
+coluna que veio no corpo sobrescreve, `primeiro_toque` só no insert).
+
+**Pra fechar o circuito:** o Payment Link precisa redirecionar pra
+`https://ia.augustogobatto.com/aula/obrigado?session_id={CHECKOUT_SESSION_ID}`, e
+`CAPI_BASE` em `lib/capi.ts` tem que sair do placeholder quando o serviço da VPS subir.
 
 ## Quando a VSL fechar (é isso e mais nada)
 

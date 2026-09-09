@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { pixelCustom, pixelTrack, VALOR_PLANO } from './pixel'
+import { carimbar, iniciarRastreio } from '../../lib/rastreio'
 
 /**
  * Motor da /aula — portado do player do funil "Protocolo Viral"
@@ -57,63 +58,10 @@ type Sync = { versao_id: number | null; t: number; pitch_visto: boolean }
 const PITCH_REDE = 900
 
 /* ── rastreio ──────────────────────────────────────────────
-   Mesmo contrato da /club, de propósito: MESMA chave, MESMO formato, MESMO
-   TTL. Duas páginas gravando o mesmo carimbo de jeitos diferentes dariam
-   dois relatórios que não fecham.
-
-   UTM cai na página → vira `sck` → guarda no localStorage → sai carimbada no
-   `client_reference_id` do Stripe, que aparece no checkout e no webhook.
-
-   Ressalva conhecida (herdada da /club): a chave se chama "primeiro toque"
-   mas é sobrescrita a cada visita com UTM nova, então na prática é ÚLTIMO
-   toque. Corrigir isso é mexer nas duas páginas ao mesmo tempo, senão os
-   dois relatórios divergem. */
-const SCK_MAXLEN = 120
-const SCK_KEY = 'club_primeiro_toque'
-const SCK_TTL = 2592e6 // 30 dias
-
-function normSck(v: string | null) {
-  return String(v || '').trim().replace(/\s+/g, '-').replace(/^\|+|\|+$/g, '')
-}
-
-function resolverSck(): string {
-  let q: URLSearchParams
-  try {
-    q = new URLSearchParams(location.search)
-  } catch {
-    return ''
-  }
-  let sck = normSck(q.get('sck'))
-  if (!sck) {
-    sck = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
-      .map((k) => normSck(q.get(k)))
-      .filter(Boolean)
-      .join('|')
-  }
-  sck = sck.slice(0, SCK_MAXLEN).replace(/\|+$/, '')
-  try {
-    if (sck) {
-      localStorage.setItem(SCK_KEY, JSON.stringify({ v: sck, t: Date.now() }))
-    } else {
-      const salvo = JSON.parse(localStorage.getItem(SCK_KEY) || 'null')
-      if (salvo && salvo.v && Date.now() - salvo.t < SCK_TTL) sck = salvo.v
-    }
-  } catch {}
-  return sck
-}
-
-/** Carimba o link do Stripe. Idempotente: reescrever o mesmo valor não dói. */
-function carimbar(a: HTMLAnchorElement, sck: string) {
-  if (!sck) return
-  try {
-    const u = new URL(a.href)
-    u.searchParams.set(
-      'client_reference_id',
-      sck.slice(0, 200).replace(/[^a-zA-Z0-9|_-]/g, '-')
-    )
-    a.href = u.toString()
-  } catch {}
-}
+   Contrato compartilhado com a /club em `lib/rastreio.ts` (mesma chave,
+   mesmo formato, mesmo TTL do sck). O que vai pro Stripe é o
+   `visitante_id`; o sck e o resto da atribuição vão pro servidor via
+   /api/rastreio. O porquê está no cabeçalho daquele arquivo. */
 
 function lerLS(chave: string) {
   try {
@@ -177,6 +125,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
   const varianteRef = useRef<Variante | null>(null)
   const sessao = useRef<string>('')
   const sckRef = useRef<string>('')
+  const visitanteRef = useRef<string>('')
 
   const chaveAB = `vsl_ab_${config.video_id}`
   const chaveSync = `vsl_sync_${config.video_id}`
@@ -644,22 +593,18 @@ export default function AulaPlayer({ config }: { config: Config }) {
 
   /* rastreio + observação de checkout */
   useEffect(() => {
-    const sck = resolverSck()
-    sckRef.current = sck
-
-    const carimbarTodos = () => {
-      document
-        .querySelectorAll<HTMLAnchorElement>('a[href*="buy.stripe.com"]')
-        .forEach((a) => carimbar(a, sck))
-    }
-    carimbarTodos()
+    /* resolve o sck, garante o visitante_id, carimba as âncoras do Stripe e
+       manda a atribuição pro servidor — tudo em lib/rastreio.ts */
+    const r = iniciarRastreio('/aula')
+    sckRef.current = r.sck
+    visitanteRef.current = r.visitante
 
     const onClique = (e: MouseEvent) => {
       const alvo = (e.target as HTMLElement | null)?.closest('[data-checkout]')
       if (!alvo) return
       /* reforço no clique: se algo tiver reescrito o href entre o mount e
          agora, o carimbo entra antes de a navegação sair */
-      carimbar(alvo as HTMLAnchorElement, sckRef.current)
+      carimbar(alvo as HTMLAnchorElement, visitanteRef.current)
       const plano = alvo.getAttribute('data-checkout') || ''
       evento('clicou_cta', { rotulo: plano })
       /* pixel: InitiateCheckout PADRÃO (é o evento que a campanha otimiza —
@@ -673,7 +618,10 @@ export default function AulaPlayer({ config }: { config: Config }) {
       })
     }
     document.addEventListener('click', onClique)
-    return () => document.removeEventListener('click', onClique)
+    return () => {
+      document.removeEventListener('click', onClique)
+      r.parar()
+    }
   }, [evento])
 
   /* a dobra de planos entrando na tela conta como "viu a oferta" */

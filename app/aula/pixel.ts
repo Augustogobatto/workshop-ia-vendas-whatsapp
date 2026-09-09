@@ -14,6 +14,9 @@
 
 type FbqParams = Record<string, string | number | boolean | string[] | undefined>
 
+/** 4º argumento do `fbq('track', ...)`: `eventID` é a chave de deduplicação com a CAPI. */
+type FbqOpcoes = { eventID?: string }
+
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void
@@ -27,9 +30,19 @@ function fbq(...args: unknown[]) {
   } catch {}
 }
 
-/** Evento padrão da Meta (ViewContent, InitiateCheckout...) — é o que campanha otimiza. */
-export function pixelTrack(nome: string, params?: FbqParams) {
-  fbq('track', nome, params)
+/** O pixel já está no ar? (o stub entra depois da hidratação, via `afterInteractive`) */
+export function pixelPronto() {
+  return typeof window !== 'undefined' && typeof window.fbq === 'function'
+}
+
+/**
+ * Evento padrão da Meta (ViewContent, InitiateCheckout, Purchase...) — é o que
+ * campanha otimiza. `opcoes.eventID` vai no 4º argumento do fbq; quando o
+ * mesmo evento também sai pela CAPI, os dois precisam levar o MESMO id.
+ */
+export function pixelTrack(nome: string, params?: FbqParams, opcoes?: FbqOpcoes) {
+  if (opcoes?.eventID) fbq('track', nome, params ?? {}, { eventID: opcoes.eventID })
+  else fbq('track', nome, params)
 }
 
 /** Evento custom (Pitch, AbriuOferta...) — serve pra público e pra ler funil no Gerenciador. */
