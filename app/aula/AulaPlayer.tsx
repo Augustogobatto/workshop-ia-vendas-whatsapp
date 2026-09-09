@@ -498,7 +498,11 @@ export default function AulaPlayer({ config }: { config: Config }) {
 
     const pitchS = variante.pitch_s > 0 ? variante.pitch_s : PITCH_REDE
     let ultimoSalvo = 0
-    const quartis = new Set<number>()
+    /* curva de retenção de 10 em 10%: é o que mostra ONDE o vídeo perde
+       gente. Quartil só dá quatro pontos e esconde a queda. */
+    const marcos = new Set<number>()
+    const entrouEm = Date.now()
+    let maximoAssistido = 0
 
     const onLoadedData = () => tocarMudo()
 
@@ -512,12 +516,14 @@ export default function AulaPlayer({ config }: { config: Config }) {
 
       if (t >= pitchS) marcarPitchVisto('pitch')
 
+      if (t > maximoAssistido) maximoAssistido = t
+
       const dur = video.duration || variante.duration_s || 0
       if (dur > 0) {
-        for (const q of [25, 50, 75]) {
-          if (!quartis.has(q) && t >= (dur * q) / 100) {
-            quartis.add(q)
-            evento('quartil', { segundo: Math.floor(t), rotulo: String(q) })
+        for (let q = 10; q <= 100; q += 10) {
+          if (!marcos.has(q) && t >= (dur * q) / 100) {
+            marcos.add(q)
+            evento('retencao', { segundo: Math.floor(t), rotulo: String(q) })
           }
         }
       }
@@ -570,8 +576,23 @@ export default function AulaPlayer({ config }: { config: Config }) {
       if (!comecou.current && video.paused) setSemAutoplay(true)
     }, 1800)
 
-    const onSaida = () => evento('quartil', { segundo: Math.floor(video.currentTime), rotulo: 'saiu' })
+    /* Saída: quanto tempo ficou na página e até onde assistiu. Vai no
+       pagehide E no visibilitychange porque o iOS mata a aba sem disparar
+       pagehide — sem os dois, o mobile some do relatório. */
+    let jaMarcouSaida = false
+    const onSaida = () => {
+      if (jaMarcouSaida) return
+      jaMarcouSaida = true
+      evento('saiu', {
+        segundo: Math.floor(maximoAssistido),
+        rotulo: Math.round((Date.now() - entrouEm) / 1000) + 's',
+      })
+    }
+    const onEscondeu = () => {
+      if (document.visibilityState === 'hidden') onSaida()
+    }
     window.addEventListener('pagehide', onSaida)
+    document.addEventListener('visibilitychange', onEscondeu)
 
     return () => {
       video.removeEventListener('loadeddata', onLoadedData)
@@ -581,6 +602,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
       video.removeEventListener('ended', onEnded)
       video.removeEventListener('contextmenu', onContext)
       window.removeEventListener('pagehide', onSaida)
+      document.removeEventListener('visibilitychange', onEscondeu)
       window.clearInterval(rede)
       window.clearTimeout(relogioCopy)
       if (rafRef.current !== null) {

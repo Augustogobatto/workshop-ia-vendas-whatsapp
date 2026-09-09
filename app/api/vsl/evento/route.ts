@@ -20,12 +20,14 @@ const EVENTOS = new Set([
   'tocou_som',     // o visitante ligou o som (início real do assistir)
   'retomou',       // voltou e clicou "continuar de onde parei"
   'reiniciou',     // voltou e clicou "assistir do início"
-  'quartil',       // 25/50/75 do vídeo (segundo diz qual)
+  'retencao',      // marco de 10% em 10% do vídeo (rotulo = 10..100)
   'pitch',         // cruzou o pitch: a página abriu
   'abriu_oferta',  // rolou até a dobra de planos
   'clicou_cta',    // clicou num botão de checkout (rotulo = mensal|anual)
   'clicou_whats',  // foi falar com a IA de vendas (rotulo = fechada|aberta)
   'fim',           // vídeo terminou
+  'saiu',          // fechou/saiu: segundo = ponto máximo assistido,
+                   // rotulo = "<segundos na página>s"
 ])
 
 function texto(v: unknown, max: number) {
