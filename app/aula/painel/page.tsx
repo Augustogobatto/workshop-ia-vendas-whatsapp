@@ -94,6 +94,15 @@ export default async function Painel({
       })
     : '—'
 
+  /* Idade do dado da mídia. O cron da vps-claude regrava de 2 em 2 minutos;
+     se passar de 6, alguma coisa travou (cron parado, token vencido, Graph
+     fora) e é melhor a página dizer isso do que mostrar número velho como se
+     fosse de agora. */
+  const idadeMin = linhas[0]?.atualizado
+    ? Math.round((Date.now() - new Date(linhas[0].atualizado).getTime()) / 60000)
+    : null
+  const dadoVelho = idadeMin !== null && idadeMin > 6
+
   return (
     <main className="pn">
       <div className="pn-wrap">
@@ -101,11 +110,34 @@ export default async function Painel({
           <div>
             <h1>Funil /aula</h1>
             <p className="pn-sub">
-              {dia.split('-').reverse().join('/')} · mídia atualizada às {atualizado} · só gente
-              (robô da Meta e visita interna ficam de fora)
+              {dia.split('-').reverse().join('/')} · só gente (robô da Meta e visita interna ficam
+              de fora)
             </p>
           </div>
+          <form>
+            <input type="hidden" name="chave" value={CHAVE} />
+            {sp.dia && <input type="hidden" name="dia" value={sp.dia} />}
+            <button type="submit" className={'pn-btn' + (dadoVelho ? ' alerta' : '')}>
+              <span className="giro" aria-hidden>↻</span>
+              Recarregar
+              <small>
+                {idadeMin === null
+                  ? 'sem mídia'
+                  : idadeMin <= 1
+                    ? 'Meta agora há pouco'
+                    : `Meta há ${idadeMin} min`}
+              </small>
+            </button>
+          </form>
         </header>
+
+        {dadoVelho && (
+          <p className="pn-aviso">
+            A última leitura do Meta tem {idadeMin} minutos. O coletor roda de 2 em 2 na
+            vps-claude, então algo travou: conferir <code>club-funil/coleta.log</code>. Os números
+            de mídia abaixo são dessa leitura antiga; os da página são ao vivo.
+          </p>
+        )}
 
         <section className="pn-cifras">
           <div className="c"><b>{brl(t.gasto)}</b><span>gasto</span></div>
