@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Engenharia reversa do funil Formato Criativo de Conteudo: 83 anuncios, VSL de 38 min acelerada, e o gate de pagina que eles esqueceram de ligar.">
+<meta property="og:title" content="Dossie Formato Criativo">
+<meta property="og:description" content="83 anuncios, VSL de 38 min a 1,3x, e o gate de pagina que nunca foi ligado.">
+<meta property="og:type" content="article">
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}</style>
+<title>Dossiê Formato Criativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=JetBrains+Mono:wght@400;700&display=swap">
+
+<style>
+  :root {
+    --ground:  #FAFAFB;
+    --panel:   #FFFFFF;
+    --ink:     #14161A;
+    --dim:     #565C66;
+    --faint:   #858B96;
+    --line:    #E3E5EA;
+    --line-2:  #C9CDD5;
+    --sinal:   #B03826;   /* achado / quebrado */
+    --verde:   #2C6249;   /* o que funciona */
+
+    --display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --corpo:   'Newsreader', Georgia, 'Times New Roman', serif;
+    --mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101216;
+      --panel:  #171A1F;
+      --ink:    #ECEEF2;
+      --dim:    #A2A9B4;
+      --faint:  #7B828D;
+      --line:   #262A31;
+      --line-2: #363C45;
+      --sinal:  #E8705B;
+      --verde:  #6FBF9A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #101216;
+    --panel:  #171A1F;
+    --ink:    #ECEEF2;
+    --dim:    #A2A9B4;
+    --faint:  #7B828D;
+    --line:   #262A31;
+    --line-2: #363C45;
+    --sinal:  #E8705B;
+    --verde:  #6FBF9A;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--corpo);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .env { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ── cabeçalho ── */
+  .topo { border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 34px; }
+  .carimbo {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--sinal);
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+  }
+  .carimbo span:not(:last-child)::after { content: ' ·'; color: var(--faint); }
+  h1 {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(30px, 7vw, 46px); line-height: 1.02;
+    letter-spacing: -.025em; margin: 0 0 12px; text-wrap: balance;
+  }
+  .linhafina { font-size: 18px; color: var(--dim); margin: 0; max-width: 60ch; }
+
+  /* ── seções ── */
+  section { margin-top: 44px; }
+  h2 {
+    font-family: var(--display); font-weight: 800; font-size: 13px;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
+    margin: 0 0 4px; padding-bottom: 8px; border-bottom: 1px solid var(--line-2);
+  }
+  h2 + .sub { font-family: var(--mono); font-size: 11.5px; color: var(--faint); margin: 8px 0 20px; }
+  h3 {
+    font-family: var(--display); font-weight: 600; font-size: 19px;
+    letter-spacing: -.01em; margin: 26px 0 6px; text-wrap: balance;
+  }
+  p { margin: 0 0 14px; max-width: 65ch; }
+  p strong { font-weight: 500; color: var(--ink); box-shadow: inset 0 -.42em 0 rgba(176,56,38,.13); }
+  code {
+    font-family: var(--mono); font-size: .82em; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px;
+    word-break: break-word;
+  }
+  .cit { font-style: italic; color: var(--dim); }
+
+  /* ── a máquina, em passos: a ordem é o dado ── */
+  .fluxo { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .fluxo li { background: var(--panel); padding: 13px 16px; display: flex; gap: 14px; align-items: baseline; }
+  .fluxo .n { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--faint); flex: 0 0 22px; }
+  .fluxo .t { font-size: 15.5px; }
+  .fluxo .t b { font-family: var(--display); font-weight: 600; }
+
+  /* ── fichas de achado ── */
+  .achado { border-left: 3px solid var(--sinal); padding: 2px 0 2px 16px; margin: 22px 0; }
+  .achado.bom { border-left-color: var(--verde); }
+  .achado h3 { margin-top: 0; }
+  .achado p:last-child { margin-bottom: 0; }
+
+  /* ── números ── */
+  .cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 22px 0; }
+  .cifra { background: var(--panel); padding: 16px; }
+  .cifra b { display: block; font-family: var(--display); font-weight: 800; font-size: 27px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .cifra span { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-top: 5px; line-height: 1.35; }
+
+  /* ── tabelas ── */
+  .rolagem { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); }
+  table { border-collapse: collapse; width: 100%; font-family: var(--display); font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: top; }
+  thead th { background: var(--panel); font-weight: 800; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; position: sticky; left: 0; }
+  tbody th { font-weight: 600; color: var(--dim); background: var(--ground); position: sticky; left: 0; }
+  td.destaque { color: var(--sinal); font-weight: 600; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  ul.limpa { margin: 0 0 14px; padding-left: 20px; max-width: 65ch; }
+  ul.limpa li { margin-bottom: 7px; }
+
+  footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line-2); font-family: var(--mono); font-size: 11px; color: var(--faint); line-height: 1.8; }
+</style>
+
+<div class="env">
+
+  <header class="topo">
+    <div class="carimbo">
+      <span>Engenharia reversa</span>
+      <span>08 set 2026</span>
+      <span>formatocriativodeconteudo.com.br</span>
+    </div>
+    <h1>Dossiê Formato Criativo</h1>
+    <p class="linhafina">
+      O funil da Hanah Franklin e do Alef Marqs por dentro: 83 anúncios, uma VSL de 38 minutos
+      rodando acelerada, e um gate de página que eles escreveram e esqueceram de ligar.
+    </p>
+  </header>
+
+  <section>
+    <h2>A máquina</h2>
+    <p class="sub">anúncio → VSL → checkout. sem captura de lead, sem pop-up, sem whatsapp.</p>
+    <ol class="fluxo">
+      <li><span class="n">01</span><span class="t"><b>83 anúncios ativos</b>, todos vídeo vertical com rosto e legenda queimada. Mediana de 2min45.</span></li>
+      <li><span class="n">02</span><span class="t">Levam para <b>/fcc-v2/</b>, não para a raiz do domínio. As duas páginas têm a mesma copy; a dos anúncios roda <b>A/B test de VSL</b> no player.</span></li>
+      <li><span class="n">03</span><span class="t"><b>VSL de ~38 minutos</b> no VTurb, vertical, reproduzida a <b>1,3x</b> sem avisar ninguém.</span></li>
+      <li><span class="n">04</span><span class="t">Checkout Hotmart: <b>R$288 por ano</b>. A página nunca escreve a palavra "ano".</span></li>
+      <li><span class="n">05</span><span class="t">Order bump <b>"64 Ganchos Virais"</b>, de R$96 por R$48. Cupom falado dentro do vídeo derruba para R$259,20.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Os números</h2>
+    <p class="sub">medidos na página real, com navegador, não estimados</p>
+    <div class="cifras">
+      <div class="cifra"><b class="num">83</b><span>anúncios ativos</span></div>
+      <div class="cifra"><b class="num">81%</b><span>em 2 ganchos</span></div>
+      <div class="cifra"><b class="num">38</b><span>min de VSL</span></div>
+      <div class="cifra"><b class="num">46%</b><span>da copy é história + FAQ</span></div>
+      <div class="cifra"><b class="num">12,5</b><span>MB de página</span></div>
+      <div class="cifra"><b class="num">7,9</b><span>s para carregar</span></div>
+    </div>
+    <p>
+      Dois ganchos carregam a operação inteira: <span class="cit">"Topa esse desafio?"</span> em 44
+      anúncios e <span class="cit">"Já tinha visto isso?"</span> em 23. O anúncio mais antigo ainda
+      no ar começou em <strong>18 de abril</strong>, então a estrutura está validada há quase cinco meses.
+    </p>
+    <p>
+      Nenhum número de prova social aparece no texto dos anúncios. Os 700 mil seguidores e os
+      R$100 mil em 30 dias ficam só na página. No anúncio, a única prova é a tela de um Reels de
+      terceiro com 10,2 mil curtidas.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que eles fazem bem</h2>
+    <p class="sub">quatro coisas que vale copiar</p>
+
+    <div class="achado bom">
+      <h3>Testam o vídeo, não a página</h3>
+      <p>
+        A página dos anúncios carrega <code>converteai.net/…/ab-test/6a148c04…/player</code>. A raiz
+        do domínio carrega players fixos. Eles rodam variantes de VSL contra o mesmo funil, usando o
+        recurso nativo do player em vez de código próprio.
+      </p>
+    </div>
+
+    <div class="achado bom">
+      <h3>O rastreio é sério</h3>
+      <p>
+        CAPI server-side por subdomínio próprio (<code>gtm.formatocriativodeconteudo.com.br</code>
+        apontando para Stape), e o <code>fbclid</code> guardado em três lugares: cookie <code>_fbc</code>,
+        <code>localStorage</code> e dentro do próprio <code>utm_content</code>. Os CTAs são reescritos
+        no navegador com <code>sck</code> e <code>xcod</code>, então a venda chega na Hotmart sabendo
+        de qual anúncio veio.
+      </p>
+    </div>
+
+    <div class="achado bom">
+      <h3>A garantia é arma, não obrigação</h3>
+      <p>
+        16 dias, e a página diz por quê:
+        <span class="cit">"enquanto 99% dos cursos te dão apenas 7 dias, porque a lei obriga, eu
+        estou te dando 16 dias completos."</span> Eles transformaram o mínimo legal do concorrente
+        em fraqueza.
+      </p>
+    </div>
+
+    <div class="achado bom">
+      <h3>O peso está na objeção, não na oferta</h3>
+      <p>
+        História pessoal e FAQ ocupam <strong>46% da copy</strong>. O preço ocupa 1,6% e só aparece
+        na metade da página. São 16 perguntas no FAQ, cobrindo desde "preciso aparecer na câmera?"
+        até "qual a idade mínima".
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>O que está quebrado</h2>
+    <p class="sub">e é aqui que fica interessante</p>
+
+    <div class="achado">
+      <h3>O gate da página não existe</h3>
+      <p>
+        Eles marcaram 26 blocos (a oferta inteira, o preço, os seis botões de compra) com a classe
+        <code>esconder</code>, para que só aparecessem depois do pitch do vídeo. <strong>Essa classe
+        não tem regra de CSS em lugar nenhum do site.</strong> Tudo fica visível desde o primeiro
+        frame. Escreveram uma VSL fechada e estão rodando uma página aberta há meses, provavelmente
+        sem saber.
+      </p>
+    </div>
+
+    <div class="achado">
+      <h3>A barra de progresso mente pesado</h3>
+      <p>
+        O player está configurado com barra falsa e a fórmula é
+        <code>100·√(2x−x²)</code>. Na prática:
+      </p>
+      <div class="rolagem">
+        <table>
+          <thead>
+            <tr><th>Assistido de verdade</th><th>O que a barra mostra</th></tr>
+          </thead>
+          <tbody>
+            <tr><th class="num">5%</th><td class="destaque num">31%</td></tr>
+            <tr><th class="num">25%</th><td class="destaque num">66%</td></tr>
+            <tr><th class="num">50%</th><td class="destaque num">87%</td></tr>
+            <tr><th class="num">75%</th><td class="num">97%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Na metade do vídeo a pessoa acha que está quase acabando. Somado ao vídeo acelerado em 1,3x,
+        sem cronômetro e sem barra de busca, o espectador não tem como saber quanto falta.
+      </p>
+    </div>
+
+    <div class="achado">
+      <h3>Otimizam às cegas</h3>
+      <p>
+        O único evento customizado que a página dispara é <code>page_view_fcc</code>.
+        <strong>Zero evento de progresso de vídeo</strong> numa VSL de 38 minutos, com 83 anúncios
+        rodando. Eles não sabem em que minuto perdem a audiência, nem qual anúncio traz gente que
+        assiste.
+      </p>
+    </div>
+
+    <div class="achado">
+      <h3>A prova não se verifica e a história não fecha</h3>
+      <p>
+        São 15 depoimentos, todos em imagem, nenhum com nome, arroba ou link. Os dez "logos de
+        parceiros" são ícones decorativos sem identificação de marca. E a mesma história aparece
+        duas vezes com números diferentes: o apartamento tem <strong>27m²</strong> na primeira
+        passagem e <strong>32m²</strong> na segunda.
+      </p>
+    </div>
+
+    <div class="achado">
+      <h3>O rodapé não tem nada</h3>
+      <p>
+        Sem CNPJ, sem razão social, sem endereço, sem política de privacidade, sem termos. Nem o
+        e-mail de reembolso que a própria garantia manda usar. Página que vende pela internet no
+        Brasil precisa dos três primeiros por decreto.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Contra os outros dois funis</h2>
+    <p class="sub">mesma mesa: protocolo viral (abraham) e ia lab (lucas sena)</p>
+    <div class="rolagem">
+      <table>
+        <thead>
+          <tr><th></th><th>Abraham</th><th>Lucas Sena</th><th>Hanah</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Página</th><td>fechada até o pitch</td><td>aberta</td><td class="destaque">aberta por bug</td></tr>
+          <tr><th>VSL</th><td>27min42, player próprio</td><td>22 min</td><td>38 min, a 1,3x</td></tr>
+          <tr><th>Barra falsa</th><td>sim, moderada</td><td>não consta</td><td class="destaque">sim, agressiva</td></tr>
+          <tr><th>Testa VSL</th><td>queima versões</td><td>não consta</td><td>A/B do player</td></tr>
+          <tr><th>Preço</th><td>R$197 vitalício</td><td>R$197 a R$697</td><td>R$288/ano</td></tr>
+          <tr><th>Bump</th><td>upsell R$297</td><td>não consta</td><td>R$48</td></tr>
+          <tr><th>Garantia</th><td>7 dias + performance</td><td>7 dias</td><td>16 dias</td></tr>
+          <tr><th>Escassez</th><td>zero na página</td><td>"sobe semana que vem"</td><td>zero real</td></tr>
+          <tr><th>Métrica de vídeo</th><td>própria, detalhada</td><td>do player</td><td class="destaque">nenhuma</td></tr>
+          <tr><th>Anúncios</th><td class="num">~16</td><td class="num">~51</td><td class="num">83</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      O padrão que aparece nos três: <strong>quem gasta dinheiro de verdade testa o vídeo, não a
+      página.</strong> Abraham queima versões inteiras da VSL, uma atrás da outra. Hanah usa o A/B
+      nativo do player. Nenhum dos dois fica trocando cor de botão.
+    </p>
+    <p>
+      E os três vendem entrada barata: R$197, R$288, R$197. Nenhum deles pede muito dinheiro na
+      primeira transação com tráfego frio.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se fosse pra roubar três coisas</h2>
+    <ul class="limpa">
+      <li><strong>O A/B de VSL.</strong> É onde está a alavanca. Trocar o vídeo move mais ponteiro que qualquer ajuste de página.</li>
+      <li><strong>O rastreio até o checkout.</strong> Eles sabem de qual anúncio veio cada venda. Sem isso, verba em mídia vira aposta.</li>
+      <li><strong>A garantia como argumento.</strong> Não o prazo em si: a frase que explica por que o prazo maior existe.</li>
+    </ul>
+    <p>
+      E o que não vale a pena: barra que mente na segunda metade, vídeo acelerado sem avisar,
+      depoimento sem nome e rodapé sem CNPJ. Os quatro trocam confiança por conversão de curto
+      prazo, e o quarto é exposição jurídica de graça.
+    </p>
+  </section>
+
+  <footer>
+    Levantado em 08/09/2026 a partir da página pública, da Biblioteca de Anúncios da Meta e do
+    checkout aberto sem compra.<br>
+    Medições de peso, tempo de carregamento e configuração do player feitas com navegador
+    automatizado na página real.<br>
+    Nada foi comprado, nenhum anúncio foi clicado e nenhuma mensagem foi enviada aos anunciantes.
+  </footer>
+
+</div>
+
+</body>
+</html>
