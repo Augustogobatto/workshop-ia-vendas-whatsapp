@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Engenharia reversa do funil Formato Criativo de Conteudo: 83 anuncios, VSL de 38 min acelerada, e o gate de pagina que eles esqueceram de ligar.">
+<meta name="description" content="Engenharia reversa do funil Formato Criativo de Conteudo: a copy dos 83 anuncios, a VSL de 37min54 transcrita, e o gate de pagina que nunca foi ligado.">
 <meta property="og:title" content="Dossie Formato Criativo">
-<meta property="og:description" content="83 anuncios, VSL de 38 min a 1,3x, e o gate de pagina que nunca foi ligado.">
+<meta property="og:description" content="83 anuncios de duas a cinco palavras, VSL de 37min54 a 1,3x, e um gate de pagina que nunca foi ligado.">
 <meta property="og:type" content="article">
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}</style>
 <title>Dossiê Formato Criativo</title>
@@ -147,8 +147,8 @@
     </div>
     <h1>Dossiê Formato Criativo</h1>
     <p class="linhafina">
-      O funil da Hanah Franklin e do Alef Marqs por dentro: 83 anúncios, uma VSL de 38 minutos
-      rodando acelerada, e um gate de página que eles escreveram e esqueceram de ligar.
+      O funil da Hanah Franklin e do Alef Marqs por dentro: 83 anúncios de duas a cinco palavras, uma VSL de
+      37min54 rodando acelerada, e um gate de página que eles escreveram e esqueceram de ligar.
     </p>
   </header>
 
@@ -157,10 +157,10 @@
     <p class="sub">anúncio → VSL → checkout. sem captura de lead, sem pop-up, sem whatsapp.</p>
     <ol class="fluxo">
       <li><span class="n">01</span><span class="t"><b>83 anúncios ativos</b>, todos vídeo vertical com rosto e legenda queimada. Mediana de 2min45.</span></li>
-      <li><span class="n">02</span><span class="t">Levam para <b>/fcc-v2/</b>, não para a raiz do domínio. As duas páginas têm a mesma copy; a dos anúncios roda <b>A/B test de VSL</b> no player.</span></li>
-      <li><span class="n">03</span><span class="t"><b>VSL de ~38 minutos</b> no VTurb, vertical, reproduzida a <b>1,3x</b> sem avisar ninguém.</span></li>
+      <li><span class="n">02</span><span class="t">Levam para <b>/fcc-v2/</b>, não para a raiz do domínio. As duas páginas têm a mesma copy; a dos anúncios carrega o player pelo endpoint de <b>teste A/B</b>, que hoje serve uma variante só.</span></li>
+      <li><span class="n">03</span><span class="t"><b>VSL de 37min54</b> no VTurb, vertical, reproduzida a <b>1,3x</b> sem avisar ninguém.</span></li>
       <li><span class="n">04</span><span class="t">Checkout Hotmart: <b>R$288 por ano</b>. A página nunca escreve a palavra "ano".</span></li>
-      <li><span class="n">05</span><span class="t">Order bump <b>"64 Ganchos Virais"</b>, de R$96 por R$48. Cupom falado dentro do vídeo derruba para R$259,20.</span></li>
+      <li><span class="n">05</span><span class="t">Order bump <b>"64 Ganchos Virais"</b>, de R$96 por R$48. Um cupom de 10% derruba para R$259,20, mas ninguém fala dele: é um botão que o player faz flutuar entre 34:12 e 37:58.</span></li>
     </ol>
   </section>
 
@@ -170,7 +170,7 @@
     <div class="cifras">
       <div class="cifra"><b class="num">83</b><span>anúncios ativos</span></div>
       <div class="cifra"><b class="num">81%</b><span>em 2 ganchos</span></div>
-      <div class="cifra"><b class="num">38</b><span>min de VSL</span></div>
+      <div class="cifra"><b class="num">37:54</b><span>de VSL</span></div>
       <div class="cifra"><b class="num">46%</b><span>da copy é história + FAQ</span></div>
       <div class="cifra"><b class="num">12,5</b><span>MB de página</span></div>
       <div class="cifra"><b class="num">7,9</b><span>s para carregar</span></div>
@@ -192,11 +192,13 @@
     <p class="sub">quatro coisas que vale copiar</p>
 
     <div class="achado bom">
-      <h3>Testam o vídeo, não a página</h3>
+      <h3>A estrutura para testar VSL está montada</h3>
       <p>
-        A página dos anúncios carrega <code>converteai.net/…/ab-test/6a148c04…/player</code>. A raiz
-        do domínio carrega players fixos. Eles rodam variantes de VSL contra o mesmo funil, usando o
-        recurso nativo do player em vez de código próprio.
+        A página dos anúncios carrega <code>converteai.net/…/ab-test/6a148c04…/player</code>, o
+        endpoint de teste A/B do player. Só que, abrindo o que ele serve, <strong>tem uma variante
+        só</strong> (peso 100, nome interno <code>LEAD 4 DESAFIO.mp4</code>) — o mesmo vídeo que a
+        raiz entrega. O encanamento do teste existe e não está com nada dentro. O nome do arquivo
+        entrega que já houve pelo menos quatro leads testados.
       </p>
     </div>
 
@@ -302,6 +304,130 @@
   </section>
 
   <section>
+    <h2>A copy dos anúncios</h2>
+    <p class="sub">83 textos primários lidos; 30 transcritos por inteiro</p>
+
+    <p>
+      O achado é o tamanho. <strong>O texto de cada anúncio é uma pergunta de duas a cinco
+      palavras</strong>, e acabou. Sem promessa, sem número, sem dor, sem storytelling. Nenhum texto
+      está truncado: a frase inteira é a primeira linha.
+    </p>
+
+    <div class="rolagem">
+      <table>
+        <thead>
+          <tr><th>Gancho</th><th>Anúncios</th><th>O que a frase faz</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>"Topa esse desafio? 😝"</th><td class="num">44 · 53%</td><td>pergunta de aceite, sem revelar o quê</td></tr>
+          <tr><th>"Já tinha visto isso? 😱"</th><td class="num">23 · 28%</td><td>quebra de padrão por reconhecimento</td></tr>
+          <tr><th>"Dia 04 do meu desafio 😍"</th><td class="num">3</td><td>legenda de série, formato diário de bordo</td></tr>
+          <tr><th>"O jeitinho preguiçoso"</th><td class="num">2</td><td>promessa de atalho, frase sem verbo</td></tr>
+          <tr><th>(sem texto)</th><td class="num">2</td><td>a peça é só o vídeo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Duas famílias cobrem <strong>81% dos 83 anúncios</strong>. Das 18 variantes de gancho,
+      <strong>13 terminam em ponto de interrogação</strong>. Os botões são só dois: "Saiba mais" em
+      21 dos 30 e "Ver detalhes" nos outros 9.
+    </p>
+    <p>
+      Os números não estão no texto, estão <em>dentro do vídeo</em>: nos frames de abertura aparecem
+      um reel dela com 61,7 mil curtidas e 624 mil views, reels de terceiros usados como prova de
+      conceito, e uma placa manuscrita <span class="cit">"de 0 a 10k SEGUIDORES"</span>. Quem lê só
+      o texto do anúncio conclui que não há prova nenhuma. Ela está lá, em imagem.
+    </p>
+    <p>
+      Dois erros ficaram no ar em anúncios ativos: <span class="cit">"Esa fase não foi fácil"</span>
+      e <span class="cit">"vai fazer você aparece pra cidade inteira"</span>. Volume acima de
+      revisão.
+    </p>
+  </section>
+
+  <section>
+    <h2>A copy da VSL</h2>
+    <p class="sub">37min54 transcritos · timestamps do arquivo (o player roda a 1,3x)</p>
+
+    <h3>O lead: promessa aos 9 segundos, prova aos 17</h3>
+    <p>
+      Ela abre com o resultado de outras pessoas, não com ela mesma. <strong>Só se apresenta aos
+      5min37</strong>, cinco minutos e meio depois da primeira promessa. Nos primeiros 90 segundos
+      há oito provas nomeadas.
+    </p>
+    <p>
+      <b>[00:09]</b> <span class="cit">"a tendência pra 2026 é o truque dos formatos validados que
+      obriga o algoritmo a entregar seu vídeo pra quem ainda não te conhece."</span><br>
+      <b>[00:17]</b> <span class="cit">"eu te mostrei aquele cara do Tratô que pegou um milhão de
+      views."</span><br>
+      <b>[00:50]</b> <span class="cit">"talvez isso explique por que você acha que tá fazendo tudo
+      certo. E mesmo assim, posta, posta e continua sendo meio punido pelo algoritmo."</span>
+    </p>
+    <p>
+      Essa última é a manobra do lead: nomeia a dor com o verbo repetido e transfere a culpa pro
+      sistema. Ela não chama o espectador de errado em nenhum momento.
+    </p>
+
+    <h3>A escada de preço: quatro degraus em 1min41</h3>
+    <p>
+      O preço não entra como virada de conversa, entra como fato da história. A ponte é
+      <span class="cit">"eu resolvi adicionar o pilar de formato dentro da minha formação"</span>.
+    </p>
+    <div class="rolagem">
+      <table>
+        <thead><tr><th>Momento</th><th>Valor</th><th>Justificativa que ela dá</th></tr></thead>
+        <tbody>
+          <tr><th class="num">31:32</th><td>R$1.600</td><td>preço real de outro produto dela</td></tr>
+          <tr><th class="num">32:17</th><td>R$700</td><td>"eu mesma não tinha isso quando comecei"</td></tr>
+          <tr><th class="num">32:54</th><td class="destaque">R$500</td><td>degrau fantasma: preço que nunca existiu, dito só pra ser recusado</td></tr>
+          <tr><th class="num">33:02</th><td>12x R$29</td><td>"resolvi fazer uma doideirinha"</td></tr>
+          <tr><th class="num">33:07</th><td>menos de R$1/dia</td><td>é aqui que o botão de compra acende</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Cada degrau desce com uma justificativa moral. Ela <strong>nunca diz a palavra
+      desconto</strong>: diz que decidiu ganhar menos por causa da missão. E o botão não nasce no
+      número, nasce cinco segundos depois, na frase "menos de R$1 por dia".
+    </p>
+    <p>
+      A aritmética não fecha e a VSL não explica: 12 × R$29 = R$348, sessenta reais acima do à vista
+      de R$288. E a âncora de <strong>R$900 que a página usa não existe na fala</strong> — no vídeo
+      a âncora é R$1.600. São dois sistemas de ancoragem rodando na mesma oferta.
+    </p>
+
+    <h3>A garantia, em 21 segundos</h3>
+    <p>
+      <b>[35:10]</b> <span class="cit">"enquanto a maioria dos cursos te dá 7 dias de garantia como
+      a lei obriga, eu vou te entregar 16 dias."</span><br>
+      <b>[35:25]</b> <span class="cit">"Eu só te quero como aluno se você realmente me quiser como
+      mentora."</span>
+    </p>
+    <p>
+      Três movimentos: número acima do mínimo legal, motivo irrelevante aceito, e fecho de caráter.
+      O "como a lei obriga" é a peça que trabalha, porque acusa a concorrência sem citar ninguém.
+    </p>
+
+    <h3>O desconto que ninguém fala</h3>
+    <p>
+      As palavras cupom, desconto, 10% e off <strong>não aparecem uma única vez</strong> nos 37min54.
+      O "CUPOM 10% OFF" é um botão que o player faz flutuar entre 34:12 e 37:58, por cima do vídeo.
+      Quem fecha o player perde o desconto sem nunca ter sabido que existia. É a única escassez real
+      do funil, e é muda.
+    </p>
+
+    <h3>Cinco frases que valem o arquivo</h3>
+    <ul class="limpa">
+      <li><b>[14:05]</b> <span class="cit">"Enquanto eu estava tentando ser hiper criativa, eles eram previsíveis."</span> Inverte o valor que o público mais preza.</li>
+      <li><b>[14:31]</b> <span class="cit">"O algoritmo tem seus favoritos. Mas não os perfis favoritos. Ele tem os formatos favoritos."</span> É o mecanismo inteiro em duas linhas.</li>
+      <li><b>[09:49]</b> <span class="cit">"você provavelmente tá assistindo esse vídeo até agora porque tá motivado a descobrir os formatos."</span> Demonstra o mecanismo no próprio espectador, ao vivo.</li>
+      <li><b>[18:33]</b> <span class="cit">"Ela tem 300 seguidores. Não é 300 mil não, é 300."</span> Corrige a leitura de erro de digitação antes que ela aconteça.</li>
+      <li><b>[24:29]</b> <span class="cit">"Você não tá entendendo. Eu mastiguei tudo pra você só copiar e colar."</span> Vende ausência de esforço logo depois de vinte minutos provando esforço próprio.</li>
+    </ul>
+  </section>
+
+  <section>
     <h2>Contra os outros dois funis</h2>
     <p class="sub">mesma mesa: protocolo viral (abraham) e ia lab (lucas sena)</p>
     <div class="rolagem">
@@ -313,7 +439,7 @@
           <tr><th>Página</th><td>fechada até o pitch</td><td>aberta</td><td class="destaque">aberta por bug</td></tr>
           <tr><th>VSL</th><td>27min42, player próprio</td><td>22 min</td><td>38 min, a 1,3x</td></tr>
           <tr><th>Barra falsa</th><td>sim, moderada</td><td>não consta</td><td class="destaque">sim, agressiva</td></tr>
-          <tr><th>Testa VSL</th><td>queima versões</td><td>não consta</td><td>A/B do player</td></tr>
+          <tr><th>Testa VSL</th><td>queima versões</td><td>não consta</td><td class="destaque">A/B montado, vazio</td></tr>
           <tr><th>Preço</th><td>R$197 vitalício</td><td>R$197 a R$697</td><td>R$288/ano</td></tr>
           <tr><th>Bump</th><td>upsell R$297</td><td>não consta</td><td>R$48</td></tr>
           <tr><th>Garantia</th><td>7 dias + performance</td><td>7 dias</td><td>16 dias</td></tr>
