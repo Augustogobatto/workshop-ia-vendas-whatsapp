@@ -10,4 +10,4 @@
  *   GET ${CAPI_BASE}/stripe-capi/sessao?id=<checkout_session_id>
  *   → { ok: boolean, plano: string, valor: number, moeda: string, event_id: string }
  */
-export const CAPI_BASE = 'https://CAPI_BASE_PENDENTE'
+export const CAPI_BASE = 'https://app.comentaeuquero.com'
