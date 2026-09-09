@@ -55,6 +55,65 @@ type Sync = { versao_id: number | null; t: number; pitch_visto: boolean }
 /* Rede: se o config estiver quebrado, a VSL não pode deixar de tocar. */
 const PITCH_REDE = 900
 
+/* ── rastreio ──────────────────────────────────────────────
+   Mesmo contrato da /club, de propósito: MESMA chave, MESMO formato, MESMO
+   TTL. Duas páginas gravando o mesmo carimbo de jeitos diferentes dariam
+   dois relatórios que não fecham.
+
+   UTM cai na página → vira `sck` → guarda no localStorage → sai carimbada no
+   `client_reference_id` do Stripe, que aparece no checkout e no webhook.
+
+   Ressalva conhecida (herdada da /club): a chave se chama "primeiro toque"
+   mas é sobrescrita a cada visita com UTM nova, então na prática é ÚLTIMO
+   toque. Corrigir isso é mexer nas duas páginas ao mesmo tempo, senão os
+   dois relatórios divergem. */
+const SCK_MAXLEN = 120
+const SCK_KEY = 'club_primeiro_toque'
+const SCK_TTL = 2592e6 // 30 dias
+
+function normSck(v: string | null) {
+  return String(v || '').trim().replace(/\s+/g, '-').replace(/^\|+|\|+$/g, '')
+}
+
+function resolverSck(): string {
+  let q: URLSearchParams
+  try {
+    q = new URLSearchParams(location.search)
+  } catch {
+    return ''
+  }
+  let sck = normSck(q.get('sck'))
+  if (!sck) {
+    sck = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+      .map((k) => normSck(q.get(k)))
+      .filter(Boolean)
+      .join('|')
+  }
+  sck = sck.slice(0, SCK_MAXLEN).replace(/\|+$/, '')
+  try {
+    if (sck) {
+      localStorage.setItem(SCK_KEY, JSON.stringify({ v: sck, t: Date.now() }))
+    } else {
+      const salvo = JSON.parse(localStorage.getItem(SCK_KEY) || 'null')
+      if (salvo && salvo.v && Date.now() - salvo.t < SCK_TTL) sck = salvo.v
+    }
+  } catch {}
+  return sck
+}
+
+/** Carimba o link do Stripe. Idempotente: reescrever o mesmo valor não dói. */
+function carimbar(a: HTMLAnchorElement, sck: string) {
+  if (!sck) return
+  try {
+    const u = new URL(a.href)
+    u.searchParams.set(
+      'client_reference_id',
+      sck.slice(0, 200).replace(/[^a-zA-Z0-9|_-]/g, '-')
+    )
+    a.href = u.toString()
+  } catch {}
+}
+
 function lerLS(chave: string) {
   try {
     return localStorage.getItem(chave)
@@ -116,6 +175,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
   const syncRef = useRef<Sync | null>(null)
   const varianteRef = useRef<Variante | null>(null)
   const sessao = useRef<string>('')
+  const sckRef = useRef<string>('')
 
   const chaveAB = `vsl_ab_${config.video_id}`
   const chaveSync = `vsl_sync_${config.video_id}`
@@ -134,7 +194,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
           evento: nome,
           segundo: extra?.segundo,
           rotulo: extra?.rotulo,
-          utm: typeof window !== 'undefined' ? window.location.search.slice(0, 500) : '',
+          utm: (sckRef.current || '') + (typeof window !== 'undefined' ? ' ' + window.location.search : ''),
         })
         const blob = new Blob([corpo], { type: 'application/json' })
         if (!navigator.sendBeacon('/api/vsl/evento', blob)) {
@@ -550,11 +610,24 @@ export default function AulaPlayer({ config }: { config: Config }) {
   const thumbUrl = config.fixos?.thumb?.arquivo_url || null
   const [thumbNoAr, setThumbNoAr] = useState(!!thumbUrl)
 
-  /* observação de checkout: clique em qualquer plano vira evento */
+  /* rastreio + observação de checkout */
   useEffect(() => {
+    const sck = resolverSck()
+    sckRef.current = sck
+
+    const carimbarTodos = () => {
+      document
+        .querySelectorAll<HTMLAnchorElement>('a[href*="buy.stripe.com"]')
+        .forEach((a) => carimbar(a, sck))
+    }
+    carimbarTodos()
+
     const onClique = (e: MouseEvent) => {
       const alvo = (e.target as HTMLElement | null)?.closest('[data-checkout]')
       if (!alvo) return
+      /* reforço no clique: se algo tiver reescrito o href entre o mount e
+         agora, o carimbo entra antes de a navegação sair */
+      carimbar(alvo as HTMLAnchorElement, sckRef.current)
       evento('clicou_cta', { rotulo: alvo.getAttribute('data-checkout') || '' })
     }
     document.addEventListener('click', onClique)

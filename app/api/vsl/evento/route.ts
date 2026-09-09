@@ -24,6 +24,7 @@ const EVENTOS = new Set([
   'pitch',         // cruzou o pitch: a página abriu
   'abriu_oferta',  // rolou até a dobra de planos
   'clicou_cta',    // clicou num botão de checkout (rotulo = mensal|anual)
+  'clicou_whats',  // foi falar com a IA de vendas (rotulo = fechada|aberta)
   'fim',           // vídeo terminou
 ])
 
