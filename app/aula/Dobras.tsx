@@ -459,6 +459,13 @@ export function Rodape() {
         <div>
           O preço que você entra é o que você paga, nos dois planos, enquanto você ficar.
           <br />7 dias de arrependimento (art. 49, CDC) · cancelamento em dois cliques
+          {/* razão social, CNPJ e endereço: o Decreto 7.962/2013 exige os três
+              em página que vende pela internet. CNPJ conferido na base pública
+              da Receita em 08/09/2026 (ATIVA desde 2020, sócios Augusto e
+              Karina). No acervo havia dúvida sobre o endereço de Coroaci/MG —
+              é o cadastro mesmo, confirmado pelo Augusto. */}
+          <br />ÂMAGO LTDA · CNPJ 39.325.398/0001-71
+          <br />Rua Dom Manoel, 25 — Centro, Coroaci/MG, CEP 39710-000
           <br />© 2026 Augusto Gobatto · <a href="/privacidade">Política de privacidade</a>
         </div>
       </div>
