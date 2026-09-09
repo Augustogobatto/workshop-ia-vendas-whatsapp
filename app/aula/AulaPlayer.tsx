@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { pixelCustom, pixelTrack, VALOR_PLANO } from './pixel'
 
 /**
  * Motor da /aula — portado do player do funil "Protocolo Viral"
@@ -255,6 +256,10 @@ export default function AulaPlayer({ config }: { config: Config }) {
       evento(motivo === 'pitch' || motivo === 'retomada' ? 'pitch' : 'pitch', {
         rotulo: motivo,
       })
+      /* pixel: só quem OUVIU o preço (agora, ou numa sessão anterior). O
+         escape hatch de QA e a rede de falha do vídeo abrem a página, mas
+         não são pitch — mandar pro pixel poluiria o público. */
+      if (motivo === 'pitch' || motivo === 'retomada') pixelCustom('Pitch', { motivo })
     },
     [evento]
   )
@@ -481,7 +486,12 @@ export default function AulaPlayer({ config }: { config: Config }) {
 
     video
       .play()
-      .then(() => evento(retomar > 0 ? 'retomou' : 'tocou_som', { segundo: Math.floor(retomar) }))
+      .then(() => {
+        const nome = retomar > 0 ? 'retomou' : 'tocou_som'
+        evento(nome, { segundo: Math.floor(retomar) })
+        /* pixel: ligar o som é o primeiro "assistiu" de verdade (mudo não conta) */
+        if (nome === 'tocou_som') pixelTrack('ViewContent', { content_name: 'aula-vsl' })
+      })
       .catch(() => {
         /* iOS em Low Power Mode recusa até no toque: desfaz e volta ao mudo */
         comecou.current = false
@@ -650,7 +660,17 @@ export default function AulaPlayer({ config }: { config: Config }) {
       /* reforço no clique: se algo tiver reescrito o href entre o mount e
          agora, o carimbo entra antes de a navegação sair */
       carimbar(alvo as HTMLAnchorElement, sckRef.current)
-      evento('clicou_cta', { rotulo: alvo.getAttribute('data-checkout') || '' })
+      const plano = alvo.getAttribute('data-checkout') || ''
+      evento('clicou_cta', { rotulo: plano })
+      /* pixel: InitiateCheckout PADRÃO (é o evento que a campanha otimiza —
+         não trocar por custom). `value` vem do plano clicado; sem plano
+         reconhecido, vai sem value em vez de inventar. */
+      pixelTrack('InitiateCheckout', {
+        content_name: 'club',
+        currency: 'BRL',
+        value: VALOR_PLANO[plano],
+        content_category: plano || undefined,
+      })
     }
     document.addEventListener('click', onClique)
     return () => document.removeEventListener('click', onClique)
@@ -667,6 +687,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
           if (en.isIntersecting && !disparado) {
             disparado = true
             evento('abriu_oferta')
+            pixelCustom('AbriuOferta')
             obs.disconnect()
           }
         }

@@ -14,6 +14,10 @@ com o som ligado**. Quem não ouve o preço não vê botão.
 - `Dobras.tsx` — tudo que só aparece depois do pitch. O `Rodape` fica FORA da trava.
 - `vsl-config.json` — as variantes de VSL e a moldura (headline, overlay, thumb).
 - `/api/vsl/evento` → tabela `vsl_eventos` + view `vsl_funil` no Supabase do Club.
+- `pixel.ts` — espelho no Pixel da Meta (`2685766708197733`): tocou_som → ViewContent,
+  pitch → Pitch, abriu_oferta → AbriuOferta, clicou_cta → **InitiateCheckout** (o evento
+  que a campanha otimiza). A BASE do pixel vem do `components/PixelGate.tsx` no layout
+  global — **não carregar `fbevents.js` aqui**, dobraria o PageView.
 
 ## Quando a VSL fechar (é isso e mais nada)
 
