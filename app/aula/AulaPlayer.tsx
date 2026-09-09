@@ -125,6 +125,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
   const varianteRef = useRef<Variante | null>(null)
   const sessao = useRef<string>('')
   const sckRef = useRef<string>('')
+  const internoRef = useRef(false)
   const visitanteRef = useRef<string>('')
 
   const chaveAB = `vsl_ab_${config.video_id}`
@@ -145,6 +146,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
           segundo: extra?.segundo,
           rotulo: extra?.rotulo,
           utm: (sckRef.current || '') + (typeof window !== 'undefined' ? ' ' + window.location.search : ''),
+          interno: internoRef.current,
         })
         const blob = new Blob([corpo], { type: 'application/json' })
         if (!navigator.sendBeacon('/api/vsl/evento', blob)) {
@@ -249,6 +251,12 @@ export default function AulaPlayer({ config }: { config: Config }) {
     }
 
     const params = new URLSearchParams(window.location.search)
+    /* /aula?eu=1 marca este navegador como interno pra sempre (e ?eu=0 desmarca):
+       sem isso, quem construiu a página vira metade do relatório dela. */
+    if (params.get('eu') === '1') gravarLS('vsl_interno', '1')
+    if (params.get('eu') === '0') { try { localStorage.removeItem('vsl_interno') } catch {} }
+    internoRef.current = lerLS('vsl_interno') === '1'
+
     const forcada = params.get('v')
     const pool = config.variantes.filter((v) => v.mp4 || v.hls)
     if (!pool.length) return

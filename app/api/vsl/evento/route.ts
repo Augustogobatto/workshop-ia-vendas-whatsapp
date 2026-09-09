@@ -58,6 +58,16 @@ export async function POST(req: Request) {
   const xff = req.headers.get('x-forwarded-for') ?? ''
   const ip = (xff.split(',')[0] ?? '').trim() || req.headers.get('x-real-ip') || null
 
+  /* Geolocalização vem da própria Vercel, nos headers da requisição. Nenhum IP
+     de visitante sai daqui pra serviço de terceiro só pra virar nome de cidade. */
+  let cidadeCrua = req.headers.get('x-vercel-ip-city')
+  try {
+    if (cidadeCrua) cidadeCrua = decodeURIComponent(cidadeCrua)
+  } catch {}
+  const cidade = texto(cidadeCrua, 80)
+  const regiao = texto(req.headers.get('x-vercel-ip-country-region'), 12)
+  const pais = texto(req.headers.get('x-vercel-ip-country'), 4)
+
   const linha = {
     video_id: texto(body.video_id, 40) ?? 'club-trafego',
     versao_id: inteiro(body.versao_id, 100000),
@@ -72,6 +82,12 @@ export async function POST(req: Request) {
     referer: texto(req.headers.get('referer'), 300),
     ua: texto(req.headers.get('user-agent'), 300),
     ip,
+    cidade,
+    regiao,
+    pais,
+    /* o próprio Augusto se marca com /aula?eu=1; sem isso ele vira 40% do
+       relatório dele mesmo */
+    interno: body.interno === true,
   }
 
   try {
