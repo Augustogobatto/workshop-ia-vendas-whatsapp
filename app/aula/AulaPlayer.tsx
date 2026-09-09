@@ -812,9 +812,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
         {cartao === 'pausa' && (
           <div className="au-cartao">
             <span className="eyebrow">Sua aula está só pausada</span>
-            <span className="apoio">
-              O que vem agora é a parte que muda o que você faz na segunda-feira.
-            </span>
+            <span className="apoio">Você parou no meio. Continua de onde estava.</span>
             <span className="grande">▶ Continuar assistindo</span>
           </div>
         )}

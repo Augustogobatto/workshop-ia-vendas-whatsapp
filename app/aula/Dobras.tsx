@@ -33,10 +33,8 @@ export default function Dobras() {
       <section className="au-sec">
         <div className="au-wrap">
           <span className="au-eyebrow">Prova</span>
-          <h2 className="au-h2">Não é promessa. É registro.</h2>
-          <p>
-            Tudo aqui tem data, nome e origem. O que eu não consigo mostrar, eu não escrevo.
-          </p>
+          <h2 className="au-h2">O que está aqui tem data, nome e origem.</h2>
+          <p>O que eu não consigo mostrar, eu não escrevo.</p>
 
           <div className="au-prova">
             <div className="au-recibo">
@@ -176,8 +174,8 @@ export default function Dobras() {
             chave das portas.
           </p>
           <p>
-            E a ordem importa. Começa pelo arquivo, porque no dia que ela acorda sabendo quem você
-            é, você não quer mais voltar pro consultório.
+            Começa pelo arquivo: no dia que ela acorda sabendo quem você é, você não quer mais
+            voltar pro consultório.
           </p>
         </div>
       </section>
@@ -343,7 +341,7 @@ export default function Dobras() {
       <section className="au-sec">
         <div className="au-wrap">
           <span className="au-eyebrow">Dúvidas</span>
-          <h2 className="au-h2">Pergunta direta, resposta direta.</h2>
+          <h2 className="au-h2">O que me perguntam antes de entrar.</h2>
 
           <div className="au-faq">
             <details>
@@ -465,7 +463,7 @@ export function Rodape() {
               Karina). No acervo havia dúvida sobre o endereço de Coroaci/MG —
               é o cadastro mesmo, confirmado pelo Augusto. */}
           <br />ÂMAGO LTDA · CNPJ 39.325.398/0001-71
-          <br />Rua Dom Manoel, 25 — Centro, Coroaci/MG, CEP 39710-000
+          <br />Rua Dom Manoel, 25, Centro, Coroaci/MG, CEP 39710-000
           <br />© 2026 Augusto Gobatto · <a href="/privacidade">Política de privacidade</a>
         </div>
       </div>
