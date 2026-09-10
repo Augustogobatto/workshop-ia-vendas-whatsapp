@@ -785,16 +785,21 @@ export default function AulaPlayer({
         {anel && <span className="au-anel" aria-hidden />}
 
         {cartao === 'som' && (
-          <div className="au-cartao">
-            <span className="eyebrow">{fx.overlay?.eyebrow || 'ATIVE O SOM'}</span>
-            <span className="grande pulso">{fx.overlay?.sub || '▶ TOQUE PARA OUVIR'}</span>
-            <span className="apoio">
-              {carregando
-                ? 'Carregando…'
-                : semAutoplay
-                  ? 'Toque para começar a aula'
-                  : 'Seu vídeo já começou, mas está sem som'}
-            </span>
+          /* Botão de som no molde do funil de origem (Abraham, 10/09): um card
+             SÓLIDO com cara de botão, ícone de alto-falante mudo, e o vídeo em
+             volta continua vivo (sem gradiente escurecendo tudo). O texto
+             serifado pulsando lia como título, não como coisa de apertar. */
+          <div className="au-cartao au-cartao-som">
+            <div className="au-botao-som">
+              <span className="eyebrow">
+                {carregando ? 'CARREGANDO…' : semAutoplay ? 'SUA AULA ESTÁ PRONTA' : 'SEU VÍDEO JÁ COMEÇOU'}
+              </span>
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M11 5 6 9H3v6h3l5 4V5Z" fill="currentColor" />
+                <path d="m16 9 5 6M21 9l-5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <span className="grande">{semAutoplay ? 'Toque para assistir' : 'Toque para ouvir'}</span>
+            </div>
           </div>
         )}
 

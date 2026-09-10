@@ -130,6 +130,19 @@
 .au-cartao .grande { font-family: var(--serif); font-size: clamp(20px, 4.4vw, 26px); line-height: 1.2; }
 .au-cartao .apoio { color: rgba(255,255,255,.78); font-size: 14.5px; max-width: 32ch; }
 .au-cartao .pulso { animation: au-pulsa 1.9s ease-in-out infinite; }
+/* botão de som: sem escurecer o vídeo; o card branco é o único elemento */
+.au-cartao-som { background: none; backdrop-filter: none; }
+.au-botao-som {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.96); color: #0b0b0b; border-radius: 18px;
+  padding: 18px 26px 16px; min-width: 210px;
+  box-shadow: 0 10px 34px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.06);
+  animation: au-respira 2.2s ease-in-out infinite;
+}
+.au-botao-som .eyebrow { color: #0b0b0b; opacity: .72; font-size: 11px; letter-spacing: .14em; }
+.au-botao-som .grande { font-family: var(--sans); font-weight: 750; font-size: 18px; letter-spacing: -.01em; }
+@keyframes au-respira { 0%,100% { transform: scale(1) } 50% { transform: scale(1.035) } }
+@media (prefers-reduced-motion: reduce) { .au-botao-som { animation: none; } }
 @keyframes au-pulsa { 0%,100% { opacity: 1 } 50% { opacity: .55 } }
 
 /* botão do pitch, SOBRE o vídeo: só existe depois do pitch visto */
