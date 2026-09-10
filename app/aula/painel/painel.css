@@ -90,3 +90,13 @@
 @keyframes pn-gira { to { transform: rotate(360deg); } }
 .pn-btn .giro { display: inline-block; }
 @media (prefers-reduced-motion: reduce) { .pn-btn.rodando .giro { animation: none; } }
+
+/* abas de período */
+.pn-abas { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 20px; }
+.pn-abas .aba {
+  padding: 7px 13px; border: 1px solid var(--line); border-radius: 100px;
+  color: var(--dim); text-decoration: none; font-size: 12.5px; font-weight: 500;
+  background: var(--card); white-space: nowrap;
+}
+.pn-abas .aba:hover { color: var(--ink); border-color: #3a3f46; }
+.pn-abas .aba.viva { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 650; }

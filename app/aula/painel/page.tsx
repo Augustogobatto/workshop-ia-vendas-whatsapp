@@ -24,6 +24,60 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+/* Períodos, com as bordas calculadas em São Paulo (o dia do anúncio e o dia
+   da sessão têm que fechar no mesmo fuso, senão o gasto de um dia cai no
+   funil de outro). */
+const PERIODOS = [
+  { id: 'hoje', nome: 'Hoje' },
+  { id: 'ontem', nome: 'Ontem' },
+  { id: 'semana', nome: 'Esta semana' },
+  { id: 'semana_passada', nome: 'Semana passada' },
+  { id: 'mes', nome: 'Este mês' },
+  { id: 'tudo', nome: 'Tudo' },
+] as const
+
+type PeriodoId = (typeof PERIODOS)[number]['id']
+
+function emSaoPaulo(d = new Date()) {
+  return new Date(d.getTime() - 3 * 3600 * 1000)
+}
+function iso(d: Date) {
+  return d.toISOString().slice(0, 10)
+}
+function maisDias(d: Date, n: number) {
+  const x = new Date(d)
+  x.setUTCDate(x.getUTCDate() + n)
+  return x
+}
+
+/** Devolve [de, ate] em AAAA-MM-DD, inclusivo nas duas pontas. */
+function janela(id: PeriodoId): [string, string] {
+  const hoje = emSaoPaulo()
+  const h = iso(hoje)
+  switch (id) {
+    case 'ontem': {
+      const o = iso(maisDias(hoje, -1))
+      return [o, o]
+    }
+    case 'semana': {
+      /* semana começa na segunda: 0=domingo vira 6 */
+      const dow = (hoje.getUTCDay() + 6) % 7
+      return [iso(maisDias(hoje, -dow)), h]
+    }
+    case 'semana_passada': {
+      const dow = (hoje.getUTCDay() + 6) % 7
+      const seg = maisDias(hoje, -dow - 7)
+      return [iso(seg), iso(maisDias(seg, 6))]
+    }
+    case 'mes':
+      return [h.slice(0, 8) + '01', h]
+    case 'tudo':
+      return ['2026-01-01', h]
+    default:
+      return [h, h]
+  }
+}
+
 type Linha = {
   dia: string; ad_name: string; adset_name: string
   gasto: number; impressoes: number; cliques: number
@@ -49,7 +103,7 @@ function piso(v: number | null | undefined, minimo: number) {
 export default async function Painel({
   searchParams,
 }: {
-  searchParams: Promise<{ chave?: string; dia?: string }>
+  searchParams: Promise<{ chave?: string; periodo?: string; dia?: string }>
 }) {
   const sp = await searchParams
   if (sp.chave !== CHAVE) {
@@ -68,11 +122,49 @@ export default async function Painel({
     { auth: { persistSession: false } }
   )
 
-  const hoje = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
-  const dia = sp.dia || hoje
+  const periodo: PeriodoId = (PERIODOS.find((p) => p.id === sp.periodo)?.id ??
+    'hoje') as PeriodoId
+  /* ?dia= continua funcionando pra apontar um dia específico */
+  const [de, ate] = sp.dia ? [sp.dia, sp.dia] : janela(periodo)
 
-  const { data } = await db.from('vsl_painel').select('*').eq('dia', dia).order('gasto', { ascending: false })
-  const linhas = (data || []) as Linha[]
+  const { data } = await db
+    .from('vsl_painel')
+    .select('*')
+    .gte('dia', de)
+    .lte('dia', ate)
+    .order('gasto', { ascending: false })
+
+  /* Uma linha por anúncio x público, somando os dias do período. As taxas são
+     recalculadas do total — média de porcentagem por dia daria número errado. */
+  const mapa = new Map<string, Linha>()
+  for (const l of (data || []) as Linha[]) {
+    const ch = l.ad_name + '|' + l.adset_name
+    const a = mapa.get(ch)
+    if (!a) {
+      mapa.set(ch, { ...l })
+      continue
+    }
+    a.gasto = Number(a.gasto) + Number(l.gasto)
+    a.impressoes += l.impressoes
+    a.cliques += l.cliques
+    a.carregou += l.carregou
+    a.play += l.play
+    a.min1 += l.min1
+    a.pitch += l.pitch
+    a.checkout += l.checkout
+    if (l.atualizado > a.atualizado) a.atualizado = l.atualizado
+  }
+  const linhas = Array.from(mapa.values())
+    .map((l) => ({
+      ...l,
+      cpm: l.impressoes ? (1000 * Number(l.gasto)) / l.impressoes : 0,
+      ctr: l.impressoes ? (100 * l.cliques) / l.impressoes : 0,
+      cpc: l.cliques ? Number(l.gasto) / l.cliques : 0,
+      play_rate: l.carregou ? Math.round((100 * l.play) / l.carregou) : null,
+      custo_play: l.play ? Number(l.gasto) / l.play : null,
+      custo_pitch: l.pitch ? Number(l.gasto) / l.pitch : null,
+    }))
+    .sort((a, b) => Number(b.gasto) - Number(a.gasto))
 
   const t = linhas.reduce(
     (a, l) => ({
@@ -111,8 +203,10 @@ export default async function Painel({
           <div>
             <h1>Funil VSL</h1>
             <p className="pn-sub">
-              {dia.split('-').reverse().join('/')} · só gente (robô da Meta e visita interna ficam
-              de fora)
+              {de === ate
+                ? de.split('-').reverse().join('/')
+                : `${de.split('-').reverse().join('/')} a ${ate.split('-').reverse().join('/')}`}{' '}
+              · só gente (robô da Meta e visita interna ficam de fora)
             </p>
           </div>
           <BotaoRecarregar idadeMin={idadeMin} velho={dadoVelho} />
@@ -125,6 +219,18 @@ export default async function Painel({
             de mídia abaixo são dessa leitura antiga; os da página são ao vivo.
           </p>
         )}
+
+        <nav className="pn-abas">
+          {PERIODOS.map((p) => (
+            <a
+              key={p.id}
+              href={`?chave=${CHAVE}&periodo=${p.id}`}
+              className={'aba' + (p.id === periodo && !sp.dia ? ' viva' : '')}
+            >
+              {p.nome}
+            </a>
+          ))}
+        </nav>
 
         <section className="pn-cifras">
           <div className="c"><b>{brl(t.gasto)}</b><span>gasto</span></div>
