@@ -302,7 +302,7 @@ export default async function Painel({
      Só sessão paga (origem meta|paid), porque é o play rate do tráfego que a régua mede. */
   const ROTULO_VERSAO: Record<number, string> = {
     1: 'v1 · atual (sem headline, tarja, sem thumb)',
-    2: 'v2 · thumb toc-toc + headline + sem tarja',
+    2: 'v2 · thumb toc-toc + sem tarja',
   }
   const versaoDoVisitante = new Map<string, number>()
   const porVersao = new Map<number, { sess: number; play: number; pitch: number; clicou: number; vendas: number }>()
@@ -560,7 +560,7 @@ export default async function Painel({
             </table>
           </div>
           <p className="pn-nota">
-            Teste do play rate (10/09): a v2 troca o herói (thumb em loop do toc-toc, headline, sem tarja),
+            Teste do play rate (10/09): a v2 troca o herói (thumb em loop do toc-toc, sem tarja; headline fora nas duas),
             o vídeo é o mesmo. Sorteio 50/50 por visitante, nas duas páginas. Piso do play: 60%.
           </p>
         </section>
