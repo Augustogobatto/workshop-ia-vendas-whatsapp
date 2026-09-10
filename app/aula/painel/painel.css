@@ -50,6 +50,7 @@
 .pn td.abaixo { color: var(--alerta); }
 .pn td.abaixo small { color: var(--alerta); }
 .pn td.forte { font-weight: 650; }
+.pn td.venda { color: var(--ok); font-weight: 650; }
 .pn tbody tr:last-child th, .pn tbody tr:last-child td { border-bottom: 0; }
 .pn tbody tr:hover td, .pn tbody tr:hover th { background: rgba(255,255,255,.02); }
 

@@ -6,10 +6,18 @@ import './painel.css'
 /**
  * Painel do funil da /aula: do anúncio até o checkout, num lugar só.
  *
- * A mídia vem da tabela `vsl_midia`, que um cron na vps-claude regrava de 15
- * em 15 minutos (`club-funil/coleta_midia.py`). Assim o token do Meta nunca
+ * A mídia vem da tabela `vsl_midia`, que um cron na vps-claude regrava de 2
+ * em 2 minutos (`club-funil/coleta_midia.py`). Assim o token do Meta nunca
  * precisa existir na Vercel. O funil vem de `vsl_painel`, que já junta as
- * duas fontes — esta página não faz conta, só desenha.
+ * duas fontes. A venda vem de `vsl_vendas`: o webhook do Stripe (stripe-capi
+ * na vps-claude) grava cada compra em `meta_capi_log` com o `visitante_id`
+ * que a página mandou como `client_reference_id`, e a view cruza com
+ * `rastreio_visitantes` pra achar o anúncio e o público do comprador. Só
+ * compra real e paga entra (teste assinado e boleto em aberto ficam de fora).
+ *
+ * O cruzamento venda x anúncio é por nome (ad_name|adset_name), não por dia:
+ * quem clica hoje e paga amanhã cai no anúncio certo, e o gasto do período
+ * inteiro é o que importa pro CAC e pro ROAS.
  *
  * Protegido por chave na URL, como o /votacao. Não é dado sensível, mas também
  * não é pra sair pelo Google.
@@ -86,6 +94,13 @@ type Linha = {
   play_rate: number | null; pct_1min: number | null; pct_pitch: number | null
   custo_play: number | null; custo_pitch: number | null
   atualizado: string
+  vendas: number; faturado: number
+}
+
+type Venda = {
+  id: number; criado_em: string; dia: string; plano: 'mensal' | 'anual'
+  valor: number; visitante_id: string | null
+  ad_name: string | null; adset_name: string | null; pagina: string | null
 }
 
 function brl(v: number | null | undefined, casas = 2) {
@@ -127,12 +142,21 @@ export default async function Painel({
   /* ?dia= continua funcionando pra apontar um dia específico */
   const [de, ate] = sp.dia ? [sp.dia, sp.dia] : janela(periodo)
 
-  const { data } = await db
-    .from('vsl_painel')
-    .select('*')
-    .gte('dia', de)
-    .lte('dia', ate)
-    .order('gasto', { ascending: false })
+  const [{ data }, { data: vendasData }] = await Promise.all([
+    db
+      .from('vsl_painel')
+      .select('*')
+      .gte('dia', de)
+      .lte('dia', ate)
+      .order('gasto', { ascending: false }),
+    db
+      .from('vsl_vendas')
+      .select('id,criado_em,dia,plano,valor,visitante_id,ad_name,adset_name,pagina')
+      .gte('dia', de)
+      .lte('dia', ate)
+      .order('criado_em', { ascending: true }),
+  ])
+  const vendas = (vendasData || []) as Venda[]
 
   /* Uma linha por anúncio x público, somando os dias do período. As taxas são
      recalculadas do total — média de porcentagem por dia daria número errado. */
@@ -141,7 +165,7 @@ export default async function Painel({
     const ch = l.ad_name + '|' + l.adset_name
     const a = mapa.get(ch)
     if (!a) {
-      mapa.set(ch, { ...l })
+      mapa.set(ch, { ...l, vendas: 0, faturado: 0 })
       continue
     }
     a.gasto = Number(a.gasto) + Number(l.gasto)
@@ -154,6 +178,32 @@ export default async function Painel({
     a.checkout += l.checkout
     if (l.atualizado > a.atualizado) a.atualizado = l.atualizado
   }
+
+  /* Vendas: as que vieram de anúncio entram na linha do anúncio. Se o anúncio
+     não tem mídia no período (pausado, ou clique de ontem pagando hoje num
+     período de um dia só), a linha nasce zerada em mídia mas com a venda —
+     esconder venda é pior que mostrar linha sem gasto. As sem anúncio (/club
+     direto, orgânico, rastreio perdido) ficam fora da conta e são listadas. */
+  const vendasAds = vendas.filter((v) => v.ad_name)
+  const vendasFora = vendas.filter((v) => !v.ad_name)
+  for (const v of vendasAds) {
+    const ch = v.ad_name + '|' + v.adset_name
+    let a = mapa.get(ch)
+    if (!a) {
+      a = {
+        dia: v.dia, ad_name: v.ad_name!, adset_name: v.adset_name || '',
+        gasto: 0, impressoes: 0, cliques: 0, ctr: 0, cpc: 0, cpm: 0,
+        carregou: 0, play: 0, min1: 0, pitch: 0, checkout: 0,
+        play_rate: null, pct_1min: null, pct_pitch: null,
+        custo_play: null, custo_pitch: null, atualizado: '',
+        vendas: 0, faturado: 0,
+      }
+      mapa.set(ch, a)
+    }
+    a.vendas += 1
+    a.faturado += Number(v.valor)
+  }
+
   const linhas = Array.from(mapa.values())
     .map((l) => ({
       ...l,
@@ -163,6 +213,8 @@ export default async function Painel({
       play_rate: l.carregou ? Math.round((100 * l.play) / l.carregou) : null,
       custo_play: l.play ? Number(l.gasto) / l.play : null,
       custo_pitch: l.pitch ? Number(l.gasto) / l.pitch : null,
+      cac: l.vendas ? Number(l.gasto) / l.vendas : null,
+      roas: Number(l.gasto) ? l.faturado / Number(l.gasto) : null,
     }))
     .sort((a, b) => Number(b.gasto) - Number(a.gasto))
 
@@ -176,9 +228,16 @@ export default async function Painel({
       min1: a.min1 + (l.min1 || 0),
       pitch: a.pitch + (l.pitch || 0),
       checkout: a.checkout + (l.checkout || 0),
+      vendas: a.vendas + (l.vendas || 0),
+      faturado: a.faturado + (l.faturado || 0),
     }),
-    { gasto: 0, impressoes: 0, cliques: 0, carregou: 0, play: 0, min1: 0, pitch: 0, checkout: 0 }
+    { gasto: 0, impressoes: 0, cliques: 0, carregou: 0, play: 0, min1: 0, pitch: 0, checkout: 0, vendas: 0, faturado: 0 }
   )
+  const cac = t.vendas ? t.gasto / t.vendas : null
+  const roas = t.gasto ? t.faturado / t.gasto : null
+  const mensais = vendasAds.filter((v) => v.plano === 'mensal').length
+  const anuais = vendasAds.filter((v) => v.plano === 'anual').length
+  const faturadoFora = vendasFora.reduce((a, v) => a + Number(v.valor), 0)
 
   const taxa = (a: number, b: number) => (b ? Math.round((100 * a) / b) : null)
   const atualizado = linhas[0]?.atualizado
@@ -239,7 +298,46 @@ export default async function Painel({
           <div className="c"><b>{t.carregou}</b><span>carregaram</span></div>
           <div className="c"><b>{t.play}</b><span>deram play</span></div>
           <div className="c"><b>{t.pitch}</b><span>ouviram o preço</span></div>
-          <div className="c dest"><b>{t.checkout}</b><span>foram ao checkout</span></div>
+          <div className="c"><b>{t.checkout}</b><span>foram ao checkout</span></div>
+          <div className="c dest"><b>{t.vendas}</b><span>compraram</span></div>
+          <div className="c dest"><b>{brl(t.faturado, 0)}</b><span>faturado</span></div>
+        </section>
+
+        <section>
+          <h2>O retorno</h2>
+          <div className="pn-taxas">
+            <div className="tx">
+              <b>{brl(t.faturado, 0)}</b>
+              <span>faturado</span>
+              <i>{mensais} mensal · {anuais} anual</i>
+            </div>
+            <div className="tx">
+              <b>{brl(cac, 0)}</b>
+              <span>CAC</span><i>gasto ÷ vendas</i>
+            </div>
+            <div className={'tx' + (roas !== null && roas < 1 ? ' abaixo' : '')}>
+              <b>{roas === null ? '—' : roas.toFixed(2).replace('.', ',') + 'x'}</b>
+              <span>ROAS</span><i>faturado ÷ gasto · abaixo de 1x paga menos que custou</i>
+            </div>
+            <div className="tx">
+              <b>{pct(taxa(t.vendas, t.checkout))}</b>
+              <span>checkout → venda</span><i>quem foi pagar e pagou</i>
+            </div>
+          </div>
+          <p className="pn-nota">
+            Faturado é o que entrou no checkout (R$70 do mensal conta R$70, não o ano). Só compra
+            paga: boleto em aberto e teste ficam de fora.
+            {vendasFora.length > 0 && (
+              <>
+                {' '}Fora dos anúncios no período: {vendasFora.length}{' '}
+                {vendasFora.length === 1 ? 'venda' : 'vendas'} ({brl(faturadoFora, 0)}) —{' '}
+                {vendasFora
+                  .map((v) => `${v.plano} ${v.pagina || '?'} ${v.visitante_id ? 'sem UTM de anúncio' : 'sem visitante'}`)
+                  .join(', ')}
+                .
+              </>
+            )}
+          </p>
         </section>
 
         <section>
@@ -284,7 +382,9 @@ export default async function Painel({
                   <th className="n">CTR</th><th className="n">CPC</th>
                   <th className="n">carr</th><th className="n">play</th><th className="n">1min</th>
                   <th className="n">pitch</th><th className="n">chkt</th>
+                  <th className="n">vendas</th><th className="n">fat.</th>
                   <th className="n">R$/play</th><th className="n">R$/pitch</th>
+                  <th className="n">CAC</th><th className="n">ROAS</th>
                 </tr>
               </thead>
               <tbody>
@@ -304,12 +404,18 @@ export default async function Painel({
                     <td className="n">{l.min1}</td>
                     <td className="n">{l.pitch}</td>
                     <td className="n">{l.checkout}</td>
+                    <td className={'n' + (l.vendas ? ' venda' : '')}>{l.vendas}</td>
+                    <td className={'n' + (l.vendas ? ' venda' : '')}>{brl(l.faturado, 0)}</td>
                     <td className="n">{brl(l.custo_play)}</td>
                     <td className="n forte">{brl(l.custo_pitch)}</td>
+                    <td className="n">{brl(l.cac, 0)}</td>
+                    <td className="n forte">
+                      {l.roas === null ? '—' : l.roas.toFixed(2).replace('.', ',') + 'x'}
+                    </td>
                   </tr>
                 ))}
                 {!linhas.length && (
-                  <tr><td colSpan={14} className="pn-nada">Nada nesse dia ainda.</td></tr>
+                  <tr><td colSpan={18} className="pn-nada">Nada nesse dia ainda.</td></tr>
                 )}
               </tbody>
             </table>
@@ -318,7 +424,8 @@ export default async function Painel({
 
         <footer className="pn-rodape">
           Mídia da tabela <code>vsl_midia</code> (cron de 15 min na vps-claude) · funil da view{' '}
-          <code>vsl_painel</code> · robô da Meta e visita interna filtrados por{' '}
+          <code>vsl_painel</code> · vendas da view <code>vsl_vendas</code> (webhook do Stripe →{' '}
+          <code>meta_capi_log</code> → visitante → anúncio) · robô da Meta e visita interna filtrados por{' '}
           <code>vsl_sessoes_humanas</code>. Marque seu navegador com <code>/aula?eu=1</code>.
         </footer>
       </div>
