@@ -310,6 +310,7 @@ export default function PreCheckout({
     setOcupado(true)
     setErro('')
     try {
+      evento('pre_checkout_dados')
       await salvar({
         nome: nome.trim(),
         cpf: cpf.replace(/\D/g, ''),

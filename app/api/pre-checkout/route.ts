@@ -24,11 +24,30 @@ export const dynamic = 'force-dynamic'
 const VISITANTE_RE = /^v_[a-z0-9]{20}$/
 const PAGINAS = new Set(['/aula', '/aula-v2'])
 const METODOS = new Set(['cartao', 'pix'])
+/**
+ * O estado só ANDA PRA FRENTE. A régua vale pros estados do popup e pros que
+ * o `club-pagamentos` escreve sozinho.
+ *
+ * Não é preciosismo: o backend só reusa uma autorização de Pix se a linha
+ * estiver em `qr_exibido`. Medido em 10/09/2026 — o popup mandou `dados` de
+ * novo, rebaixou a linha, e o mesmo visitante ganhou uma SEGUNDA autorização
+ * no Asaas (dois clientes, duas cobranças agendadas). Estado que anda pra
+ * trás vira cobrança duplicada.
+ */
+const RANK: Record<string, number> = {
+  abriu: 1,
+  telefone: 2,
+  metodo: 3,
+  dados: 4,
+  qr_exibido: 5,
+  stripe_redirect: 6,
+  expirado: 7,
+  recusado: 7,
+  ativo: 9,
+  pago: 9,
+}
+/* o que o popup tem permissão de escrever */
 const ESTADOS = new Set(['abriu', 'telefone', 'metodo', 'dados', 'qr_exibido', 'stripe_redirect'])
-
-/* Estados que o backend do Asaas escreve quando o dinheiro entrou. O popup
-   nunca pode rebaixá-los: um clique atrasado apagaria a venda da tabela. */
-const TERMINAIS = new Set(['pago', 'ativo'])
 
 function texto(v: unknown, max: number) {
   if (typeof v !== 'string') return null
@@ -102,7 +121,8 @@ export async function POST(req: Request) {
         .select('estado')
         .eq('visitante_id', visitante_id)
         .maybeSingle()
-      if (!atual || !TERMINAIS.has(String(atual.estado))) linha.estado = estado
+      const agora = atual ? (RANK[String(atual.estado)] ?? 0) : 0
+      if ((RANK[estado] ?? 0) > agora) linha.estado = estado
     }
 
     const { error } = await db.from('pre_checkout').upsert(linha, { onConflict: 'visitante_id' })
