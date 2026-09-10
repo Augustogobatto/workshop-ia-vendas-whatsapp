@@ -526,7 +526,7 @@ export default function PreCheckout({
               </button>
               <button type="button" className="pc-opcao" onClick={escolherPix}>
                 <strong>Pix recorrente (autoriza uma vez no app do banco)</strong>
-                <span>Sem cartão. A cobrança mensal sai direto da sua conta.</span>
+                <span>Sem cartão. A cobrança mensal sai direto da sua conta. Você cancela quando quiser, no app do seu banco.</span>
               </button>
             </div>
             {erro && <p className="pc-erro">{erro}</p>}
@@ -602,7 +602,8 @@ export default function PreCheckout({
             <h2 className="pc-h">Abra o app do seu banco.</h2>
             <p className="pc-ajuda">
               Ele vai perguntar duas coisas: pagar {VALOR_MENSAL} agora e autorizar {VALOR_MENSAL}{' '}
-              por mês.
+              por mês. O Pix Automático pode ser cancelado a qualquer momento por você, no app do seu
+              banco.
             </p>
 
             {!expirado ? (
