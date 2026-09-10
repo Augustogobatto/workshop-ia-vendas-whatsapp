@@ -36,6 +36,9 @@ type Variante = {
   duration_s: number
   peso?: number
   fase?: string
+  /** Sobrescreve `fixos` só nesta variante (teste de herói: thumb em loop,
+   *  headline, tarja). O que não vier aqui herda de `config.fixos`. */
+  fixos?: Partial<Fixos>
 }
 
 type Fixos = {
@@ -454,6 +457,8 @@ export default function AulaPlayer({
     video
       .play()
       .then(() => {
+        /* som ligado = o vídeo principal assume; a thumb em loop sai de cima */
+        setThumbNoAr(false)
         const nome = retomar > 0 ? 'retomou' : 'tocou_som'
         evento(nome, { segundo: Math.floor(retomar) })
         /* pixel: ligar o som é o primeiro "assistiu" de verdade (mudo não conta) */
@@ -606,8 +611,11 @@ export default function AulaPlayer({
 
   /* thumb em loop enquanto o vídeo principal carrega. Qualquer erro devolve o
      comportamento padrão: a thumb nunca pode quebrar o play. */
-  const thumbUrl = config.fixos?.thumb?.arquivo_url || null
-  const [thumbNoAr, setThumbNoAr] = useState(!!thumbUrl)
+  const fxThumb = variante?.fixos?.thumb ?? config.fixos?.thumb
+  const thumbUrl = fxThumb?.arquivo_url || null
+  const [thumbNoAr, setThumbNoAr] = useState(false)
+  /* a variante só resolve depois do mount, então a thumb liga quando ela chega */
+  useEffect(() => { setThumbNoAr(!!thumbUrl) }, [thumbUrl])
 
   /* rastreio + observação de checkout */
   useEffect(() => {
@@ -674,12 +682,14 @@ export default function AulaPlayer({
         '?text=' + encodeURIComponent(zap.mensagem || 'Oi!')
       : null
 
-  const fx = config.fixos || {}
+  /* fixos da página + o que a variante sorteada sobrescreve (teste de herói) */
+  const fx: Fixos = { ...(config.fixos || {}), ...(variante?.fixos || {}) }
   const tarja = fx.tarja
   const semHeadline = fx.headline?.sem_headline
   const h1 = fx.headline?.h1 || 'Uma pessoa. O trabalho de dez.'
+  /* `sub: ""` explícito = sem subtítulo (herói só com a headline) */
   const sub =
-    fx.headline?.sub ||
+    fx.headline?.sub ??
     'Neste vídeo eu rodo a mesma IA de dois jeitos, no mesmo dia, com a mesma frase, e mostro as quatro coisas que eu dei pra ela sair do chat e ir trabalhar dentro do meu negócio.'
 
   return (
@@ -845,7 +855,7 @@ export default function AulaPlayer({
         </div>
       </div>
 
-      {!semHeadline && <p className="au-sub">{sub}</p>}
+      {!semHeadline && sub && <p className="au-sub">{sub}</p>}
 
       {/* nada de texto na dobra fechada: pagina de trafego e o video. A nota
           so existe depois que a pagina abre, pra apontar pra oferta. */}

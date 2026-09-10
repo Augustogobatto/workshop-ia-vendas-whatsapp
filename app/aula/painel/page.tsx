@@ -113,6 +113,8 @@ type SessaoHumana = {
   ligou_o_som: boolean | null
   chegou_no_pitch: boolean | null
   clicou: boolean | null
+  versao_id?: number | null
+  origem?: string | null
 }
 type EventoPC = {
   sessao: string | null
@@ -198,7 +200,7 @@ export default async function Painel({
       /* já vem sem robô da Meta e sem visita interna */
       db
         .from('vsl_sessoes_humanas')
-        .select('sessao,pagina,visitante_id,ligou_o_som,chegou_no_pitch,clicou')
+        .select('sessao,pagina,visitante_id,ligou_o_som,chegou_no_pitch,clicou,versao_id,origem')
         .gte('chegou_em', deTs)
         .lt('chegou_em', ateTs)
         .limit(20000),
@@ -295,6 +297,30 @@ export default async function Painel({
   const mensais = vendasAds.filter((v) => v.plano === 'mensal').length
   const anuais = vendasAds.filter((v) => v.plano === 'anual').length
   const faturadoFora = vendasFora.reduce((a, v) => a + Number(v.valor), 0)
+
+  /* ── Por versão do herói (teste de play rate, 10/09): v1 controle × v2 thumb+headline+sem tarja ──
+     Só sessão paga (origem meta|paid), porque é o play rate do tráfego que a régua mede. */
+  const ROTULO_VERSAO: Record<number, string> = {
+    1: 'v1 · atual (sem headline, tarja, sem thumb)',
+    2: 'v2 · thumb toc-toc + headline + sem tarja',
+  }
+  const versaoDoVisitante = new Map<string, number>()
+  const porVersao = new Map<number, { sess: number; play: number; pitch: number; clicou: number; vendas: number }>()
+  for (const x of (sessoesData || []) as SessaoHumana[]) {
+    if (!x.origem || !x.origem.startsWith('meta|paid') || !x.versao_id) continue
+    const b = porVersao.get(x.versao_id) || { sess: 0, play: 0, pitch: 0, clicou: 0, vendas: 0 }
+    b.sess += 1
+    if (x.ligou_o_som) b.play += 1
+    if (x.chegou_no_pitch) b.pitch += 1
+    if (x.clicou) b.clicou += 1
+    porVersao.set(x.versao_id, b)
+    if (x.visitante_id) versaoDoVisitante.set(x.visitante_id, x.versao_id)
+  }
+  for (const v of vendas) {
+    const ver = v.visitante_id ? versaoDoVisitante.get(v.visitante_id) : undefined
+    if (ver && porVersao.has(ver)) porVersao.get(ver)!.vendas += 1
+  }
+  const linhasVersao = Array.from(porVersao.entries()).sort((a, b) => a[0] - b[0])
 
   /* ── Por página: /aula (controle) × /aula-v2 (pré-checkout) ──
      A pergunta do teste é uma só: de quem clicou no mensal, quantos pagaram?
@@ -501,6 +527,41 @@ export default async function Painel({
             Pisos da régua do Felipe. Em vermelho, abaixo do piso.
             Custo por play {brl(t.play ? t.gasto / t.play : null)} · por pitch{' '}
             {brl(t.pitch ? t.gasto / t.pitch : null)}
+          </p>
+        </section>
+
+        <section>
+          <h2>Por versão do herói</h2>
+          <div className="pn-rolagem">
+            <table>
+              <thead>
+                <tr>
+                  <th>versão</th><th className="n">sessões</th><th className="n">play</th>
+                  <th className="n">pitch</th><th className="n">clicou CTA</th><th className="n">vendas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {linhasVersao.map(([ver, b]) => (
+                  <tr key={ver}>
+                    <th>{ROTULO_VERSAO[ver] || `v${ver}`}</th>
+                    <td className="n">{b.sess}</td>
+                    <td className={'n' + piso(b.sess ? (100 * b.play) / b.sess : null, 60)}>
+                      {b.play} <small>{pct(taxa(b.play, b.sess))}</small>
+                    </td>
+                    <td className="n">{b.pitch} <small>{pct(taxa(b.pitch, b.play))}</small></td>
+                    <td className="n">{b.clicou}</td>
+                    <td className="n">{b.vendas}</td>
+                  </tr>
+                ))}
+                {!linhasVersao.length && (
+                  <tr><td colSpan={6} className="pn-nada">Sem sessão paga no período.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <p className="pn-nota">
+            Teste do play rate (10/09): a v2 troca o herói (thumb em loop do toc-toc, headline, sem tarja),
+            o vídeo é o mesmo. Sorteio 50/50 por visitante, nas duas páginas. Piso do play: 60%.
           </p>
         </section>
 

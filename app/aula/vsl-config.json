@@ -6,7 +6,8 @@
     "TROCAR AO FECHAR A VSL: mp4, hls, duration_s e principalmente pitch_s (segundo em que a oferta é falada).",
     "Enquanto publicada=false a página só abre com ?qa=1 — ninguém cai numa VSL com vídeo placeholder.",
     "Pitch 760s = 12:40 do corte 4, o segundo em que o preco e falado (conferido na transcricao). Bunny guid ff6bb282-2d7c-4825-ac42-fda03942daad.",
-    "Heroi roda SEM headline, como o funil de origem: pagina de trafego e eyebrow + video e mais nada. As headlines vivem em qa[], desligadas, ate serem promovidas para fixos.headline."
+    "Heroi roda SEM headline, como o funil de origem: pagina de trafego e eyebrow + video e mais nada. As headlines vivem em qa[], desligadas, ate serem promovidas para fixos.headline.",
+    "TESTE 10/09: v1 (controle, sem headline, tarja, sem thumb) x v2 (thumb toc-toc em loop, headline A, sem tarja), peso 50/50. Forcar: /aula?v=2. Ler play rate por versao no painel (secao Por versao)."
   ],
   "video_id": "club-trafego",
   "publicada": true,
@@ -20,8 +21,32 @@
       "poster": "https://vz-8fc1742b-5ed.b-cdn.net/ff6bb282-2d7c-4825-ac42-fda03942daad/thumbnail.jpg",
       "pitch_s": 760,
       "duration_s": 979,
-      "peso": 100,
-      "fase": "campea"
+      "peso": 50,
+      "fase": "controle"
+    },
+    {
+      "versao_id": 2,
+      "versao": 2,
+      "rotulo": "v2 — herói: thumb toc-toc em loop + headline A + sem tarja (teste de play rate, 10/09)",
+      "mp4": "https://vz-8fc1742b-5ed.b-cdn.net/ff6bb282-2d7c-4825-ac42-fda03942daad/play_720p.mp4",
+      "hls": "https://vz-8fc1742b-5ed.b-cdn.net/ff6bb282-2d7c-4825-ac42-fda03942daad/playlist.m3u8",
+      "poster": "https://vz-8fc1742b-5ed.b-cdn.net/ff6bb282-2d7c-4825-ac42-fda03942daad/thumbnail.jpg",
+      "pitch_s": 760,
+      "duration_s": 979,
+      "peso": 50,
+      "fase": "desafiante",
+      "fixos": {
+        "thumb": {
+          "thumb_id": null,
+          "arquivo_url": "/aula/thumb-som.mp4"
+        },
+        "headline": {
+          "h1": "Uma pessoa. O trabalho de dez.",
+          "sub": "",
+          "sem_headline": false
+        },
+        "tarja": null
+      }
     }
   ],
   "fixos": {
