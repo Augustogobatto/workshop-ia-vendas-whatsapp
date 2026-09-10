@@ -249,14 +249,17 @@ export default function PreCheckout({
       const novo = e164 !== telefoneSalvo.current
       telefoneSalvo.current = e164
       if (novo) evento('pre_checkout_telefone')
+      /* Avança PRIMEIRO. A gravação é uma ida ao servidor (upsert + consulta
+         de membro) e no 4G ruim demora — segurar a tela até ela voltar deixa
+         o botão morto justo em quem já decidiu comprar. Se a resposta disser
+         que a pessoa já é membro, a tela troca sozinha logo depois. */
+      if (avancar) setPasso('metodo')
       const { membro } = await salvar({ telefone: e164, estado: 'telefone' })
       if (membro) {
         fechouPorConversao.current = true
         evento('ja_membro', 'telefone')
         setPasso('membro')
-        return
       }
-      if (avancar) setPasso('metodo')
     },
     [telefone, evento, salvar]
   )
