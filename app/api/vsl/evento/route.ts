@@ -28,7 +28,22 @@ const EVENTOS = new Set([
   'fim',           // vídeo terminou
   'saiu',          // fechou/saiu: segundo = ponto máximo assistido,
                    // rotulo = "<segundos na página>s"
+  /* ── pré-checkout (/aula-v2, Fase 2 do plano de 10/09/2026) ──
+     São o que compara o braço do popup com o controle passo a passo. */
+  'pre_checkout_abriu',    // clicou no mensal e o popup abriu
+  'pre_checkout_telefone', // digitou um WhatsApp válido (salvo na hora)
+  'pre_checkout_metodo',   // escolheu como pagar (rotulo = cartao|pix)
+  'pre_checkout_dados',    // mandou nome + CPF + e-mail
+  'pix_qr_exibido',        // o QR de Pix Automático apareceu na tela
+  'pix_pago',              // o banco confirmou e a página redirecionou
+  'pre_checkout_fechou',   // fechou sem converter (rotulo = esc|fundo|x)
+  'ja_membro',             // o telefone/e-mail já tem assinatura ativa
 ])
+
+/* Braços do teste. Fora dessa lista, a coluna fica nula em vez de guardar
+   o que o navegador mandou — sendBeacon é público. */
+const PAGINAS = new Set(['/aula', '/aula-v2'])
+const VISITANTE_RE = /^v_[a-z0-9]{20}$/
 
 function texto(v: unknown, max: number) {
   return typeof v === 'string' ? v.slice(0, max) : null
@@ -68,8 +83,13 @@ export async function POST(req: Request) {
   const regiao = texto(req.headers.get('x-vercel-ip-country-region'), 12)
   const pais = texto(req.headers.get('x-vercel-ip-country'), 4)
 
+  const paginaCrua = texto(body.pagina, 40)
+  const visitanteCru = texto(body.visitante_id, 40)
+
   const linha = {
     video_id: texto(body.video_id, 40) ?? 'club-trafego',
+    pagina: paginaCrua && PAGINAS.has(paginaCrua) ? paginaCrua : null,
+    visitante_id: visitanteCru && VISITANTE_RE.test(visitanteCru) ? visitanteCru : null,
     versao_id: inteiro(body.versao_id, 100000),
     sessao: texto(body.sessao, 40),
     evento,

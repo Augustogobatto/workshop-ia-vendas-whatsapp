@@ -259,3 +259,108 @@
   .au-cartao .pulso, .au-tarja .pulso, .au-anel { animation: none; }
   .au-aberta #au-dobras { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   Pré-checkout (/aula-v2) — o popup do mensal.
+   Só existe no braço de teste; a /aula não renderiza nada disto.
+   Mobile primeiro: o comprador de hoje veio do Instagram no Android,
+   então a caixa nasce colada no rodapé da tela e o alvo de toque é
+   grande. REGRA DURA: nada aqui pode criar escassez — o relógio do QR
+   é o prazo real do código do banco, não pressão de venda.
+   ═══════════════════════════════════════════════════════ */
+.pc-fundo {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: rgba(0, 0, 0, .72);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  padding: 16px;
+  overflow-y: auto;
+}
+@media (min-width: 640px) { .pc-fundo { align-items: center; } }
+
+.pc-caixa {
+  position: relative; width: 100%; max-width: 420px;
+  background: var(--wash); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px 22px calc(22px + env(safe-area-inset-bottom));
+  font-family: var(--sans);
+  animation: pc-sobe .22s ease both;
+}
+@keyframes pc-sobe { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .pc-caixa { animation: none; } }
+
+.pc-x {
+  position: absolute; top: 6px; right: 8px;
+  width: 44px; height: 44px; line-height: 1;
+  background: none; border: 0; color: var(--faint);
+  font-size: 26px; cursor: pointer;
+}
+.pc-x:hover { color: var(--ink); }
+
+.pc-h {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 25px; line-height: 1.15; letter-spacing: -.01em;
+  margin: 0 0 14px; padding-right: 34px; text-wrap: balance;
+}
+
+.pc-campo { display: block; margin-bottom: 14px; }
+.pc-campo span {
+  display: block; margin-bottom: 6px;
+  font-size: 12.5px; font-weight: 650; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--faint);
+}
+.pc-campo input {
+  width: 100%; box-sizing: border-box;
+  min-height: 52px; padding: 12px 14px;
+  background: #000; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 10px;
+  font-family: var(--sans); font-size: 17px; /* 16px+ evita o zoom do iOS */
+}
+.pc-campo input:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+.pc-ajuda { color: var(--faint); font-size: 13.5px; line-height: 1.5; margin: 0 0 16px; }
+.pc-centro { text-align: center; }
+.pc-erro { color: #ff8a75; font-size: 13.5px; line-height: 1.5; margin: 0 0 14px; }
+
+.pc-opcoes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.pc-opcao {
+  display: flex; flex-direction: column; gap: 4px; text-align: left;
+  width: 100%; min-height: 64px; padding: 15px 18px;
+  background: #000; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 12px;
+  font-family: var(--sans); cursor: pointer;
+  transition: border-color .15s ease;
+}
+.pc-opcao:hover, .pc-opcao:focus-visible { border-color: var(--ink); }
+.pc-opcao strong { font-size: 15.5px; font-weight: 650; line-height: 1.25; }
+.pc-opcao span { color: var(--faint); font-size: 13px; line-height: 1.45; }
+
+.pc-voltar {
+  display: block; margin: 14px auto 0; min-height: 44px;
+  background: none; border: 0; color: var(--faint);
+  font-family: var(--sans); font-size: 13.5px; cursor: pointer;
+}
+.pc-voltar:hover { color: var(--dim); }
+
+.pc-caixa .au-pill[disabled] { opacity: .55; cursor: default; }
+
+.pc-qr { margin: 4px 0 14px; text-align: center; }
+.pc-qr summary {
+  cursor: pointer; list-style: none; padding: 12px 0;
+  color: var(--dim); font-size: 13.5px;
+}
+.pc-qr summary::-webkit-details-marker { display: none; }
+.pc-qr img {
+  width: 220px; max-width: 100%; height: auto; margin: 10px auto 0;
+  display: block; border-radius: 10px; background: #fff; padding: 8px;
+}
+
+.pc-status {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: var(--dim); font-size: 13.5px; margin: 16px 0 6px;
+}
+.pc-ponto {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--dim);
+  animation: au-pulsa 1.9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) { .pc-ponto { animation: none; } }

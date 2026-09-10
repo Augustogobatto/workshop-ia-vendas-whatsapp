@@ -21,6 +21,12 @@ export interface CompraClub {
   starts_at: string | null
   cancelled_at: string | null
   refunded_at: string | null
+  // Pix Automático (Asaas): quem paga por aqui não tem assinatura na Stripe,
+  // então a página lê o estado destas colunas em vez de consultar a Stripe.
+  payment_provider: string | null
+  provider_subscription_id: string | null
+  last_paid_at: string | null
+  expires_at: string | null
 }
 
 export type ResultadoCompra =
@@ -41,7 +47,7 @@ export async function compraDoClubDoUsuario(): Promise<ResultadoCompra> {
   const { data: compra } = await supabase
     .from('purchases')
     .select(
-      'status, price_paid_cents, currency, is_recurring, stripe_subscription_id, stripe_customer_id, starts_at, cancelled_at, refunded_at',
+      'status, price_paid_cents, currency, is_recurring, stripe_subscription_id, stripe_customer_id, starts_at, cancelled_at, refunded_at, payment_provider, provider_subscription_id, last_paid_at, expires_at',
     )
     .eq('lead_id', lead.id)
     .eq('product_id', PRODUTO_CLUB)

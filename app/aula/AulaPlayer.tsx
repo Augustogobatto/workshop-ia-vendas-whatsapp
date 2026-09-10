@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { pixelCustom, pixelTrack, VALOR_PLANO } from './pixel'
-import { carimbar, iniciarRastreio } from '../../lib/rastreio'
+import { carimbar, iniciarRastreio, visitanteId } from '../../lib/rastreio'
+import { enviarEvento, type PaginaVsl } from './telemetria'
 
 /**
  * Motor da /aula — portado do player do funil "Protocolo Viral"
@@ -99,7 +100,16 @@ function sortear(variantes: Variante[], chave: string): Variante {
   return escolhida
 }
 
-export default function AulaPlayer({ config }: { config: Config }) {
+export default function AulaPlayer({
+  config,
+  pagina = '/aula',
+}: {
+  config: Config
+  /** Braço do teste. `/aula` é o controle; `/aula-v2` leva o pré-checkout.
+      Vai em TODO evento e no rastreio, senão os dois braços não são
+      comparáveis do clique até a venda. */
+  pagina?: PaginaVsl
+}) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const thumbRef = useRef<HTMLVideoElement | null>(null)
   const barraRef = useRef<HTMLElement | null>(null)
@@ -136,25 +146,25 @@ export default function AulaPlayer({ config }: { config: Config }) {
      página segue tocando. Métrica nunca derruba página de venda. */
   const evento = useCallback(
     (nome: string, extra?: { segundo?: number; rotulo?: string }) => {
-      try {
-        const v = varianteRef.current
-        const corpo = JSON.stringify({
-          video_id: config.video_id,
-          versao_id: v ? v.versao_id : null,
-          sessao: sessao.current,
-          evento: nome,
-          segundo: extra?.segundo,
-          rotulo: extra?.rotulo,
-          utm: (sckRef.current || '') + (typeof window !== 'undefined' ? ' ' + window.location.search : ''),
-          interno: internoRef.current,
-        })
-        const blob = new Blob([corpo], { type: 'application/json' })
-        if (!navigator.sendBeacon('/api/vsl/evento', blob)) {
-          fetch('/api/vsl/evento', { method: 'POST', body: corpo, keepalive: true }).catch(() => {})
-        }
-      } catch {}
+      const v = varianteRef.current
+      enviarEvento({
+        video_id: config.video_id,
+        versao_id: v ? v.versao_id : null,
+        sessao: sessao.current,
+        evento: nome,
+        pagina,
+        /* `carregou` sai antes do efeito de rastreio montar, então o ref
+           ainda está vazio: `visitanteId()` lê (ou cria) a MESMA chave de
+           localStorage que o rastreio usa. Sem isso o primeiro evento da
+           sessão ficaria sem visitante e a ponte clique→venda quebraria. */
+        visitante_id: visitanteRef.current || visitanteId() || undefined,
+        segundo: extra?.segundo,
+        rotulo: extra?.rotulo,
+        utm: (sckRef.current || '') + (typeof window !== 'undefined' ? ' ' + window.location.search : ''),
+        interno: internoRef.current,
+      })
     },
-    [config.video_id]
+    [config.video_id, pagina]
   )
 
   /**
@@ -603,7 +613,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
   useEffect(() => {
     /* resolve o sck, garante o visitante_id, carimba as âncoras do Stripe e
        manda a atribuição pro servidor — tudo em lib/rastreio.ts */
-    const r = iniciarRastreio('/aula')
+    const r = iniciarRastreio(pagina)
     sckRef.current = r.sck
     visitanteRef.current = r.visitante
 
@@ -630,7 +640,7 @@ export default function AulaPlayer({ config }: { config: Config }) {
       document.removeEventListener('click', onClique)
       r.parar()
     }
-  }, [evento])
+  }, [evento, pagina])
 
   /* a dobra de planos entrando na tela conta como "viu a oferta" */
   useEffect(() => {

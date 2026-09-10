@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import PreCheckoutCarga from './PreCheckoutCarga'
+import type { PaginaVsl } from './telemetria'
 
 /**
  * Dobras da /aula — tudo que só aparece DEPOIS do pitch.
@@ -26,8 +28,23 @@ const STRIPE_ANUAL = 'https://buy.stripe.com/9B628s4La14Vb1KaNK9fW0g'
  */
 const PROVAS_DE_MEMBROS = false
 
-export default function Dobras() {
+/**
+ * `preCheckout` liga o popup do mensal (só a /aula-v2 passa true). O HTML das
+ * dobras é EXATAMENTE o mesmo nos dois braços — inclusive os `<a>` de compra,
+ * que continuam sendo links de verdade. O popup intercepta o clique de fora,
+ * então quem estiver sem JS ainda chega no checkout.
+ */
+export default function Dobras({
+  preCheckout = false,
+  pagina = '/aula',
+  videoId = 'club-trafego',
+}: {
+  preCheckout?: boolean
+  pagina?: PaginaVsl
+  videoId?: string
+} = {}) {
   return (
+    <>
     <div id="au-dobras">
       {/* ── prova ── */}
       <section className="au-sec">
@@ -436,6 +453,11 @@ export default function Dobras() {
         </a>
       </div>
     </div>
+    {/* fora de #au-dobras: o modal é `fixed` e não pode herdar o display:none
+        da trava do pitch. Ele só abre no clique do mensal, que só existe
+        depois do pitch — a guarda continua valendo. */}
+    {preCheckout && <PreCheckoutCarga pagina={pagina} videoId={videoId} />}
+    </>
   )
 }
 

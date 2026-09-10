@@ -29,7 +29,7 @@ const VISITANTE_RE = /^v_[a-z0-9]{20}$/
 const ROTA_RASTREIO = '/api/rastreio'
 const UTM_CHAVES = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const
 
-export type PaginaRastreada = '/aula' | '/club'
+export type PaginaRastreada = '/aula' | '/aula-v2' | '/club'
 
 function normSck(v: string | null) {
   return String(v || '').trim().replace(/\s+/g, '-').replace(/^\|+|\|+$/g, '')

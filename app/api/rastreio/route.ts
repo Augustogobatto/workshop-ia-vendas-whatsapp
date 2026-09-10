@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic'
  * sendBeacon é público — isto é dado de audiência, nunca autoridade.
  */
 const VISITANTE_RE = /^v_[a-z0-9]{20}$/
-const PAGINAS = new Set(['/aula', '/club'])
+const PAGINAS = new Set(['/aula', '/aula-v2', '/club'])
 
 /* [coluna, tamanho máximo] */
 const CAMPOS: Array<[string, number]> = [

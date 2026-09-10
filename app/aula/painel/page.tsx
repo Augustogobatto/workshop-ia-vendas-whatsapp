@@ -86,6 +86,42 @@ function janela(id: PeriodoId): [string, string] {
   }
 }
 
+/** Bordas da janela como instante, pro filtro em coluna timestamptz.
+ *  As datas do painel já são de São Paulo, então o deslocamento é -03:00. */
+function inicioDoDia(dia: string) {
+  return `${dia}T00:00:00-03:00`
+}
+function inicioDoDiaSeguinte(dia: string) {
+  const d = new Date(`${dia}T12:00:00-03:00`)
+  d.setUTCDate(d.getUTCDate() + 1)
+  return `${d.toISOString().slice(0, 10)}T00:00:00-03:00`
+}
+
+/* Eventos do pré-checkout (só a /aula-v2 os produz). Contados por SESSÃO
+   humana, não por linha: quem clica duas vezes no mensal não vira dois. */
+const EVENTOS_PC = [
+  'pre_checkout_abriu',
+  'pre_checkout_telefone',
+  'pre_checkout_metodo',
+  'pix_qr_exibido',
+] as const
+
+type SessaoHumana = {
+  sessao: string
+  pagina: string | null
+  visitante_id: string | null
+  ligou_o_som: boolean | null
+  chegou_no_pitch: boolean | null
+  clicou: boolean | null
+}
+type EventoPC = {
+  sessao: string | null
+  pagina: string | null
+  evento: string
+  rotulo: string | null
+}
+type PreCheckoutLinha = { visitante_id: string | null; pagina: string | null }
+
 type Linha = {
   dia: string; ad_name: string; adset_name: string
   gasto: number; impressoes: number; cliques: number
@@ -142,20 +178,41 @@ export default async function Painel({
   /* ?dia= continua funcionando pra apontar um dia específico */
   const [de, ate] = sp.dia ? [sp.dia, sp.dia] : janela(periodo)
 
-  const [{ data }, { data: vendasData }] = await Promise.all([
-    db
-      .from('vsl_painel')
-      .select('*')
-      .gte('dia', de)
-      .lte('dia', ate)
-      .order('gasto', { ascending: false }),
-    db
-      .from('vsl_vendas')
-      .select('id,criado_em,dia,plano,valor,visitante_id,ad_name,adset_name,pagina')
-      .gte('dia', de)
-      .lte('dia', ate)
-      .order('criado_em', { ascending: true }),
-  ])
+  const deTs = inicioDoDia(de)
+  const ateTs = inicioDoDiaSeguinte(ate)
+
+  const [{ data }, { data: vendasData }, { data: sessoesData }, { data: eventosPcData }, { data: preCheckoutData }] =
+    await Promise.all([
+      db
+        .from('vsl_painel')
+        .select('*')
+        .gte('dia', de)
+        .lte('dia', ate)
+        .order('gasto', { ascending: false }),
+      db
+        .from('vsl_vendas')
+        .select('id,criado_em,dia,plano,valor,visitante_id,ad_name,adset_name,pagina')
+        .gte('dia', de)
+        .lte('dia', ate)
+        .order('criado_em', { ascending: true }),
+      /* já vem sem robô da Meta e sem visita interna */
+      db
+        .from('vsl_sessoes_humanas')
+        .select('sessao,pagina,visitante_id,ligou_o_som,chegou_no_pitch,clicou')
+        .gte('chegou_em', deTs)
+        .lt('chegou_em', ateTs)
+        .limit(20000),
+      db
+        .from('vsl_eventos')
+        .select('sessao,pagina,evento,rotulo')
+        .in('evento', EVENTOS_PC as unknown as string[])
+        .gte('criado_em', deTs)
+        .lt('criado_em', ateTs)
+        .limit(20000),
+      /* a tabela inteira: é a ponte visitante → braço pra venda que caiu
+         depois do período em que a pessoa navegou */
+      db.from('pre_checkout').select('visitante_id,pagina').limit(20000),
+    ])
   const vendas = (vendasData || []) as Venda[]
 
   /* Uma linha por anúncio x público, somando os dias do período. As taxas são
@@ -238,6 +295,82 @@ export default async function Painel({
   const mensais = vendasAds.filter((v) => v.plano === 'mensal').length
   const anuais = vendasAds.filter((v) => v.plano === 'anual').length
   const faturadoFora = vendasFora.reduce((a, v) => a + Number(v.valor), 0)
+
+  /* ── Por página: /aula (controle) × /aula-v2 (pré-checkout) ──
+     A pergunta do teste é uma só: de quem clicou no mensal, quantos pagaram?
+     Tudo aqui é contado por SESSÃO humana, menos as vendas, que são contadas
+     por visitante (é a única chave que o pagamento carrega).
+
+     A coluna `pagina` nasceu em 10/09/2026: sessão anterior a isso não tem
+     braço e fica de fora — por isso a seção começa vazia e vai enchendo. */
+  const sessoes = (sessoesData || []) as SessaoHumana[]
+  const eventosPc = (eventosPcData || []) as EventoPC[]
+  const preCheckouts = (preCheckoutData || []) as PreCheckoutLinha[]
+
+  const humanas = new Set(sessoes.map((x) => x.sessao))
+  const paginaDoVisitante = new Map<string, string>()
+  for (const x of sessoes) {
+    if (x.visitante_id && x.pagina) paginaDoVisitante.set(x.visitante_id, x.pagina)
+  }
+  /* o pré-checkout manda mais: ele só existe no braço 2 e é gravado no
+     servidor, então vence a leitura vinda do navegador */
+  for (const x of preCheckouts) {
+    if (x.visitante_id && x.pagina) paginaDoVisitante.set(x.visitante_id, x.pagina)
+  }
+
+  type PorPagina = {
+    pagina: string
+    carregou: number; play: number; pitch: number; clicou: number
+    abriu: number; telefone: number; cartao: number; pix: number; qr: number
+    vendas: number; faturado: number
+  }
+  const zeros = (pagina: string): PorPagina => ({
+    pagina, carregou: 0, play: 0, pitch: 0, clicou: 0,
+    abriu: 0, telefone: 0, cartao: 0, pix: 0, qr: 0, vendas: 0, faturado: 0,
+  })
+  const porPagina = new Map<string, PorPagina>([
+    ['/aula', zeros('/aula')],
+    ['/aula-v2', zeros('/aula-v2')],
+  ])
+  const pega = (pg: string | null) => (pg && porPagina.has(pg) ? porPagina.get(pg)! : null)
+
+  for (const x of sessoes) {
+    const p = pega(x.pagina)
+    if (!p) continue
+    p.carregou += 1
+    if (x.ligou_o_som) p.play += 1
+    if (x.chegou_no_pitch) p.pitch += 1
+    if (x.clicou) p.clicou += 1
+  }
+
+  /* distinct por sessão: um clique repetido no mensal não vira dois "abriu" */
+  const vistos = new Set<string>()
+  for (const e of eventosPc) {
+    if (!e.sessao || !humanas.has(e.sessao)) continue
+    const p = pega(e.pagina)
+    if (!p) continue
+    const chave = `${e.sessao}|${e.evento}|${e.rotulo ?? ''}`
+    if (vistos.has(chave)) continue
+    vistos.add(chave)
+    if (e.evento === 'pre_checkout_abriu') p.abriu += 1
+    else if (e.evento === 'pre_checkout_telefone') p.telefone += 1
+    else if (e.evento === 'pix_qr_exibido') p.qr += 1
+    else if (e.evento === 'pre_checkout_metodo') {
+      if (e.rotulo === 'cartao') p.cartao += 1
+      else if (e.rotulo === 'pix') p.pix += 1
+    }
+  }
+
+  for (const v of vendas) {
+    const pg = v.visitante_id ? paginaDoVisitante.get(v.visitante_id) : null
+    const p = pega(pg ?? null)
+    if (!p) continue
+    p.vendas += 1
+    p.faturado += Number(v.valor)
+  }
+
+  const bracos = Array.from(porPagina.values())
+  const temBraco = bracos.some((b) => b.carregou > 0 || b.vendas > 0)
 
   const taxa = (a: number, b: number) => (b ? Math.round((100 * a) / b) : null)
   const atualizado = linhas[0]?.atualizado
@@ -368,6 +501,60 @@ export default async function Painel({
             Pisos da régua do Felipe. Em vermelho, abaixo do piso.
             Custo por play {brl(t.play ? t.gasto / t.play : null)} · por pitch{' '}
             {brl(t.pitch ? t.gasto / t.pitch : null)}
+          </p>
+        </section>
+
+        <section>
+          <h2>Por página</h2>
+          <div className="pn-rolagem">
+            <table>
+              <thead>
+                <tr>
+                  <th>página</th>
+                  <th className="n">carregou</th><th className="n">play</th><th className="n">pitch</th>
+                  <th className="n">clicou CTA</th>
+                  <th className="n">abriu popup</th><th className="n">telefone</th>
+                  <th className="n">cartão</th><th className="n">Pix</th><th className="n">QR</th>
+                  <th className="n">vendas</th><th className="n">clicou → venda</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bracos.map((b) => (
+                  <tr key={b.pagina}>
+                    <th>{b.pagina}</th>
+                    <td className="n">{b.carregou}</td>
+                    <td className="n">{b.play}</td>
+                    <td className="n">{b.pitch}</td>
+                    <td className="n">{b.clicou}</td>
+                    <td className="n">{b.pagina === '/aula' ? '—' : b.abriu}</td>
+                    <td className="n">{b.pagina === '/aula' ? '—' : b.telefone}</td>
+                    <td className="n">{b.pagina === '/aula' ? '—' : b.cartao}</td>
+                    <td className="n">{b.pagina === '/aula' ? '—' : b.pix}</td>
+                    <td className="n">{b.pagina === '/aula' ? '—' : b.qr}</td>
+                    <td className={'n' + (b.vendas ? ' venda' : '')}>
+                      {b.vendas} <small>{brl(b.faturado, 0)}</small>
+                    </td>
+                    <td className="n forte">{pct(taxa(b.vendas, b.clicou))}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="pn-nota">
+            {temBraco ? (
+              <>
+                A pergunta do teste é a última coluna: de quem clicou no mensal, quantos pagaram.
+                O <code>/aula</code> é o controle (clique vai direto pro Stripe) e o{' '}
+                <code>/aula-v2</code> tem o pré-checkout — as colunas do popup só existem nele.
+              </>
+            ) : (
+              <>
+                Nada no período. A coluna <code>pagina</code> nasceu em 10/09/2026: sessão anterior
+                a isso não tem braço e fica de fora desta tabela.
+              </>
+            )}{' '}
+            Venda entra no braço pelo <code>pre_checkout</code> do visitante e, quando ele não
+            existe (o controle não grava nada), pela <code>pagina</code> da sessão dele.
           </p>
         </section>
 

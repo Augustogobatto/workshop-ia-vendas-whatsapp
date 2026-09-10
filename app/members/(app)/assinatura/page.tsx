@@ -34,6 +34,18 @@ function dataDeISO(iso: string | null | undefined): string | null {
   }).format(d)
 }
 
+/** Último pagamento + 30 dias. É como o Asaas agenda o débito seguinte —
+ *  aproximação honesta, por isso a tela mostra "≈". */
+function mais30Dias(iso: string | null | undefined): string | null {
+  if (!iso) return null
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return null
+  d.setDate(d.getDate() + 30)
+  return new Intl.DateTimeFormat('pt-BR', {
+    timeZone: FUSO, day: '2-digit', month: 'long', year: 'numeric',
+  }).format(d)
+}
+
 function dinheiro(centavos: number | null | undefined, moeda: string | null | undefined): string | null {
   if (centavos == null) return null
   const code = (moeda ?? 'BRL').toUpperCase()
@@ -429,6 +441,60 @@ export default async function AssinaturaPage() {
   }
 
   const compra = r.compra
+
+  // ── Pix Automático (Asaas) ──────────────────────────────────
+  // Quem pagou por Pix não tem assinatura na Stripe: não existe portal, não
+  // existe cartão e não existe fatura pra buscar. O estado vem das colunas que
+  // o `club-pagamentos` escreve a cada evento do Asaas. E o cancelamento NÃO é
+  // aqui: Pix Automático se cancela no app do banco do próprio pagador — dizer
+  // outra coisa manda o membro procurar um botão que não existe.
+  if (compra.payment_provider === 'asaas') {
+    const ultimoPagamento = dataDeISO(compra.last_paid_at)
+    const proxima = compra.last_paid_at ? mais30Dias(compra.last_paid_at) : null
+    const acessoAte = dataDeISO(compra.expires_at)
+    const desdeAsaas = dataDeISO(compra.starts_at)
+
+    const cancelada = compra.status === 'cancelled'
+    const atrasada = compra.status === 'past_due'
+
+    const tomAsaas: Tom = cancelada ? 'neutro' : atrasada ? 'erro' : 'ok'
+    const tituloAsaas = cancelada
+      ? 'Pix Automático cancelado'
+      : atrasada
+        ? 'A cobrança deste mês não entrou'
+        : 'Pix Automático ativo'
+    const explicacaoAsaas = cancelada
+      ? acessoAte
+        ? `A autorização foi cancelada. Teu acesso continua até ${acessoAte}.`
+        : 'A autorização foi cancelada. Teu acesso continua até o fim do período já pago.'
+      : atrasada
+        ? 'O banco não conseguiu debitar a mensalidade. Ele tenta de novo em até sete dias. Se não entrar, o acesso cai — confere o saldo e o limite do Pix Automático no app do banco.'
+        : 'A cobrança de R$70 sai todo mês direto da tua conta, sem cartão.'
+
+    return (
+      <div className="page-wrap" style={{ maxWidth: 680 }}>
+        <Titulo />
+        <div className="fade-up fade-up-1" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <CartaoDeAcesso tom={tomAsaas} titulo={tituloAsaas} explicacao={explicacaoAsaas}>
+            <div style={{ marginTop: 18 }}>
+              <Linha rotulo="Forma de pagamento" valor="Pix Automático" />
+              {ultimoPagamento && <Linha rotulo="Última cobrança" valor={ultimoPagamento} />}
+              {!cancelada && proxima && <Linha rotulo="Próxima cobrança" valor={`≈ ${proxima}`} />}
+              {cancelada && acessoAte && <Linha rotulo="Acesso até" valor={acessoAte} />}
+              {desdeAsaas && <Linha rotulo="Membro desde" valor={desdeAsaas} />}
+            </div>
+            {!cancelada && (
+              <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 16, lineHeight: 1.6 }}>
+                Pra cancelar, é no app do seu banco, em Pix Automático. A gente não consegue
+                cancelar por aqui — quem autoriza e desautoriza o débito é você, no banco.
+              </p>
+            )}
+            <FaleComSuporte texto="Alguma dúvida sobre a cobrança?" />
+          </CartaoDeAcesso>
+        </div>
+      </div>
+    )
+  }
 
   // Acesso liberado na mão: equipe, cortesia, conta de teste. Nada de portal —
   // não existe cobrança pra gerenciar. São 12 casos assim na base hoje.
