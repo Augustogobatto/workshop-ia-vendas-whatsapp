@@ -55,6 +55,37 @@ coluna que veio no corpo sobrescreve, `primeiro_toque` só no insert).
 3. `publicada: true` — sai o `noindex`.
 4. Confere em `/aula?abrir=1` (escape hatch de QA, fica em produção de propósito).
 
+## /aula-v2 — o braço com pré-checkout (Fase 2, 10/09/2026)
+
+Rota separada, `noindex`, que reusa TUDO desta pasta: mesmo `vsl-config.json`,
+mesmo vídeo, mesmo CSS, mesmas dobras. A `/aula` não muda — é o controle.
+
+A única diferença: o clique no **mensal** abre o `PreCheckout.tsx` em vez de
+ir pro Stripe. O anual continua link direto. Três passos:
+WhatsApp (salvo no servidor assim que fica válido) → cartão ou Pix recorrente
+→ (só Pix) nome, CPF e e-mail → QR de Pix Automático do Asaas.
+
+- `PreCheckout.tsx` — o popup. Entra por `next/dynamic` a partir de
+  `Dobras.tsx`: import estático poria o código dele também no bundle da
+  `/aula`, e braço de controle mais pesado vira diferença de play rate.
+- `telemetria.ts` — o transporte de evento que o player e o popup dividem.
+- `../../lib/br.ts` — máscara de telefone (a da skill `rastreio-checkout`),
+  CPF com dígito verificador, e-mail.
+- `../../lib/membro.ts` — "já é membro?" antes do QR. Sem isso, um membro da
+  Stripe que pagasse por Pix teria a linha de `purchases` reescrita.
+- `/api/pre-checkout` e `/api/pre-checkout/pix` — o servidor. O token do
+  `club-pagamentos` vive só na env da Vercel (`CLUB_PAGAMENTOS_TOKEN`).
+- Backend: `/home/claude/club-pagamentos/README.md` na vps-claude.
+
+**O que NÃO pode se perder aqui:**
+- O link do Stripe do caminho do cartão sai do `href` do próprio `<a>`
+  clicado, já carimbado. Remontar a URL mata o rastreio (regra 5 da skill).
+- `pre_checkout.estado` só anda pra frente. Estado que retrocede desliga o
+  reuso do QR no backend e cria uma segunda cobrança no Asaas.
+- O popup não pode ter escassez. O relógio do QR é o prazo do banco.
+
+Leitura do teste: `/aula/painel`, seção "Por página".
+
 ## Testar uma versão nova sem derrubar a campeã
 
 Acrescenta uma variante ao array com `peso` menor (ex.: campeã 90, desafiante 10).

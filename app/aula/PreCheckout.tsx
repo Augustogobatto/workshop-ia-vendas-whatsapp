@@ -437,7 +437,7 @@ export default function PreCheckout({
       setCopiou(true)
       window.setTimeout(() => setCopiou(false), 2600)
     } else {
-      setErro('Não consegui copiar. Segura o dedo no código pra selecionar.')
+      setErro('Não consegui copiar. Toque e segure no código do seu banco pra colar à mão.')
     }
   }
 
@@ -637,7 +637,7 @@ export default function PreCheckout({
           <>
             <h2 className="pc-h">Você já é membro do Club.</h2>
             <p className="pc-ajuda">
-              Achei uma assinatura ativa no seu nome. Não precisa pagar de novo.
+              Já existe uma assinatura ativa no seu nome. Não precisa pagar de novo.
             </p>
             <a href="/members/login" className="au-pill bloco">
               Entrar

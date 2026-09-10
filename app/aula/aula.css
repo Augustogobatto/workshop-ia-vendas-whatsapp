@@ -355,12 +355,16 @@
   display: block; border-radius: 10px; background: #fff; padding: 8px;
 }
 
+/* o texto quebra em duas linhas no telefone: o ponto ancora na PRIMEIRA
+   linha, senão fica boiando no meio do bloco */
 .pc-status {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  color: var(--dim); font-size: 13.5px; margin: 16px 0 6px;
+  display: flex; align-items: flex-start; justify-content: center; gap: 8px;
+  color: var(--dim); font-size: 13.5px; line-height: 1.5;
+  margin: 16px auto 6px; max-width: 30ch; text-align: left;
 }
 .pc-ponto {
   width: 8px; height: 8px; border-radius: 50%; background: var(--dim);
+  flex: 0 0 auto; margin-top: 6px;
   animation: au-pulsa 1.9s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) { .pc-ponto { animation: none; } }
