@@ -345,6 +345,7 @@
 .pc-caixa .au-pill[disabled] { opacity: .55; cursor: default; }
 
 .pc-qr { margin: 4px 0 14px; text-align: center; }
+.pc-qr-aberto img { background: #fff; padding: 8px; border-radius: 8px; margin: 6px auto 12px; display: block; }
 .pc-qr summary {
   cursor: pointer; list-style: none; padding: 12px 0;
   color: var(--dim); font-size: 13.5px;

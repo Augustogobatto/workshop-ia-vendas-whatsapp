@@ -70,6 +70,18 @@ export default function PreCheckout({
   videoId: string
 }) {
   const [aberto, setAberto] = useState(false)
+  /* Desktop (mouse + tela larga): a pessoa não tem como "copiar e colar" no
+     banco a partir do computador, então o QR aparece aberto e em primeiro; o
+     copia-e-cola vira o secundário. No celular é o contrário. */
+  const [desktop, setDesktop] = useState(false)
+  useEffect(() => {
+    try {
+      const mq = window.matchMedia('(pointer: fine) and (min-width: 700px)')
+      const f = () => setDesktop(mq.matches)
+      f(); mq.addEventListener('change', f)
+      return () => mq.removeEventListener('change', f)
+    } catch { /* sem matchMedia = celular por padrão */ }
+  }, [])
   const [passo, setPasso] = useState<Passo>('telefone')
   const [telefone, setTelefone] = useState('')
   const [nome, setNome] = useState('')
@@ -595,12 +607,25 @@ export default function PreCheckout({
 
             {!expirado ? (
               <>
+                {desktop && qr.encodedImage && (
+                  <div className="pc-qr pc-qr-aberto">
+                    <p className="pc-ajuda pc-centro">Aponte a câmera do celular para o QR.</p>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`data:image/png;base64,${qr.encodedImage}`}
+                      alt="QR Code do Pix do Push Club mensal"
+                      width={220}
+                      height={220}
+                    />
+                  </div>
+                )}
+
                 <button type="button" className="au-pill bloco" onClick={copiar}>
-                  {copiou ? 'Código copiado' : 'Copiar código Pix'}
+                  {copiou ? 'Código copiado' : desktop ? 'Ou copiar o código Pix' : 'Copiar código Pix'}
                 </button>
                 <p className="pc-ajuda pc-centro">Cola no Pix Copia e Cola do seu banco.</p>
 
-                {qr.encodedImage && (
+                {!desktop && qr.encodedImage && (
                   <details className="pc-qr">
                     <summary>Ou aponte a câmera para o QR</summary>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
