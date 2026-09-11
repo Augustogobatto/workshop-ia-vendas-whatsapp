@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Meta Pixel -->
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2685766708197733');fbq('track','PageView');</script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2685766708197733&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caminho das Pedras da Edição — Augusto Gobatto</title>
+  <meta name="description" content="Como o reel do Augusto foi editado inteiro por IA: corte, cor, legenda, cartões, efeitos e som. O que precisa ter na mão, em que ordem, e o que pedir pro Claude em cada passo." />
+  <meta property="og:title" content="Caminho das Pedras da Edição" />
+  <meta property="og:description" content="O bastidor do reel editado por IA: o que foi feito, o kit, os 10 passos com o prompt de cada um, e as regras que fazem parecer profissional." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#0A0A0A;
+      --panel:#121412;
+      --panel-2:#181B18;
+      --line:#242824;
+      --ink:#EDEFEA;
+      --ink-2:#A8ADA4;
+      --ink-3:#6E736A;
+      --green:#37C978;
+      --green-dim:#1E5C3A;
+      --amber:#E8A33C;
+      --radius:14px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);color:var(--ink);
+      font-family:'Inter',system-ui,sans-serif;
+      font-size:16px;line-height:1.65;
+      -webkit-font-smoothing:antialiased;
+    }
+    .container{max-width:880px;margin:0 auto;padding:0 20px}
+    .display{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;line-height:1.12;text-wrap:balance}
+    .label{
+      display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;
+      letter-spacing:0.14em;text-transform:uppercase;color:var(--green);
+      border:1px solid var(--green-dim);border-radius:999px;padding:6px 14px;
+    }
+    a{color:var(--green)}
+
+    /* HERO */
+    #hero{padding:88px 0 56px;border-bottom:1px solid var(--line)}
+    #hero h1{font-size:clamp(34px,6vw,58px);margin:22px 0 18px}
+    #hero h1 em{font-style:normal;color:var(--green)}
+    #hero p.sub{font-size:clamp(17px,2.4vw,20px);color:var(--ink-2);max-width:660px}
+    .hero-facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+    .fact{
+      font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-2);
+      background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;
+    }
+    .fact strong{color:var(--ink);font-weight:500}
+    .assinatura{margin-top:24px;font-size:14px;color:var(--ink-3)}
+
+    /* SECTIONS */
+    section{padding:56px 0}
+    .sec-head{margin-bottom:28px}
+    .sec-head h2{font-size:clamp(24px,4vw,34px)}
+    .sec-head p{color:var(--ink-2);margin-top:8px;max-width:620px}
+    .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+    .prosa p{color:var(--ink-2);max-width:680px;margin-bottom:14px}
+    .prosa p b{color:var(--ink);font-weight:600}
+
+    /* NÚMEROS */
+    .numeros{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:28px}
+    .num{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+    .num b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:32px;letter-spacing:-0.02em;line-height:1;font-variant-numeric:tabular-nums}
+    .num span{display:block;font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.4}
+
+    /* KIT */
+    .kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .kit-item{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+    .kit-item b{display:block;font-weight:600;margin-bottom:4px}
+    .kit-item span{font-size:14px;color:var(--ink-2)}
+    .kit-item .preco{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);display:block;margin-top:8px}
+
+    /* PASSADAS */
+    .passadas{display:grid;gap:14px}
+    .passada{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px}
+    .passada .top{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+    .passada .n{
+      font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--bg);
+      background:var(--green);border-radius:8px;min-width:34px;height:34px;
+      display:inline-flex;align-items:center;justify-content:center;
+    }
+    .passada h3{font-family:'Space Grotesk',sans-serif;font-size:clamp(19px,3vw,23px);font-weight:600;letter-spacing:-0.01em}
+    .passada p{color:var(--ink-2);font-size:15px}
+    .passada p b{color:var(--ink)}
+
+    /* STEPS (o caminho) */
+    .steps{counter-reset:s;display:grid;gap:14px}
+    .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px 22px 68px;position:relative}
+    .step::before{
+      counter-increment:s;content:counter(s);
+      position:absolute;left:22px;top:22px;
+      font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
+      color:var(--bg);background:var(--green);border-radius:8px;
+      width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+    }
+    .step b.t{display:block;font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;margin-bottom:6px}
+    .step p{font-size:15px;color:var(--ink-2);margin-bottom:12px}
+    .step .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .badge{font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:6px;padding:4px 10px;border:1px solid var(--line);color:var(--ink-2)}
+    .badge.tempo{color:var(--green);border-color:var(--green-dim)}
+    .badge.custo{color:var(--amber);border-color:#5C471E}
+    .prompt-box{background:#0D120E;border:1px solid var(--green-dim);border-radius:10px;overflow:hidden}
+    .prompt-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--green-dim)}
+    .prompt-head span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green)}
+    .copy-btn{
+      font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:var(--bg);
+      background:var(--green);border:none;border-radius:6px;padding:6px 14px;cursor:pointer;
+    }
+    .copy-btn:hover{filter:brightness(1.1)}
+    .prompt-box pre{
+      padding:14px 18px;white-space:pre-wrap;word-break:break-word;
+      font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:var(--ink-2);
+    }
+
+    /* REGRAS */
+    .regras{display:grid;gap:10px}
+    .regra{display:flex;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+    .regra .tick{color:var(--green);font-weight:700;flex-shrink:0}
+    .regra.nao .tick{color:#E86A5C}
+    .regra p{font-size:15px;color:var(--ink-2)}
+    .regra p b{color:var(--ink)}
+
+    /* TABELA */
+    .mapa-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}
+    table.mapa{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+    .mapa th{
+      font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;
+      text-transform:uppercase;color:var(--ink-3);font-weight:500;
+      text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap;
+    }
+    .mapa td{padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top;font-variant-numeric:tabular-nums}
+    .mapa tr:last-child td{border-bottom:none}
+    .mapa td.nome{font-weight:600}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--line);padding:48px 0 64px;text-align:center}
+    footer p{color:var(--ink-3);font-size:14px}
+    footer .handle{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:var(--ink);display:block;margin-bottom:6px}
+    .divider{border:none;border-top:1px solid var(--line)}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <span class="label">Bastidor · Experimento nº 001 · @augustogobatto</span>
+    <h1 class="display">Caminho das pedras: como o reel foi editado <em>inteiro por IA</em></h1>
+    <p class="sub">Corte, cor, legenda, cartões, efeitos em cima de mim e sound design, sem ninguém arrastar clipe numa timeline. O que foi feito, o que precisa ter na mão e o que pedir pro Claude em cada passo.</p>
+    <div class="hero-facts">
+      <div class="fact">Precisa saber programar: <strong>não</strong></div>
+      <div class="fact">Precisa saber julgar: <strong>sim, é o que a aula ensina</strong></div>
+      <div class="fact">Ordem: <strong>corte → áudio → motion</strong></div>
+    </div>
+    <p class="assinatura">Escrito pelo Claude Code, o editor do experimento, em 11/09/2026. Revisado pelo Augusto. Os números são do reel C101, o que vocês viram no grupo.</p>
+  </div>
+</section>
+
+<!-- O QUE FOI FEITO -->
+<section id="feito">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">O resultado</div>
+      <h2 class="display">O que tinha naquele vídeo</h2>
+    </div>
+    <div class="numeros">
+      <div class="num"><b>1:39</b><span>a versão curta, cortada de 2:53 sem mudar uma palavra</span></div>
+      <div class="num"><b>42</b><span>cortes de enquadramento (aberto, médio, fechado) por código</span></div>
+      <div class="num"><b>93</b><span>efeitos sonoros, cada um alinhado pelo pico do som</span></div>
+      <div class="num"><b>4</b><span>efeitos de IA gerados a partir de um frame meu</span></div>
+      <div class="num"><b>3</b><span>cartões: a conta 10h → 1h → 9 projetos, trabalho × hobby, a aula</span></div>
+      <div class="num"><b>~76</b><span>créditos de Higgsfield gastos no total</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- A IDEIA -->
+<section id="ideia">
+  <div class="container prosa">
+    <div class="sec-head">
+      <div class="kicker">Por que isso muda tudo</div>
+      <h2 class="display">O editor é um agente que lê o vídeo inteiro</h2>
+    </div>
+    <p>O <b>Claude Code</b> (o Claude rodando no terminal do Mac) lê a transcrição palavra por palavra, decide onde entra cada coisa e escreve isso num arquivo de texto, o <b>roteiro de batidas</b>: em que segundo aparece a manchete, qual palavra vira gigante, quando entra o cartão da conta, quando toca o whoosh.</p>
+    <p>Um programa gratuito, o <b>Remotion</b>, lê esse arquivo e desenha as animações frame a frame, como uma página web que vira vídeo. O <b>ffmpeg</b> mistura voz, efeitos e trilha. E o <b>Higgsfield</b> gera os efeitos a partir de um frame do próprio vídeo: a cabeça explodindo, os clones, o braço-robô, o time-lapse.</p>
+    <p>O ganho não é só velocidade. É que o editor entende o argumento antes de cortar, e cada decisão fica escrita e revisável. Errou a manchete? Muda uma linha e roda de novo.</p>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- KIT -->
+<section id="kit">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">Antes de começar</div>
+      <h2 class="display">O kit</h2>
+      <p>Resolve isso uma vez e nunca mais pensa. Tudo roda local no Mac; nada de render em nuvem.</p>
+    </div>
+    <div class="kit">
+      <div class="kit-item"><b>Claude Code</b><span>O editor. Precisa de uma assinatura do Claude que inclua o Claude Code. Você conversa em português; ele escreve o código.</span><span class="preco">claude.ai · assinatura mensal</span></div>
+      <div class="kit-item"><b>Mac (M1 com 8 GB já serve)</b><span>Um vídeo de 3 minutos renderiza em cerca de 20 minutos. Não precisa de máquina de edição.</span><span class="preco">o que você já tem</span></div>
+      <div class="kit-item"><b>Node + ffmpeg + Whisper local</b><span>Motor de render, mixagem e transcrição palavra a palavra (mlx-whisper roda no Mac sem internet). O Claude instala.</span><span class="preco">grátis</span></div>
+      <div class="kit-item"><b>Remotion</b><span>Desenha legenda, cartões e animações a partir do roteiro. É React, mas você nunca abre o código.</span><span class="preco">grátis até 3 pessoas na empresa</span></div>
+      <div class="kit-item"><b>Higgsfield</b><span>Imagem de apoio e os efeitos em vídeo em cima de você (MiniMax H3 e Kling 3.0 pelo mesmo painel).</span><span class="preco">~1 crédito por imagem · 10 por vídeo de 5 s</span></div>
+      <div class="kit-item"><b>Biblioteca de sons</b><span>Whoosh, hit, click, riser e trilha. Eu uso Epidemic Sound; serve banco gratuito com licença.</span><span class="preco">assinatura ou grátis</span></div>
+      <div class="kit-item"><b>Fontes</b><span>Bricolage Grotesque e DM Sans (Google Fonts) ou Clash Display e Satoshi (Fontshare). Duas famílias por tela, nunca mais.</span><span class="preco">grátis</span></div>
+      <div class="kit-item"><b>Premiere</b><span>Opcional. Só se você quiser mexer no corte na mão depois. O reel inteiro saiu sem abrir.</span><span class="preco">opcional</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PASSADAS -->
+<section id="passadas">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">A estrutura</div>
+      <h2 class="display">As três passadas, sempre nessa ordem</h2>
+      <p>Pular uma delas é o erro mais comum. Quem começa pelo motion enfeita barriga.</p>
+    </div>
+    <div class="passadas">
+      <div class="passada">
+        <div class="top"><span class="n">1</span><h3>Corte (lapidação)</h3></div>
+        <p>A máquina tira silêncio e retake: é o fácil, tira uns 20%. Depois o editor tira <b>conteúdo</b>: abertura morta, bloco abstrato, vício de linguagem, frase que confunde. Meta: 40% a menos que o corte mecânico. No C101 o bruto de 5:05 virou 3:11, e a versão curta 1:39. Regra de ouro: <b>ganha-se no machado</b> (5 cortes grandes), não na pinça (26 cortes de meio segundo).</p>
+      </div>
+      <div class="passada">
+        <div class="top"><span class="n">2</span><h3>Áudio</h3></div>
+        <p><b>Diagnóstico antes de preset:</b> canal morto, volume baixo (o bruto estava em −26 LUFS e o Instagram pede −14), lama em 300 Hz. Daí compressor, equalização e normalização, na medida que a medição pediu. Voz mono no centro, efeitos em estéreo.</p>
+      </div>
+      <div class="passada">
+        <div class="top"><span class="n">3</span><h3>Motion (a camada de cima)</h3></div>
+        <p>Manchete no gancho, legenda palavra a palavra, palavras gigantes, chips que acumulam informação, cartões pra fazer conta, cortes de enquadramento, efeitos de IA, sound design, trilha com ducking. É a passada que faz parecer <b>"editado por gente cara"</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- O CAMINHO -->
+<section id="caminho">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">Passo a passo</div>
+      <h2 class="display">O caminho das pedras</h2>
+      <p>Cada passo tem o que você pede pro Claude. Os tempos são do primeiro vídeo; no segundo caem pela metade porque o molde já existe.</p>
+    </div>
+    <div class="steps">
+
+      <div class="step">
+        <b class="t">Grave pensando no corte</b>
+        <p>Câmera fixa, você centralizado, e 5 segundos da sala vazia antes de sentar (serve pra efeito de flicker depois). Fale a frase inteira mesmo errando: o corte resolve.</p>
+        <div class="meta"><span class="badge tempo">o tempo que você já gasta</span></div>
+      </div>
+
+      <div class="step">
+        <b class="t">Transcreva palavra por palavra</b>
+        <p>Whisper local com timestamp de cada palavra. É o mapa de tudo: manchete, legenda, cortes e efeitos nascem daqui.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Transcreve esse vídeo com timestamp por palavra, em português, com o whisper local (large-v3-turbo) e sem condicionar no texto anterior. Me devolve o texto por frase com o tempo de cada uma.</pre>
+        </div>
+        <div class="meta"><span class="badge tempo">1 min por 3 min de vídeo</span></div>
+      </div>
+
+      <div class="step">
+        <b class="t">Lapide o corte</b>
+        <p>Primeiro o machado: onde começa a primeira frase com tensão ou promessa? Tudo antes morre. Depois os blocos abstratos que um exemplo concreto já cobre. Só no fim a pinça: "cara", "então", gagueira, reformulação abandonada.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Lê a transcrição inteira e me diz qual é a tese do vídeo. Depois propõe o corte: primeiro o machado (blocos inteiros que podem sair), depois a pinça (vício de linguagem, gagueira, reformulação). Justifica cada corte mostrando o texto que sai. Não corta o bloco da tese nem o CTA.</pre>
+        </div>
+        <div class="meta"><span class="badge tempo">20 a 40 min de conversa</span></div>
+      </div>
+
+      <div class="step">
+        <b class="t">Confira os retakes escondidos</b>
+        <p>A transcrição funde "e o legal… e o legal" numa palavra só. Um detector de energia (fala, silêncio de 0,2 s, fala de novo dentro da mesma palavra) aponta; você julga. No C101 um passou e eu só ouvi aos 2:31.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Caça retake escondido no corte: procura fala → silêncio de 0,2 s ou mais → fala de novo dentro de uma palavra só da transcrição, re-transcreve os dois lados e me mostra. Você aponta, eu decido.</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <b class="t">Diagnostique o áudio antes de tratar</b>
+        <p>Medir por canal, loudness, faixa dinâmica e perfil de bandas. A cadeia de filtros sai da medição, não de preset.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Mede o áudio desse vídeo (canais, LUFS, faixa dinâmica, bandas) e me dá um laudo com a cadeia de ffmpeg que corrige só o que a medição mostrou. Alvo: −14 LUFS, pico −1,5 dBTP. Gera uma amostra antes/depois de 20 segundos pra eu ouvir.</pre>
+        </div>
+        <div class="meta"><span class="badge tempo">5 min</span></div>
+      </div>
+
+      <div class="step">
+        <b class="t">Leia uma referência frame a frame</b>
+        <p>Print de tela não vale. Baixa o reel, tira 2 frames por segundo, monta contact sheet, mede cortes, loudness e efeitos sonoros. Sai um documento com o sistema tipográfico, a paleta e o que roubar.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Baixa esse reel [LINK], extrai frames a 2 fps, monta contact sheets e LÊ as imagens. Mede os cortes, o loudness e os efeitos sonoros. Escreve um ANALISE.md com: o que faz parecer dinâmico, paleta em hex, sistema tipográfico em tabela, gráficos e cartões, trilha e SFX, e uma seção "o que roubar pro meu reel" com receita.</pre>
+        </div>
+        <div class="meta"><span class="badge tempo">30 min por referência, várias em paralelo</span></div>
+      </div>
+
+      <div class="step">
+        <b class="t">Grade de cor na base, uma vez só</b>
+        <p>Testar 3 variantes em 2 frames, olhar lado a lado, escolher. No C101: sombras pro teal, pele quente, pretos levantados, saturação em 0,75, vinheta leve. A base sai a 1,5× do tamanho final pra o punch-in não perder nitidez.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Gera 3 grades cinematográficos (teal nas sombras, pele quente, pretos levantados, saturação contida) num frame aos 30 s e outro aos 100 s, monta um comparativo lado a lado e me mostra. Eu escolho, aí você renderiza a base inteira a 1,5× do tamanho final.</pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <b class="t">Escreva o roteiro de batidas</b>
+        <p>É o trabalho de editor de verdade. Gancho nos 5 primeiros segundos com manchete empilhada e flash. Um corte de enquadramento por frase. Uma palavra gigante por frase forte, no máximo 5 gigantes no vídeo. Chips pra todo número que precisa continuar visível. Cartão só onde tem conta ou diagrama. Cutaway só em coisa concreta que foi dita.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Escreve o roteiro de batidas do vídeo (roteiro.json) a partir da transcrição: cortes de enquadramento por frase, manchete do gancho palavra a palavra, ênfases (no máximo 5 gigantes), chips que ficam na tela, cartões só onde tem conta, cutaways só em coisa concreta, e o som de cada evento. Pra cada batida, me mostra a fala do momento.</pre>
+        </div>
+        <div class="meta"><span class="badge tempo">40 min</span></div>
+      </div>
+
+      <div class="step">
+        <b class="t">Efeitos de IA em cima de você</b>
+        <p>Pega o frame exato do seu take no segundo do gesto, manda pro Higgsfield como imagem inicial de um vídeo de 5 s, e volta pro take no mesmo enquadramento. Gera em dois modelos e escolhe pelo tile: MiniMax H3 segura a sala e a sua cara; Kling 3.0 faz explosão. Só onde a boca não importa. E o primeiro já na cena de abertura.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Extrai o frame do vídeo em [MINUTO:SEGUNDO], sobe no Higgsfield e gera um vídeo de 5 s nos dois modelos (MiniMax H3 e Kling 3.0) com o prompt: "Same man, same room, camera locked and static. [O EFEITO]. Photorealistic, cinematic, no text." Me mostra um tile de cada um pra eu escolher, e encaixa o escolhido no mesmo enquadramento do take.</pre>
+        </div>
+        <div class="meta"><span class="badge custo">10 créditos por tentativa</span><span class="badge tempo">2 a 3 min por geração</span></div>
+      </div>
+
+      <div class="step">
+        <b class="t">Renderize, mixe e confira em imagem</b>
+        <p>Stills de prova em 8 batidas antes do render de 20 min (foi assim que apareceram manchete em cima da legenda e palavra estourando a largura). Mix com regra medida: sub embaixo de todo corte, click 220 ms antes do título, riser terminando no evento, o hit mais alto no fecho. Contact sheet do final. A versão curta sai do render pronto, sem renderizar de novo.</p>
+        <div class="prompt-box">
+          <div class="prompt-head"><span>O que pedir</span><button class="copy-btn" onclick="copiar(this)">Copiar</button></div>
+          <pre>Renderiza 8 stills nas batidas principais e monta um tile pra eu olhar. Se estiver ok, render completo em background, mix do áudio (voz, SFX e trilha com ducking, alvo −14 LUFS) e mux. No fim me mostra o contact sheet do vídeo pronto.</pre>
+        </div>
+        <div class="meta"><span class="badge tempo">~35 min de máquina</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- REGRAS -->
+<section id="regras">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">Pra parecer profissional</div>
+      <h2 class="display">Sete regras</h2>
+    </div>
+    <div class="regras">
+      <div class="regra"><span class="tick">→</span><p><b>O gancho é metade do trabalho.</b> Manchete palavra a palavra nos primeiros 5 segundos, frame fechado, hit com flash na palavra-carga. Quatro sons nos primeiros quatro segundos.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>Um acento só.</b> Verde da marca. Vermelho apenas pra riscar ou negar. Fundo nunca preto puro. Gigante e flash são moeda cara: cinco momentos por vídeo, não cinquenta. É o que separa sóbrio de Casas Bahia.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>A legenda some quando a manchete está no ar.</b> A manchete é a legenda. Duas camadas de texto no mesmo lugar é o erro mais visível que existe.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>Estado que acumula.</b> Chip que fica na tela enquanto o dado vale (06:00 → 23:00, 10×). O espectador vê o argumento se montando.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>Cartão só pra conta.</b> 10 h → 1 h → 9 projetos, um elemento por batida de fala. O apresentador encolhe pra uma janelinha, nunca some.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>O som avisa antes da imagem.</b> Click 200 ms antes do título, riser subindo até o corte, sub de 340 ms embaixo de todo corte. Efeito sonoro marca objeto novo, não corte de câmera.</p></div>
+      <div class="regra"><span class="tick">→</span><p><b>Texto não é transcrição.</b> A manchete é a fala comprimida: "A IA TÁ ME FAZENDO / trabalhar / cada vez / MAIS."</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- NÃO FAZER -->
+<section id="nao">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">Custou tempo, não repete</div>
+      <h2 class="display">O que não fazer</h2>
+    </div>
+    <div class="regras">
+      <div class="regra nao"><span class="tick">✕</span><p><b>Legenda queimada por ffmpeg</b> (drawtext, ASS). Fica muito abaixo do que se faz com IA hoje. Motion é Remotion.</p></div>
+      <div class="regra nao"><span class="tick">✕</span><p><b>Imagem estática de IA como "efeito".</b> É o uso preguiçoso. O que impressiona é vídeo gerado a partir do seu próprio frame.</p></div>
+      <div class="regra nao"><span class="tick">✕</span><p><b>Acelerar o vídeo pra encurtar.</b> Lapidar é subtrair, não comprimir.</p></div>
+      <div class="regra nao"><span class="tick">✕</span><p><b>Confiar no timestamp do Whisper pra cortar.</b> Ele serve pra ler; a borda do corte se decide no vale de energia do áudio e em fim de frase.</p></div>
+      <div class="regra nao"><span class="tick">✕</span><p><b>Renderizar sem stills de prova.</b> 20 minutos de render pra descobrir que a manchete tampou o rosto.</p></div>
+      <div class="regra nao"><span class="tick">✕</span><p><b>Previsor de viralização como juiz.</b> O do Higgsfield só aceita 16 segundos e deu empate entre duas edições bem diferentes. Quem decide é o Instagram.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CUSTO -->
+<section id="custo">
+  <div class="container">
+    <div class="sec-head">
+      <div class="kicker">Na real</div>
+      <h2 class="display">Quanto custa</h2>
+    </div>
+    <div class="mapa-wrap">
+      <table class="mapa">
+        <thead><tr><th>Item</th><th>Primeiro vídeo</th><th>Próximos</th></tr></thead>
+        <tbody>
+          <tr><td class="nome">Tempo de sessão com o Claude</td><td>~5 h (leitura de 5 referências e o molde do zero)</td><td>~1 h 30</td></tr>
+          <tr><td class="nome">Render + mix no Mac</td><td>~35 min</td><td>~35 min</td></tr>
+          <tr><td class="nome">Higgsfield</td><td>~76 créditos (6 imagens + 8 vídeos)</td><td>~40 créditos</td></tr>
+          <tr><td class="nome">Retrabalho</td><td>1 render extra depois de ajustar layout</td><td>0, se conferir os stills</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- AULA -->
+<section id="aula">
+  <div class="container prosa">
+    <div class="sec-head">
+      <div class="kicker">Próximo passo</div>
+      <h2 class="display">Na aula</h2>
+    </div>
+    <p>Vou mostrar o roteiro de batidas sendo escrito ao vivo a partir da transcrição de um vídeo de vocês, o molde do Remotion que já existe (você copia e troca só o roteiro) e a receita dos efeitos no Higgsfield com o prompt exato.</p>
+    <p><b>Traz um vídeo gravado de 3 a 5 minutos, câmera fixa.</b> A transcrição sai na hora. Quem chegar com o corte já lapidado sai da aula com o reel pronto.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span class="handle">@augustogobatto</span>
+    <p>Bastidor do reel C101, editado em 11/09/2026. Ferramentas: Claude Code, Remotion, ffmpeg, mlx-whisper, yt-dlp, Higgsfield, Epidemic Sound. Escrito pelo Claude Code.</p>
+  </div>
+</footer>
+
+<script>
+function copiar(btn){
+  var texto = btn.closest('.prompt-box').querySelector('pre').innerText;
+  navigator.clipboard.writeText(texto).then(function(){
+    var original = btn.textContent;
+    btn.textContent = 'Copiado!';
+    setTimeout(function(){ btn.textContent = original; }, 1600);
+  });
+}
+</script>
+</body>
+</html>
