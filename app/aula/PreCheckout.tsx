@@ -179,6 +179,38 @@ export default function PreCheckout({
     return () => document.removeEventListener('click', onClique, true)
   }, [evento, salvar])
 
+  /* ── abre direto por ?pix=1 ────────────────────────────────
+     É o link que a Mila manda pra quem largou o pagamento. Sem isto ela não
+     tem como levar ninguém ao Pix: o popup só nascia do clique no mensal, que
+     só existe depois do pitch — mandar a pessoa reassistir 16 min de VSL pra
+     pagar de novo é perder a venda. Roda UMA vez (ref), senão fechar o modal
+     reabriria ele em seguida. */
+  const abriuPorLink = useRef(false)
+  useEffect(() => {
+    if (abriuPorLink.current) return
+    let busca = ''
+    try {
+      busca = window.location.search
+    } catch {
+      return
+    }
+    if (!/[?&]pix=1(&|$)/.test(busca)) return
+    abriuPorLink.current = true
+    /* o href do checkout de cartão vem do próprio botão da página, pra não
+       existir uma segunda fonte de URL de pagamento neste arquivo */
+    const alvo = document.querySelector<HTMLAnchorElement>('a[data-checkout="mensal"]')
+    if (alvo) {
+      carimbar(alvo, visitanteId())
+      checkoutRef.current = alvo.href
+    }
+    fechouPorConversao.current = false
+    setErro('')
+    setAberto(true)
+    setPasso('telefone')
+    evento('pre_checkout_abriu', 'link_direto')
+    salvar({ estado: 'abriu' })
+  }, [evento, salvar])
+
   const fechar = useCallback(
     (motivo: string) => {
       if (!aberto) return
