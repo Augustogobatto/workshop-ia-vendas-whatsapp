@@ -29,8 +29,8 @@ const STRIPE_ANUAL = 'https://buy.stripe.com/9B628s4La14Vb1KaNK9fW0g'
 const PROVAS_DE_MEMBROS = false
 
 /**
- * `preCheckout` liga o popup do mensal (só a /aula-v2 passa true). O HTML das
- * dobras é EXATAMENTE o mesmo nos dois braços — inclusive os `<a>` de compra,
+ * `preCheckout` liga o popup do mensal (a /aula e a /aula-v2 passam true desde
+ * 12/09/2026). O HTML das dobras é EXATAMENTE o mesmo — inclusive os `<a>` de compra,
  * que continuam sendo links de verdade. O popup intercepta o clique de fora,
  * então quem estiver sem JS ainda chega no checkout.
  */

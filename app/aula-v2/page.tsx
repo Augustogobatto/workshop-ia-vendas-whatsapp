@@ -7,11 +7,12 @@ import '../aula/aula.css'
 /**
  * /aula-v2 — a MESMA VSL da /aula, com o pré-checkout no mensal.
  *
- * Rota separada por decisão do Augusto (10/09/2026): a /aula continua
- * exatamente como está, sem popup, e serve de controle do teste. Nada é
- * duplicado aqui — mesmo config, mesmo vídeo, mesmo CSS, mesmas dobras. A
- * única diferença é `preCheckout` e o carimbo de `pagina` na telemetria,
- * que é o que deixa os dois braços comparáveis do clique até a venda.
+ * Rota separada por decisão do Augusto (10/09/2026), quando a /aula era o
+ * controle sem popup. Em 12/09/2026 o popup foi ligado também na /aula e o
+ * teste morreu antes de rodar (volume não separaria os braços em menos de dois
+ * meses). Esta rota fica de pé, sem tráfego, só como URL de ensaio: nada é
+ * duplicado aqui — mesmo config, mesmo vídeo, mesmo CSS, mesmas dobras, e o
+ * único traço próprio é o carimbo de `pagina` na telemetria.
  *
  * Anual continua indo direto pro Payment Link da Stripe: o popup é só do
  * mensal (Fase 2 do plano `2026-09-10-pre-checkout-pix-plano`).

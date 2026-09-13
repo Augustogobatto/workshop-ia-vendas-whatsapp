@@ -13,6 +13,12 @@ import './aula.css'
  *
  * Enquanto `publicada` é false a página fica fora do índice — é a trava que
  * impede tráfego cair numa VSL com vídeo placeholder.
+ *
+ * 12/09/2026: o pré-checkout do mensal (popup Pix/cartão) passou a valer AQUI,
+ * por decisão do Augusto. O teste A/B contra a /aula-v2 foi abandonado antes de
+ * começar — 8 cliques de checkout em 5 dias levariam ~2 meses pra separar os
+ * braços, e o gargalo mora no topo do funil, não neste degrau. O `pagina` segue
+ * no default '/aula' pra não quebrar a série da telemetria.
  */
 
 const PUBLICADA = config.publicada
@@ -37,7 +43,7 @@ export default function AulaPage() {
   return (
     <main className="au">
       <AulaPlayer config={config} />
-      <Dobras />
+      <Dobras preCheckout videoId={config.video_id} />
       <Rodape />
     </main>
   )
