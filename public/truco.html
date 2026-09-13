@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#241809">
-<meta name="description" content="Contador de pontos de truco: Nosotros x Ellos, partida de 12, 15, 24 ou 30, marcacao a giz e as escadas de envido e truco.">
+<meta name="description" content="Contador de pontos de truco: Nosotros x Ellos, partida de 12, 15, 24 ou 30, marcacao a giz na caixinha.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Truco">
@@ -40,7 +40,13 @@
   }
 
   *{box-sizing:border-box;}
-  html,body{height:100%;margin:0;}
+  html,body{
+    height:100%;
+    margin:0;
+    /* nada de duplo-toque pra dar zoom no meio da partida */
+    touch-action:none;
+    overscroll-behavior:none;
+  }
 
   body{
     background:#241809;
@@ -285,7 +291,7 @@
     min-height:46px;
     padding:3px 0 1px;
   }
-  .box{width:44px;height:41px;flex:none;}
+  .box{width:50px;height:47px;flex:none;}
   .box svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.9)) drop-shadow(0 0 6px rgba(0,0,0,.45));}
   body.longa .box{width:37px;height:35px;}
 
@@ -315,7 +321,7 @@
 
   .score{
     font-family:var(--display);
-    font-size:clamp(2.6rem,min(31vw,15dvh),9rem);
+    font-size:clamp(3rem,min(42vw,20dvh),11rem);
     line-height:.92;
     font-variant-numeric:tabular-nums;
     transition:transform .13s ease;
@@ -327,119 +333,57 @@
   .score.pulse{transform:scale(1.12);}
 
   .dica{
-    margin-top:7px;
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    padding:6px 14px 5px;
-    border:1px dashed var(--ouro-dim);
-    border-radius:3px;
-    background:rgba(0,0,0,.42);
-    color:var(--creme-dim);
-    font-size:.62rem;
-    letter-spacing:.14em;
+    margin-top:8px;
+    color:var(--creme-faint);
+    font-size:.6rem;
+    letter-spacing:.16em;
     text-transform:uppercase;
     text-shadow:0 1px 2px rgba(0,0,0,.9);
-    transition:opacity .4s, border-color .4s;
+    transition:opacity .5s;
   }
-  .dica b{
-    font-family:var(--display);
-    font-weight:400;
-    font-size:.86rem;
-    letter-spacing:0;
-    color:var(--ouro-claro);
-  }
-  .dica.visto{opacity:.42;border-color:var(--ouro-faint);}
+  .dica.visto{opacity:0;}
 
-  /* ---------- escadas: barras de boliche ---------- */
-  .ladders{
+  /* ---------- somar e tirar: os dois únicos comandos ---------- */
+  .mandos{
     display:flex;
-    flex-direction:column;
-    gap:6px;
-    margin-top:8px;
-    width:100%;
-    max-width:346px;
+    align-items:center;
+    gap:14px;
+    margin-top:10px;
   }
-  .ladder{
-    display:flex;
-    align-items:stretch;
-    background:linear-gradient(180deg,#1b140d,#0b0806);
-    border:1px solid var(--ouro-dim);
-    border-radius:4px;
-    padding:2px 9px;
-    box-shadow:
-      0 2px 0 rgba(0,0,0,.6),
-      0 3px 8px rgba(0,0,0,.5),
-      inset 0 0 0 2px rgba(0,0,0,.55),
-      inset 0 1px 0 rgba(236,223,190,.07);
-    position:relative;
-  }
-  .ladder::before,.ladder::after{
-    content:"";
-    position:absolute;
-    top:50%;
-    width:4px;height:4px;
-    margin-top:-2px;
-    border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, var(--ouro-claro), #6b4d16);
-    box-shadow:0 1px 1px rgba(0,0,0,.8);
-  }
-  .ladder::before{left:4px;}
-  .ladder::after{right:4px;}
-
-  .call{
-    flex:1 1 0;
-    min-width:0;
-    min-height:33px;
+  .mando{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:5px;
-    padding:0 3px;
-    border:none;
-    background:none;
+    border-radius:50%;
+    background:linear-gradient(180deg,#1d1710,#0b0806);
     color:var(--ouro-claro);
     font-family:var(--ui);
     font-weight:500;
-    font-size:.72rem;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    cursor:pointer;
-    transition:color .16s,transform .07s ease;
-  }
-  .call + .call{box-shadow:inset 1px 0 0 var(--ouro-faint);}
-  .call b{
-    font-family:var(--display);
-    font-weight:400;
-    font-size:.7rem;
-    letter-spacing:0;
-    font-variant-numeric:tabular-nums;
-    color:var(--creme);
-  }
-  .side.nos .call:hover,.side.nos .call:hover b{color:var(--nos);}
-  .side.eles .call:hover,.side.eles .call:hover b{color:var(--eles);}
-  .call:active{transform:scale(.95);}
-  .call:focus-visible{outline:2px solid var(--creme);outline-offset:-2px;border-radius:999px;}
-
-  .minus{
-    position:absolute;
-    top:9px;
-    right:14px;
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    border:1px solid var(--ouro-faint);
-    background:linear-gradient(180deg,#1a130d,#0e0a07);
-    color:var(--creme-dim);
-    font-family:var(--ui);
-    font-size:1.05rem;
     line-height:1;
     cursor:pointer;
-    transition:color .18s,border-color .18s,opacity .18s;
+    box-shadow:
+      0 3px 0 rgba(0,0,0,.6),
+      0 4px 12px rgba(0,0,0,.5),
+      inset 0 1px 0 rgba(236,223,190,.08);
+    transition:transform .07s ease,color .18s,border-color .18s;
   }
-  .minus:hover{color:var(--ouro-claro);border-color:var(--ouro-dim);}
-  .minus:focus-visible{outline:2px solid var(--creme);outline-offset:2px;}
-  .minus.off{opacity:.24;cursor:default;}
+  .mando.mais{
+    width:64px;height:64px;
+    border:2px solid var(--ouro-dim);
+    font-size:2rem;
+    padding-bottom:4px;
+  }
+  .mando.menos{
+    width:44px;height:44px;
+    border:1px solid var(--ouro-faint);
+    color:var(--creme-dim);
+    font-size:1.4rem;
+    padding-bottom:3px;
+  }
+  .mando:hover{color:var(--ouro-claro);border-color:var(--ouro);}
+  .mando:active{transform:scale(.92);}
+  .mando:focus-visible{outline:2px solid var(--creme);outline-offset:3px;}
+  .mando.menos.off{opacity:.25;cursor:default;}
 
   /* ---------- divisor ---------- */
   .split{
@@ -772,12 +716,10 @@
       box-shadow:1px 0 2px rgba(0,0,0,.7);
     }
     .side-name{font-size:2.8rem;}
-    .score{font-size:clamp(4rem,min(13vw,26dvh),9.5rem);}
+    .score{font-size:clamp(4rem,min(17vw,30dvh),12rem);}
     .marks{min-height:58px;gap:8px 9px;}
-    .box{width:54px;height:50px;}
-    body.longa .box{width:46px;height:43px;}
-    .call{min-height:38px;font-size:.78rem;}
-    .call b{font-size:.78rem;}
+    .box{width:58px;height:54px;}
+    body.longa .box{width:48px;height:45px;}
     .ladders{max-width:400px;}
     .alvos{grid-template-columns:repeat(4,minmax(0,1fr));max-width:560px;}
   }
@@ -785,13 +727,16 @@
   /* celular baixinho: aperta o entorno em vez de encolher o placar */
   @media (max-height:730px){
     .bar{padding-block:6px;}
+    .score{font-size:clamp(2.6rem,min(38vw,17dvh),8rem);}
+    .side-name{font-size:clamp(1.4rem,min(8vw,4.4dvh),2.2rem);}
     .side{padding:4px 16px;}
-    .marks{min-height:36px;gap:4px 6px;}
-    .box{width:38px;height:35px;}
-    body.longa .box{width:31px;height:29px;}
-    .dica{margin-top:5px;padding:5px 11px 4px;font-size:.56rem;letter-spacing:.1em;}
-    .ladders{margin-top:6px;gap:5px;}
-    .call{min-height:30px;font-size:.68rem;}
+    .marks{min-height:34px;gap:4px 6px;}
+    .box{width:42px;height:39px;}
+    body.longa .box{width:34px;height:32px;}
+    .dica{margin-top:6px;font-size:.55rem;letter-spacing:.12em;}
+    .mandos{margin-top:7px;gap:12px;}
+    .mando.mais{width:56px;height:56px;font-size:1.7rem;}
+    .mando.menos{width:40px;height:40px;font-size:1.25rem;}
     footer{padding:4px 46px 10px;}
   }
 
@@ -860,23 +805,14 @@
 
 <main>
   <div class="side nos" id="side-nos" role="button" tabindex="0" aria-label="Marcar um ponto para Nosotros">
-    <button class="minus" data-side="nos" aria-label="Tirar um ponto de Nosotros">−</button>
     <div class="side-name"><span>Nosotros</span><em class="flag" id="flag-nos" hidden></em></div>
     <div class="marks" id="marks-nos" aria-hidden="true"></div>
     <div class="score" id="score-nos">0</div>
-    <div class="dica" id="dica-nos"><b>+1</b> toque em qualquer lugar deste lado</div>
-    <div class="ladders">
-      <div class="ladder">
-        <button class="call" data-side="nos" data-add="2">envido <b>2</b></button>
-        <button class="call" data-side="nos" data-add="3">real <b>3</b></button>
-        <button class="call" data-side="nos" data-falta="1">falta <b id="falta-nos">30</b></button>
-      </div>
-      <div class="ladder">
-        <button class="call" data-side="nos" data-add="2">truco <b>2</b></button>
-        <button class="call" data-side="nos" data-add="3">retruco <b>3</b></button>
-        <button class="call" data-side="nos" data-add="4">quatro <b>4</b></button>
-      </div>
+    <div class="mandos">
+      <button class="mando mais" data-side="nos" aria-label="Somar um ponto para Nosotros">+</button>
+      <button class="mando menos" data-side="nos" aria-label="Tirar um ponto de Nosotros">−</button>
     </div>
+    <div class="dica" id="dica-nos">ou toque em qualquer lugar deste lado</div>
   </div>
 
   <div class="split">
@@ -886,23 +822,14 @@
   </div>
 
   <div class="side eles" id="side-eles" role="button" tabindex="0" aria-label="Marcar um ponto para Ellos">
-    <button class="minus" data-side="eles" aria-label="Tirar um ponto de Ellos">−</button>
     <div class="side-name"><span>Ellos</span><em class="flag" id="flag-eles" hidden></em></div>
     <div class="marks" id="marks-eles" aria-hidden="true"></div>
     <div class="score" id="score-eles">0</div>
-    <div class="dica" id="dica-eles"><b>+1</b> toque em qualquer lugar deste lado</div>
-    <div class="ladders">
-      <div class="ladder">
-        <button class="call" data-side="eles" data-add="2">envido <b>2</b></button>
-        <button class="call" data-side="eles" data-add="3">real <b>3</b></button>
-        <button class="call" data-side="eles" data-falta="1">falta <b id="falta-eles">30</b></button>
-      </div>
-      <div class="ladder">
-        <button class="call" data-side="eles" data-add="2">truco <b>2</b></button>
-        <button class="call" data-side="eles" data-add="3">retruco <b>3</b></button>
-        <button class="call" data-side="eles" data-add="4">quatro <b>4</b></button>
-      </div>
+    <div class="mandos">
+      <button class="mando mais" data-side="eles" aria-label="Somar um ponto para Ellos">+</button>
+      <button class="mando menos" data-side="eles" aria-label="Tirar um ponto de Ellos">−</button>
     </div>
+    <div class="dica" id="dica-eles">ou toque em qualquer lugar deste lado</div>
   </div>
 </main>
 
@@ -1316,11 +1243,6 @@
 
   function announce(txt) { el.live.textContent = txt; }
 
-  // falta envido: o que falta pro time da frente fechar a partida
-  function falta() {
-    return Math.max(1, state.alvo - Math.max(state.nos, state.eles));
-  }
-
   // ---- render ----
   function render(pulseSide) {
     document.body.classList.toggle("longa", state.alvo > 15);
@@ -1340,9 +1262,8 @@
       flag.hidden = !txt;
       flag.classList.toggle("quente", txt === "mão de 11");
 
-      document.getElementById("falta-" + side).textContent = falta();
       if (state[side] > 0) document.getElementById("dica-" + side).classList.add("visto");
-      document.querySelector(`.minus[data-side="${side}"]`).classList.toggle("off", state[side] === 0);
+      document.querySelector(`.mando.menos[data-side="${side}"]`).classList.toggle("off", state[side] === 0);
 
       if (pulseSide === side) {
         score.classList.remove("pulse");
@@ -1493,22 +1414,24 @@
     });
   });
 
-  document.querySelectorAll(".call").forEach((btn) => {
+  document.querySelectorAll(".mando").forEach((btn) => {
     btn.addEventListener("click", (ev) => {
       ev.stopPropagation();
       keepAwake();
-      const rotulo = btn.textContent.trim().split(" ")[0];
-      const pts = btn.dataset.falta ? falta() : parseInt(btn.dataset.add, 10);
-      marcar(btn.dataset.side, pts, rotulo);
+      marcar(btn.dataset.side, btn.classList.contains("mais") ? 1 : -1);
     });
   });
 
-  document.querySelectorAll(".minus").forEach((btn) => {
-    btn.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      marcar(btn.dataset.side, -1);
-    });
-  });
+  // iOS ignora user-scalable: a pinça e o duplo-toque se barram no evento
+  ["gesturestart", "gesturechange", "gestureend"].forEach((ev) =>
+    document.addEventListener(ev, (e) => e.preventDefault(), { passive: false })
+  );
+  let ultimoToque = 0;
+  document.addEventListener("touchend", (e) => {
+    const agora = Date.now();
+    if (agora - ultimoToque < 320) e.preventDefault();
+    ultimoToque = agora;
+  }, { passive: false });
 
   el.undo.addEventListener("click", voltar);
 
