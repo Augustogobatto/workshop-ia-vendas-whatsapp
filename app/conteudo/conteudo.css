@@ -96,3 +96,9 @@
 .rc-bloco h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(22px, 3.6vw, 28px); line-height: 1.2; margin: 0 0 10px; letter-spacing: -0.01em; }
 .rc-bloco p { margin: 0; color: var(--dim); max-width: 58ch; }
 .rc-bloco p b { color: var(--ink); font-weight: 650; }
+
+/* v3: galeria do painel */
+.rc-galeria { display: grid; gap: 18px; margin-top: 34px; }
+.rc-galeria .rc-print { margin: 0; max-width: none; }
+@media (min-width: 860px) { .rc-galeria { grid-template-columns: 1.4fr 1fr 1fr; align-items: start; } }
+.rc-lista li i { font-size: 18px; }
