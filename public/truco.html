@@ -276,17 +276,6 @@
   .side.eles .score{color:var(--eles);}
   .score.pulse{transform:scale(1.12);}
 
-  .dica{
-    margin-top:8px;
-    color:var(--creme-faint);
-    font-size:.6rem;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    text-shadow:0 1px 2px rgba(0,0,0,.9);
-    transition:opacity .5s;
-  }
-  .dica.visto{opacity:0;}
-
   /* ---------- somar e tirar: os dois únicos comandos ---------- */
   .mandos{
     display:flex;
@@ -577,7 +566,6 @@
     .marks{min-height:34px;gap:4px 6px;}
     .box{width:42px;height:39px;}
     body.longa .box{width:34px;height:32px;}
-    .dica{margin-top:6px;font-size:.55rem;letter-spacing:.12em;}
     .mandos{margin-top:7px;gap:12px;}
     .mando.mais{width:56px;height:56px;font-size:1.7rem;}
     .mando.menos{width:40px;height:40px;font-size:1.25rem;}
@@ -919,8 +907,8 @@
   };
 
   const marks = {
-    nos: { field: document.getElementById("marks-nos"), strokes: [], boxes: [], div: null },
-    eles: { field: document.getElementById("marks-eles"), strokes: [], boxes: [], div: null },
+    nos: { field: document.getElementById("marks-nos"), strokes: [], boxes: [], div: null, saindo: null },
+    eles: { field: document.getElementById("marks-eles"), strokes: [], boxes: [], div: null, saindo: null },
   };
 
   const nome = (s) => (s === "nos" ? "Nosotros" : "Ellos");
@@ -952,6 +940,19 @@
     const pos = m.strokes.length % 5;
     let b = m.boxes[m.boxes.length - 1];
     if (pos === 0 || !b) {
+      // se a caixa anterior ainda está saindo, reaproveita: senão a nova entra
+      // depois do fantasma e a fileira dá um pulo
+      if (m.saindo) {
+        clearTimeout(m.saindo.timer);
+        b = m.saindo;
+        m.saindo = null;
+        b.svg.textContent = "";
+        m.boxes.push(b);
+        const l0 = traco(LADOS[pos]);
+        b.svg.appendChild(l0);
+        m.strokes.push({ el: l0, box: b });
+        return;
+      }
       const wrap = document.createElement("div");
       wrap.className = "box";
       const svg = document.createElementNS(SVG_NS, "svg");
@@ -975,7 +976,13 @@
     setTimeout(() => s.el.remove(), 180);
     if (m.strokes.length % 5 === 0) {
       const b = m.boxes.pop();
-      if (b) setTimeout(() => b.wrap.remove(), 180);
+      if (b) {
+        m.saindo = b;
+        b.timer = setTimeout(() => {
+          b.wrap.remove();
+          if (m.saindo === b) m.saindo = null;
+        }, 180);
+      }
     }
   }
 
@@ -1082,7 +1089,6 @@
       flag.hidden = !txt;
       flag.classList.toggle("quente", txt === "mão de 11");
 
-      if (state[side] > 0) document.getElementById("dica-" + side).classList.add("visto");
       document.querySelector(`.mando.menos[data-side="${side}"]`).classList.toggle("off", state[side] === 0);
 
       if (pulseSide === side) {
@@ -1222,16 +1228,12 @@
     });
   });
 
-  // iOS ignora user-scalable: a pinça e o duplo-toque se barram no evento
+  // A pinça do iOS se barra aqui; o duplo-toque já morre no touch-action:none do
+  // CSS. Nada de preventDefault em touchend: aquilo cancela o clique sintético e
+  // engolia o segundo toque rápido — marcar dois pontos seguidos perdia um.
   ["gesturestart", "gesturechange", "gestureend"].forEach((ev) =>
     document.addEventListener(ev, (e) => e.preventDefault(), { passive: false })
   );
-  let ultimoToque = 0;
-  document.addEventListener("touchend", (e) => {
-    const agora = Date.now();
-    if (agora - ultimoToque < 320) e.preventDefault();
-    ultimoToque = agora;
-  }, { passive: false });
 
   // zerar em dois toques, sem confirm() travando a tela
   let armado = null;
