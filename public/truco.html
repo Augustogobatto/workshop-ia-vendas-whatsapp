@@ -110,11 +110,9 @@
   /* ---------- barra de cima ---------- */
   .bar{
     flex:none;
-    display:grid;
-    grid-template-columns:1fr auto 1fr;
-    align-items:center;
-    gap:10px;
-    padding-block:9px;
+    display:flex;
+    justify-content:center;
+    padding-block:18px 11px;
     padding-inline:20px;
     position:relative;
     z-index:3;
@@ -128,7 +126,7 @@
     box-shadow:0 1px 2px rgba(0,0,0,.7);
   }
 
-  .sets{grid-column:2;text-align:center;line-height:1;}
+  .sets{text-align:center;line-height:1;}
   .sets .row{
     display:flex;
     align-items:baseline;
@@ -142,52 +140,14 @@
   .sets .x{color:var(--ouro);font-family:var(--cartaz);font-size:1.1rem;}
   .sets .row,.sets .meta{text-shadow:0 1px 3px rgba(0,0,0,.85);}
   .sets .meta{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    margin-top:4px;
+    margin-top:6px;
     font-size:.6rem;
     letter-spacing:.22em;
     text-transform:uppercase;
     color:var(--creme-dim);
   }
-  .alvo-btn{
-    background:none;
-    border:none;
-    border-bottom:1px dotted var(--ouro-dim);
-    color:var(--ouro-claro);
-    font-family:var(--ui);
-    font-weight:500;
-    font-size:.6rem;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    padding:2px 1px;
-    cursor:pointer;
-  }
-  .alvo-btn:focus-visible{outline:2px solid var(--creme);outline-offset:2px;}
+  #alvoTxt{color:var(--ouro-claro);}
 
-  .bar-btn{
-    font-family:var(--ui);
-    font-weight:500;
-    font-size:.7rem;
-    letter-spacing:.17em;
-    text-transform:uppercase;
-    color:var(--creme-dim);
-    background:linear-gradient(180deg,#1a130d,#0e0a07);
-    border:1px solid var(--ouro-faint);
-    border-radius:999px;
-    padding:7px 13px;
-    min-height:34px;
-    cursor:pointer;
-    transition:color .18s,border-color .18s;
-  }
-  .bar-btn:hover{color:var(--ouro-claro);border-color:var(--ouro-dim);}
-  .bar-btn:focus-visible{outline:2px solid var(--creme);outline-offset:2px;}
-  .bar-btn:disabled{opacity:.32;cursor:default;}
-  #undoBtn{grid-column:1;justify-self:start;}
-  #resetBtn{grid-column:3;justify-self:end;}
-  #resetBtn.armed{color:var(--brasa-clara);border-color:var(--brasa);}
 
   /* ---------- mesa ---------- */
   main{
@@ -213,28 +173,12 @@
     color:inherit;
     font:inherit;
     text-align:center;
-    cursor:pointer;
     position:relative;
     overflow:hidden;
     transition:background .25s;
   }
-  .side:focus-visible{outline:2px solid var(--creme);outline-offset:-6px;}
-  .side:active{background:rgba(239,229,205,.06);}
   .side.nos.bump{background:var(--nos-soft);}
   .side.eles.bump{background:var(--eles-soft);}
-
-  .ripple{
-    position:absolute;
-    width:16px;height:16px;
-    margin:-8px 0 0 -8px;
-    border-radius:50%;
-    pointer-events:none;
-    opacity:.35;
-    animation:ripple .5s cubic-bezier(.22,1,.36,1) forwards;
-  }
-  .side.nos .ripple{background:var(--nos);}
-  .side.eles .ripple{background:var(--eles);}
-  @keyframes ripple{to{transform:scale(22);opacity:0;}}
 
   .side-name{
     display:flex;
@@ -450,107 +394,6 @@
     opacity:.78;
   }
 
-  /* ---------- gaveta da vira ---------- */
-  .drawer{
-    position:fixed;
-    left:0;right:0;bottom:0;
-    z-index:8;
-    background:
-      radial-gradient(ellipse at 50% 0%, rgba(236,223,190,.06), transparent 60%),
-      linear-gradient(180deg,#241a11,#160f0a);
-    border-top:2px solid var(--ouro);
-    padding:18px 20px 26px;
-    transform:translateY(101%);
-    transition:transform .34s cubic-bezier(.22,1,.36,1);
-  }
-  .drawer.open{transform:translateY(0);}
-  .drawer h3{
-    margin:0 0 3px;
-    font-family:var(--cartaz);
-    font-size:1.5rem;
-    font-weight:400;
-    color:var(--ouro-claro);
-  }
-  .drawer p{
-    margin:0 0 13px;
-    font-size:.82rem;
-    color:var(--creme-dim);
-    max-width:56ch;
-  }
-  .vira-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px;}
-  .vira-card{
-    flex:1 1 0;
-    min-width:32px;
-    min-height:50px;
-    border:1px solid var(--ouro-faint);
-    border-radius:4px;
-    background:linear-gradient(180deg,#1d1610,#110c08);
-    color:var(--creme-dim);
-    font-family:var(--display);
-    font-size:1rem;
-    line-height:1;
-    cursor:pointer;
-    transition:border-color .18s,color .18s,background .18s;
-  }
-  .vira-card:hover{border-color:var(--ouro-dim);color:var(--creme);}
-  .vira-card:focus-visible{outline:2px solid var(--creme);outline-offset:2px;}
-  .vira-card.on{
-    border-color:var(--ouro);
-    background:linear-gradient(180deg,var(--creme),#d6c8a4);
-    color:#1a120b;
-  }
-  .vira-out{
-    min-height:38px;
-    display:flex;
-    align-items:center;
-    gap:11px;
-    font-family:var(--display);
-    font-size:1.25rem;
-    line-height:1;
-    color:var(--ouro-claro);
-    margin-bottom:13px;
-  }
-  .vira-out .lbl{
-    font-family:var(--ui);
-    font-weight:500;
-    font-size:.7rem;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    color:var(--creme-dim);
-  }
-  .vira-hint{
-    font-family:var(--ui);
-    font-weight:400;
-    font-size:.76rem;
-    color:var(--creme-faint);
-  }
-  .naipes{
-    display:flex;
-    flex-wrap:wrap;
-    gap:7px 18px;
-    padding-top:13px;
-    border-top:1px solid var(--ouro-faint);
-    font-size:.7rem;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--creme-dim);
-  }
-  .naipes b{font-size:1.05rem;margin-right:5px;vertical-align:-1px;}
-  .naipes .red{color:var(--brasa-clara);}
-  .naipes .blk{color:var(--creme);}
-  .drawer-close{
-    position:absolute;
-    top:12px;right:16px;
-    background:none;border:none;
-    color:var(--creme-dim);
-    font-family:var(--ui);
-    font-size:1.3rem;
-    line-height:1;
-    padding:6px 9px;
-    cursor:pointer;
-  }
-  .drawer-close:focus-visible{outline:2px solid var(--creme);outline-offset:2px;}
-
   /* ---------- telas cheias ---------- */
   .sheet{
     position:fixed;
@@ -691,6 +534,7 @@
     color:var(--creme-dim);
     border-color:var(--ouro-faint);
   }
+  #resetBtn.armed{color:var(--brasa-clara);border-color:var(--brasa);}
   .sheet-btn:focus-visible{outline:2px solid var(--creme);outline-offset:3px;}
 
   footer{
@@ -741,11 +585,9 @@
   }
 
   @media (prefers-reduced-motion:reduce){
-    .ripple{display:none;}
     .stroke{animation:none;stroke-dashoffset:0;}
     .stroke.leaving{opacity:0;}
     .score.pulse{transform:none;}
-    .drawer{transition:none;}
     .sheet.show{animation:none;}
     .split-btn:hover{transform:none;}
   }
@@ -786,25 +628,20 @@
 <svg class="orn br" aria-hidden="true"><use href="#orn"/></svg>
 
 <div class="bar">
-  <button class="bar-btn" id="undoBtn" disabled>Voltar</button>
   <div class="sets">
     <div class="row" aria-label="Partidas ganhas">
       <span class="n" id="setsNos">0</span>
       <span class="x">×</span>
       <span class="e" id="setsEles">0</span>
     </div>
-    <div class="meta">
-      <span>partidas</span>
-      <button class="alvo-btn" id="alvoBtn">até 30</button>
-    </div>
+    <div class="meta"><span>partidas</span> <span id="alvoTxt">até 30</span></div>
   </div>
-  <button class="bar-btn" id="resetBtn">Zerar</button>
 </div>
 
 <div class="ferro-strip">Mão de ferro <span>11 × 11 · cartas fechadas, vale 3</span></div>
 
 <main>
-  <div class="side nos" id="side-nos" role="button" tabindex="0" aria-label="Marcar um ponto para Nosotros">
+  <div class="side nos" id="side-nos">
     <div class="side-name"><span>Nosotros</span><em class="flag" id="flag-nos" hidden></em></div>
     <div class="marks" id="marks-nos" aria-hidden="true"></div>
     <div class="score" id="score-nos">0</div>
@@ -812,16 +649,15 @@
       <button class="mando mais" data-side="nos" aria-label="Somar um ponto para Nosotros">+</button>
       <button class="mando menos" data-side="nos" aria-label="Tirar um ponto de Nosotros">−</button>
     </div>
-    <div class="dica" id="dica-nos">ou toque em qualquer lugar deste lado</div>
   </div>
 
   <div class="split">
-    <button class="split-btn" id="splitBtn" aria-label="Descobrir a manilha pela vira">
+    <button class="split-btn" id="splitBtn" aria-label="Abrir o menu da mesa">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.6l2.7 6.3 6.8.5-5.2 4.4 1.6 6.6L12 15.9l-5.9 3.5 1.6-6.6-5.2-4.4 6.8-.5z"/></svg>
     </button>
   </div>
 
-  <div class="side eles" id="side-eles" role="button" tabindex="0" aria-label="Marcar um ponto para Ellos">
+  <div class="side eles" id="side-eles">
     <div class="side-name"><span>Ellos</span><em class="flag" id="flag-eles" hidden></em></div>
     <div class="marks" id="marks-eles" aria-hidden="true"></div>
     <div class="score" id="score-eles">0</div>
@@ -829,7 +665,6 @@
       <button class="mando mais" data-side="eles" aria-label="Somar um ponto para Ellos">+</button>
       <button class="mando menos" data-side="eles" aria-label="Tirar um ponto de Ellos">−</button>
     </div>
-    <div class="dica" id="dica-eles">ou toque em qualquer lugar deste lado</div>
   </div>
 </main>
 
@@ -837,27 +672,14 @@
 
 <p role="status" aria-live="polite" id="live" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;"></p>
 
-<div class="drawer" id="drawer" role="dialog" aria-modal="false" aria-label="Qual é a manilha">
-  <button class="drawer-close" id="drawerClose" aria-label="Fechar">×</button>
-  <h3>Qual é a manilha?</h3>
-  <p>Toque na carta que virou. A manilha é a seguinte na ordem.</p>
-  <div class="vira-row" id="viraRow"></div>
-  <div class="vira-out" id="viraOut">
-    <span class="vira-hint">Ordem normal: 3 · 2 · A · K · J · Q · 7 · 6 · 5 · 4</span>
-  </div>
-  <div class="naipes">
-    <span><b class="blk">♣</b> zap</span>
-    <span><b class="red">♥</b> copas</span>
-    <span><b class="blk">♠</b> espadilha</span>
-    <span><b class="red">♦</b> ourito</span>
-  </div>
-</div>
-
 <div class="sheet" id="setup" role="dialog" aria-modal="true" aria-label="Tamanho da partida">
   <h2>Até quanto vai?</h2>
-  <div class="sub">escolha antes de começar</div>
+  <div class="sub" id="setupSub">escolha antes de começar</div>
   <div class="alvos" id="alvos"></div>
-  <div class="acts"><button class="sheet-btn ghost" id="setupCancel" hidden>Deixa como está</button></div>
+  <div class="acts">
+    <button class="sheet-btn ghost" id="setupCancel" hidden>Deixa como está</button>
+    <button class="sheet-btn ghost" id="resetBtn" hidden>Zerar tudo</button>
+  </div>
 </div>
 
 <div class="sheet" id="win" role="dialog" aria-modal="true" aria-label="Fim da partida">
@@ -1083,9 +905,8 @@
 
   const el = {
     live: document.getElementById("live"),
-    undo: document.getElementById("undoBtn"),
     reset: document.getElementById("resetBtn"),
-    alvoBtn: document.getElementById("alvoBtn"),
+    alvoTxt: document.getElementById("alvoTxt"),
     setsNos: document.getElementById("setsNos"),
     setsEles: document.getElementById("setsEles"),
     setup: document.getElementById("setup"),
@@ -1095,7 +916,6 @@
     winWho: document.getElementById("winWho"),
     winLine: document.getElementById("winLine"),
     winTag: document.getElementById("winTag"),
-    drawer: document.getElementById("drawer"),
   };
 
   const marks = {
@@ -1278,8 +1098,7 @@
 
     el.setsNos.textContent = state.setsNos;
     el.setsEles.textContent = state.setsEles;
-    el.alvoBtn.textContent = "até " + state.alvo;
-    el.undo.disabled = state.hist.length === 0;
+    el.alvoTxt.textContent = "até " + state.alvo;
     document.body.classList.toggle(
       "ferro",
       state.alvo === 12 && state.nos === 11 && state.eles === 11 && !state.winner
@@ -1361,6 +1180,11 @@
 
   function abrirSetup(podeCancelar) {
     el.setupCancel.hidden = !podeCancelar;
+    el.reset.hidden = !podeCancelar;
+    document.getElementById("setupSub").textContent = podeCancelar
+      ? "trocar começa uma partida nova"
+      : "escolha antes de começar";
+    desarmarReset();
     el.alvos.querySelectorAll(".alvo-card").forEach((c) => {
       c.classList.toggle("on", +c.dataset.alvo === state.alvo);
     });
@@ -1371,7 +1195,7 @@
   function escolherAlvo(n) {
     const mudou = n !== state.alvo;
     state.alvo = n;
-    el.setup.classList.remove("show");
+    fecharSetup();
     if (mudou) {
       // partida nova sempre que o tamanho muda: placar velho não cabe na régua nova
       state.nos = 0; state.eles = 0; state.hist = []; state.winner = null;
@@ -1382,38 +1206,14 @@
     render(null);
   }
 
-  el.alvoBtn.addEventListener("click", () => abrirSetup(true));
-  el.setupCancel.addEventListener("click", () => {
+  function fecharSetup() {
     el.setup.classList.remove("show");
-    el.alvoBtn.focus();
-  });
+    desarmarReset();
+    document.getElementById("splitBtn").focus();
+  }
+  el.setupCancel.addEventListener("click", fecharSetup);
 
   // ---- eventos da mesa ----
-  function ripple(box, ev) {
-    const r = box.getBoundingClientRect();
-    const temCoord = ev.clientX > 0 || ev.clientY > 0;
-    const d = document.createElement("span");
-    d.className = "ripple";
-    d.style.left = (temCoord ? ev.clientX - r.left : r.width / 2) + "px";
-    d.style.top = (temCoord ? ev.clientY - r.top : r.height / 2) + "px";
-    box.appendChild(d);
-    setTimeout(() => d.remove(), 520);
-  }
-
-  ["nos", "eles"].forEach((side) => {
-    const box = document.getElementById("side-" + side);
-    const somar = (ev) => {
-      keepAwake();
-      if (!state.winner && state[side] < state.alvo) ripple(box, ev);
-      marcar(side, 1);
-    };
-    box.addEventListener("click", somar);
-    box.addEventListener("keydown", (ev) => {
-      if (ev.target !== box) return;
-      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); somar(ev); }
-    });
-  });
-
   document.querySelectorAll(".mando").forEach((btn) => {
     btn.addEventListener("click", (ev) => {
       ev.stopPropagation();
@@ -1433,66 +1233,39 @@
     ultimoToque = agora;
   }, { passive: false });
 
-  el.undo.addEventListener("click", voltar);
-
   // zerar em dois toques, sem confirm() travando a tela
   let armado = null;
+  function desarmarReset() {
+    clearTimeout(armado);
+    armado = null;
+    el.reset.classList.remove("armed");
+    el.reset.textContent = "Zerar tudo";
+  }
   el.reset.addEventListener("click", () => {
     if (armado) {
-      clearTimeout(armado); armado = null;
-      el.reset.classList.remove("armed");
-      el.reset.textContent = "Zerar";
+      desarmarReset();
       state.setsNos = 0; state.setsEles = 0;
       novaPartida();
+      el.setup.classList.remove("show");
       announce("Placar zerado");
       return;
     }
     el.reset.classList.add("armed");
-    el.reset.textContent = "Zerar tudo?";
-    armado = setTimeout(() => {
-      armado = null;
-      el.reset.classList.remove("armed");
-      el.reset.textContent = "Zerar";
-    }, 3000);
+    el.reset.textContent = "Confirma?";
+    armado = setTimeout(desarmarReset, 3000);
   });
 
   document.getElementById("newGame").addEventListener("click", novaPartida);
   document.getElementById("undoWin").addEventListener("click", desfazerVitoria);
 
-  // ---- a manilha sai da vira: a carta seguinte na ordem ----
-  const ORDEM = ["4", "5", "6", "7", "Q", "J", "K", "A", "2", "3"];
-  const viraRow = document.getElementById("viraRow");
-  const viraOut = document.getElementById("viraOut");
-  ORDEM.forEach((carta, i) => {
-    const b = document.createElement("button");
-    b.className = "vira-card";
-    b.type = "button";
-    b.textContent = carta;
-    b.setAttribute("aria-label", `Virou ${carta}`);
-    b.addEventListener("click", () => {
-      viraRow.querySelectorAll(".vira-card").forEach((c) => c.classList.remove("on"));
-      b.classList.add("on");
-      const man = ORDEM[(i + 1) % ORDEM.length];
-      viraOut.innerHTML = `<span class="lbl">manilha</span>${man}`;
-      announce(`Virou ${carta}. Manilha é ${man}`);
-    });
-    viraRow.appendChild(b);
-  });
-
-  const splitBtn = document.getElementById("splitBtn");
-  function toggleDrawer(open) {
-    el.drawer.classList.toggle("open", open);
-    splitBtn.setAttribute("aria-expanded", open ? "true" : "false");
-  }
-  splitBtn.addEventListener("click", () => toggleDrawer(!el.drawer.classList.contains("open")));
-  document.getElementById("drawerClose").addEventListener("click", () => toggleDrawer(false));
+  document.getElementById("splitBtn").addEventListener("click", () => abrirSetup(true));
 
   document.addEventListener("keydown", (ev) => {
     if (ev.target.closest("button,[role=button]")) return;
     if (ev.key === "ArrowLeft" || ev.key === "a") marcar("nos", 1);
     else if (ev.key === "ArrowRight" || ev.key === "l") marcar("eles", 1);
     else if (ev.key === "z" && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); voltar(); }
-    else if (ev.key === "Escape") { toggleDrawer(false); }
+    else if (ev.key === "Escape" && el.setup.classList.contains("show")) fecharSetup();
   });
 
   // ---- o que se diz na mesa: uma a cada partida ----
