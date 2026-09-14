@@ -20,9 +20,19 @@ const nextConfig = {
   // Lista explícita, não regex: uma /club-v8 de preview no futuro não pode
   // nascer já redirecionada.
   async redirects() {
-    return ['/club-v1', '/club-v2', '/club-v3', '/club-v4', '/club-v5', '/club-v6', '/club-v7'].map(
-      (source) => ({ source, destination: '/club', permanent: false })
-    )
+    return [
+      ...['/club-v1', '/club-v2', '/club-v3', '/club-v4', '/club-v5', '/club-v6', '/club-v7'].map(
+        (source) => ({ source, destination: '/club', permanent: false })
+      ),
+      // 14/09: a aula de 31/08 saiu de "Push Club > Aulas Soltas" e virou o
+      // Workshop Produção de Conteúdo com IA (produto próprio). Link antigo
+      // circulou no aviso da aula e na /conteudo.
+      {
+        source: '/members/club/aulas-soltas/producao-de-conteudo-com-ia',
+        destination: '/members/producao-de-conteudo-com-ia/gravacao/producao-de-conteudo-com-ia',
+        permanent: false,
+      },
+    ]
   },
   // Material de aula servido de public/ (slides e anatomias): link direto pros
   // membros a partir da description da lesson, mas fora do índice do Google.
