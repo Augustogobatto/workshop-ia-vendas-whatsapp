@@ -101,3 +101,23 @@
 }
 .pn-abas .aba:hover { color: var(--ink); border-color: #3a3f46; }
 .pn-abas .aba.viva { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 650; }
+
+/* Aviso de leitura: o número está certo, a comparação é que está torta.
+   Amarelo, não vermelho — não é erro, é ressalva. */
+.pn-aviso {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-left: 3px solid #e0a800;
+  background: rgba(224, 168, 0, 0.08);
+  font-size: 13px;
+  line-height: 1.45;
+}
+/* Subtítulo dentro da célula de formato: qual público rodou aquilo. */
+.pn-sub {
+  display: block;
+  font-style: normal;
+  font-weight: 400;
+  opacity: 0.55;
+  font-size: 11px;
+  margin-top: 2px;
+}

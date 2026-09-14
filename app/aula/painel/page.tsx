@@ -124,11 +124,17 @@ type EventoPC = {
 }
 type PreCheckoutLinha = { visitante_id: string | null; pagina: string | null }
 
+/** Vem da função `vsl_formato(ad_name)` no banco. `outro` é proposital: anúncio
+ *  fora do padrão de nome aparece em vez de ser contado errado. */
+type Formato = 'estatico' | 'video' | 'outro'
+
 type Linha = {
-  dia: string; ad_name: string; adset_name: string
+  dia: string; ad_name: string; adset_name: string; campaign: string | null
+  formato: Formato
   gasto: number; impressoes: number; cliques: number
   ctr: number; cpc: number; cpm: number
-  carregou: number; play: number; min1: number; pitch: number; checkout: number
+  carregou: number; play: number; min1: number; min1_evt: number
+  pitch: number; checkout: number
   play_rate: number | null; pct_1min: number | null; pct_pitch: number | null
   custo_play: number | null; custo_pitch: number | null
   atualizado: string
@@ -149,6 +155,20 @@ function pct(v: number | null | undefined) {
   return v === null || v === undefined ? '—' : Math.round(Number(v)) + '%'
 }
 /** abaixo do piso do Felipe = pinta de alerta (skill funil-vsl) */
+/** Espelho em TS da função `vsl_formato` do banco — só para venda cuja linha de
+ *  mídia não existe no período (anúncio pausado pagando hoje). Mudou uma, muda a outra. */
+function formatoDoNome(ad: string): Formato {
+  if (/^AD[0-9]/.test(ad)) return 'video'
+  if (/^[AM][0-9]{2}-/.test(ad)) return 'estatico'
+  return 'outro'
+}
+
+const NOME_FORMATO: Record<Formato, string> = {
+  estatico: 'Estáticos',
+  video: 'Vídeos',
+  outro: 'Fora do padrão',
+}
+
 function piso(v: number | null | undefined, minimo: number) {
   return v !== null && v !== undefined && Number(v) < minimo ? ' abaixo' : ''
 }
@@ -233,6 +253,7 @@ export default async function Painel({
     a.carregou += l.carregou
     a.play += l.play
     a.min1 += l.min1
+    a.min1_evt += l.min1_evt
     a.pitch += l.pitch
     a.checkout += l.checkout
     if (l.atualizado > a.atualizado) a.atualizado = l.atualizado
@@ -251,8 +272,9 @@ export default async function Painel({
     if (!a) {
       a = {
         dia: v.dia, ad_name: v.ad_name!, adset_name: v.adset_name || '',
+        campaign: null, formato: formatoDoNome(v.ad_name!),
         gasto: 0, impressoes: 0, cliques: 0, ctr: 0, cpc: 0, cpm: 0,
-        carregou: 0, play: 0, min1: 0, pitch: 0, checkout: 0,
+        carregou: 0, play: 0, min1: 0, min1_evt: 0, pitch: 0, checkout: 0,
         play_rate: null, pct_1min: null, pct_pitch: null,
         custo_play: null, custo_pitch: null, atualizado: '',
         vendas: 0, faturado: 0,
@@ -294,6 +316,45 @@ export default async function Painel({
   )
   const cac = t.vendas ? t.gasto / t.vendas : null
   const roas = t.gasto ? t.faturado / t.gasto : null
+
+  /* ── Estático × Vídeo ────────────────────────────────────────────────
+     Mesma escada, uma coluna por formato. O que decide é o CUSTO por degrau,
+     não a taxa: criativo desqualificado com clique baratíssimo fecha melhor
+     que criativo "certo" e caro (regra 2 do Felipe).
+
+     A comparação só é honesta quando os dois formatos rodaram sob a MESMA
+     otimização e no MESMO período. Enquanto não for o caso, `avisoFormato`
+     grita isso na tela — senão a diferença da régua vira "conclusão" sobre
+     o criativo. */
+  const porFormato = (['estatico', 'video', 'outro'] as const)
+    .map((f) => {
+      const ls = linhas.filter((l) => l.formato === f)
+      const s = ls.reduce(
+        (a, l) => ({
+          gasto: a.gasto + Number(l.gasto || 0),
+          cliques: a.cliques + (l.cliques || 0),
+          impressoes: a.impressoes + (l.impressoes || 0),
+          carregou: a.carregou + (l.carregou || 0),
+          play: a.play + (l.play || 0),
+          min1: a.min1 + (l.min1 || 0),
+          pitch: a.pitch + (l.pitch || 0),
+          checkout: a.checkout + (l.checkout || 0),
+          vendas: a.vendas + (l.vendas || 0),
+          faturado: a.faturado + (l.faturado || 0),
+        }),
+        { gasto: 0, cliques: 0, impressoes: 0, carregou: 0, play: 0, min1: 0, pitch: 0, checkout: 0, vendas: 0, faturado: 0 }
+      )
+      const publicos = Array.from(new Set(ls.map((l) => l.adset_name).filter(Boolean)))
+      return { formato: f, pecas: ls.length, publicos, ...s }
+    })
+    .filter((x) => x.pecas > 0)
+
+  /* Os dois formatos rodaram sob otimizações diferentes? O público do conjunto
+     é a pista barata: VIU1MIN-* otimiza o minuto, o resto otimizava checkout. */
+  const otimizacoes = new Set(
+    porFormato.flatMap((x) => x.publicos.map((p) => (p.startsWith('VIU1MIN') ? 'min1' : 'checkout')))
+  )
+  const avisoFormato = porFormato.length > 1 && otimizacoes.size > 1
   const mensais = vendasAds.filter((v) => v.plano === 'mensal').length
   const anuais = vendasAds.filter((v) => v.plano === 'anual').length
   const faturadoFora = vendasFora.reduce((a, v) => a + Number(v.valor), 0)
@@ -527,6 +588,74 @@ export default async function Painel({
             Pisos da régua do Felipe. Em vermelho, abaixo do piso.
             Custo por play {brl(t.play ? t.gasto / t.play : null)} · por pitch{' '}
             {brl(t.pitch ? t.gasto / t.pitch : null)}
+          </p>
+        </section>
+
+        <section>
+          <h2>Estático × Vídeo</h2>
+          {avisoFormato && (
+            <p className="pn-aviso">
+              Os dois formatos NÃO rodaram sob a mesma otimização neste período — os vídeos
+              otimizavam checkout iniciado e os estáticos otimizam o 1º minuto. A diferença abaixo
+              mistura criativo com régua de leilão. Só vira comparação limpa quando os dois rodarem
+              no mesmo evento, no mesmo período.
+            </p>
+          )}
+          <div className="pn-rolagem">
+            <table>
+              <thead>
+                <tr>
+                  <th>formato</th>
+                  <th className="n">peças</th>
+                  <th className="n">gasto</th>
+                  <th className="n">CPM</th>
+                  <th className="n">clique→carregou</th>
+                  <th className="n">play rate</th>
+                  <th className="n">play→1min</th>
+                  <th className="n">1min→pitch</th>
+                  <th className="n">pitch→checkout</th>
+                  <th className="n">R$/play</th>
+                  <th className="n">R$/1min</th>
+                  <th className="n">R$/pitch</th>
+                  <th className="n">R$/checkout</th>
+                  <th className="n">vendas</th>
+                  <th className="n">ROAS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {porFormato.map((f) => (
+                  <tr key={f.formato}>
+                    <th>
+                      {NOME_FORMATO[f.formato]}
+                      <i className="pn-sub">{f.publicos.join(' · ') || '—'}</i>
+                    </th>
+                    <td className="n">{f.pecas}</td>
+                    <td className="n">{brl(f.gasto, 0)}</td>
+                    <td className="n">{brl(f.impressoes ? (1000 * f.gasto) / f.impressoes : null, 0)}</td>
+                    <td className={'n' + piso(taxa(f.carregou, f.cliques), 70)}>{pct(taxa(f.carregou, f.cliques))}</td>
+                    <td className={'n' + piso(taxa(f.play, f.carregou), 60)}>{pct(taxa(f.play, f.carregou))}</td>
+                    <td className={'n' + piso(taxa(f.min1, f.play), 60)}>{pct(taxa(f.min1, f.play))}</td>
+                    <td className="n">{pct(taxa(f.pitch, f.min1))}</td>
+                    <td className="n">{pct(taxa(f.checkout, f.pitch))}</td>
+                    <td className="n">{brl(f.play ? f.gasto / f.play : null)}</td>
+                    <td className="n">{brl(f.min1 ? f.gasto / f.min1 : null)}</td>
+                    <td className="n">{brl(f.pitch ? f.gasto / f.pitch : null)}</td>
+                    <td className="n">{brl(f.checkout ? f.gasto / f.checkout : null)}</td>
+                    <td className="n">{f.vendas || '—'}</td>
+                    <td className="n">
+                      {f.gasto ? (f.faturado / f.gasto).toFixed(2).replace('.', ',') + 'x' : '—'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="pn-nota">
+            Formato sai do NOME do anúncio (<code>AD1/AD2</code> = vídeo, <code>A01…/M01…</code> ={' '}
+            estático), não da campanha — os estáticos nasceram na campanha antiga antes de mudar de
+            casa. Anúncio com nome fora do padrão aparece como &quot;fora do padrão&quot; em vez de
+            ser contado errado. <b>O que decide é o custo por degrau, não a taxa</b>: criativo
+            desqualificado com clique barato pode fechar melhor que criativo certo e caro.
           </p>
         </section>
 
