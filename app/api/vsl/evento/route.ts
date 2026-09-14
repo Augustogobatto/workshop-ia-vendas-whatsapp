@@ -21,6 +21,8 @@ const EVENTOS = new Set([
   'retomou',       // voltou e clicou "continuar de onde parei"
   'reiniciou',     // voltou e clicou "assistir do início"
   'retencao',      // marco de 10% em 10% do vídeo (rotulo = 10..100)
+  'min1',          // 60s de som acumulado — é o evento que a campanha otimiza
+                   // (espelhado no pixel como `Viu1Min`)
   'pitch',         // cruzou o pitch: a página abriu
   'abriu_oferta',  // rolou até a dobra de planos
   'clicou_cta',    // clicou num botão de checkout (rotulo = mensal|anual)

@@ -56,7 +56,10 @@ type Config = {
   whatsapp?: { numero?: string; rotulo?: string; mensagem?: string }
 }
 
-type Sync = { versao_id: number | null; t: number; pitch_visto: boolean }
+type Sync = { versao_id: number | null; t: number; pitch_visto: boolean; min1_visto?: boolean }
+
+/* Segundos de som que definem o evento `Viu1Min` (otimização da campanha). */
+const MIN1_S = 60
 
 /* Rede: se o config estiver quebrado, a VSL não pode deixar de tocar. */
 const PITCH_REDE = 900
@@ -134,6 +137,9 @@ export default function AulaPlayer({
   const pausadoPeloUsuario = useRef(false)
   const ultimoAndar = useRef(Date.now())
   const abertaRef = useRef(false)
+  /* já disparou `Viu1Min`? Vive fora do efeito porque o efeito de listeners
+     remonta e o evento é UMA vez por pessoa, não uma por montagem. */
+  const min1Ref = useRef(false)
   const syncRef = useRef<Sync | null>(null)
   const varianteRef = useRef<Variante | null>(null)
   const sessao = useRef<string>('')
@@ -301,6 +307,8 @@ export default function AulaPlayer({
 
     /* quem já ouviu o preço não espera o vídeo inteiro de novo */
     if (s?.pitch_visto) marcarPitchVisto('retomada')
+    /* já cruzou o minuto numa sessão anterior: não conta de novo */
+    if (s?.min1_visto || s?.pitch_visto) min1Ref.current = true
     if (s && s.t > 10) setCartao('retomada')
 
     /* velocidade preferida entre sessoes: quem assiste em 2x quer 2x sempre */
@@ -485,6 +493,11 @@ export default function AulaPlayer({
     const marcos = new Set<number>()
     const entrouEm = Date.now()
     let maximoAssistido = 0
+    /* Segundos REALMENTE ouvidos. Não dá pra usar `currentTime`: quem retoma
+       em 05:00 já entra com o relógio além de 60 e o evento nasceria falso.
+       Somo só deltas pequenos, então seek e troca de aba não inflam. */
+    let ouvidos = 0
+    let ultimoTick = -1
 
     const onLoadedData = () => tocarMudo()
 
@@ -497,6 +510,21 @@ export default function AulaPlayer({
       if (video.muted || video.paused) return
 
       if (t >= pitchS) marcarPitchVisto('pitch')
+
+      /* UM MINUTO OUVIDO — é o evento pelo qual a campanha otimiza. Uma vez
+         por pessoa: `min1Ref` sobrevive à remontagem do efeito e `min1_visto`
+         sobrevive ao reload. */
+      if (ultimoTick >= 0) {
+        const passo = t - ultimoTick
+        if (passo > 0 && passo < 3) ouvidos += passo
+      }
+      ultimoTick = t
+      if (!min1Ref.current && ouvidos >= MIN1_S) {
+        min1Ref.current = true
+        salvarSync({ min1_visto: true })
+        evento('min1', { segundo: Math.floor(t) })
+        pixelCustom('Viu1Min', { content_name: 'aula-vsl' })
+      }
 
       if (t > maximoAssistido) maximoAssistido = t
 
