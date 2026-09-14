@@ -4,8 +4,8 @@ import type { CatalogProduct } from '@/lib/supabase/types'
 import { markWelcomed } from './actions'
 
 const VIDEO_URL = 'https://www.loom.com/embed/71b85bb424ea46eaaea17c8c3d3b98e9?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true'
-const TELEGRAM_URL = 'https://t.me/+eob6ZxFvkNFmNjI5'
-const TELEGRAM_BLUE = '#229ED9'
+const WHATSAPP_URL = 'https://chat.whatsapp.com/KH6h1aMaxvT4ZkC4EOkTxS'
+const WHATSAPP_GREEN = '#25D366'
 
 export default async function WelcomePage() {
   const supabase = await createClient()
@@ -22,7 +22,7 @@ export default async function WelcomePage() {
 
   const firstName = lead?.first_name ?? lead?.name?.split(' ')[0] ?? null
 
-  // O grupo do Telegram é só de assinante. Quem criou conta grátis pelo lead
+  // O grupo do WhatsApp é só de assinante. Quem criou conta grátis pelo lead
   // magnet também cai nesta tela, então o convite fica atrás do acesso ao Club.
   const { data: catalog } = await supabase.rpc('get_catalog_with_access')
   const hasClub = ((catalog ?? []) as CatalogProduct[])
@@ -145,16 +145,16 @@ export default async function WelcomePage() {
                   Primeiro passo: entra no grupo
                 </p>
                 <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  É no Telegram que a gente conversa todo dia, e onde o Claudinei responde suas dúvidas.
+                  O grupo do WhatsApp é onde a gente conversa todo dia. Entra lá.
                 </p>
               </div>
               <a
-                href={TELEGRAM_URL}
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
                   padding: '11px 22px',
-                  background: TELEGRAM_BLUE,
+                  background: WHATSAPP_GREEN,
                   color: '#FFFFFF',
                   borderRadius: 'var(--radius)',
                   fontFamily: 'var(--font-display)',
